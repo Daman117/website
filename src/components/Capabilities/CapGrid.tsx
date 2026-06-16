@@ -9,7 +9,6 @@ const CapGrid: React.FC = () => (
         <span className="eyebrow">Capabilities</span>
         <h2 className="display">Every capability.<br/><span>One platform.</span></h2>
       </div>
-      <p>Click any card to explore the capability in detail.</p>
     </div>
     <div className="cap-grid">
       {CAPS.map((cap) => (

@@ -436,13 +436,15 @@ hr.rule{border:none;border-top:1px solid var(--border);margin:0}
   z-index:-2;
   pointer-events:none;
   background:url("/plant-bg.png") calc(100% + 300px) center / 102% auto no-repeat;
+  -webkit-mask-image:linear-gradient(to right, transparent 0%, transparent 16%, #000 32%);
+  mask-image:linear-gradient(to right, transparent 0%, transparent 16%, #000 32%);
 }
 #hero::after{
   content:'';
   position:absolute;inset:0;
   z-index:-1;
   pointer-events:none;
-  background:rgba(237,241,247,0.52);
+  background:rgba(232,237,245,0.55);
 }
 [data-theme="dark"] #hero::after{
   background:rgba(6,12,22,0.62);
