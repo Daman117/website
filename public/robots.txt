@@ -1,0 +1,11 @@
+# robots.txt for enX Website
+
+User-agent: *
+Allow: /
+
+# Sitemap location (update with your actual domain)
+Sitemap: https://enx.ensarsolutions.com/sitemap.xml
+
+# Block common bot/scraper paths (optional)
+Disallow: /admin/
+Disallow: /private/
