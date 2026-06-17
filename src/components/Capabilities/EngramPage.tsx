@@ -152,9 +152,7 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
           <button className="btn-primary" onClick={() => onOpenContact('Request a Pilot')}>
             Request a Demo
           </button>
-          <span className="badge" style={{ color: '#FDB022', background: 'rgba(253,176,34,0.12)', borderColor: 'rgba(253,176,34,0.35)', alignSelf: 'center' }}>
-            Pilot
-          </span>
+          
         </div>
       </section>
 

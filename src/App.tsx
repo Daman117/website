@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import type { Theme } from './types';
 import Nav from './components/Nav';
 import MobileNav from './components/MobileNav';
 import Hero from './components/Hero';
@@ -15,6 +14,9 @@ import Footer from './components/Footer';
 import ContactModal from './components/ContactModal';
 import ProductPage from './components/Capabilities/ProductPage';
 import EngramPage from './components/Capabilities/EngramPage';
+import EnstudioPage from './components/Capabilities/EnstudioPage';
+import EngeniePage from './components/Capabilities/EngeniePage';
+import EnviewPage from './components/Capabilities/EnviewPage';
 
 function HomePage({
   onOpenContact,
@@ -42,12 +44,8 @@ const pageVariants = {
 const pageTransition = { type: 'tween', duration: 0.38 } as const;
 
 function AnimatedRoutes({
-  theme,
-  onToggleTheme,
   onOpenContact,
 }: {
-  theme: Theme;
-  onToggleTheme: () => void;
   onOpenContact: (source?: string) => void;
 }) {
   const location = useLocation();
@@ -72,13 +70,21 @@ function AnimatedRoutes({
             element={<EngramPage onOpenContact={onOpenContact} />}
           />
           <Route
+            path="/products/enstudio"
+            element={<EnstudioPage onOpenContact={onOpenContact} />}
+          />
+          <Route
+            path="/products/engenie"
+            element={<EngeniePage onOpenContact={onOpenContact} />}
+          />
+          <Route
+            path="/products/enview"
+            element={<EnviewPage onOpenContact={onOpenContact} />}
+          />
+          <Route
             path="/products/:id"
             element={
-              <ProductPage
-                theme={theme}
-                onToggleTheme={onToggleTheme}
-                onOpenContact={onOpenContact}
-              />
+              <ProductPage onOpenContact={onOpenContact} />
             }
           />
         </Routes>
@@ -118,15 +124,14 @@ function ScrollRestorer() {
 }
 
 function AppShell() {
-  const [theme, setTheme] = useState<Theme>('light');
   const [contactOpen, setContactOpen] = useState(false);
   const [contactSource, setContactSource] = useState<string | undefined>();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    document.body.style.backgroundColor = theme === 'dark' ? '#030712' : '#EEF3F9';
-  }, [theme]);
+    document.documentElement.setAttribute('data-theme', 'light');
+    document.body.style.backgroundColor = '#EEF3F9';
+  }, []);
 
   useEffect(() => {
     const els = document.querySelectorAll('[data-reveal]');
@@ -152,7 +157,6 @@ function AppShell() {
   }, []);
 
   const closeContact = useCallback(() => setContactOpen(false), []);
-  const toggleTheme = useCallback(() => setTheme((t) => (t === 'dark' ? 'light' : 'dark')), []);
 
   return (
     <>
@@ -161,8 +165,6 @@ function AppShell() {
       <Nav
         onOpenContact={openContact}
         onOpenMobile={() => setMobileNavOpen(true)}
-        theme={theme}
-        onToggleTheme={toggleTheme}
       />
       <MobileNav
         open={mobileNavOpen}
@@ -172,11 +174,7 @@ function AppShell() {
       <ContactModal open={contactOpen} source={contactSource} onClose={closeContact} />
 
       {/* Only the body content animates between routes */}
-      <AnimatedRoutes
-        theme={theme}
-        onToggleTheme={toggleTheme}
-        onOpenContact={openContact}
-      />
+      <AnimatedRoutes onOpenContact={openContact} />
       <Footer onOpenContact={openContact} />
     </>
   );

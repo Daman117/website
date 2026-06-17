@@ -6,7 +6,7 @@ const CapGrid: React.FC = () => (
   <section id="capabilities">
     <div className="cap-head" data-reveal="">
       <div>
-        <span className="eyebrow">Capabilities</span>
+        <span className="eyebrow">Products</span>
         <h2 className="display">Every capability.<br/><span>One platform.</span></h2>
       </div>
     </div>

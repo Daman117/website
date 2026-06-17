@@ -2,11 +2,8 @@ import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { CAPS } from '../../data/caps';
 import type { Cap } from '../../types';
-import type { Theme } from '../../types';
 
 interface ProductPageProps {
-  theme: Theme;
-  onToggleTheme: () => void;
   onOpenContact: (source?: string) => void;
 }
 
@@ -111,12 +108,6 @@ const ProductPage: React.FC<ProductPageProps> = ({ onOpenContact }) => {
             <div className="product-page-title-row">
               <div className="cap-card-dot" style={{ background: cap.color, width: 14, height: 14 }} />
               <h1 className="product-page-name">{cap.name}</h1>
-              <span
-                className="badge"
-                style={{ color: cap.color, background: `${cap.color}18`, borderColor: `${cap.color}55` }}
-              >
-                {cap.status}
-              </span>
             </div>
             <div className="product-page-cat">{cap.cat}</div>
             <p className="product-page-tag">{cap.tag}</p>

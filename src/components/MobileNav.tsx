@@ -18,7 +18,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ open, onClose, onOpenContact }) =
           <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
         </svg>
       </button>
-      <a href="#capabilities" className="mobile-nav-link" onClick={handleLink}>Capabilities</a>
+      <a href="#capabilities" className="mobile-nav-link" onClick={handleLink}>Products</a>
       <a href="#platform" className="mobile-nav-link" onClick={handleLink}>Platform</a>
       <a href="#principles" className="mobile-nav-link" onClick={handleLink}>Principles</a>
       <a href="#company" className="mobile-nav-link" onClick={handleLink}>About Us</a>

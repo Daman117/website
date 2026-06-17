@@ -21,7 +21,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenContact: _onOpenContact }) => (
       </div>
 
       <div>
-        <p className="foot-title">Capabilities</p>
+        <p className="foot-title">Products</p>
         {CAPS.map((c) => (
           <div
             key={c.id}

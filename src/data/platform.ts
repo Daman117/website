@@ -6,6 +6,7 @@ export const pipeNodes: PipeNode[] = [
   { cap: 'enABLE',   label: 'Structural Model',     sub: 'Topology → matrix M',  color: '#10B981' },
   { cap: 'enVIEW',   label: 'Live SCADA',           sub: 'Tags → live display',  color: '#2563EB' },
   { cap: 'enGENIE',  label: 'Engineering Vault',    sub: 'Conditions → spec',    color: '#1B6FD8' },
+  { cap: 'enTIE',    label: 'Connected Intelligence', sub: 'DCS · MES · ERP → enX', color: '#60A5FA' },
 ];
 
 export const pills: Pill[] = [
