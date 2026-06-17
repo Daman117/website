@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Cpu, Gauge, Layers, Zap, Workflow, MonitorPlay, Boxes, MessageSquare, BrainCircuit, Network, TriangleAlert } from 'lucide-react';
 
 interface EnviewPageProps {
   onOpenContact: (source?: string) => void;
@@ -26,7 +27,7 @@ const challenges = [
 
 const nativeApproach = [
   {
-    icon: '⬡',
+    Icon: Cpu,
     title: 'Native Apple Silicon',
     subtitle: 'Built from scratch in Swift',
     desc: 'Zero JVM, zero .NET overhead — a control platform engineered for modern hardware.',
@@ -34,7 +35,7 @@ const nativeApproach = [
     color: '#2563EB',
   },
   {
-    icon: '◈',
+    Icon: Gauge,
     title: 'Unmatched Performance',
     subtitle: '1 Hz scan, sub-100ms latency',
     desc: 'Full process visibility at a 1 Hz scan rate with under 100ms tag latency on under 500MB of memory.',
@@ -42,7 +43,7 @@ const nativeApproach = [
     color: '#0E9BC4',
   },
   {
-    icon: '◎',
+    Icon: Layers,
     title: 'Decoupled Multi-threading',
     subtitle: 'Data and visuals never collide',
     desc: 'Strict separation of the background data layer and the visual presentation layer keeps the UI alive.',
@@ -50,7 +51,7 @@ const nativeApproach = [
     color: '#10B981',
   },
   {
-    icon: '▶',
+    Icon: Zap,
     title: 'Instant Startup',
     subtitle: 'Live in under two seconds',
     desc: 'The app launches and streams live plant data in under 2 seconds — no blind waiting during upsets.',
@@ -61,21 +62,21 @@ const nativeApproach = [
 
 const views = [
   {
-    icon: '⬡',
+    Icon: Workflow,
     title: 'P&ID View',
     subtitle: 'Engineering',
     desc: 'ISA-101 compliant background, ISA-5.1 instrument bubbles, and an absolute single source of truth topology.',
     color: '#2563EB',
   },
   {
-    icon: '◈',
+    Icon: MonitorPlay,
     title: 'DCS Mimic View',
     subtitle: 'Operations',
     desc: 'Metallic equipment graphics, live value badges, and stream-colored piping for instant situational awareness.',
     color: '#0E9BC4',
   },
   {
-    icon: '◎',
+    Icon: Boxes,
     title: '3D Plant View',
     subtitle: 'Management',
     desc: 'RealityKit spatial rendering, orbit-camera navigation, and physical asset location mapping.',
@@ -110,9 +111,9 @@ const matrix = {
 };
 
 const aiFeatures = [
-  { icon: '◎', title: 'Intelligent Operator Assistant', desc: 'Natural-language querying integrated into the HMI — e.g. “Why is reactor TT-101 temperature rising?”' },
-  { icon: '⬡', title: 'Automated Engineering', desc: 'AI Vision reads static P&ID diagrams and automatically generates YAML configurations and screen shapes.' },
-  { icon: '◈', title: 'MCP Server Analytics', desc: 'Securely exposes live, rationalized plant data to Desktop AI for predictive maintenance and threat analysis.' },
+  { Icon: MessageSquare, title: 'Intelligent Operator Assistant', desc: 'Natural-language querying integrated into the HMI — e.g. “Why is reactor TT-101 temperature rising?”' },
+  { Icon: BrainCircuit, title: 'Automated Engineering', desc: 'AI Vision reads static P&ID diagrams and automatically generates YAML configurations and screen shapes.' },
+  { Icon: Network, title: 'MCP Server Analytics', desc: 'Securely exposes live, rationalized plant data to Desktop AI for predictive maintenance and threat analysis.' },
 ];
 
 const transform = [
@@ -133,7 +134,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
           ← Back
         </button>
         <div style={{ marginTop: -20, display: 'flex', justifyContent: 'center' }}>
-          <h2 style={{
+          <div style={{
             fontFamily: "'Space Grotesk','DM Sans',sans-serif",
             fontSize: 'clamp(28px,4vw,48px)',
             fontWeight: 700,
@@ -142,7 +143,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
             lineHeight: 1,
           }}>
             en<span style={{ color: ACCENT }}>VIEW</span>
-          </h2>
+          </div>
         </div>
       </div>
 
@@ -197,7 +198,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         <div className="engram-quad">
           {challenges.map((c) => (
             <div key={c.title} className="engram-card">
-              <div style={{ fontSize: 22, color: ACCENT, marginBottom: 12, lineHeight: 1 }}>⚠</div>
+              <div style={{ color: ACCENT, marginBottom: 12, lineHeight: 1 }}><TriangleAlert size={22} strokeWidth={1.75} /></div>
               <h3 className="engram-card-title" style={{ fontSize: 14, marginBottom: 8 }}>{c.title}</h3>
               <p style={{ fontSize: 12, color: 'var(--t4)', lineHeight: 1.65 }}>{c.desc}</p>
             </div>
@@ -212,7 +213,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         <div className="engram-quad">
           {nativeApproach.map((m) => (
             <div key={m.title} className="engram-cap-card" style={{ '--cap-color': m.color } as React.CSSProperties}>
-              <div className="engram-cap-icon" style={{ color: m.color }}>{m.icon}</div>
+              <div className="engram-cap-icon" style={{ color: m.color }}><m.Icon size={26} strokeWidth={1.75} /></div>
               <h3 className="engram-cap-title" style={{ color: m.color, fontSize: 15 }}>{m.title}</h3>
               <p className="engram-cap-sub">{m.subtitle}</p>
               <p className="engram-cap-desc">{m.desc}</p>
@@ -239,7 +240,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         <div className="engram-caps-grid">
           {views.map((v) => (
             <div key={v.title} className="engram-cap-card" style={{ '--cap-color': v.color } as React.CSSProperties}>
-              <div className="engram-cap-icon" style={{ color: v.color }}>{v.icon}</div>
+              <div className="engram-cap-icon" style={{ color: v.color }}><v.Icon size={26} strokeWidth={1.75} /></div>
               <h3 className="engram-cap-title" style={{ color: v.color }}>{v.title}</h3>
               <p className="engram-cap-sub">{v.subtitle}</p>
               <p className="engram-cap-desc" style={{ marginBottom: 0 }}>{v.desc}</p>
@@ -333,7 +334,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         <div className="engram-caps-grid">
           {aiFeatures.map((f) => (
             <div key={f.title} className="engram-cap-card" style={{ '--cap-color': ACCENT } as React.CSSProperties}>
-              <div className="engram-cap-icon" style={{ color: ACCENT }}>{f.icon}</div>
+              <div className="engram-cap-icon" style={{ color: ACCENT }}><f.Icon size={26} strokeWidth={1.75} /></div>
               <h3 className="engram-cap-title" style={{ color: ACCENT, fontSize: 15 }}>{f.title}</h3>
               <p className="engram-cap-desc" style={{ marginBottom: 0 }}>{f.desc}</p>
             </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { PencilRuler, Boxes, MessageSquare, Workflow, BadgeCheck, SlidersHorizontal } from 'lucide-react';
 
 interface EnstudioPageProps {
   onOpenContact: (source?: string) => void;
@@ -25,7 +26,7 @@ const existingSolutions = [
 
 const inputModes = [
   {
-    icon: '✎',
+    Icon: PencilRuler,
     title: 'Draw',
     subtitle: 'Author from scratch',
     desc: 'Drag ISA-5.1 symbols onto the canvas, draw connections, and fill parameter forms. Every action writes straight to the internal model.',
@@ -37,7 +38,7 @@ const inputModes = [
     ],
   },
   {
-    icon: '⬡',
+    Icon: Boxes,
     title: 'Import',
     subtitle: 'Upload any drawing',
     desc: 'Drop a P&ID PDF, scanned sheet, equipment CSV, datasheet, or YMPL file. AI reads it and renders equipment and connections on the canvas.',
@@ -49,7 +50,7 @@ const inputModes = [
     ],
   },
   {
-    icon: '◎',
+    Icon: MessageSquare,
     title: 'Describe',
     subtitle: 'Plain-language topology',
     desc: 'Type or talk through a process unit. The same parser used by enableSim extracts equipment, instruments, and connections into the model.',
@@ -64,7 +65,7 @@ const inputModes = [
 
 const capabilities = [
   {
-    icon: '⬡',
+    Icon: Workflow,
     title: 'Diagram Intelligence',
     subtitle: 'Read the Language of P&IDs',
     desc: 'AI vision reads equipment symbols, tags, and pipe topology from any engineering drawing — vector or scanned.',
@@ -78,7 +79,7 @@ const capabilities = [
     color: '#A78BFA',
   },
   {
-    icon: '◈',
+    Icon: BadgeCheck,
     title: 'Confidence-Scored Review',
     subtitle: 'Engineers Stay in Control',
     desc: 'Every extracted element is scored and surfaced for review before it ever reaches a downstream system.',
@@ -92,7 +93,7 @@ const capabilities = [
     color: '#60A5FA',
   },
   {
-    icon: '◎',
+    Icon: SlidersHorizontal,
     title: 'Schema-Driven Adapters',
     subtitle: 'One Model, Many Targets',
     desc: 'A normalized internal model exports to multiple formats. Field mappings live in YAML schema files — never hardcoded.',
@@ -199,7 +200,7 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
           ← Back
         </button>
         <div style={{ marginTop: -20, display: 'flex', justifyContent: 'center' }}>
-          <h2 style={{
+          <div style={{
             fontFamily: "'Space Grotesk','DM Sans',sans-serif",
             fontSize: 'clamp(28px,4vw,48px)',
             fontWeight: 700,
@@ -208,7 +209,7 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
             lineHeight: 1,
           }}>
             en<span style={{ color: ACCENT }}>STUDIO</span>
-          </h2>
+          </div>
         </div>
       </div>
 
@@ -307,7 +308,7 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
         <div className="engram-caps-grid">
           {inputModes.map((m) => (
             <div key={m.title} className="engram-cap-card" style={{ '--cap-color': ACCENT } as React.CSSProperties}>
-              <div className="engram-cap-icon" style={{ color: ACCENT }}>{m.icon}</div>
+              <div className="engram-cap-icon" style={{ color: ACCENT }}><m.Icon size={26} strokeWidth={1.75} /></div>
               <h3 className="engram-cap-title" style={{ color: ACCENT }}>{m.title}</h3>
               <p className="engram-cap-sub">{m.subtitle}</p>
               <p className="engram-cap-desc">{m.desc}</p>
@@ -331,7 +332,7 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
         <div className="engram-caps-grid">
           {capabilities.map((cap) => (
             <div key={cap.title} className="engram-cap-card" style={{ '--cap-color': cap.color } as React.CSSProperties}>
-              <div className="engram-cap-icon" style={{ color: cap.color }}>{cap.icon}</div>
+              <div className="engram-cap-icon" style={{ color: cap.color }}><cap.Icon size={26} strokeWidth={1.75} /></div>
               <h3 className="engram-cap-title" style={{ color: cap.color }}>{cap.title}</h3>
               <p className="engram-cap-sub">{cap.subtitle}</p>
               <p className="engram-cap-desc">{cap.desc}</p>
@@ -377,7 +378,7 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
             <div key={a.label} className="engram-card" style={{ borderColor: `${a.color}40` }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
                 <div style={{ width: 8, height: 8, borderRadius: '50%', background: a.color, flexShrink: 0 }} />
-                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', color: a.color }}>{a.target}</span>
+                <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', color: a.color }}>{a.target}</span>
               </div>
               <h3 className="engram-card-title" style={{ marginBottom: 8 }}>{a.label}</h3>
               <p style={{ fontSize: 12, color: 'var(--t4)', marginBottom: 16, lineHeight: 1.6 }}>{a.desc}</p>

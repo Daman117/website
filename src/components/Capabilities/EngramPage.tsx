@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Workflow, FileText, Network } from 'lucide-react';
 
 interface EngramPageProps {
   onOpenContact: (source?: string) => void;
@@ -23,7 +24,7 @@ const existingSolutions = [
 
 const capabilities = [
   {
-    icon: '⬡',
+    Icon: Workflow,
     title: 'Diagram Intelligence',
     subtitle: 'Understand the Language of Industrial Drawings',
     desc: 'enGRAM converts static engineering drawings into interactive, searchable plant knowledge.',
@@ -37,7 +38,7 @@ const capabilities = [
     color: '#FDB022',
   },
   {
-    icon: '◈',
+    Icon: FileText,
     title: 'Document Intelligence',
     subtitle: 'Every Answer Is Grounded and Traceable',
     desc: 'enGRAM extracts engineering knowledge from documents and links it directly to plant assets.',
@@ -51,7 +52,7 @@ const capabilities = [
     color: '#10B981',
   },
   {
-    icon: '◎',
+    Icon: Network,
     title: 'Plant Knowledge Graph',
     subtitle: 'Connect Information Across Your Entire Plant',
     desc: 'enGRAM structures extracted information into an interconnected engineering knowledge base.',
@@ -120,7 +121,7 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
           ← Back
         </button>
         <div style={{ marginTop: -20, display: 'flex', justifyContent: 'center' }}>
-          <h2 style={{
+          <div style={{
             fontFamily: "'Space Grotesk','DM Sans',sans-serif",
             fontSize: 'clamp(28px,4vw,48px)',
             fontWeight: 700,
@@ -129,7 +130,7 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
             lineHeight: 1,
           }}>
             en<span style={{ color: '#FDB022' }}>GRAM</span>
-          </h2>
+          </div>
         </div>
       </div>
 
@@ -231,7 +232,7 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
         <div className="engram-caps-grid">
           {capabilities.map((cap) => (
             <div key={cap.title} className="engram-cap-card" style={{ '--cap-color': cap.color } as React.CSSProperties}>
-              <div className="engram-cap-icon" style={{ color: cap.color }}>{cap.icon}</div>
+              <div className="engram-cap-icon" style={{ color: cap.color }}><cap.Icon size={26} strokeWidth={1.75} /></div>
               <h3 className="engram-cap-title" style={{ color: cap.color }}>{cap.title}</h3>
               <p className="engram-cap-sub">{cap.subtitle}</p>
               <p className="engram-cap-desc">{cap.desc}</p>
@@ -285,7 +286,7 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
                 <span style={{ fontSize: 12, color: 'var(--t3)', lineHeight: 1.6 }}>{f}</span>
               </div>
             ))}
-            <p style={{ fontSize: 11, color: 'var(--t5)', marginTop: 14, fontStyle: 'italic' }}>
+            <p style={{ fontSize: 12, color: 'var(--t5)', marginTop: 14, fontStyle: 'italic' }}>
               Every critical decision remains under human oversight.
             </p>
           </div>

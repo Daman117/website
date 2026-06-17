@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import Nav from './components/Nav';
 import MobileNav from './components/MobileNav';
 import Hero from './components/Hero';
@@ -41,6 +41,11 @@ const pageVariants = {
   animate: { opacity: 1, y: 0 },
   exit:    { opacity: 0, y: -12 },
 };
+const reducedVariants = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit:    { opacity: 0 },
+};
 const pageTransition = { type: 'tween', duration: 0.38 } as const;
 
 function AnimatedRoutes({
@@ -49,15 +54,16 @@ function AnimatedRoutes({
   onOpenContact: (source?: string) => void;
 }) {
   const location = useLocation();
+  const reduce = useReducedMotion();
   return (
     <AnimatePresence mode="wait">
       <motion.div
         key={location.pathname}
-        variants={pageVariants}
+        variants={reduce ? reducedVariants : pageVariants}
         initial="initial"
         animate="animate"
         exit="exit"
-        transition={pageTransition}
+        transition={reduce ? { duration: 0 } : pageTransition}
         style={{ width: '100%' }}
       >
         <Routes location={location}>

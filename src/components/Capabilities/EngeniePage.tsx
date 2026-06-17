@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Workflow, Search, MessageSquare, Building2, Scale, CircleCheck, ShieldCheck } from 'lucide-react';
 
 interface EngeniePageProps {
   onOpenContact: (source?: string) => void;
@@ -17,7 +18,7 @@ const stats = [
 
 const modules = [
   {
-    icon: '⬡',
+    Icon: Workflow,
     title: 'Solution Engineering',
     subtitle: 'Requirements → actionable specifications',
     desc: 'Transform greenfield or brownfield project requirements into precise, actionable specifications. The AI analyzes your unique needs and proposes the optimal instruments and accessories.',
@@ -30,7 +31,7 @@ const modules = [
     color: '#1B6FD8',
   },
   {
-    icon: '◈',
+    Icon: Search,
     title: 'Intelligent Search',
     subtitle: 'Recommendations with reasoning',
     desc: 'Empower buyers and requisitioners with AI-driven specification assistance. Get intelligent recommendations backed by detailed rationale — not just results, but reasoning.',
@@ -43,7 +44,7 @@ const modules = [
     color: '#0E9BC4',
   },
   {
-    icon: '◎',
+    Icon: MessageSquare,
     title: 'Quick Chat Assistant',
     subtitle: 'Your 24/7 technical consultant',
     desc: 'Get instant, expert-level answers on instruments, accessories, or general industrial knowledge. Your on-demand technical consultant, available around the clock.',
@@ -58,10 +59,10 @@ const modules = [
 ];
 
 const aiFeatures = [
-  { icon: '◎', title: 'Company-Personalized Matching', desc: 'Recommendations aligned to your approved strategy, engineering standards, and inventory availability.' },
-  { icon: '⚖', title: 'Intelligent Vendor Analysis', desc: 'Side-by-side comparison and scoring across technical fit, compliance, and commercial factors.' },
-  { icon: '✓', title: 'Real-time Validation', desc: 'Instant requirement checks, missing-field prompts, and fast shortlisting.' },
-  { icon: '⬡', title: 'Secure & Reliable', desc: 'Enterprise-grade security with consistent, explainable outputs you can trust.' },
+  { Icon: Building2, title: 'Company-Personalized Matching', desc: 'Recommendations aligned to your approved strategy, engineering standards, and inventory availability.' },
+  { Icon: Scale, title: 'Intelligent Vendor Analysis', desc: 'Side-by-side comparison and scoring across technical fit, compliance, and commercial factors.' },
+  { Icon: CircleCheck, title: 'Real-time Validation', desc: 'Instant requirement checks, missing-field prompts, and fast shortlisting.' },
+  { Icon: ShieldCheck, title: 'Secure & Reliable', desc: 'Enterprise-grade security with consistent, explainable outputs you can trust.' },
 ];
 
 const steps = [
@@ -107,7 +108,7 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
           ← Back
         </button>
         <div style={{ marginTop: -20, display: 'flex', justifyContent: 'center' }}>
-          <h2 style={{
+          <div style={{
             fontFamily: "'Space Grotesk','DM Sans',sans-serif",
             fontSize: 'clamp(28px,4vw,48px)',
             fontWeight: 700,
@@ -116,7 +117,7 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
             lineHeight: 1,
           }}>
             en<span style={{ color: ACCENT }}>GENIE</span>
-          </h2>
+          </div>
         </div>
       </div>
 
@@ -175,7 +176,7 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
         <div className="engram-caps-grid">
           {modules.map((m) => (
             <div key={m.title} className="engram-cap-card" style={{ '--cap-color': m.color } as React.CSSProperties}>
-              <div className="engram-cap-icon" style={{ color: m.color }}>{m.icon}</div>
+              <div className="engram-cap-icon" style={{ color: m.color }}><m.Icon size={26} strokeWidth={1.75} /></div>
               <h3 className="engram-cap-title" style={{ color: m.color }}>{m.title}</h3>
               <p className="engram-cap-sub">{m.subtitle}</p>
               <p className="engram-cap-desc">{m.desc}</p>
@@ -199,7 +200,7 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
         <div className="engram-quad">
           {aiFeatures.map((f) => (
             <div key={f.title} className="engram-card">
-              <div style={{ fontSize: 22, color: ACCENT, marginBottom: 12, lineHeight: 1 }}>{f.icon}</div>
+              <div style={{ color: ACCENT, marginBottom: 12, lineHeight: 1 }}><f.Icon size={22} strokeWidth={1.75} /></div>
               <h3 className="engram-card-title" style={{ fontSize: 14, marginBottom: 8 }}>{f.title}</h3>
               <p style={{ fontSize: 12, color: 'var(--t4)', lineHeight: 1.65 }}>{f.desc}</p>
             </div>
