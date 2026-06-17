@@ -235,7 +235,7 @@ img{display:block;max-width:100%}
   z-index:999;max-width:calc(100% - var(--gutter));width:calc(100% - var(--gutter));
   height:66px;display:flex;align-items:center;
   justify-content:space-between;padding:0 28px;
-  background:rgba(255,255,255,0.88);
+  background:rgba(255,255,255,0.97);
   backdrop-filter:var(--card-blur);-webkit-backdrop-filter:var(--card-blur);
   border:1px solid var(--card-border);
   border-radius:18px;
