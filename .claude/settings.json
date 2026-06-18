@@ -1,7 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(node -e \"const L=require\\('lucide-react'\\); const want=['Workflow','FileText','Network','Share2','Search','MessageSquare','Cpu','ShieldCheck','Zap','Gauge','Layers','Boxes','PencilRuler','CircleCheck','Scale','Play','TriangleAlert','BrainCircuit','Building2','GitCompare','Database','BadgeCheck','SlidersHorizontal','MonitorPlay']; console.log\\(want.map\\(n=>n+':'+\\(typeof L[n]!=='undefined'?'ok':'MISSING'\\)\\).join\\('  '\\)\\);\")"
-    ]
-  }
-}
