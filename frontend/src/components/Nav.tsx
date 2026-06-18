@@ -5,8 +5,8 @@ import Logo from './Logo';
 import { useNavScroll } from '../hooks/useNavScroll';
 
 interface NavProps {
-  onOpenContact: (source?: string) => void;
   onOpenMobile: () => void;
+  onOpenContact: (source?: string) => void;
 }
 
 const PRODUCTS = [
@@ -18,11 +18,19 @@ const PRODUCTS = [
   { id: 'entie',    name: 'enTIE',    cat: 'Connected Intelligence' },
 ];
 
-const Nav: React.FC<NavProps> = ({ onOpenContact, onOpenMobile }) => {
+const Nav: React.FC<NavProps> = ({ onOpenMobile, onOpenContact }) => {
   const { scrolled, activeSection } = useNavScroll();
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
 
   const closeDropdown = () => setDropdownOpen(false);
+
+  // Direction-aware underline: grow from / retract toward the edge the cursor crosses
+  const setUnderlineOrigin = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const el = e.currentTarget;
+    const rect = el.getBoundingClientRect();
+    const origin = e.clientX - rect.left < rect.width / 2 ? 'left' : 'right';
+    el.style.setProperty('--ul-origin', origin);
+  };
 
   return (
     <motion.nav
@@ -54,6 +62,8 @@ const Nav: React.FC<NavProps> = ({ onOpenContact, onOpenMobile }) => {
             href="#capabilities"
             className={activeSection === 'capabilities' ? 'nav-active' : ''}
             onClick={closeDropdown}
+            onMouseEnter={setUnderlineOrigin}
+            onMouseLeave={setUnderlineOrigin}
           >
             Products
           </a>
@@ -79,17 +89,27 @@ const Nav: React.FC<NavProps> = ({ onOpenContact, onOpenMobile }) => {
             <a
               href={`#${id}`}
               className={activeSection === id ? 'nav-active' : ''}
+              onMouseEnter={setUnderlineOrigin}
+              onMouseLeave={setUnderlineOrigin}
             >
               {id === 'company' ? 'About Us' : id.charAt(0).toUpperCase() + id.slice(1)}
             </a>
           </li>
         ))}
+
+        <li>
+          <a
+            href="#contact"
+            onClick={(e) => { e.preventDefault(); onOpenContact('Header'); }}
+            onMouseEnter={setUnderlineOrigin}
+            onMouseLeave={setUnderlineOrigin}
+          >
+            Contact Us
+          </a>
+        </li>
       </ul>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-        <button className="btn-primary desktop-cta" onClick={() => onOpenContact()}>
-          Request Demo
-        </button>
         <button
           className="nav-hamburger"
           id="hamburger"

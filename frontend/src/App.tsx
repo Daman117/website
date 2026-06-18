@@ -23,6 +23,27 @@ function HomePage({
 }: {
   onOpenContact: (source?: string) => void;
 }) {
+  // Scroll-reveal — runs on each HomePage mount so it always observes the
+  // freshly-mounted [data-reveal] elements (fixes blank sections when
+  // returning from a product page).
+  useEffect(() => {
+    const els = document.querySelectorAll('[data-reveal]');
+    if (!els.length) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            (e.target as HTMLElement).classList.add('in');
+            obs.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    els.forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
+
   return (
     <main>
       <Hero onOpenContact={onOpenContact} />
@@ -139,23 +160,6 @@ function AppShell() {
     document.body.style.backgroundColor = '#EEF3F9';
   }, []);
 
-  useEffect(() => {
-    const els = document.querySelectorAll('[data-reveal]');
-    if (!els.length) return;
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            (e.target as HTMLElement).classList.add('in');
-            obs.unobserve(e.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-    els.forEach((el) => obs.observe(el));
-    return () => obs.disconnect();
-  });
 
   const openContact = useCallback((source?: string) => {
     setContactSource(source);
@@ -169,8 +173,8 @@ function AppShell() {
       <ScrollRestorer />
       {/* Nav stays fixed — never animates on route change */}
       <Nav
-        onOpenContact={openContact}
         onOpenMobile={() => setMobileNavOpen(true)}
+        onOpenContact={openContact}
       />
       <MobileNav
         open={mobileNavOpen}
