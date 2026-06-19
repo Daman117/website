@@ -14,7 +14,12 @@ const Platform: React.FC = () => (
           <div
             key={node.cap}
             className="pipe-node"
-            style={{ '--accent2': node.color } as React.CSSProperties}
+            style={{ 
+              '--accent2': node.color,
+              background: 'rgba(255, 255, 255, 0.75)',
+              backdropFilter: 'blur(26px) saturate(170%)',
+              WebkitBackdropFilter: 'blur(26px) saturate(170%)'
+            } as React.CSSProperties}
           >
             <div className="pipe-cap" style={{ color: node.color }}>{node.cap}</div>
             <div className="pipe-sub">{node.label}</div>
