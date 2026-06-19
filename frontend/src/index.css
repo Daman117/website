@@ -880,8 +880,8 @@ hr.rule {
     url("/plant-bg.png") type("image/png")
   );
   /* height-based size + right anchor → composes the same at any viewport width */
-  background-position: right -300px center;
-  background-size: auto 102%;
+  background-position: right -180px top 90px;
+  background-size: auto 95%;
   background-repeat: no-repeat;
   -webkit-mask-image: linear-gradient(
     to right,
