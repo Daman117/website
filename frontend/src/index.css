@@ -222,8 +222,8 @@ img {
 /* ── GLASSMORPHISM SYSTEM ─────────────────────────────────────── */
 .glass {
   background: var(--surface-strong);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   border: 1px solid var(--glass-border);
   box-shadow:
     var(--elev-2),
@@ -232,8 +232,8 @@ img {
 .glass-card,
 .glass-l2 {
   background: var(--surface);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   border: 1px solid var(--glass-border);
   border-radius: 20px;
   box-shadow:
@@ -256,8 +256,8 @@ img {
 .glass-panel,
 .glass-l3 {
   background: var(--surface-strong);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   border: 1px solid var(--glass-border);
   border-radius: 24px;
   box-shadow:
@@ -416,8 +416,8 @@ img {
   justify-content: space-between;
   padding: 0 28px;
   background: rgba(255, 255, 255, 0.97);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   border: 1px solid var(--card-border);
   border-radius: 18px;
   box-shadow: var(--card-shadow);
@@ -725,8 +725,8 @@ img {
   font-weight: 600;
   cursor: pointer;
   font-family: inherit;
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   transition: all 0.55s cubic-bezier(0.22, 1, 0.36, 1);
   position: relative;
 }
@@ -754,8 +754,8 @@ img {
   font-size: 17px;
   line-height: 1;
   transition: all 0.2s;
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
 }
 .nav-hamburger:hover {
   background: rgba(31, 95, 224, 0.08);
@@ -788,8 +788,8 @@ img {
   position: fixed;
   inset: 0;
   background: var(--body-bg);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   z-index: 9998;
   flex-direction: column;
   align-items: center;
@@ -1009,8 +1009,8 @@ hr.rule {
 }
 .industrial-viz {
   background: var(--surface-strong);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   border: 1px solid var(--glass-border);
   border-radius: 24px;
   padding: 30px;
@@ -1280,8 +1280,8 @@ hr.rule {
   padding: 44px 28px;
   text-align: center;
   background: var(--card-bg);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   border: 1px solid var(--card-border);
   border-radius: 20px;
   box-shadow: var(--card-shadow);
@@ -1400,8 +1400,8 @@ hr.rule {
 }
 .cap-card {
   background: var(--card-bg);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   border: 1px solid var(--card-border);
   border-radius: 18px;
   padding: 26px;
@@ -1565,8 +1565,8 @@ hr.rule {
   position: fixed;
   inset: 0;
   background: rgba(15, 23, 42, 0.55);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   z-index: 9000;
   display: flex;
   align-items: center;
@@ -1581,8 +1581,8 @@ hr.rule {
 }
 .cap-modal-panel {
   background: var(--surface-strong);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   border: 1px solid var(--glass-border);
   border-radius: 22px;
   max-width: min(1140px, 96vw);
@@ -1732,8 +1732,8 @@ hr.rule {
   border: 1.5px solid var(--border);
   background: var(--surface);
   color: var(--t4);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
 }
 .tab-btn:hover {
   border-color: var(--border2);
@@ -1751,8 +1751,8 @@ hr.rule {
 }
 .tab-panel {
   background: var(--surface);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   border: 1.5px solid var(--glass-border);
   border-radius: 14px;
   padding: 28px;
@@ -1830,8 +1830,8 @@ hr.rule {
 .spec-cell {
   padding: 13px 15px;
   background: var(--surface);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   border: 1px solid var(--glass-border);
   border-radius: 6px;
   box-shadow: var(--elev-1);
@@ -1860,8 +1860,8 @@ hr.rule {
 }
 .perf-table th {
   background: var(--surface);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   padding: 8px 12px;
   text-align: center;
   font-size: 9px;
@@ -1880,8 +1880,8 @@ hr.rule {
 .perf-table td {
   padding: 9px 12px;
   background: var(--surface);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   border: 1px solid var(--glass-border);
   color: var(--t3);
 }
@@ -1912,8 +1912,8 @@ hr.rule {
 .price-card {
   padding: 14px 13px;
   background: var(--surface);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   border: 1px solid var(--glass-border);
   border-radius: 7px;
   box-shadow: var(--elev-1);
@@ -2106,8 +2106,8 @@ hr.rule {
   text-align: center;
   padding: 26px 16px;
   background: var(--card-bg);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   border: 1px solid var(--card-border);
   border-radius: 16px;
   box-shadow: var(--card-shadow);
@@ -2179,8 +2179,8 @@ hr.rule {
 .princ-card {
   padding: 42px 38px;
   background: var(--card-bg);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   border: 1px solid var(--card-border);
   border-radius: 20px;
   box-shadow: var(--card-shadow);
@@ -2305,8 +2305,8 @@ hr.rule {
   font-style: italic;
   margin: 28px 0 14px;
   background: var(--surface);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   padding: 20px 20px 20px 24px;
   border-radius: 8px;
   border: 1px solid var(--glass-border);
@@ -2327,8 +2327,8 @@ hr.rule {
 }
 .fact-row:hover {
   background: var(--surface);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   padding-left: 12px;
   padding-right: 12px;
   margin-left: -12px;
@@ -2378,8 +2378,8 @@ hr.rule {
   max-width: 760px;
   margin: 0 auto;
   background: var(--surface-strong);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   border: 1px solid var(--glass-border);
   border-radius: 28px;
   padding: clamp(44px, 6vw, 72px) clamp(32px, 5vw, 64px);
@@ -2435,8 +2435,8 @@ hr.rule {
   max-width: 100%;
   margin: 0 auto;
   background: var(--card-bg);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   border-top: 1px solid var(--card-border);
   box-shadow:
     0 -4px 32px rgba(15, 23, 42, 0.06),
@@ -2735,8 +2735,8 @@ button.foot-link {
 /* cards */
 .engram-card {
   background: var(--card-bg);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   border: 1px solid var(--card-border);
   border-radius: 16px;
   padding: 24px 22px;
@@ -2806,8 +2806,8 @@ button.foot-link {
 }
 .engram-cap-card {
   background: var(--card-bg);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   border: 1px solid var(--card-border);
   border-radius: 16px;
   padding: 26px 22px;
@@ -2869,8 +2869,8 @@ button.foot-link {
   flex: 1;
   min-width: 0;
   background: var(--card-bg);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   border: 1px solid var(--card-border);
   border-radius: 14px;
   padding: 20px 14px;
@@ -2954,8 +2954,8 @@ button.foot-link {
 }
 .engram-stat {
   background: var(--card-bg);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   border: 1px solid var(--card-border);
   border-radius: 14px;
   padding: 22px 18px;
@@ -3015,8 +3015,8 @@ button.foot-link {
   align-items: center;
   gap: 8px;
   background: var(--card-bg);
-  -webkit-backdrop-filter:;
-  backdrop-filter:;
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
   border: 1px solid var(--card-border);
   border-radius: 20px;
   padding: 8px 16px;
