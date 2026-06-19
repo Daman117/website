@@ -2427,6 +2427,18 @@ hr.rule {
 
 /* ── FOOTER ──────────────────────────────────────────────────────── */
 #footer {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  background: var(--card-bg);
+  -webkit-backdrop-filter: var(--card-blur);
+  backdrop-filter: var(--card-blur);
+  border-top: 1px solid var(--card-border);
+  box-shadow:
+    0 -4px 32px rgba(15, 23, 42, 0.06),
+    inset 0 2px 0 rgba(255, 255, 255, 0.6);
+}
+.footer-grid {
   padding: 48px var(--gutter) 36px;
   display: grid;
   grid-template-columns: 1.7fr 1fr 1fr 1fr;
@@ -2448,17 +2460,17 @@ hr.rule {
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 @media (max-width: 968px) {
-  #footer {
+  .footer-grid {
     grid-template-columns: 1fr 1fr;
     gap: 40px;
     padding: 48px var(--gutter);
   }
-  #footer > div:first-child {
+  .footer-grid > div:first-child {
     grid-column: 1/-1;
   }
 }
 @media (max-width: 540px) {
-  #footer {
+  .footer-grid {
     grid-template-columns: 1fr;
     gap: 32px;
     padding: 40px var(--gutter);
@@ -2555,7 +2567,6 @@ button.foot-link {
   flex-wrap: wrap;
   gap: 16px;
   padding: 22px var(--gutter);
-  border-top: 1px solid var(--border);
 }
 @media (max-width: 540px) {
   .foot-bottom {

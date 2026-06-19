@@ -31,8 +31,8 @@ const companyLinks = [
 const resourceLinks = ['Documentation', 'Support', 'Privacy Policy', 'Terms of Service'];
 
 const Footer: React.FC<FooterProps> = ({ onOpenContact }) => (
-  <div style={{ borderTop: '1px solid var(--border)' }}>
-    <footer id="footer">
+  <footer id="footer">
+    <div className="footer-grid">
       {/* Brand */}
       <div>
         <div className="foot-logo">
@@ -70,7 +70,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenContact }) => (
           <a key={r} className="foot-link" href="#" onClick={(e) => e.preventDefault()}>{r}</a>
         ))}
       </div>
-    </footer>
+    </div>
 
     {/* Bottom bar */}
     <div className="foot-bottom">
@@ -87,7 +87,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenContact }) => (
         </a>
       </div>
     </div>
-  </div>
+  </footer>
 );
 
 export default Footer;
