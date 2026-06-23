@@ -1,5 +1,6 @@
 import React from 'react';
 import Ticker from './Ticker';
+import { heroChips } from '../data/v2';
 
 interface HeroProps {
   onOpenContact: (source?: string) => void;
@@ -28,11 +29,16 @@ const Hero: React.FC<HeroProps> = ({ onOpenContact }) => {
           <span className="light">Understood.</span>
         </h1>
         <p className="hero-sub fu fu3">
-          enX is a family of industrial intelligence capabilities — built for the plant floor, not the boardroom. Local. Open. Connected.
+          The local-first industrial intelligence platform that turns drawings, documents, SCADA systems and engineering knowledge into structured, searchable plant intelligence.
         </p>
         <p className="hero-body fu fu4">
-          From live process visibility to document intelligence, engineering configuration, and structural plant understanding — each capability is complete on its own and more powerful together.
+          Each capability is complete on its own and more powerful together — and it all runs entirely inside your network.
         </p>
+        <div className="hero-chips fu fu4" aria-label="Platform capabilities">
+          {heroChips.map((c) => (
+            <span key={c} className="hero-chip">{c}</span>
+          ))}
+        </div>
         <div className="hero-ctas fu fu4">
           <button className="btn-primary" onClick={() => onOpenContact('Explore enX')}>Explore enX →</button>
           <button className="btn-outline" onClick={() => onOpenContact('Request a Pilot')}>Request a Pilot</button>

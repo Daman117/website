@@ -4,9 +4,18 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import Nav from './components/Nav';
 import MobileNav from './components/MobileNav';
 import Hero from './components/Hero';
+import ProductDemo from './components/ProductDemo';
 import Stats from './components/Stats';
+import HowItWorks from './components/HowItWorks';
 import CapGrid from './components/Capabilities/CapGrid';
+import Industries from './components/Industries';
 import Platform from './components/Platform';
+import Architecture from './components/Architecture';
+import BusinessImpact from './components/BusinessImpact';
+import Trust from './components/Trust';
+import Security from './components/Security';
+import CaseStudies from './components/CaseStudies';
+import Resources from './components/Resources';
 import Principles from './components/Principles';
 import Company from './components/Company';
 import CTA from './components/CTA';
@@ -17,6 +26,7 @@ import EngramPage from './components/Capabilities/EngramPage';
 import EnstudioPage from './components/Capabilities/EnstudioPage';
 import EngeniePage from './components/Capabilities/EngeniePage';
 import EnviewPage from './components/Capabilities/EnviewPage';
+import EnablePage from './components/Capabilities/EnablePage';
 
 function HomePage({
   onOpenContact,
@@ -47,9 +57,18 @@ function HomePage({
   return (
     <main>
       <Hero onOpenContact={onOpenContact} />
+      <ProductDemo />
       <Stats />
+      <HowItWorks />
       <CapGrid />
+      <Industries />
       <Platform />
+      <Architecture />
+      <BusinessImpact />
+      <Trust />
+      <Security />
+      <CaseStudies />
+      <Resources onOpenContact={onOpenContact} />
       <Principles />
       <Company />
       <CTA onOpenContact={onOpenContact} />
@@ -107,6 +126,10 @@ function AnimatedRoutes({
           <Route
             path="/products/enview"
             element={<EnviewPage onOpenContact={onOpenContact} />}
+          />
+          <Route
+            path="/products/enable"
+            element={<EnablePage onOpenContact={onOpenContact} />}
           />
           <Route
             path="/products/:id"

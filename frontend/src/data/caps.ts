@@ -164,61 +164,69 @@ export const CAPS: Cap[] = [
   ],
   right:'specs',
 },{
-  id:'enable',name:'enABLE',cat:'Structural Understanding',
-  tag:'How your plant actually behaves — proven before you commission it.',color:'#10B981',
+  id:'enable',name:'enABLE',cat:'Process Intelligence for Design & Control',
+  tag:'Turn your plant into a matrix — and get eigenvalue-based engineering judgment at design time.',color:'#10B981',
   status:'In Development',statusBg:'#1E1B4B',statusBorder:'#3730A3',statusText:'#A5B4FC',
   patent:true,
-  body:`enABLE builds a mathematical model of your plant as a system — not a simulation of individual unit operations, but a structural representation of how everything interacts. Feed it your P&ID and process data. It tells you whether your plant is stable, how your controllers interact, where deviations propagate, and what happens when you change something.`,
+  body:`enABLE is a desktop engineering application for process and control engineers. You draw your plant as a flowsheet — equipment plus stream connections — and enABLE encodes it as a block-matrix model, dx/dt = M·x + B·u. From that one matrix it computes engineering verdicts about the design — stability, controllability, loop pairing, recommended changes, alarm bounds and a HAZOP pre-fill — and then runs the same plant as a live closed-loop dynamic simulation.`,
+  body2:`Questions that normally take years of experience or long dynamic studies become calculations: how stable is this design, which loops will fight each other, what does a proposed change do, and where does risk concentrate. The matrix becomes a compact, transferable engineering record — capturing plant knowledge before it retires with the engineers who hold it. enABLE complements the simulators you already run; it does not replace the review, testing and approval a qualified team performs.`,
   specs:[
-    {l:'Input',v:'enSTUDIO'},{l:'Type',v:'Structural'},
-    {l:'Output',v:'System model'},{l:'Status',v:'Dev'},
+    {l:'Unit-op builders',v:'37'},{l:'Test functions',v:'~1,990'},
+    {l:'Analysis panels',v:'25+'},{l:'Import formats',v:'4'},
   ],
   tabs:[
-    {label:'HAZOP Analysis',content:`
-      <p style="font-size:12px;color:var(--t2);font-weight:500;margin-bottom:8px">HAZOP as a matrix perturbation problem.</p>
+    {label:'The Matrix',content:`
+      <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">Your whole plant, written as one mathematical object.</p>
+      <p style="font-size:12px;color:var(--t4);line-height:1.7;margin-bottom:12px">The engineer draws the plant as a flowsheet. Each unit operation contributes a small matrix block; each stream connection injects off-diagonal coupling. The assembled matrix M — with input matrix B — is the linearised plant. The same matrix drives both the analysis and the live simulation.</p>
+      <div class="matrix-eq">
+        dx/dt = M·x + B·u<br/><br/>
+        M  = unit-operation blocks + stream coupling<br/>
+        Analysis and live simulation run from the <b>same</b> M<br/>
+        Recomputed live on every build
+      </div>`},
+    {label:'What It Computes',content:`
+      <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">Eigenvalue-based judgment — derived analytically, no step tests.</p>
+      <ul class="blist">
+        <li><span>—</span><span><b style="color:var(--t2)">Eigenvalues</b> — stability and response speed; any eigenvalue with a positive real part is an unstable mode.</span></li>
+        <li><span>—</span><span><b style="color:var(--t2)">Relative Gain Array (RGA)</b> — which loop should drive which valve, and where loops interact — computed without plant step tests.</span></li>
+        <li><span>—</span><span><b style="color:var(--t2)">Condition number</b> — how ill-conditioned and hard to control the plant is.</span></li>
+        <li><span>—</span><span><b style="color:var(--t2)">Eigenvalue sensitivity</b> — the basis for ranked recommended changes and change-impact previews.</span></li>
+        <li><span>—</span><span><b style="color:var(--t2)">Fiedler value</b> — partitions the plant into naturally weakly-coupled control zones.</span></li>
+      </ul>`},
+    {label:'Analyse → Simulate',content:`
+      <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">One model. A fast design verdict, then a live dynamic test.</p>
+      <ul class="blist">
+        <li><span>—</span><span><b style="color:var(--t2)">Verdict-first analysis</b> — stable / marginal / unstable, with margin, slowest-mode time constant and the bottleneck equipment identified.</span></li>
+        <li><span>—</span><span><b style="color:var(--t2)">Recommended changes</b> — ranked parameter changes <span class="mono" style="font-size:10px">predicted</span> to improve stability, each a forecast to confirm.</span></li>
+        <li><span>—</span><span><b style="color:var(--t2)">Live closed-loop simulation</b> — controllers, operator-style faceplates, trends, alarms, a startup sequence and fault injection.</span></li>
+        <li><span>—</span><span>Move from a fast verdict to a full dynamic test without rebuilding the plant in a second tool.</span></li>
+      </ul>`},
+    {label:'HAZOP Pre-fill',content:`
+      <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">HAZOP, seeded from the physics in the matrix.</p>
+      <p style="font-size:12px;color:var(--t4);line-height:1.7;margin-bottom:10px">Eigenvalue perturbations seed a 22-column worksheet — equipment state, guide word, matrix perturbation, eigenvalue bound, severity — plus an action register and equipment schedule. It is a computer-aided pre-fill and facilitator aid: a qualified multidisciplinary team must review and complete it.</p>
+      <ul class="blist">
+        <li><span>—</span><span>Alarm priorities and setpoints derived from mode speeds, for ISA-18.2 team review.</span></li>
+        <li><span>—</span><span>Draft control narrative and SIMC PID starting points.</span></li>
+        <li><span>—</span><span>Export: HTML · CSV · Print-to-PDF.</span></li>
+      </ul>`},
+    {label:'Validated',content:`
+      <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">Correctness enforced by the test suite — assertions, not marketing.</p>
       <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:10px">
-        <div style="display:grid;grid-template-columns:80px 80px 1fr;gap:8px;align-items:center;padding:8px 10px;background:var(--bg);border:1px solid var(--border);border-radius:4px">
-          <span class="mono" style="font-size:10px;color:#34D399">MORE FLOW</span><span class="mono" style="font-size:10px;color:#F59E0B">M_ij ↑</span><span style="font-size:10px;color:var(--t5)">λ shifts — may cross stability boundary</span>
-        </div>
-        <div style="display:grid;grid-template-columns:80px 80px 1fr;gap:8px;align-items:center;padding:8px 10px;background:var(--bg);border:1px solid var(--border);border-radius:4px">
-          <span class="mono" style="font-size:10px;color:#34D399">NO FLOW</span><span class="mono" style="font-size:10px;color:#F59E0B">M_ij → 0</span><span style="font-size:10px;color:var(--t5)">Eigenvalue topology changes</span>
-        </div>
-        <div style="display:grid;grid-template-columns:80px 80px 1fr;gap:8px;align-items:center;padding:8px 10px;background:var(--bg);border:1px solid var(--border);border-radius:4px">
-          <span class="mono" style="font-size:10px;color:#34D399">REVERSE</span><span class="mono" style="font-size:10px;color:var(--red)">M_ij flip</span><span style="font-size:10px;color:var(--t5)">λ may cross zero — instability onset</span>
-        </div>
-      </div>`},
-    {label:'Controller Stability',content:`
-      <p style="font-size:12px;color:var(--t2);font-weight:500;margin-bottom:8px">Stability from first principles.</p>
-      <div class="matrix-eq">
-        M = [M_ij]  where M_ij = coupling from stream j to unit i<br/><br/>
-        BIBO stable:  all λ(M) in left-half plane  (Re[λ] &lt; 0)<br/>
-        Marginal:     λ(M) → 0   (sensitivity alert)<br/>
-        Unstable:     λ(M) &gt; 0   (instability predicted)
-      </div>`},
-    {label:'Control Pairing',content:`
-      <p style="font-size:12px;color:var(--t2);font-weight:500;margin-bottom:8px">Optimal CV/MV assignment from the matrix.</p>
-      <div class="matrix-eq">
-        RGA(M) = M ⊙ (M⁻ᵀ)<br/><br/>
-        λ_ij = 1.0  →  ideal pairing, no interaction<br/>
-        λ_ij &lt; 0   →  avoid — control action reverses under load<br/>
-        λ_ij &gt;&gt; 1  →  high interaction — detuning required
-      </div>`},
-    {label:'What-If',content:`
-      <p style="font-size:12px;color:var(--t2);font-weight:500;margin-bottom:8px">Change something. See the consequences — analytically, instantly.</p>
+        <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:5px"><span style="font-size:11px;color:var(--t4)">Eigenvalues vs analytic (two-tank)</span><span class="mono" style="font-size:11px;color:var(--teal)">≤ 1e-10</span></div>
+        <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:5px"><span style="font-size:11px;color:var(--t4)">Stability verdict</span><span class="mono" style="font-size:11px;color:var(--teal)">100% · 5/5</span></div>
+        <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:5px"><span style="font-size:11px;color:var(--t4)">RGA loop pairing</span><span class="mono" style="font-size:11px;color:var(--teal)">100%</span></div>
+        <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:5px"><span style="font-size:11px;color:var(--t4)">Recommended-change direction</span><span class="mono" style="font-size:11px;color:var(--teal)">100% · 28/28</span></div>
+        <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:5px"><span style="font-size:11px;color:var(--t4)">Change-impact (10% change)</span><span class="mono" style="font-size:11px;color:var(--teal)">&lt; 3% error</span></div>
+      </div>
+      <p style="font-size:11px;color:var(--t5)">Results hold on the benchmark set (two-tank, heat exchanger, CSTR stable/unstable, interacting 2×2). They are not a claim of accuracy on every possible plant.</p>`},
+    {label:'Honesty Model',content:`
+      <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">Every output is labelled by how much to trust it.</p>
       <ul class="blist">
-        <li><span>—</span><span class="mono" style="font-size:10px;font-style:italic">"What if we increase reactor feed by 15%?"</span></li>
-        <li><span>—</span><span class="mono" style="font-size:10px;font-style:italic">"What if HX-102 fouling reduces UA by 30%?"</span></li>
-        <li><span>—</span><span class="mono" style="font-size:10px;font-style:italic">"What if we remove FIC-201 from service?"</span></li>
-        <li><span>—</span><span class="mono" style="font-size:10px;font-style:italic">"What happens if V-301 relief valve lifts?"</span></li>
-      </ul>
-      <p style="font-size:11px;color:var(--t5);margin-top:10px">Each what-if is a modification to M_ij — recomputed analytically in milliseconds. No solver. No re-runs.</p>`},
-    {label:'Inputs',content:`
-      <p style="font-size:12px;color:var(--t2);font-weight:500;margin-bottom:8px">Build M from what you already have.</p>
-      <ul class="blist">
-        <li><span>—</span><span><b style="color:var(--t2)">VPlant YAML from enSTUDIO</b> — P&ID topology → M_ij block structure directly</span></li>
-        <li><span>—</span><span><b style="color:var(--t2)">Historian data from enVIEW</b> — step test → FOPDT → M_ij entries (K, τ, θ)</span></li>
-        <li><span>—</span><span><b style="color:var(--t2)">Equipment specs from enGRAM</b> — design parameters → first-principles M_ij</span></li>
-        <li><span>—</span><span><b style="color:var(--t2)">Manual M_ij entry</b> — build incrementally as data becomes available</span></li>
+        <li><span>—</span><span><b style="color:var(--t2)">Computed / exact</b> — eigenvalues, RGA, condition number: exact for the assembled matrix, covered by gate tests.</span></li>
+        <li><span>—</span><span><b style="color:var(--t2)">Predicted — confirm in Simulate</b> — recommended changes, change-impact, operating-range sweep.</span></li>
+        <li><span>—</span><span><b style="color:var(--t2)">Draft — requires engineer review</b> — SIMC tuning, control narrative, alarm bounds.</span></li>
+        <li><span>—</span><span><b style="color:var(--t2)">Pre-fill, not a substitute</b> — the HAZOP report aids a qualified team; it does not replace them.</span></li>
+        <li><span>—</span><span><b style="color:var(--t2)">Import basis disclosed</b> — every imported parameter is tagged data-derived or handbook-default.</span></li>
       </ul>`},
   ],
   right:'specs',

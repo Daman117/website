@@ -1,7 +1,59 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { CAPS } from '../../data/caps';
+import { productExtras } from '../../data/v2';
 import type { Cap } from '../../types';
+
+const ProductExtras: React.FC<{ cap: Cap }> = ({ cap }) => {
+  const extra = productExtras[cap.id];
+  if (!extra) return null;
+  return (
+    <div className="pp-extras">
+      {/* Capability diagram: Inputs → Processing → Outputs */}
+      <div className="pp-block">
+        <h2 className="pp-block-title">How it works</h2>
+        <div className="pp-flow">
+          {(['inputs', 'processing', 'outputs'] as const).map((k, i) => (
+            <React.Fragment key={k}>
+              <div className="pp-flow-col">
+                <div className="pp-flow-label">{k === 'inputs' ? 'Inputs' : k === 'processing' ? 'Processing' : 'Outputs'}</div>
+                <ul className="pp-flow-list">
+                  {extra.flow[k].map((item) => (
+                    <li key={item} style={k === 'outputs' ? { color: cap.color } : undefined}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+              {i < 2 && <div className="pp-flow-arrow" style={{ color: cap.color }} aria-hidden="true">→</div>}
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+
+      {/* Use cases by role */}
+      <div className="pp-block">
+        <h2 className="pp-block-title">Use cases</h2>
+        <div className="pp-uc-grid">
+          {extra.useCases.map((u) => (
+            <div key={u.role} className="pp-uc">
+              <span className="pp-uc-role" style={{ color: cap.color }}>{u.role}</span>
+              <p className="pp-uc-text">{u.text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Expected outcomes */}
+      <div className="pp-block">
+        <h2 className="pp-block-title">Expected outcomes</h2>
+        <ul className="pp-outcomes">
+          {extra.outcomes.map((o) => (
+            <li key={o}><span style={{ color: cap.color }}>✓</span>{o}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+};
 
 interface ProductPageProps {
   onOpenContact: (source?: string) => void;
@@ -131,7 +183,8 @@ const ProductPage: React.FC<ProductPageProps> = ({ onOpenContact }) => {
           {cap.patent && (
             <div className="zerod-strip">
               <div className="zerod-item"><div className="zerod-dot" style={{ background: '#A5B4FC' }} /><span className="zerod-text">Patent-pending matrix M methodology</span></div>
-              <div className="zerod-item"><div className="zerod-dot" style={{ background: '#A5B4FC' }} /><span className="zerod-text">Analytical (not simulation)</span></div>
+              <div className="zerod-item"><div className="zerod-dot" style={{ background: '#A5B4FC' }} /><span className="zerod-text">Analytical verdict + live closed-loop simulation</span></div>
+              <div className="zerod-item"><div className="zerod-dot" style={{ background: '#A5B4FC' }} /><span className="zerod-text">Eigenvalue-based · computed live on every build</span></div>
             </div>
           )}
 
@@ -177,6 +230,8 @@ const ProductPage: React.FC<ProductPageProps> = ({ onOpenContact }) => {
               }
             </div>
           </div>
+
+          <ProductExtras cap={cap} />
         </div>
       </main>
     </>

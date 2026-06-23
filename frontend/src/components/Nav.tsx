@@ -13,7 +13,7 @@ const PRODUCTS = [
   { id: 'enview',   name: 'enVIEW',   cat: 'SCADA / Live Process Intelligence' },
   { id: 'engram',   name: 'enGRAM',   cat: 'Plant Knowledge' },
   { id: 'enstudio', name: 'enSTUDIO', cat: 'Drawing Intelligence' },
-  { id: 'enable',   name: 'enABLE',   cat: 'Structural Understanding' },
+  { id: 'enable',   name: 'enABLE',   cat: 'Process Intelligence for Design & Control' },
   { id: 'engenie',  name: 'enGENIE',  cat: 'Instrument Engineering Intelligence' },
   { id: 'entie',    name: 'enTIE',    cat: 'Connected Intelligence' },
 ];
