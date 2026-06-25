@@ -4,7 +4,7 @@ import Icon from './Icon';
 
 const Trust: React.FC = () => (
   <section id="trust">
-    <div className="section" data-reveal="">
+    <div className="section">
       <span className="eyebrow">Credibility</span>
       <h2 className="display section-title">Built by Engineers</h2>
       <p className="section-lead">

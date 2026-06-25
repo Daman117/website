@@ -23,7 +23,7 @@ const products = [
 ];
 
 const companyLinks = [
-  { label: 'About Us', href: '#company' },
+  { label: 'About Us', href: '/about' },
   { label: 'Platform', href: '#platform' },
   { label: 'Principles', href: '#principles' },
 ];

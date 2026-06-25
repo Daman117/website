@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Logo from './Logo';
 import { useNavScroll } from '../hooks/useNavScroll';
@@ -21,6 +21,17 @@ const PRODUCTS = [
 const Nav: React.FC<NavProps> = ({ onOpenMobile, onOpenContact }) => {
   const { scrolled, activeSection } = useNavScroll();
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleLogoClick = () => {
+    if (location.pathname === '/') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      navigate('/');
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+  };
 
   const closeDropdown = () => setDropdownOpen(false);
 
@@ -41,15 +52,19 @@ const Nav: React.FC<NavProps> = ({ onOpenMobile, onOpenContact }) => {
       animate={{ opacity: 1 }}
       transition={{ type: 'tween', duration: 0.4, delay: 0.05 }}
     >
-      <div className="nav-logo">
+      <button
+        className="nav-logo"
+        onClick={handleLogoClick}
+        aria-label="Go to home"
+        style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+      >
         <div className="nav-mark">
           <Logo />
         </div>
         <div className="nav-word">
           <span>en</span><span>X</span>
         </div>
-        <span className="nav-parent">an enSAR Solutions division</span>
-      </div>
+      </button>
 
       <ul role="list" className="nav-links">
         {/* Products with controlled dropdown — closes on click */}
@@ -84,7 +99,7 @@ const Nav: React.FC<NavProps> = ({ onOpenMobile, onOpenContact }) => {
           </div>
         </li>
 
-        {['platform','principles','company'].map((id) => (
+        {['platform','principles'].map((id) => (
           <li key={id}>
             <a
               href={`#${id}`}
@@ -92,10 +107,19 @@ const Nav: React.FC<NavProps> = ({ onOpenMobile, onOpenContact }) => {
               onMouseEnter={setUnderlineOrigin}
               onMouseLeave={setUnderlineOrigin}
             >
-              {id === 'company' ? 'About Us' : id.charAt(0).toUpperCase() + id.slice(1)}
+              {id.charAt(0).toUpperCase() + id.slice(1)}
             </a>
           </li>
         ))}
+        <li>
+          <Link
+            to="/about"
+            onMouseEnter={setUnderlineOrigin as unknown as React.MouseEventHandler<HTMLAnchorElement>}
+            onMouseLeave={setUnderlineOrigin as unknown as React.MouseEventHandler<HTMLAnchorElement>}
+          >
+            About Us
+          </Link>
+        </li>
 
         <li>
           <a

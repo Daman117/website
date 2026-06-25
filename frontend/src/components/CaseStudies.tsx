@@ -1,18 +1,21 @@
 import React from 'react';
 import { caseStudies } from '../data/v2';
+import ScrollAnimation, { ScrollStagger } from './ScrollAnimation';
 
 const CaseStudies: React.FC = () => (
   <section id="cases">
-    <div className="section" data-reveal="">
-      <span className="eyebrow">Proof in practice</span>
-      <h2 className="display section-title">Case Studies &amp; Use Cases</h2>
-      <p className="section-lead">
-        Drawn from internal pilots and real engineering scenarios — structured as problem, solution and result.
-      </p>
+    <div className="section">
+      <ScrollAnimation>
+        <span className="eyebrow">Proof in practice</span>
+        <h2 className="display section-title">Case Studies &amp; Use Cases</h2>
+        <p className="section-lead">
+          Drawn from internal pilots and real engineering scenarios — structured as problem, solution and result.
+        </p>
+      </ScrollAnimation>
 
-      <div className="case-grid">
+      <ScrollStagger className="case-grid" step={130}>
         {caseStudies.map((c) => (
-          <div key={c.id} className="case-card" style={{ '--accent': c.color } as React.CSSProperties}>
+          <div key={c.id} className="case-card hover-lift" style={{ '--accent': c.color } as React.CSSProperties}>
             <span className="case-tag" style={{ color: c.color, borderColor: `${c.color}55`, background: `${c.color}14` }}>{c.tag}</span>
             <h3 className="case-title">{c.title}</h3>
             <div className="case-step">
@@ -29,7 +32,7 @@ const CaseStudies: React.FC = () => (
             </div>
           </div>
         ))}
-      </div>
+      </ScrollStagger>
     </div>
   </section>
 );

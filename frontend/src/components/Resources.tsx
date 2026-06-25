@@ -1,6 +1,7 @@
 import React from 'react';
 import { resources } from '../data/v2';
 import Icon from './Icon';
+import ScrollAnimation, { ScrollStagger } from './ScrollAnimation';
 
 interface ResourcesProps {
   onOpenContact: (source?: string) => void;
@@ -8,18 +9,20 @@ interface ResourcesProps {
 
 const Resources: React.FC<ResourcesProps> = ({ onOpenContact }) => (
   <section id="resources">
-    <div className="section" data-reveal="">
-      <span className="eyebrow">Resource center</span>
-      <h2 className="display section-title">Resources</h2>
-      <p className="section-lead">
-        Whitepapers, technical notes, product briefs and deployment guides. Request any resource and we’ll send it over.
-      </p>
+    <div className="section">
+      <ScrollAnimation>
+        <span className="eyebrow">Resource center</span>
+        <h2 className="display section-title">Resources</h2>
+        <p className="section-lead">
+          Whitepapers, technical notes, product briefs and deployment guides. Request any resource and we'll send it over.
+        </p>
+      </ScrollAnimation>
 
-      <div className="res-grid">
+      <ScrollStagger className="res-grid" step={80}>
         {resources.map((r) => (
           <button
             key={r.title}
-            className="res-card"
+            className="res-card hover-lift"
             onClick={() => onOpenContact(`Resource: ${r.title}`)}
           >
             <div className="res-icon"><Icon name={r.icon} size={18} strokeWidth={1.8} /></div>
@@ -29,7 +32,7 @@ const Resources: React.FC<ResourcesProps> = ({ onOpenContact }) => (
             <span className="res-link">Request →</span>
           </button>
         ))}
-      </div>
+      </ScrollStagger>
     </div>
   </section>
 );

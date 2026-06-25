@@ -21,7 +21,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ open, onClose, onOpenContact }) =
       <a href="#capabilities" className="mobile-nav-link" onClick={handleLink}>Products</a>
       <a href="#platform" className="mobile-nav-link" onClick={handleLink}>Platform</a>
       <a href="#principles" className="mobile-nav-link" onClick={handleLink}>Principles</a>
-      <a href="#company" className="mobile-nav-link" onClick={handleLink}>About Us</a>
+      <a href="/about" className="mobile-nav-link" onClick={handleLink}>About Us</a>
       <button className="btn-primary mobile-cta" onClick={() => { onClose(); onOpenContact(); }}>
         Request Demo
       </button>

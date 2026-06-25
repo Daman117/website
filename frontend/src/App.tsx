@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { useLenis } from './hooks/useLenis';
 import Nav from './components/Nav';
 import MobileNav from './components/MobileNav';
 import Hero from './components/Hero';
@@ -12,12 +13,10 @@ import Industries from './components/Industries';
 import Platform from './components/Platform';
 import Architecture from './components/Architecture';
 import BusinessImpact from './components/BusinessImpact';
-import Trust from './components/Trust';
 import Security from './components/Security';
 import CaseStudies from './components/CaseStudies';
 import Resources from './components/Resources';
 import Principles from './components/Principles';
-import Company from './components/Company';
 import CTA from './components/CTA';
 import Footer from './components/Footer';
 import ContactModal from './components/ContactModal';
@@ -27,32 +26,13 @@ import EnstudioPage from './components/Capabilities/EnstudioPage';
 import EngeniePage from './components/Capabilities/EngeniePage';
 import EnviewPage from './components/Capabilities/EnviewPage';
 import EnablePage from './components/Capabilities/EnablePage';
+import AboutPage from './components/AboutPage';
 
 function HomePage({
   onOpenContact,
 }: {
   onOpenContact: (source?: string) => void;
 }) {
-  // Scroll-reveal — runs on each HomePage mount so it always observes the
-  // freshly-mounted [data-reveal] elements (fixes blank sections when
-  // returning from a product page).
-  useEffect(() => {
-    const els = document.querySelectorAll('[data-reveal]');
-    if (!els.length) return;
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            (e.target as HTMLElement).classList.add('in');
-            obs.unobserve(e.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-    els.forEach((el) => obs.observe(el));
-    return () => obs.disconnect();
-  }, []);
 
   return (
     <main>
@@ -65,12 +45,11 @@ function HomePage({
       <Platform />
       <Architecture />
       <BusinessImpact />
-      <Trust />
       <Security />
       <CaseStudies />
       <Resources onOpenContact={onOpenContact} />
       <Principles />
-      <Company />
+
       <CTA onOpenContact={onOpenContact} />
     </main>
   );
@@ -131,6 +110,7 @@ function AnimatedRoutes({
             path="/products/enable"
             element={<EnablePage onOpenContact={onOpenContact} />}
           />
+          <Route path="/about" element={<AboutPage />} />
           <Route
             path="/products/:id"
             element={
@@ -177,6 +157,8 @@ function AppShell() {
   const [contactOpen, setContactOpen] = useState(false);
   const [contactSource, setContactSource] = useState<string | undefined>();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+  useLenis();
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', 'light');

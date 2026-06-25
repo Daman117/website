@@ -15,6 +15,7 @@
     "lucide-react": "^1.18.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
+    "react-intersection-observer": "^10.0.3",
     "react-router-dom": "^7.17.0",
     "reactflow": "^11.11.4"
   },
