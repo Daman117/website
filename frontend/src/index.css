@@ -326,6 +326,8 @@ img {
 .animate-item.stagger-4 { animation-delay: 0.4s; }
 .animate-item.stagger-5 { animation-delay: 0.5s; }
 .animate-item.stagger-6 { animation-delay: 0.6s; }
+.animate-item.stagger-7 { animation-delay: 0.7s; }
+.animate-item.stagger-8 { animation-delay: 0.8s; }
 
 /* Floating badge cards in hero */
 @keyframes float {
@@ -2626,8 +2628,9 @@ hr.rule {
   color: var(--t4);
   margin-bottom: 10px;
   cursor: pointer;
-  transition: color 0.2s;
+  transition: color 150ms ease;
   display: block;
+  width: fit-content;
   text-decoration: none;
   background: none;
   border: none;
@@ -2635,7 +2638,6 @@ hr.rule {
 }
 .foot-link:hover {
   color: var(--primary);
-  text-decoration: none;
 }
 .foot-dot {
   width: 4px;
@@ -2645,7 +2647,6 @@ hr.rule {
 button.foot-link {
   font-family: inherit;
   text-align: left;
-  width: fit-content;
 }
 
 /* social icons — circular, in the bottom bar */
