@@ -4,6 +4,7 @@ import {
   UserCog, Activity, Users, Wrench, Search, FileSearch, Clock, TrendingUp,
   Gauge, Award, Cpu, Server, HardDrive, WifiOff, Database, Lock, ShieldCheck,
   FileText, FileCode, MonitorPlay, Workflow, BookOpen,
+  Upload, Network,
   type LucideProps,
 } from 'lucide-react';
 
@@ -12,6 +13,7 @@ const MAP: Record<string, React.ComponentType<LucideProps>> = {
   UserCog, Activity, Users, Wrench, Search, FileSearch, Clock, TrendingUp,
   Gauge, Award, Cpu, Server, HardDrive, WifiOff, Database, Lock, ShieldCheck,
   FileText, FileCode, MonitorPlay, Workflow, BookOpen,
+  Upload, Network,
 };
 
 const Icon: React.FC<{ name: string } & LucideProps> = ({ name, ...props }) => {

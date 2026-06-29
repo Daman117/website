@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Workflow, FileText, Network } from 'lucide-react';
+import { Workflow, FileText, Network, Upload, ScanSearch, MessageCircle, Sparkles, ShieldCheck } from 'lucide-react';
+import ScrollAnimation, { ScrollStagger } from '../ScrollAnimation';
 
 interface EngramPageProps {
   onOpenContact: (source?: string) => void;
@@ -67,12 +68,12 @@ const capabilities = [
 ];
 
 const steps = [
-  { n: '1', title: 'Upload', desc: 'Connect enGRAM to existing repositories, network drives, and engineering document stores.' },
-  { n: '2', title: 'Extract', desc: 'AI extracts tags, symbols, text, tables, relationships, and engineering metadata.' },
-  { n: '3', title: 'Build Knowledge', desc: 'Information is structured into an interconnected plant knowledge graph.' },
-  { n: '4', title: 'Query', desc: 'Engineers ask questions in natural language.' },
-  { n: '5', title: 'Generate Answers', desc: 'enGRAM delivers contextual answers based on verified plant records.' },
-  { n: '6', title: 'Verify', desc: 'Every response can be traced back to its original source for validation.' },
+  { icon: Upload,        title: 'Upload',           desc: 'Connect enGRAM to existing repositories, network drives, and engineering document stores.' },
+  { icon: ScanSearch,    title: 'Extract',          desc: 'AI extracts tags, symbols, text, tables, relationships, and engineering metadata.' },
+  { icon: Network,       title: 'Build Knowledge',  desc: 'Information is structured into an interconnected plant knowledge graph.' },
+  { icon: MessageCircle, title: 'Query',            desc: 'Engineers ask questions in natural language.' },
+  { icon: Sparkles,      title: 'Generate Answers', desc: 'enGRAM delivers contextual answers based on verified plant records.' },
+  { icon: ShieldCheck,   title: 'Verify',           desc: 'Every response can be traced back to its original source for validation.' },
 ];
 
 const validationFeatures = [
@@ -229,7 +230,7 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
       <section className="engram-section engram-container">
         <span className="eyebrow">Key Capabilities</span>
         <h2 className="engram-section-h2">Three Layers of Plant Intelligence</h2>
-        <div className="engram-caps-grid">
+        <ScrollStagger className="engram-caps-grid" step={80}>
           {capabilities.map((cap) => (
             <div key={cap.title} className="engram-cap-card" style={{ '--cap-color': cap.color } as React.CSSProperties}>
               <div className="engram-cap-icon" style={{ color: cap.color }}><cap.Icon size={26} strokeWidth={1.75} /></div>
@@ -246,32 +247,36 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
               </ul>
             </div>
           ))}
-        </div>
+        </ScrollStagger>
       </section>
 
       {/* ── HOW IT WORKS ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">How It Works</span>
         <h2 className="engram-section-h2">From Raw Files to Actionable Intelligence</h2>
-        <div className="engram-flow-row">
-          {steps.map((s, i) => (
-            <React.Fragment key={i}>
-              <div className="engram-flow-card">
-                <div className="engram-flow-num">{s.n}</div>
-                <h4 className="engram-flow-title">{s.title}</h4>
-                <p className="engram-flow-desc">{s.desc}</p>
-              </div>
-              {i < steps.length - 1 && (
-                <div className="engram-flow-connector" aria-hidden="true" />
-              )}
-            </React.Fragment>
-          ))}
-        </div>
+        <ScrollAnimation duration={800}>
+          <div className="engram-flow-row">
+            {steps.map((s, i) => (
+              <React.Fragment key={i}>
+                <div className="engram-flow-card">
+                  <div className="engram-flow-num">
+                    <s.icon size={20} strokeWidth={1.75} />
+                  </div>
+                  <h4 className="engram-flow-title">{s.title}</h4>
+                  <p className="engram-flow-desc">{s.desc}</p>
+                </div>
+                {i < steps.length - 1 && (
+                  <div className="engram-flow-connector" aria-hidden="true" />
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+        </ScrollAnimation>
       </section>
 
       {/* ── VALIDATION + COMPLIANCE + SECURITY ── */}
       <section className="engram-section engram-container">
-        <div className="engram-three-col">
+        <ScrollStagger className="engram-three-col" step={90}>
 
           {/* Human in the Loop */}
           <div className="engram-card">
@@ -320,7 +325,7 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
               </div>
             ))}
           </div>
-        </div>
+        </ScrollStagger>
       </section>
 
       {/* ── VISION ── */}
@@ -330,14 +335,14 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
         <p style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85, maxWidth: 680, marginBottom: 32 }}>
           enGRAM transforms engineering information from static documentation into a continuously evolving intelligence system. As more information is added, the system becomes increasingly valuable — creating a long-term institutional memory for the entire facility.
         </p>
-        <div className="engram-outcomes-grid">
+        <ScrollStagger className="engram-outcomes-grid" step={50}>
           {outcomes.map((o, i) => (
             <div key={i} className="engram-outcome-pill">
               <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#FDB022', flexShrink: 0 }} />
               <span>{o}</span>
             </div>
           ))}
-        </div>
+        </ScrollStagger>
         <div style={{ marginTop: 40, display: 'flex', justifyContent: 'flex-end' }}>
           <button className="btn-primary" onClick={() => onOpenContact('Request a Pilot')}>
             Request a Pilot →

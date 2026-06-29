@@ -4,20 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useLenis } from './hooks/useLenis';
 import Nav from './components/Nav';
 import MobileNav from './components/MobileNav';
-import Hero from './components/Hero';
-import ProductDemo from './components/ProductDemo';
-import Stats from './components/Stats';
-import HowItWorks from './components/HowItWorks';
-import CapGrid from './components/Capabilities/CapGrid';
-import Industries from './components/Industries';
-import Platform from './components/Platform';
-import Architecture from './components/Architecture';
-import BusinessImpact from './components/BusinessImpact';
-import Security from './components/Security';
-import CaseStudies from './components/CaseStudies';
-import Resources from './components/Resources';
-import Principles from './components/Principles';
-import CTA from './components/CTA';
+import LandingPage from './components/LandingPage';
 import Footer from './components/Footer';
 import ContactModal from './components/ContactModal';
 import ProductPage from './components/Capabilities/ProductPage';
@@ -33,26 +20,7 @@ function HomePage({
 }: {
   onOpenContact: (source?: string) => void;
 }) {
-
-  return (
-    <main>
-      <Hero onOpenContact={onOpenContact} />
-      <ProductDemo />
-      <Stats />
-      <HowItWorks />
-      <CapGrid />
-      <Industries />
-      <Platform />
-      <Architecture />
-      <BusinessImpact />
-      <Security />
-      <CaseStudies />
-      <Resources onOpenContact={onOpenContact} />
-      <Principles />
-
-      <CTA onOpenContact={onOpenContact} />
-    </main>
-  );
+  return <LandingPage onOpenContact={onOpenContact} />;
 }
 
 const pageVariants = {

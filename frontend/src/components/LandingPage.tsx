@@ -1,0 +1,850 @@
+/**
+ * LandingPage.tsx — entire home page in one file
+ *
+ * Sections (top → bottom):
+ *   Hero · ProductDemo · Stats · HowItWorks · CapGrid · Industries ·
+ *   Platform · Architecture · BusinessImpact · Security ·
+ *   CaseStudies · Resources · Principles · CTA
+ */
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useScroll, useTransform, motion, AnimatePresence } from 'framer-motion';
+
+import {
+  heroChips,
+  workSteps,
+  demos, type DemoCard,
+  industries,
+  archSources, archCaps, archUsers,
+  impacts,
+  securityPrinciples,
+  caseStudies,
+  resources,
+} from '../data/v2';
+import { CAPS } from '../data/caps';
+import { principles } from '../data/company';
+import { pipeNodes } from '../data/platform';
+import Icon from './Icon';
+import ScrollAnimation, { ScrollStagger } from './ScrollAnimation';
+import type { Cap } from '../types';
+
+interface LandingPageProps {
+  onOpenContact: (source?: string) => void;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// TICKER
+// ─────────────────────────────────────────────────────────────────
+const TickerItems: React.FC = () => (
+  <>
+    {CAPS.map((c) => (
+      <span key={c.id} className="ticker-item">
+        <span className="ticker-dot" style={{ background: c.color }} />
+        <span className="ticker-name">{c.name}</span>
+        <span className="ticker-cat">{c.cat}</span>
+      </span>
+    ))}
+  </>
+);
+
+const Ticker: React.FC = () => (
+  <div className="ticker-wrap">
+    <div className="ticker-inner">
+      <div className="ticker-half"><TickerItems /></div>
+      <div className="ticker-half"><TickerItems /></div>
+    </div>
+  </div>
+);
+
+// ─────────────────────────────────────────────────────────────────
+// STAT CELL
+// ─────────────────────────────────────────────────────────────────
+interface StatCellProps {
+  target: number;
+  decimals?: number;
+  suffix?: string;
+  prefix?: string;
+  label: string;
+  isStatic?: boolean;
+  staticVal?: string;
+}
+
+const StatCell: React.FC<StatCellProps> = ({
+  target, decimals = 0, suffix = '', prefix = '',
+  label, isStatic, staticVal,
+}) => {
+  const [value, setValue] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
+  const started = useRef(false);
+
+  useEffect(() => {
+    if (isStatic) return;
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !started.current) {
+        started.current = true;
+        const duration = 1800;
+        const start = performance.now();
+        const tick = (now: number) => {
+          const elapsed = now - start;
+          const progress = Math.min(elapsed / duration, 1);
+          const ease = 1 - Math.pow(1 - progress, 3);
+          setValue(parseFloat((ease * target).toFixed(decimals)));
+          if (progress < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }
+    }, { threshold: 0.5 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [target, decimals, isStatic]);
+
+  const display = isStatic
+    ? staticVal
+    : `${prefix}${decimals > 0 ? value.toFixed(decimals) : Math.floor(value).toLocaleString()}${suffix}`;
+
+  return (
+    <div className="stat-cell" ref={ref}>
+      <span className="stat-val mono">{display}</span>
+      <span className="stat-label">{label}</span>
+    </div>
+  );
+};
+
+// ─────────────────────────────────────────────────────────────────
+// DEMO SUB-RENDERERS
+// ─────────────────────────────────────────────────────────────────
+const ColList: React.FC<{ label: string; items: string[]; color?: string }> = ({ label, items, color }) => (
+  <div className="demo-col">
+    <div className="demo-col-label">{label}</div>
+    <ul className="demo-col-list">
+      {items.map((it) => (
+        <li key={it}><span style={color ? { color } : undefined}>—</span>{it}</li>
+      ))}
+    </ul>
+  </div>
+);
+
+const DemoBody: React.FC<{ d: DemoCard }> = ({ d }) => {
+  if (d.kind === 'transform' && d.before && d.after) {
+    return (
+      <div className="demo-ba">
+        <ColList label={d.before.label} items={d.before.items} />
+        <div className="demo-arrow" aria-hidden="true">→</div>
+        <ColList label={d.after.label} items={d.after.items} color={d.color} />
+      </div>
+    );
+  }
+  if (d.kind === 'query' && d.query && d.answer) {
+    return (
+      <div className="demo-query">
+        <div className="demo-q">
+          <span className="demo-q-icon" style={{ color: d.color }}>?</span>
+          {d.query}
+        </div>
+        <div className="demo-a">
+          <div className="demo-a-value" style={{ color: d.color }}>{d.answer.value}</div>
+          <div className="demo-a-cite">
+            <span>{d.answer.source}</span>
+            <span>{d.answer.revision}</span>
+            <span>{d.answer.page}</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  if (d.kind === 'dashboard' && d.panels) {
+    return (
+      <div className="demo-dash">
+        {d.panels.map((p) => (
+          <div key={p.label} className={`demo-tile demo-tone-${p.tone || 'ok'}`}>
+            <div className="demo-tile-label">{p.label}</div>
+            <div className="demo-tile-value">{p.value}</div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+  if (d.kind === 'decision' && d.steps) {
+    return (
+      <div className="demo-decision">
+        {d.steps.map((s) => (
+          <div key={s.label} className="demo-dec-row">
+            <span className="demo-dec-label">{s.label}</span>
+            <span className="demo-dec-value">{s.value}</span>
+          </div>
+        ))}
+        <div className="demo-refs">
+          {d.refs?.map((r) => <span key={r} className="demo-ref">{r}</span>)}
+        </div>
+      </div>
+    );
+  }
+  return null;
+};
+
+// ─────────────────────────────────────────────────────────────────
+// CAP CARD
+// ─────────────────────────────────────────────────────────────────
+const CapCard: React.FC<{ cap: Cap }> = ({ cap }) => {
+  const navigate = useNavigate();
+  const go = () => navigate(`/products/${cap.id}`);
+  return (
+    <div
+      className="cap-card"
+      style={{ '--accent': cap.color } as React.CSSProperties}
+      onClick={go}
+    >
+      <div className="cap-card-top">
+        <div className="cap-card-name-row">
+          <div className="cap-card-dot" style={{ background: cap.color }} />
+          <span className="cap-card-name">{cap.name}</span>
+        </div>
+        <span
+          className="badge"
+          style={{ color: cap.color, background: `${cap.color}18`, borderColor: `${cap.color}55` }}
+        >
+          {cap.status}
+        </span>
+      </div>
+      <div className="cap-card-cat">{cap.cat}</div>
+      <div className="cap-card-tag">{cap.tag}</div>
+      <button
+        className="cap-card-btn"
+        onClick={(e) => { e.stopPropagation(); go(); }}
+        style={{ background: `linear-gradient(135deg,${cap.color} 0%,var(--navy) 130%)` }}
+      >
+        View Details →
+      </button>
+    </div>
+  );
+};
+
+// ─────────────────────────────────────────────────────────────────
+// ── SECTION 1: HERO
+// ─────────────────────────────────────────────────────────────────
+const floatingBadges = [
+  { cls: 'animate-float',    icon: '✓', iconColor: '#10B981', title: '139 P&IDs structured',           sub: 'enSTUDIO · <2 min per drawing' },
+  { cls: 'animate-float-d2', icon: '?', iconColor: '#FDB022', title: '"What is the range of FT-3045?"', sub: 'enGRAM · Cited from Rev.4 p.12' },
+  { cls: 'animate-float-d4', icon: '⬛', iconColor: '#2563EB', title: 'Air-gapped · No cloud',          sub: 'All capabilities · On-premises only' },
+];
+
+const Hero: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenContact }) => (
+  <section id="hero">
+    <div className="hero-grid">
+      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="g" width="48" height="48" patternUnits="userSpaceOnUse">
+            <path d="M48 0L0 0 0 48" fill="none" stroke="#2563EB" strokeWidth=".5" opacity=".4" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="150%" fill="url(#g)" />
+      </svg>
+    </div>
+    <div className="hero-glow1" />
+    <div className="hero-glow2" />
+
+    <div className="hero-layout">
+      {/* Left */}
+      <div className="hero-left">
+        <span className="eyebrow fu fu1">enSAR Solutions · enX Division</span>
+        <h1 className="hero-h1 fu fu2">
+          Your plant.<br />
+          <span className="light">Understood.</span>
+        </h1>
+        <p className="hero-sub fu fu3">
+          The local-first industrial intelligence platform that turns drawings, documents, SCADA
+          systems and engineering knowledge into structured, searchable plant intelligence.
+        </p>
+        <p className="hero-body fu fu4">
+          Each capability is complete on its own and more powerful together — and it all runs
+          entirely inside your network.
+        </p>
+        <div className="hero-chips fu fu4" aria-label="Platform capabilities">
+          {heroChips.map((c) => <span key={c} className="hero-chip">{c}</span>)}
+        </div>
+        <div className="hero-ctas fu fu4">
+          <button className="btn-primary" onClick={() => onOpenContact('Explore enX')}>Explore enX →</button>
+          <button className="btn-outline" onClick={() => onOpenContact('Request a Pilot')}>Request a Pilot</button>
+        </div>
+      </div>
+
+      {/* Right — floating badge cards */}
+      <div className="hero-badges-panel" aria-hidden="true">
+        {floatingBadges.map((b, i) => (
+          <div key={i} className={`hero-badge-card ${b.cls} animate-item stagger-${i + 1}`}>
+            <span className="hero-badge-icon" style={{ color: b.iconColor }}>{b.icon}</span>
+            <div>
+              <div className="hero-badge-title">{b.title}</div>
+              <div className="hero-badge-sub">{b.sub}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <Ticker />
+  </section>
+);
+
+// ─────────────────────────────────────────────────────────────────
+// ── SECTION 2: PRODUCT DEMO
+// ─────────────────────────────────────────────────────────────────
+const N = demos.length;
+
+const ProductDemo: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end end'] });
+  const rawIndex = useTransform(scrollYProgress, [0, 1], [0, N - 0.001]);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => rawIndex.on('change', (v) => setActiveIndex(Math.floor(v))), [rawIndex]);
+
+  const active = demos[activeIndex];
+
+  return (
+    <div ref={containerRef} id="demo" style={{ height: `${N * 100}vh`, position: 'relative' }}>
+      <div className="demo-sticky">
+        {/* Left — heading + progress list */}
+        <div className="demo-sticky-left">
+          <motion.span
+            className="eyebrow"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            Product output, not slideware
+          </motion.span>
+          <motion.h2
+            className="display demo-sticky-h2"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.08 }}
+          >
+            See enX<br />in Action
+          </motion.h2>
+
+          <div className="demo-step-list">
+            {demos.map((d, i) => (
+              <button
+                key={d.id}
+                className={`demo-step-item${i === activeIndex ? ' active' : ''}`}
+                style={{ '--step-color': d.color } as React.CSSProperties}
+                onClick={() => {
+                  if (!containerRef.current) return;
+                  const rect = containerRef.current.getBoundingClientRect();
+                  const top = window.scrollY + rect.top + (i / N) * containerRef.current.offsetHeight;
+                  window.scrollTo({ top, behavior: 'smooth' });
+                }}
+              >
+                <span className="demo-step-dot" style={{ background: i === activeIndex ? d.color : undefined }} />
+                <span className="demo-step-product" style={{ color: i === activeIndex ? d.color : undefined }}>
+                  {d.product}
+                </span>
+                <span className="demo-step-title">{d.title}</span>
+              </button>
+            ))}
+          </div>
+
+          <div className="demo-progress-track">
+            <motion.div
+              className="demo-progress-fill"
+              style={{ scaleX: useTransform(scrollYProgress, [0, 1], [0, 1]), background: active.color }}
+            />
+          </div>
+        </div>
+
+        {/* Right — animated card */}
+        <div className="demo-sticky-right">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={active.id}
+              className="demo-card demo-card-featured"
+              style={{ '--accent': active.color } as React.CSSProperties}
+              initial={{ opacity: 0, y: 40, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -24, scale: 0.97 }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <div className="demo-card-head">
+                <span className="demo-card-dot" style={{ background: active.color }} />
+                <span className="demo-card-product" style={{ color: active.color }}>{active.product}</span>
+                <span className="demo-card-title">{active.title}</span>
+              </div>
+              <DemoBody d={active} />
+              <div className="demo-card-counter" style={{ color: active.color }}>
+                {activeIndex + 1} / {N}
+              </div>
+            </motion.div>
+          </AnimatePresence>
+
+          <div className="demo-dots">
+            {demos.map((d, i) => (
+              <span
+                key={d.id}
+                className={`demo-dot${i === activeIndex ? ' active' : ''}`}
+                style={{ background: i === activeIndex ? d.color : undefined }}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ─────────────────────────────────────────────────────────────────
+// ── SECTION 3: STATS
+// ─────────────────────────────────────────────────────────────────
+const Stats: React.FC = () => (
+  <div id="stats">
+    <div className="stats-grid">
+      <StatCell target={139}  label="P&ID drawings digitized" />
+      <StatCell target={5945} label="Equipment & instruments" />
+      <StatCell target={99.3} decimals={1} suffix="%" label="Extraction accuracy" />
+      <StatCell target={0}    isStatic staticVal="<2s" label="SCADA startup time" />
+    </div>
+  </div>
+);
+
+// ─────────────────────────────────────────────────────────────────
+// ── SECTION 4: HOW IT WORKS
+// ─────────────────────────────────────────────────────────────────
+const HowItWorks: React.FC = () => (
+  <section id="how">
+    <div className="section">
+      <ScrollAnimation>
+        <span className="eyebrow">The workflow</span>
+        <h2 className="display section-title">How Industrial Intelligence Is Built</h2>
+        <p className="section-lead">
+          Four steps from the documents you already have to live, defensible plant intelligence —
+          all inside your network.
+        </p>
+      </ScrollAnimation>
+
+      <ScrollStagger className="how-grid" step={120}>
+        {workSteps.map((s, i) => (
+          <div key={s.icon} className="how-step hover-lift" style={{ '--accent': s.color } as React.CSSProperties}>
+            <div className="how-step-top">
+              <span className="how-num">
+                <Icon name={s.icon} size={22} strokeWidth={1.75} />
+              </span>
+              {i < workSteps.length - 1 && <span className="how-connector" aria-hidden="true" />}
+            </div>
+            <span className="how-actor" style={{ color: s.color }}>{s.actor}</span>
+            <h3 className="how-title">{s.title}</h3>
+            <div className="how-io">
+              <div className="how-io-label">{s.inLabel}</div>
+              <div className="how-tags">
+                {s.inputs.map((t) => <span key={t} className="how-tag">{t}</span>)}
+              </div>
+            </div>
+            <div className="how-io">
+              <div className="how-io-label" style={{ color: s.color }}>{s.outLabel}</div>
+              <div className="how-tags">
+                {s.outputs.map((t) => (
+                  <span key={t} className="how-tag how-tag-out" style={{ borderColor: `${s.color}55`, color: s.color }}>
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </ScrollStagger>
+    </div>
+  </section>
+);
+
+// ─────────────────────────────────────────────────────────────────
+// ── SECTION 5: CAPABILITIES (CAP GRID)
+// ─────────────────────────────────────────────────────────────────
+const CapGrid: React.FC = () => (
+  <section id="capabilities">
+    <div className="cap-head">
+      <ScrollAnimation>
+        <span className="eyebrow">Products</span>
+        <h2 className="display">Every capability.<br /><span>One platform.</span></h2>
+      </ScrollAnimation>
+    </div>
+    <ScrollStagger className="cap-grid" step={80}>
+      {CAPS.map((cap) => <CapCard key={cap.id} cap={cap} />)}
+    </ScrollStagger>
+  </section>
+);
+
+// ─────────────────────────────────────────────────────────────────
+// ── SECTION 6: INDUSTRIES
+// ─────────────────────────────────────────────────────────────────
+const Industries: React.FC = () => (
+  <section id="industries">
+    <div className="section">
+      <ScrollAnimation>
+        <span className="eyebrow">Where it runs</span>
+        <h2 className="display section-title">Built for Industrial Operations</h2>
+        <p className="section-lead">
+          enX works wherever the plant floor lives in drawings, documents and live process data.
+          Find your industry.
+        </p>
+      </ScrollAnimation>
+
+      <ScrollStagger className="ind-grid" step={70}>
+        {industries.map((ind) => (
+          <div key={ind.id} className="ind-card hover-scale-sm">
+            <div className="ind-icon"><Icon name={ind.icon} size={22} strokeWidth={1.7} /></div>
+            <h3 className="ind-name">{ind.name}</h3>
+            <p className="ind-desc">{ind.desc}</p>
+            <div className="ind-caps">
+              {ind.caps.map((c) => <span key={c} className="ind-cap">{c}</span>)}
+            </div>
+          </div>
+        ))}
+      </ScrollStagger>
+    </div>
+  </section>
+);
+
+// ─────────────────────────────────────────────────────────────────
+// ── SECTION 7: PLATFORM
+// ─────────────────────────────────────────────────────────────────
+const Platform: React.FC = () => (
+  <section id="platform">
+    <div className="section">
+      <ScrollAnimation>
+        <span className="eyebrow">Platform</span>
+        <h2
+          className="display"
+          style={{ fontSize: 'clamp(32px,3.5vw,44px)', fontWeight: 700, letterSpacing: '-1.5px', marginBottom: '52px' }}
+        >
+          How capabilities connect
+        </h2>
+      </ScrollAnimation>
+
+      <ScrollStagger className="platform-grid" step={90}>
+        {pipeNodes.map((node) => (
+          <div
+            key={node.cap}
+            className="pipe-node hover-lift"
+            style={{
+              '--accent2': node.color,
+              background: 'rgba(255,255,255,0.78)',
+              backdropFilter: 'blur(14px) saturate(150%)',
+              WebkitBackdropFilter: 'blur(14px) saturate(150%)',
+            } as React.CSSProperties}
+          >
+            <div className="pipe-cap" style={{ color: node.color }}>{node.cap}</div>
+            <div className="pipe-sub">{node.label}</div>
+            <div className="pipe-desc">{node.sub}</div>
+          </div>
+        ))}
+      </ScrollStagger>
+    </div>
+  </section>
+);
+
+// ─────────────────────────────────────────────────────────────────
+// ── SECTION 8: ARCHITECTURE
+// ─────────────────────────────────────────────────────────────────
+const Architecture: React.FC = () => (
+  <section id="architecture">
+    <div className="section">
+      <ScrollAnimation>
+        <span className="eyebrow">Platform architecture</span>
+        <h2 className="display section-title">One Platform. Multiple Sources.</h2>
+        <p className="section-lead">
+          Every plant data source flows into one local platform, becomes connected intelligence,
+          and reaches every team that needs it.
+        </p>
+      </ScrollAnimation>
+
+      <ScrollAnimation delay={150} duration={900} threshold={0.06}>
+        <div className="arch-diagram">
+          <div className="arch-band arch-band-sources">
+            <div className="arch-band-label"><span className="arch-band-pill">Plant Data Sources</span></div>
+            <div className="arch-source-row">
+              {archSources.map((s) => <div key={s} className="arch-source-chip">{s}</div>)}
+            </div>
+          </div>
+
+          <div className="arch-connector" aria-hidden="true">
+            <div className="arch-conn-line" /><div className="arch-conn-arrow" />
+          </div>
+
+          <div className="arch-platform-block">
+            <div className="arch-platform-inner">
+              <div className="arch-platform-logo">
+                <span className="arch-platform-en">en</span><span className="arch-platform-x">X</span>
+              </div>
+              <div className="arch-platform-tagline">Local-first industrial intelligence platform</div>
+              <div className="arch-platform-badges">
+                <span className="arch-platform-badge">Air-gapped ready</span>
+                <span className="arch-platform-badge">On-premises AI</span>
+                <span className="arch-platform-badge">No cloud dependency</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="arch-connector" aria-hidden="true">
+            <div className="arch-conn-line" /><div className="arch-conn-arrow" />
+          </div>
+
+          <div className="arch-band arch-band-caps">
+            <div className="arch-band-label"><span className="arch-band-pill">Capabilities</span></div>
+            <div className="arch-caps-row">
+              {archCaps.map((c) => (
+                <div
+                  key={c.name}
+                  className="arch-cap-chip"
+                  style={{ '--accent': c.color, borderBottomColor: c.color } as React.CSSProperties}
+                >
+                  <span className="arch-cap-dot" style={{ background: c.color }} />
+                  <span className="arch-cap-name">{c.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="arch-connector" aria-hidden="true">
+            <div className="arch-conn-line" /><div className="arch-conn-arrow" />
+          </div>
+
+          <div className="arch-band arch-band-users">
+            <div className="arch-band-label"><span className="arch-band-pill">Users</span></div>
+            <div className="arch-users-row">
+              {archUsers.map((u) => (
+                <div key={u.name} className="arch-user-chip">
+                  <Icon name={u.icon} size={15} strokeWidth={1.7} />
+                  <span>{u.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+);
+
+// ─────────────────────────────────────────────────────────────────
+// ── SECTION 9: BUSINESS IMPACT
+// ─────────────────────────────────────────────────────────────────
+const BusinessImpact: React.FC = () => (
+  <section id="impact">
+    <div className="section">
+      <ScrollAnimation>
+        <span className="eyebrow">Outcomes</span>
+        <h2 className="display section-title">Business Impact</h2>
+        <p className="section-lead">
+          Industrial buyers purchase outcomes. enX shortens the path from a question to a defensible
+          answer — and keeps engineering knowledge in the business.
+        </p>
+      </ScrollAnimation>
+
+      <ScrollStagger className="impact-grid" step={80}>
+        {impacts.map((m) => (
+          <div key={m.label} className="impact-card hover-lift">
+            <div className="impact-top">
+              <span className="impact-stat">{m.stat}</span>
+              <span className="impact-icon"><Icon name={m.icon} size={18} strokeWidth={1.8} /></span>
+            </div>
+            <h3 className="impact-label">{m.label}</h3>
+            <p className="impact-detail">{m.detail}</p>
+          </div>
+        ))}
+      </ScrollStagger>
+    </div>
+  </section>
+);
+
+// ─────────────────────────────────────────────────────────────────
+// ── SECTION 10: SECURITY
+// ─────────────────────────────────────────────────────────────────
+const Security: React.FC = () => (
+  <section id="security">
+    <div className="section">
+      <ScrollAnimation>
+        <span className="eyebrow">Security &amp; deployment</span>
+        <h2 className="display section-title">Security by Design</h2>
+        <p className="section-lead">
+          enX is built to run where the network never leaves the fence line. No cloud, no external
+          calls, no vendor inside your perimeter.
+        </p>
+      </ScrollAnimation>
+
+      <ScrollStagger className="sec-grid" step={90}>
+        {securityPrinciples.map((p) => (
+          <div key={p.title} className="sec-card hover-lift">
+            <div className="sec-icon"><Icon name={p.icon} size={20} strokeWidth={1.7} /></div>
+            <h3 className="sec-title">{p.title}</h3>
+            <p className="sec-desc">{p.desc}</p>
+          </div>
+        ))}
+      </ScrollStagger>
+    </div>
+  </section>
+);
+
+// ─────────────────────────────────────────────────────────────────
+// ── SECTION 11: CASE STUDIES
+// ─────────────────────────────────────────────────────────────────
+const CaseStudies: React.FC = () => (
+  <section id="cases">
+    <div className="section">
+      <ScrollAnimation>
+        <span className="eyebrow">Proof in practice</span>
+        <h2 className="display section-title">Case Studies &amp; Use Cases</h2>
+        <p className="section-lead">
+          Drawn from internal pilots and real engineering scenarios — structured as problem,
+          solution and result.
+        </p>
+      </ScrollAnimation>
+
+      <ScrollStagger className="case-grid" step={130}>
+        {caseStudies.map((c) => (
+          <div
+            key={c.id}
+            className="case-card hover-lift"
+            style={{ '--accent': c.color } as React.CSSProperties}
+          >
+            <span
+              className="case-tag"
+              style={{ color: c.color, borderColor: `${c.color}55`, background: `${c.color}14` }}
+            >
+              {c.tag}
+            </span>
+            <h3 className="case-title">{c.title}</h3>
+            <div className="case-step">
+              <span className="case-step-label">Problem</span>
+              <p className="case-step-text">{c.problem}</p>
+            </div>
+            <div className="case-step">
+              <span className="case-step-label" style={{ color: c.color }}>Solution</span>
+              <p className="case-step-text">{c.solution}</p>
+            </div>
+            <div className="case-step case-result">
+              <span className="case-step-label" style={{ color: c.color }}>Result</span>
+              <p className="case-step-text">{c.result}</p>
+            </div>
+          </div>
+        ))}
+      </ScrollStagger>
+    </div>
+  </section>
+);
+
+// ─────────────────────────────────────────────────────────────────
+// ── SECTION 12: RESOURCES
+// ─────────────────────────────────────────────────────────────────
+const Resources: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenContact }) => (
+  <section id="resources">
+    <div className="section">
+      <ScrollAnimation>
+        <span className="eyebrow">Resource center</span>
+        <h2 className="display section-title">Resources</h2>
+        <p className="section-lead">
+          Whitepapers, technical notes, product briefs and deployment guides. Request any resource
+          and we'll send it over.
+        </p>
+      </ScrollAnimation>
+
+      <ScrollStagger className="res-grid" step={80}>
+        {resources.map((r) => (
+          <button
+            key={r.title}
+            className="res-card hover-lift"
+            onClick={() => onOpenContact(`Resource: ${r.title}`)}
+          >
+            <div className="res-icon"><Icon name={r.icon} size={18} strokeWidth={1.8} /></div>
+            <span className="res-type">{r.type}</span>
+            <h3 className="res-title">{r.title}</h3>
+            <p className="res-desc">{r.desc}</p>
+            <span className="res-link">Request →</span>
+          </button>
+        ))}
+      </ScrollStagger>
+    </div>
+  </section>
+);
+
+// ─────────────────────────────────────────────────────────────────
+// ── SECTION 13: PRINCIPLES
+// ─────────────────────────────────────────────────────────────────
+const Principles: React.FC = () => (
+  <section id="principles">
+    <div className="section" style={{ paddingBottom: '8px' }}>
+      <ScrollAnimation>
+        <span className="eyebrow">What we believe</span>
+        <h2
+          className="display"
+          style={{ fontSize: 'clamp(32px,3.5vw,44px)', fontWeight: 700, letterSpacing: '-1.5px', marginBottom: 0 }}
+        >
+          Four commitments we don't negotiate
+        </h2>
+      </ScrollAnimation>
+    </div>
+    <ScrollStagger className="princ-grid" step={110}>
+      {principles.map((p) => (
+        <div key={p.n} className="princ-card hover-lift">
+          <div className="princ-num">{p.n}</div>
+          <h3 className="princ-h">{p.h}</h3>
+          <p className="princ-p">{p.p}</p>
+        </div>
+      ))}
+    </ScrollStagger>
+  </section>
+);
+
+// ─────────────────────────────────────────────────────────────────
+// ── SECTION 14: CTA
+// ─────────────────────────────────────────────────────────────────
+const CTA: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenContact }) => (
+  <section id="cta">
+    <div className="cta-glow" />
+    <ScrollAnimation threshold={0.2}>
+      <div className="cta-panel">
+        <span className="eyebrow">Start here</span>
+        <h2 className="cta-h">Your plant.<br />Your documents.<br />90 days.</h2>
+        <p className="cta-p">
+          No vendor inside your network. No data leaving your plant. At 90 days you'll know
+          exactly what changed.
+        </p>
+        <div className="cta-btns">
+          <button className="btn-primary" onClick={() => onOpenContact('Book a Demo')}>Book a Demo →</button>
+          <button className="btn-outline" onClick={() => onOpenContact('Request a Pilot')}>Request a Pilot</button>
+        </div>
+        <div className="cta-paths">
+          <button className="cta-path" onClick={() => onOpenContact('Talk to Engineering Team')}>Talk to Engineering Team</button>
+          <span className="cta-path-sep" aria-hidden="true">·</span>
+          <button className="cta-path" onClick={() => window.open('enx-overview.pdf', '_blank')}>Download Technical Overview</button>
+          <span className="cta-path-sep" aria-hidden="true">·</span>
+          <button className="cta-path" onClick={() => onOpenContact('Waitlist')}>Join Waitlist</button>
+        </div>
+      </div>
+    </ScrollAnimation>
+  </section>
+);
+
+// ─────────────────────────────────────────────────────────────────
+// ── MAIN EXPORT
+// ─────────────────────────────────────────────────────────────────
+const LandingPage: React.FC<LandingPageProps> = ({ onOpenContact }) => (
+  <main>
+    <Hero onOpenContact={onOpenContact} />
+    <ProductDemo />
+    <Stats />
+    <HowItWorks />
+    <CapGrid />
+    <Industries />
+    <Platform />
+    <Architecture />
+    <BusinessImpact />
+    <Security />
+    <CaseStudies />
+    <Resources onOpenContact={onOpenContact} />
+    <Principles />
+    <CTA onOpenContact={onOpenContact} />
+  </main>
+);
+
+export default LandingPage;

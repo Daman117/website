@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Workflow, Search, MessageSquare, Building2, Scale, CircleCheck, ShieldCheck } from 'lucide-react';
+import { Workflow, Search, MessageSquare, Building2, Scale, CircleCheck, ShieldCheck, ClipboardList, BrainCircuit, Sparkles, PackageCheck } from 'lucide-react';
+import ScrollAnimation, { ScrollStagger } from '../ScrollAnimation';
 
 interface EngeniePageProps {
   onOpenContact: (source?: string) => void;
@@ -66,10 +67,10 @@ const aiFeatures = [
 ];
 
 const steps = [
-  { n: '1', title: 'Define Requirements', desc: 'Input project specs naturally — greenfield construction or brownfield upgrades. The AI understands context.' },
-  { n: '2', title: 'AI Analysis', desc: 'enGENIE cross-references your needs against supplier strategies, category frameworks, and standards.' },
-  { n: '3', title: 'Smart Recommendations', desc: 'Receive curated instrument and accessory recommendations with rationale and compliance verification.' },
-  { n: '4', title: 'Procure with Confidence', desc: 'Move forward with specs aligned to your strategic sourcing objectives and technical standards.' },
+  { icon: ClipboardList, title: 'Define Requirements',   desc: 'Input project specs naturally — greenfield construction or brownfield upgrades. The AI understands context.' },
+  { icon: BrainCircuit,  title: 'AI Analysis',           desc: 'enGENIE cross-references your needs against supplier strategies, category frameworks, and standards.' },
+  { icon: Sparkles,      title: 'Smart Recommendations', desc: 'Receive curated instrument and accessory recommendations with rationale and compliance verification.' },
+  { icon: PackageCheck,  title: 'Procure with Confidence', desc: 'Move forward with specs aligned to your strategic sourcing objectives and technical standards.' },
 ];
 
 const differentiators = [
@@ -145,14 +146,14 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
 
       {/* ── STATS ── */}
       <section className="engram-section engram-container">
-        <div className="engram-stats">
+        <ScrollStagger className="engram-stats" step={60}>
           {stats.map((s) => (
             <div key={s.label} className="engram-stat">
               <div className="engram-stat-val">{s.value}</div>
               <div className="engram-stat-label">{s.label}</div>
             </div>
           ))}
-        </div>
+        </ScrollStagger>
       </section>
 
       {/* ── OVERVIEW ── */}
@@ -173,7 +174,7 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
       <section className="engram-section engram-container">
         <span className="eyebrow">Powerful Capabilities</span>
         <h2 className="engram-section-h2">Three Intelligent Modules, One Platform</h2>
-        <div className="engram-caps-grid">
+        <ScrollStagger className="engram-caps-grid" step={80}>
           {modules.map((m) => (
             <div key={m.title} className="engram-cap-card" style={{ '--cap-color': m.color } as React.CSSProperties}>
               <div className="engram-cap-icon" style={{ color: m.color }}><m.Icon size={26} strokeWidth={1.75} /></div>
@@ -190,14 +191,14 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
               </ul>
             </div>
           ))}
-        </div>
+        </ScrollStagger>
       </section>
 
       {/* ── AI FEATURES ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">AI-Driven Features</span>
         <h2 className="engram-section-h2">Precision at Every Step</h2>
-        <div className="engram-quad">
+        <ScrollStagger className="engram-quad" step={70}>
           {aiFeatures.map((f) => (
             <div key={f.title} className="engram-card">
               <div style={{ color: ACCENT, marginBottom: 12, lineHeight: 1 }}><f.Icon size={22} strokeWidth={1.75} /></div>
@@ -205,27 +206,31 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
               <p style={{ fontSize: 12, color: 'var(--t4)', lineHeight: 1.65 }}>{f.desc}</p>
             </div>
           ))}
-        </div>
+        </ScrollStagger>
       </section>
 
       {/* ── HOW IT WORKS ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">Seamless Process</span>
         <h2 className="engram-section-h2">Intelligence Built Into Every Step</h2>
-        <div className="engram-flow-row">
-          {steps.map((s, i) => (
-            <React.Fragment key={i}>
-              <div className="engram-flow-card">
-                <div className="engram-flow-num">{s.n}</div>
-                <h4 className="engram-flow-title">{s.title}</h4>
-                <p className="engram-flow-desc">{s.desc}</p>
-              </div>
-              {i < steps.length - 1 && (
-                <div className="engram-flow-connector" aria-hidden="true" />
-              )}
-            </React.Fragment>
-          ))}
-        </div>
+        <ScrollAnimation duration={800}>
+          <div className="engram-flow-row">
+            {steps.map((s, i) => (
+              <React.Fragment key={i}>
+                <div className="engram-flow-card">
+                  <div className="engram-flow-num">
+                    <s.icon size={20} strokeWidth={1.75} />
+                  </div>
+                  <h4 className="engram-flow-title">{s.title}</h4>
+                  <p className="engram-flow-desc">{s.desc}</p>
+                </div>
+                {i < steps.length - 1 && (
+                  <div className="engram-flow-connector" aria-hidden="true" />
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+        </ScrollAnimation>
       </section>
 
       {/* ── WHY ENGENIE (vs LLMs) ── */}
@@ -261,7 +266,7 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
       <section className="engram-section engram-container">
         <span className="eyebrow">Built For You</span>
         <h2 className="engram-section-h2">Your Organizational DNA, Built In</h2>
-        <div className="engram-three-col">
+        <ScrollStagger className="engram-three-col" step={90}>
           {orgDna.map((o) => (
             <div key={o.title} className="engram-card" style={{ borderColor: `${o.color}40` }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
@@ -271,7 +276,7 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
               <p style={{ fontSize: 13, color: 'var(--t4)', lineHeight: 1.7 }}>{o.desc}</p>
             </div>
           ))}
-        </div>
+        </ScrollStagger>
       </section>
 
       {/* ── OUTCOMES ── */}
@@ -281,14 +286,14 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
         <p style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85, maxWidth: 680, marginBottom: 32 }}>
           enGENIE standardizes selection, reduces specification time, and turns procurement into a fast, compliant, explainable workflow — for both the enterprises that source and the suppliers that sell.
         </p>
-        <div className="engram-outcomes-grid">
+        <ScrollStagger className="engram-outcomes-grid" step={50}>
           {outcomes.map((o, i) => (
             <div key={i} className="engram-outcome-pill">
               <div style={{ width: 6, height: 6, borderRadius: '50%', background: ACCENT, flexShrink: 0 }} />
               <span>{o}</span>
             </div>
           ))}
-        </div>
+        </ScrollStagger>
         <div style={{ marginTop: 40, display: 'flex', justifyContent: 'flex-end' }}>
           <button className="btn-primary" onClick={() => onOpenContact('Request a Demo')}>
             Request a Demo →

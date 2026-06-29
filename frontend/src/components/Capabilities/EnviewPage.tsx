@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Cpu, Gauge, Layers, Zap, Workflow, MonitorPlay, Boxes, MessageSquare, BrainCircuit, Network, TriangleAlert } from 'lucide-react';
+import { Cpu, Gauge, Layers, Zap, Workflow, MonitorPlay, Boxes, MessageSquare, BrainCircuit, Network, TriangleAlert, Plug, FolderInput } from 'lucide-react';
+import ScrollAnimation, { ScrollStagger } from '../ScrollAnimation';
 
 interface EnviewPageProps {
   onOpenContact: (source?: string) => void;
@@ -85,10 +86,10 @@ const views = [
 ];
 
 const steps = [
-  { n: '1', title: 'Connect', desc: 'OPC-UA / Modbus TCP / MQTT native connections established instantly via the command line.' },
-  { n: '2', title: 'Import', desc: 'AI-native ingest of P&IDs, files, and drawings — auto-generating tags and topology.' },
-  { n: '3', title: 'Design', desc: 'Engineering Studio with a visual importer and 331 pre-built industrial symbols.' },
-  { n: '4', title: 'Run', desc: 'The system switches seamlessly from Edit to Run mode and live data flows.' },
+  { icon: Plug,        title: 'Connect', desc: 'OPC-UA / Modbus TCP / MQTT native connections established instantly via the command line.' },
+  { icon: FolderInput, title: 'Import',  desc: 'AI-native ingest of P&IDs, files, and drawings — auto-generating tags and topology.' },
+  { icon: Layers,      title: 'Design',  desc: 'Engineering Studio with a visual importer and 331 pre-built industrial symbols.' },
+  { icon: Zap,         title: 'Run',     desc: 'The system switches seamlessly from Edit to Run mode and live data flows.' },
 ];
 
 const safety = [
@@ -178,14 +179,14 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
 
       {/* ── STATS ── */}
       <section className="engram-section engram-container">
-        <div className="engram-stats">
+        <ScrollStagger className="engram-stats" step={60}>
           {stats.map((s) => (
             <div key={s.label} className="engram-stat">
               <div className="engram-stat-val">{s.value}</div>
               <div className="engram-stat-label">{s.label}</div>
             </div>
           ))}
-        </div>
+        </ScrollStagger>
       </section>
 
       {/* ── CHALLENGE ── */}
@@ -195,7 +196,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         <p style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 32, maxWidth: 760 }}>
           The problem is not the plant. The problem is a 20-year-old software architecture built on single-threaded paradigms — one processing thread shared between data acquisition and UI rendering. When alarm floods hit, the screen freezes at the worst possible moment.
         </p>
-        <div className="engram-quad">
+        <ScrollStagger className="engram-quad" step={70}>
           {challenges.map((c) => (
             <div key={c.title} className="engram-card">
               <div style={{ color: ACCENT, marginBottom: 12, lineHeight: 1 }}><TriangleAlert size={22} strokeWidth={1.75} /></div>
@@ -203,14 +204,14 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
               <p style={{ fontSize: 12, color: 'var(--t4)', lineHeight: 1.65 }}>{c.desc}</p>
             </div>
           ))}
-        </div>
+        </ScrollStagger>
       </section>
 
       {/* ── NATIVE APPROACH ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">The Approach</span>
         <h2 className="engram-section-h2">A Native Approach to Industrial Control</h2>
-        <div className="engram-quad">
+        <ScrollStagger className="engram-quad" step={70}>
           {nativeApproach.map((m) => (
             <div key={m.title} className="engram-cap-card" style={{ '--cap-color': m.color } as React.CSSProperties}>
               <div className="engram-cap-icon" style={{ color: m.color }}><m.Icon size={26} strokeWidth={1.75} /></div>
@@ -227,7 +228,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
               </ul>
             </div>
           ))}
-        </div>
+        </ScrollStagger>
       </section>
 
       {/* ── THREE VIEWS ── */}
@@ -237,7 +238,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         <p style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 28, maxWidth: 720 }}>
           enVIEW treats the P&amp;ID as the master blueprint. No rebuilding, no version drift — what the engineer designs is exactly what the operator sees.
         </p>
-        <div className="engram-caps-grid">
+        <ScrollStagger className="engram-caps-grid" step={80}>
           {views.map((v) => (
             <div key={v.title} className="engram-cap-card" style={{ '--cap-color': v.color } as React.CSSProperties}>
               <div className="engram-cap-icon" style={{ color: v.color }}><v.Icon size={26} strokeWidth={1.75} /></div>
@@ -246,27 +247,31 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
               <p className="engram-cap-desc" style={{ marginBottom: 0 }}>{v.desc}</p>
             </div>
           ))}
-        </div>
+        </ScrollStagger>
       </section>
 
       {/* ── HOW IT WORKS ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">How It Works</span>
         <h2 className="engram-section-h2">From Controller to Operations in Minutes</h2>
-        <div className="engram-flow-row">
-          {steps.map((s, i) => (
-            <React.Fragment key={i}>
-              <div className="engram-flow-card">
-                <div className="engram-flow-num">{s.n}</div>
-                <h4 className="engram-flow-title">{s.title}</h4>
-                <p className="engram-flow-desc">{s.desc}</p>
-              </div>
-              {i < steps.length - 1 && (
-                <div className="engram-flow-connector" aria-hidden="true" />
-              )}
-            </React.Fragment>
-          ))}
-        </div>
+        <ScrollAnimation duration={800}>
+          <div className="engram-flow-row">
+            {steps.map((s, i) => (
+              <React.Fragment key={i}>
+                <div className="engram-flow-card">
+                  <div className="engram-flow-num">
+                    <s.icon size={20} strokeWidth={1.75} />
+                  </div>
+                  <h4 className="engram-flow-title">{s.title}</h4>
+                  <p className="engram-flow-desc">{s.desc}</p>
+                </div>
+                {i < steps.length - 1 && (
+                  <div className="engram-flow-connector" aria-hidden="true" />
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+        </ScrollAnimation>
         <div className="engram-card" style={{ marginTop: 24, display: 'flex', alignItems: 'center', gap: 12, justifyContent: 'center', textAlign: 'center', borderColor: 'rgba(37,99,235,0.3)' }}>
           <span style={{ fontSize: 14, color: 'var(--t3)' }}>
             <b style={{ color: ACCENT }}>Impact:</b> 40 engineer-hours per traditional screen → <b style={{ color: 'var(--t1)' }}>under 2 hours</b> with auto-generation.
@@ -281,7 +286,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         <p style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 28, maxWidth: 720 }}>
           By decoupling data ingestion from visual rendering, enVIEW guarantees operators never lose visibility during an alarm flood — the “flood vs. flow” architecture.
         </p>
-        <div className="engram-quad">
+        <ScrollStagger className="engram-quad" step={70}>
           {safety.map((s) => (
             <div key={s.title} className="engram-card">
               <div style={{ width: 8, height: 8, borderRadius: '50%', background: ACCENT, marginBottom: 12 }} />
@@ -289,7 +294,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
               <p style={{ fontSize: 12, color: 'var(--t4)', lineHeight: 1.65 }}>{s.desc}</p>
             </div>
           ))}
-        </div>
+        </ScrollStagger>
       </section>
 
       {/* ── EVALUATION MATRIX ── */}
@@ -331,7 +336,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
       <section className="engram-section engram-container">
         <span className="eyebrow">AI-Native</span>
         <h2 className="engram-section-h2">Industrial Intelligence, Built In</h2>
-        <div className="engram-caps-grid">
+        <ScrollStagger className="engram-caps-grid" step={80}>
           {aiFeatures.map((f) => (
             <div key={f.title} className="engram-cap-card" style={{ '--cap-color': ACCENT } as React.CSSProperties}>
               <div className="engram-cap-icon" style={{ color: ACCENT }}><f.Icon size={26} strokeWidth={1.75} /></div>
@@ -339,14 +344,14 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
               <p className="engram-cap-desc" style={{ marginBottom: 0 }}>{f.desc}</p>
             </div>
           ))}
-        </div>
+        </ScrollStagger>
       </section>
 
       {/* ── TRANSFORM / OUTCOMES ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">The Future</span>
         <h2 className="engram-section-h2">Transforming Industrial Operations</h2>
-        <div className="engram-three-col">
+        <ScrollStagger className="engram-three-col" step={90}>
           {transform.map((t) => (
             <div key={t.to} className="engram-card">
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10, fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: 15 }}>
@@ -357,7 +362,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
               <p style={{ fontSize: 13, color: 'var(--t4)', lineHeight: 1.7 }}>{t.desc}</p>
             </div>
           ))}
-        </div>
+        </ScrollStagger>
         <p style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85, maxWidth: 720, marginTop: 28 }}>
           enVIEW is not just a SCADA system. It is the operational intelligence platform that connects your physical plant to your digital future.
         </p>

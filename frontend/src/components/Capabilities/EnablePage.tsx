@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Boxes, Gauge, MonitorPlay } from 'lucide-react';
+import { Boxes, Gauge, MonitorPlay, PenTool, LayoutGrid, Cpu, FileCheck, Play, FileOutput } from 'lucide-react';
+import ScrollAnimation, { ScrollStagger } from '../ScrollAnimation';
 
 interface EnablePageProps {
   onOpenContact: (source?: string) => void;
@@ -69,12 +70,12 @@ const capabilities = [
 ];
 
 const steps = [
-  { n: '1', title: 'Draw or Import', desc: 'Draw the plant as a flowsheet, or import an existing model — YMPL, stream table, HYSYS or DWSIM.' },
-  { n: '2', title: 'Assemble M', desc: 'Unit blocks and stream coupling assemble into matrix M (with input matrix B), recomputed live on every build.' },
-  { n: '3', title: 'Compute', desc: 'Eigenvalues, RGA, condition number, eigenvalue sensitivity and the Fiedler value — derived analytically.' },
-  { n: '4', title: 'Read the Verdict', desc: 'A plain-language conclusion leads: stable / marginal / unstable, with the bottleneck and ranked changes.' },
-  { n: '5', title: 'Simulate', desc: 'Run the same plant closed-loop to confirm the predictions under realistic, time-varying conditions.' },
-  { n: '6', title: 'Review & Export', desc: 'HAZOP pre-fill, validation report, control narrative and alarm bounds for a qualified team to complete.' },
+  { icon: PenTool,    title: 'Draw or Import',   desc: 'Draw the plant as a flowsheet, or import an existing model — YMPL, stream table, HYSYS or DWSIM.' },
+  { icon: LayoutGrid, title: 'Assemble M',       desc: 'Unit blocks and stream coupling assemble into matrix M (with input matrix B), recomputed live on every build.' },
+  { icon: Cpu,        title: 'Compute',          desc: 'Eigenvalues, RGA, condition number, eigenvalue sensitivity and the Fiedler value — derived analytically.' },
+  { icon: FileCheck,  title: 'Read the Verdict', desc: 'A plain-language conclusion leads: stable / marginal / unstable, with the bottleneck and ranked changes.' },
+  { icon: Play,       title: 'Simulate',         desc: 'Run the same plant closed-loop to confirm the predictions under realistic, time-varying conditions.' },
+  { icon: FileOutput, title: 'Review & Export',  desc: 'HAZOP pre-fill, validation report, control narrative and alarm bounds for a qualified team to complete.' },
 ];
 
 const validationFeatures = [
@@ -234,7 +235,7 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
       <section className="engram-section engram-container">
         <span className="eyebrow">Key Capabilities</span>
         <h2 className="engram-section-h2">From a Matrix to a Running Plant</h2>
-        <div className="engram-caps-grid">
+        <ScrollStagger className="engram-caps-grid" step={80}>
           {capabilities.map((cap) => (
             <div key={cap.title} className="engram-cap-card" style={{ '--cap-color': cap.color } as React.CSSProperties}>
               <div className="engram-cap-icon" style={{ color: cap.color }}><cap.Icon size={26} strokeWidth={1.75} /></div>
@@ -251,32 +252,36 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
               </ul>
             </div>
           ))}
-        </div>
+        </ScrollStagger>
       </section>
 
       {/* ── HOW IT WORKS ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">How It Works</span>
         <h2 className="engram-section-h2">One Model, Two Depths</h2>
-        <div className="engram-flow-row">
-          {steps.map((s, i) => (
-            <React.Fragment key={i}>
-              <div className="engram-flow-card">
-                <div className="engram-flow-num">{s.n}</div>
-                <h4 className="engram-flow-title">{s.title}</h4>
-                <p className="engram-flow-desc">{s.desc}</p>
-              </div>
-              {i < steps.length - 1 && (
-                <div className="engram-flow-connector" aria-hidden="true" />
-              )}
-            </React.Fragment>
-          ))}
-        </div>
+        <ScrollAnimation duration={800}>
+          <div className="engram-flow-row">
+            {steps.map((s, i) => (
+              <React.Fragment key={i}>
+                <div className="engram-flow-card">
+                  <div className="engram-flow-num">
+                    <s.icon size={20} strokeWidth={1.75} />
+                  </div>
+                  <h4 className="engram-flow-title">{s.title}</h4>
+                  <p className="engram-flow-desc">{s.desc}</p>
+                </div>
+                {i < steps.length - 1 && (
+                  <div className="engram-flow-connector" aria-hidden="true" />
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+        </ScrollAnimation>
       </section>
 
       {/* ── VALIDATION + HONESTY + SECURITY ── */}
       <section className="engram-section engram-container">
-        <div className="engram-three-col">
+        <ScrollStagger className="engram-three-col" step={90}>
 
           {/* Validation */}
           <div className="engram-card">
@@ -325,7 +330,7 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
               </div>
             ))}
           </div>
-        </div>
+        </ScrollStagger>
       </section>
 
       {/* ── VISION ── */}
@@ -335,14 +340,14 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
         <p style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85, maxWidth: 680, marginBottom: 32 }}>
           Instead of plant wisdom living as informal stories, it can live as structure in the matrix that a junior engineer, a senior engineer, and a piece of software can all read. The matrix becomes the common ground for design review, for safety analysis, and for passing knowledge from one generation of engineers to the next.
         </p>
-        <div className="engram-outcomes-grid">
+        <ScrollStagger className="engram-outcomes-grid" step={50}>
           {outcomes.map((o, i) => (
             <div key={i} className="engram-outcome-pill">
               <div style={{ width: 6, height: 6, borderRadius: '50%', background: ACCENT, flexShrink: 0 }} />
               <span>{o}</span>
             </div>
           ))}
-        </div>
+        </ScrollStagger>
         <div style={{ marginTop: 40, display: 'flex', justifyContent: 'flex-end' }}>
           <button className="btn-primary" onClick={() => onOpenContact('Waitlist')}>
             Join the Waitlist →

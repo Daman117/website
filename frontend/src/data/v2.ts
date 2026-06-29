@@ -64,11 +64,27 @@ export const demos: DemoCard[] = [
     ],
     refs: ['Lipták §3.7, Table 3.7-2', 'ISA 75.01', 'ASME PTC 19.3'],
   },
+  {
+    id: 'enable', product: 'enABLE', color: '#10B981', kind: 'decision',
+    title: 'Eigenvalue-based stability verdict from one matrix',
+    steps: [
+      { label: 'Verdict', value: 'Stable — all eigenvalues negative' },
+      { label: 'Bottleneck', value: 'HX-301 — slowest mode τ = 4.2 min' },
+      { label: 'RGA pairing', value: 'T→TC-101, F→FC-202 (λ₁₁ = 0.87)' },
+    ],
+    refs: ['dx/dt = M·x + B·u', 'λ = −0.24, −1.18, −3.41'],
+  },
+  {
+    id: 'entie', product: 'enTIE', color: '#06B6D4', kind: 'transform',
+    title: 'Disconnected plant systems become one intelligence layer',
+    before: { label: 'Siloed sources', items: ['DCS live tags', 'CMMS work orders', 'ERP inventory', 'enGRAM knowledge base'] },
+    after: { label: 'Connected output', items: ['Unified plant model', 'Cross-system queries', 'Automated workflows', 'Single source of truth'] },
+  },
 ];
 
 /* §3 — "How Industrial Intelligence Is Built" workflow */
 export interface WorkStep {
-  n: string;
+  icon: string;
   title: string;
   actor: string;
   color: string;
@@ -80,22 +96,22 @@ export interface WorkStep {
 
 export const workSteps: WorkStep[] = [
   {
-    n: '01', title: 'Upload plant information', actor: 'You', color: '#1F5FE0',
+    icon: 'Upload', title: 'Upload plant information', actor: 'You', color: '#1F5FE0',
     inLabel: 'Inputs', inputs: ['P&IDs', 'Datasheets', 'Procedures', 'Loop drawings', 'Engineering docs'],
     outLabel: 'Ingested', outputs: ['Inside your network', 'No cloud upload'],
   },
   {
-    n: '02', title: 'enSTUDIO structures information', actor: 'enSTUDIO', color: '#A78BFA',
+    icon: 'FileCode', title: 'enSTUDIO structures information', actor: 'enSTUDIO', color: '#A78BFA',
     inLabel: 'Reads', inputs: ['Drawings', 'Documents'],
     outLabel: 'Produces', outputs: ['Tags', 'Equipment', 'Relationships', 'Metadata'],
   },
   {
-    n: '03', title: 'enGRAM & enGENIE build knowledge', actor: 'enGRAM · enGENIE', color: '#FDB022',
+    icon: 'Network', title: 'enGRAM & enGENIE build knowledge', actor: 'enGRAM · enGENIE', color: '#FDB022',
     inLabel: 'From', inputs: ['Structured model', 'Standards'],
     outLabel: 'Produces', outputs: ['Searchable intelligence', 'Engineering reasoning', 'Cited decisions'],
   },
   {
-    n: '04', title: 'enVIEW & enABLE operationalize it', actor: 'enVIEW · enABLE', color: '#10B981',
+    icon: 'MonitorPlay', title: 'enVIEW & enABLE operationalize it', actor: 'enVIEW · enABLE', color: '#10B981',
     inLabel: 'From', inputs: ['Knowledge base', 'Live tags'],
     outLabel: 'Produces', outputs: ['Live operations', 'Plant understanding', 'System behavior analysis'],
   },

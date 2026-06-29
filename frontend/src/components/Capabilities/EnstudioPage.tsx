@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PencilRuler, Boxes, MessageSquare, Workflow, BadgeCheck, SlidersHorizontal } from 'lucide-react';
+import { PencilRuler, Boxes, MessageSquare, Workflow, BadgeCheck, SlidersHorizontal, Upload, ScanSearch, FileOutput } from 'lucide-react';
+import ScrollAnimation, { ScrollStagger } from '../ScrollAnimation';
 
 interface EnstudioPageProps {
   onOpenContact: (source?: string) => void;
@@ -109,11 +110,11 @@ const capabilities = [
 ];
 
 const steps = [
-  { n: '1', title: 'Input', desc: 'Upload a P&ID, import a file, draw on the canvas, or describe the unit in plain language.' },
-  { n: '2', title: 'Extract', desc: 'Local AI reads the drawing with the matching skill files and returns structured topology.' },
-  { n: '3', title: 'Model', desc: 'Equipment, instruments, and connections populate one normalized internal project model.' },
-  { n: '4', title: 'Review', desc: 'Confidence-scored elements are verified against the source image and Mermaid diagram.' },
-  { n: '5', title: 'Export', desc: 'Schema-driven adapters write VIDS for enVIEW and YMPL for enableSim.' },
+  { icon: Upload,      title: 'Input',   desc: 'Upload a P&ID, import a file, draw on the canvas, or describe the unit in plain language.' },
+  { icon: ScanSearch,  title: 'Extract', desc: 'Local AI reads the drawing with the matching skill files and returns structured topology.' },
+  { icon: Boxes,       title: 'Model',   desc: 'Equipment, instruments, and connections populate one normalized internal project model.' },
+  { icon: BadgeCheck,  title: 'Review',  desc: 'Confidence-scored elements are verified against the source image and Mermaid diagram.' },
+  { icon: FileOutput,  title: 'Export',  desc: 'Schema-driven adapters write VIDS for enVIEW and YMPL for enableSim.' },
 ];
 
 const adapters = [
@@ -305,7 +306,7 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
       <section className="engram-section engram-container">
         <span className="eyebrow">Three Ways In</span>
         <h2 className="engram-section-h2">Meet Engineers Where They Are</h2>
-        <div className="engram-caps-grid">
+        <ScrollStagger className="engram-caps-grid" step={80}>
           {inputModes.map((m) => (
             <div key={m.title} className="engram-cap-card" style={{ '--cap-color': ACCENT } as React.CSSProperties}>
               <div className="engram-cap-icon" style={{ color: ACCENT }}><m.Icon size={26} strokeWidth={1.75} /></div>
@@ -322,14 +323,14 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
               </ul>
             </div>
           ))}
-        </div>
+        </ScrollStagger>
       </section>
 
       {/* ── CAPABILITIES ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">Key Capabilities</span>
         <h2 className="engram-section-h2">From Drawing to Validated Configuration</h2>
-        <div className="engram-caps-grid">
+        <ScrollStagger className="engram-caps-grid" step={80}>
           {capabilities.map((cap) => (
             <div key={cap.title} className="engram-cap-card" style={{ '--cap-color': cap.color } as React.CSSProperties}>
               <div className="engram-cap-icon" style={{ color: cap.color }}><cap.Icon size={26} strokeWidth={1.75} /></div>
@@ -346,34 +347,38 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
               </ul>
             </div>
           ))}
-        </div>
+        </ScrollStagger>
       </section>
 
       {/* ── HOW IT WORKS ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">How It Works</span>
         <h2 className="engram-section-h2">From Raw Drawing to Downstream-Ready</h2>
-        <div className="engram-flow-row">
-          {steps.map((s, i) => (
-            <React.Fragment key={i}>
-              <div className="engram-flow-card">
-                <div className="engram-flow-num">{s.n}</div>
-                <h4 className="engram-flow-title">{s.title}</h4>
-                <p className="engram-flow-desc">{s.desc}</p>
-              </div>
-              {i < steps.length - 1 && (
-                <div className="engram-flow-connector" aria-hidden="true" />
-              )}
-            </React.Fragment>
-          ))}
-        </div>
+        <ScrollAnimation duration={800}>
+          <div className="engram-flow-row">
+            {steps.map((s, i) => (
+              <React.Fragment key={i}>
+                <div className="engram-flow-card">
+                  <div className="engram-flow-num">
+                    <s.icon size={20} strokeWidth={1.75} />
+                  </div>
+                  <h4 className="engram-flow-title">{s.title}</h4>
+                  <p className="engram-flow-desc">{s.desc}</p>
+                </div>
+                {i < steps.length - 1 && (
+                  <div className="engram-flow-connector" aria-hidden="true" />
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+        </ScrollAnimation>
       </section>
 
       {/* ── OUTPUT ADAPTERS ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">Output Adapters</span>
         <h2 className="engram-section-h2">One Model, Every Target System</h2>
-        <div className="engram-three-col">
+        <ScrollStagger className="engram-three-col" step={90}>
           {adapters.map((a) => (
             <div key={a.label} className="engram-card" style={{ borderColor: `${a.color}40` }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
@@ -390,12 +395,12 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
               ))}
             </div>
           ))}
-        </div>
+        </ScrollStagger>
       </section>
 
       {/* ── SAFETY + LOCAL + BROWNFIELD ── */}
       <section className="engram-section engram-container">
-        <div className="engram-three-col">
+        <ScrollStagger className="engram-three-col" step={90}>
 
           <div className="engram-card">
             <span className="eyebrow" style={{ marginBottom: 8, display: 'block' }}>Human-in-the-Loop</span>
@@ -438,7 +443,7 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
               </div>
             ))}
           </div>
-        </div>
+        </ScrollStagger>
       </section>
 
       {/* ── VISION ── */}
@@ -448,14 +453,14 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
         <p style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85, maxWidth: 680, marginBottom: 32 }}>
           enSTUDIO collapses the configuration bottleneck. The same project model feeds operator displays and physics simulation, stays in sync through surgical patches, and turns static drawings into a single source of truth for the entire plant lifecycle.
         </p>
-        <div className="engram-outcomes-grid">
+        <ScrollStagger className="engram-outcomes-grid" step={50}>
           {outcomes.map((o, i) => (
             <div key={i} className="engram-outcome-pill">
               <div style={{ width: 6, height: 6, borderRadius: '50%', background: ACCENT, flexShrink: 0 }} />
               <span>{o}</span>
             </div>
           ))}
-        </div>
+        </ScrollStagger>
         <div style={{ marginTop: 40, display: 'flex', justifyContent: 'flex-end' }}>
           <button className="btn-primary" onClick={() => onOpenContact('Request a Demo')}>
             Request a Demo →
