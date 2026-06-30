@@ -20,7 +20,7 @@ const inputStyle: React.CSSProperties = {
   color: 'var(--t1)',
   fontFamily: 'inherit',
   fontSize: '14px',
-  transition: 'border-color .2s, box-shadow .2s',
+  transition: 'border-color .35s cubic-bezier(0.22,1,0.36,1), box-shadow .35s cubic-bezier(0.22,1,0.36,1)',
   outline: 'none',
   boxSizing: 'border-box',
   boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.65), 0 2px 10px rgba(11,37,69,0.05)',
@@ -238,7 +238,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, source, onClose }) =>
                   <div style={{ marginBottom: '18px' }}>
                     <label style={{ display: 'block', fontSize: '12px', color: 'var(--t2)', marginBottom: '8px', fontWeight: 600, letterSpacing: '.3px' }}>Name *</label>
                     <input type="text" name="name" required style={inputStyle} placeholder="Your name"
-                      onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.15)'; }}
+                      onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(37,99,235,0.14), 0 4px 16px rgba(11,37,69,0.08)'; }}
                       onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.7)'; e.target.style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,0.65), 0 2px 10px rgba(11,37,69,0.05)'; }}
                     />
                   </div>
@@ -246,7 +246,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, source, onClose }) =>
                   <div style={{ marginBottom: '18px' }}>
                     <label style={{ display: 'block', fontSize: '12px', color: 'var(--t2)', marginBottom: '8px', fontWeight: 600, letterSpacing: '.3px' }}>Email *</label>
                     <input type="email" name="email" required style={inputStyle} placeholder="your@company.com"
-                      onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.15)'; }}
+                      onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(37,99,235,0.14), 0 4px 16px rgba(11,37,69,0.08)'; }}
                       onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.7)'; e.target.style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,0.65), 0 2px 10px rgba(11,37,69,0.05)'; }}
                     />
                   </div>
@@ -254,7 +254,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, source, onClose }) =>
                   <div style={{ marginBottom: '18px' }}>
                     <label style={{ display: 'block', fontSize: '12px', color: 'var(--t2)', marginBottom: '8px', fontWeight: 600, letterSpacing: '.3px' }}>Company *</label>
                     <input type="text" name="company" required style={inputStyle} placeholder="Your company name"
-                      onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.15)'; }}
+                      onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(37,99,235,0.14), 0 4px 16px rgba(11,37,69,0.08)'; }}
                       onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.7)'; e.target.style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,0.65), 0 2px 10px rgba(11,37,69,0.05)'; }}
                     />
                   </div>
@@ -280,7 +280,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, source, onClose }) =>
                       rows={4}
                       style={{ ...inputStyle, resize: 'vertical' }}
                       placeholder="Tell us about your plant and what you're looking for..."
-                      onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.15)'; }}
+                      onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(37,99,235,0.14), 0 4px 16px rgba(11,37,69,0.08)'; }}
                       onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.7)'; e.target.style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,0.65), 0 2px 10px rgba(11,37,69,0.05)'; }}
                     />
                   </div>

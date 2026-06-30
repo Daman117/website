@@ -228,6 +228,7 @@ const floatingBadges = [
   { cls: 'animate-float',    icon: '✓', iconColor: '#10B981', title: '139 P&IDs structured',           sub: 'enSTUDIO · <2 min per drawing' },
   { cls: 'animate-float-d2', icon: '?', iconColor: '#FDB022', title: '"What is the range of FT-3045?"', sub: 'enGRAM · Cited from Rev.4 p.12' },
   { cls: 'animate-float-d4', icon: '⬛', iconColor: '#2563EB', title: 'Air-gapped · No cloud',          sub: 'All capabilities · On-premises only' },
+  { cls: 'animate-float-d6', icon: '◆', iconColor: '#0E9BC4', title: 'SCADA live in <2s',               sub: 'enVIEW · Real-time process data' },
 ];
 
 const Hero: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenContact }) => (
@@ -244,29 +245,32 @@ const Hero: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenConta
     </div>
     <div className="hero-glow1" />
     <div className="hero-glow2" />
+    <div className="hero-glow3" aria-hidden="true" />
 
     <div className="hero-layout">
       {/* Left */}
       <div className="hero-left">
-        <span className="eyebrow fu fu1">enSAR Solutions · enX Division</span>
-        <h1 className="hero-h1 fu fu2">
-          Your plant.<br />
-          <span className="light">Understood.</span>
-        </h1>
-        <p className="hero-sub fu fu3">
-          The local-first industrial intelligence platform that turns drawings, documents, SCADA
-          systems and engineering knowledge into structured, searchable plant intelligence.
-        </p>
-        <p className="hero-body fu fu4">
-          Each capability is complete on its own and more powerful together — and it all runs
-          entirely inside your network.
-        </p>
-        <div className="hero-chips fu fu4" aria-label="Platform capabilities">
-          {heroChips.map((c) => <span key={c} className="hero-chip">{c}</span>)}
-        </div>
-        <div className="hero-ctas fu fu4">
-          <button className="btn-primary" onClick={() => onOpenContact('Explore enX')}>Explore enX →</button>
-          <button className="btn-outline" onClick={() => onOpenContact('Request a Pilot')}>Request a Pilot</button>
+        <div className="hero-left-glass">
+          <span className="eyebrow fu fu1">enSAR Solutions · enX Division</span>
+          <h1 className="hero-h1 fu fu2">
+            Your plant.<br />
+            <span className="light">Understood.</span>
+          </h1>
+          <p className="hero-sub fu fu3">
+            The local-first industrial intelligence platform that turns drawings, documents, SCADA
+            systems and engineering knowledge into structured, searchable plant intelligence.
+          </p>
+          <p className="hero-body fu fu4">
+            Each capability is complete on its own and more powerful together — and it all runs
+            entirely inside your network.
+          </p>
+          <div className="hero-chips fu fu4" aria-label="Platform capabilities">
+            {heroChips.map((c) => <span key={c} className="hero-chip">{c}</span>)}
+          </div>
+          <div className="hero-ctas fu fu4">
+            <button className="btn-primary" onClick={() => onOpenContact('Explore enX')}>Explore enX →</button>
+            <button className="btn-outline" onClick={() => onOpenContact('Request a Pilot')}>Request a Pilot</button>
+          </div>
         </div>
       </div>
 
@@ -285,6 +289,10 @@ const Hero: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenConta
     </div>
 
     <Ticker />
+    {/* Absorbs any leftover space below the ticker on tall viewports (since
+        #hero is min-height:100vh) with an opaque fill, so the fixed photo
+        never shows through below the ticker line. */}
+    <div className="hero-fill" aria-hidden="true" />
   </section>
 );
 
@@ -528,7 +536,7 @@ const Platform: React.FC = () => (
             className="pipe-node hover-lift"
             style={{
               '--accent2': node.color,
-              background: 'rgba(255,255,255,0.78)',
+              background: 'rgba(255,255,255,0.94)',
               backdropFilter: 'blur(14px) saturate(150%)',
               WebkitBackdropFilter: 'blur(14px) saturate(150%)',
             } as React.CSSProperties}
@@ -831,19 +839,24 @@ const CTA: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenContac
 const LandingPage: React.FC<LandingPageProps> = ({ onOpenContact }) => (
   <main>
     <Hero onOpenContact={onOpenContact} />
-    <ProductDemo />
-    <Stats />
-    <HowItWorks />
-    <CapGrid />
-    <Industries />
-    <Platform />
-    <Architecture />
-    <BusinessImpact />
-    <Security />
-    <CaseStudies />
-    <Resources onOpenContact={onOpenContact} />
-    <Principles />
-    <CTA onOpenContact={onOpenContact} />
+    {/* Opaque from here down — the hero's photo is pinned to the viewport
+        (position: fixed), so everything below needs a solid background to
+        cover it as it scrolls up, instead of letting it bleed through. */}
+    <div className="lp-body">
+      <ProductDemo />
+      <Stats />
+      <HowItWorks />
+      <CapGrid />
+      <Industries />
+      <Platform />
+      <Architecture />
+      <BusinessImpact />
+      <Security />
+      <CaseStudies />
+      <Resources onOpenContact={onOpenContact} />
+      <Principles />
+      <CTA onOpenContact={onOpenContact} />
+    </div>
   </main>
 );
 
