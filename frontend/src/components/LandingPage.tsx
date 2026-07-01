@@ -289,10 +289,6 @@ const Hero: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenConta
     </div>
 
     <Ticker />
-    {/* Absorbs any leftover space below the ticker on tall viewports (since
-        #hero is min-height:100vh) with an opaque fill, so the fixed photo
-        never shows through below the ticker line. */}
-    <div className="hero-fill" aria-hidden="true" />
   </section>
 );
 

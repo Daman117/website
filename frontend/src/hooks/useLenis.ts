@@ -2,6 +2,11 @@ import { useEffect } from 'react';
 import Lenis from 'lenis';
 
 let lenisInstance: Lenis | null = null;
+let modalOpen = false;
+
+export function setLenisModalOpen(open: boolean) {
+  modalOpen = open;
+}
 
 export function useLenis() {
   useEffect(() => {
@@ -10,6 +15,7 @@ export function useLenis() {
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       touchMultiplier: 2,
+      prevent: () => modalOpen,
     });
 
     lenisInstance = lenis;

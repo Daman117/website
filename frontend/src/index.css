@@ -491,7 +491,7 @@ img {
   align-items: center;
   justify-content: space-between;
   padding: 0 28px;
-  background: rgba(255, 255, 255, 0.97);
+  background: rgba(255, 255, 255, 0.72);
   -webkit-backdrop-filter: var(--card-blur);
   backdrop-filter: var(--card-blur);
   border: 1px solid var(--card-border);
@@ -945,20 +945,6 @@ hr.rule {
   padding: clamp(58px, 6vw, 58px) var(--gutter) 0;
   position: relative;
   overflow: hidden;
-  /* flex column so .hero-fill can grow to absorb any leftover space below
-     the ticker on tall viewports, instead of leaving it transparent */
-  display: flex;
-  flex-direction: column;
-}
-/* Opaque spacer — grows to fill whatever's left of #hero's min-height:100vh
-   below the ticker, so the fixed photo can't show through there */
-.hero-fill {
-  flex: 1 0 auto;
-  min-height: clamp(60px, 6vw, 80px);
-  background: var(--body-bg);
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
 }
 #hero::before {
   content: "";
@@ -971,8 +957,8 @@ hr.rule {
   pointer-events: none;
   background-image: url("/bg-image.png");
   /* full-bleed photo (not a transparent-bg icon render) — cover the whole hero */
-  background-position: center right;
-  background-size: auto 87vh;
+  background-position: top right;
+  background-size: auto 93.5vh;
   background-repeat: no-repeat;
   /* slight opacity so the photo settles into the page instead of sitting
      at full, flat-on-top intensity */

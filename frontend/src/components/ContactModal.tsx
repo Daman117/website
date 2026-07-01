@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { CircleCheck, X, ChevronDown } from 'lucide-react';
+import { setLenisModalOpen } from '../hooks/useLenis';
 
 interface ContactModalProps {
   open: boolean;
@@ -119,12 +120,15 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, source, onClose }) =>
       if (e.key === 'Escape') onClose();
     };
     if (open) {
+      setLenisModalOpen(true);
       document.body.style.overflow = 'hidden';
       window.addEventListener('keydown', onKey);
     } else {
+      setLenisModalOpen(false);
       document.body.style.overflow = '';
     }
     return () => {
+      setLenisModalOpen(false);
       document.body.style.overflow = '';
       window.removeEventListener('keydown', onKey);
     };
@@ -184,13 +188,14 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, source, onClose }) =>
         style={{
           minHeight: '100%',
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'flex-start',
           justifyContent: 'center',
           padding: '40px 20px',
         }}
         onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
       >
         <div style={{
+          margin: 'auto',
           background: 'linear-gradient(165deg,#FCFDFF 0%,#E9EFF7 100%)',
           border: '1px solid rgba(15,23,42,0.07)',
           borderRadius: '24px',
