@@ -14,6 +14,8 @@ import EngeniePage from './components/Capabilities/EngeniePage';
 import EnviewPage from './components/Capabilities/EnviewPage';
 import EnablePage from './components/Capabilities/EnablePage';
 import AboutPage from './components/AboutPage';
+import PlatformPage from './components/PlatformPage';
+import PrinciplesPage from './components/PrinciplesPage';
 
 function HomePage({
   onOpenContact,
@@ -79,6 +81,8 @@ function AnimatedRoutes({
             element={<EnablePage onOpenContact={onOpenContact} />}
           />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/platform" element={<PlatformPage />} />
+          <Route path="/principles" element={<PrinciplesPage />} />
           <Route
             path="/products/:id"
             element={

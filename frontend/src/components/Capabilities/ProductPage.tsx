@@ -61,6 +61,7 @@ interface ProductPageProps {
 
 const PerfRight: React.FC<{ cap: Cap }> = () => (
   <div>
+    <div className="perf-table-wrap">
     <table className="perf-table">
       <thead>
         <tr>
@@ -78,6 +79,7 @@ const PerfRight: React.FC<{ cap: Cap }> = () => (
         <tr><td>Licensing</td><td className="ours">from $2,500</td><td className="theirs">$100K+</td></tr>
       </tbody>
     </table>
+    </div>
     <div className="price-grid">
       <div className="price-card">
         <div className="price-tier">Starter</div>

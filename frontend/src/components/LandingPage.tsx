@@ -9,6 +9,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useScroll, useTransform, motion, AnimatePresence } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 
 import {
   heroChips,
@@ -198,7 +199,6 @@ const CapCard: React.FC<{ cap: Cap }> = ({ cap }) => {
     >
       <div className="cap-card-top">
         <div className="cap-card-name-row">
-          <div className="cap-card-dot" style={{ background: cap.color }} />
           <span className="cap-card-name">{cap.name}</span>
         </div>
         <span
@@ -342,7 +342,6 @@ const ProductDemo: React.FC = () => {
                   window.scrollTo({ top, behavior: 'smooth' });
                 }}
               >
-                <span className="demo-step-dot" style={{ background: i === activeIndex ? d.color : undefined }} />
                 <span className="demo-step-product" style={{ color: i === activeIndex ? d.color : undefined }}>
                   {d.product}
                 </span>
@@ -372,7 +371,6 @@ const ProductDemo: React.FC = () => {
               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             >
               <div className="demo-card-head">
-                <span className="demo-card-dot" style={{ background: active.color }} />
                 <span className="demo-card-product" style={{ color: active.color }}>{active.product}</span>
                 <span className="demo-card-title">{active.title}</span>
               </div>
@@ -415,51 +413,66 @@ const Stats: React.FC = () => (
 // ─────────────────────────────────────────────────────────────────
 // ── SECTION 4: HOW IT WORKS
 // ─────────────────────────────────────────────────────────────────
-const HowItWorks: React.FC = () => (
-  <section id="how">
-    <div className="section">
-      <ScrollAnimation>
-        <span className="eyebrow">The workflow</span>
-        <h2 className="display section-title">How Industrial Intelligence Is Built</h2>
-        <p className="section-lead">
-          Four steps from the documents you already have to live, defensible plant intelligence —
-          all inside your network.
-        </p>
-      </ScrollAnimation>
+const HowItWorks: React.FC = () => {
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
+  const STEP = 1000;
 
-      <ScrollStagger className="how-grid" step={120}>
-        {workSteps.map((s, i) => (
-          <div key={s.icon} className="how-step hover-lift" style={{ '--accent': s.color } as React.CSSProperties}>
-            <div className="how-step-top">
-              <span className="how-num">
-                <Icon name={s.icon} size={22} strokeWidth={1.75} />
-              </span>
-              {i < workSteps.length - 1 && <span className="how-connector" aria-hidden="true" />}
-            </div>
-            <span className="how-actor" style={{ color: s.color }}>{s.actor}</span>
-            <h3 className="how-title">{s.title}</h3>
-            <div className="how-io">
-              <div className="how-io-label">{s.inLabel}</div>
-              <div className="how-tags">
-                {s.inputs.map((t) => <span key={t} className="how-tag">{t}</span>)}
+  return (
+    <section id="how">
+      <div className="section">
+        <ScrollAnimation delay={500}>
+          <span className="eyebrow">The workflow</span>
+          <h2 className="display section-title">How Industrial Intelligence Is Built</h2>
+          <p className="section-lead">
+            Four steps from the documents you already have to live, defensible plant intelligence —
+            all inside your network.
+          </p>
+        </ScrollAnimation>
+
+        <div className="how-grid" ref={ref}>
+          {workSteps.map((s, i) => (
+            <div
+              key={s.icon}
+              className="how-step hover-lift"
+              style={{
+                '--accent': s.color,
+                opacity: inView ? 1 : 0.15,
+                filter: inView ? 'none' : 'grayscale(0.8)',
+                transition: `opacity 700ms ease, filter 700ms ease`,
+                transitionDelay: inView ? `${i * STEP}ms` : '0ms',
+              } as React.CSSProperties}
+            >
+              <div className="how-step-top">
+                <span className="how-num">
+                  <Icon name={s.icon} size={22} strokeWidth={1.75} />
+                </span>
+                {i < workSteps.length - 1 && <span className="how-connector" aria-hidden="true" />}
+              </div>
+              <span className="how-actor" style={{ color: s.color }}>{s.actor}</span>
+              <h3 className="how-title">{s.title}</h3>
+              <div className="how-io">
+                <div className="how-io-label">{s.inLabel}</div>
+                <div className="how-tags">
+                  {s.inputs.map((t) => <span key={t} className="how-tag">{t}</span>)}
+                </div>
+              </div>
+              <div className="how-io">
+                <div className="how-io-label" style={{ color: s.color }}>{s.outLabel}</div>
+                <div className="how-tags">
+                  {s.outputs.map((t) => (
+                    <span key={t} className="how-tag how-tag-out" style={{ borderColor: `${s.color}55`, color: s.color }}>
+                      {t}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
-            <div className="how-io">
-              <div className="how-io-label" style={{ color: s.color }}>{s.outLabel}</div>
-              <div className="how-tags">
-                {s.outputs.map((t) => (
-                  <span key={t} className="how-tag how-tag-out" style={{ borderColor: `${s.color}55`, color: s.color }}>
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        ))}
-      </ScrollStagger>
-    </div>
-  </section>
-);
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 
 // ─────────────────────────────────────────────────────────────────
 // ── SECTION 5: CAPABILITIES (CAP GRID)
@@ -512,45 +525,72 @@ const Industries: React.FC = () => (
 // ─────────────────────────────────────────────────────────────────
 // ── SECTION 7: PLATFORM
 // ─────────────────────────────────────────────────────────────────
-const Platform: React.FC = () => (
-  <section id="platform">
-    <div className="section">
-      <ScrollAnimation>
-        <span className="eyebrow">Platform</span>
-        <h2
-          className="display"
-          style={{ fontSize: 'clamp(32px,3.5vw,44px)', fontWeight: 700, letterSpacing: '-1.5px', marginBottom: '52px' }}
-        >
-          How capabilities connect
-        </h2>
-      </ScrollAnimation>
+export const Platform: React.FC = () => {
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
+  const STEP = 1000;
+  const CARD_DUR = 550;
+  const CONN_DUR = 280;
 
-      <ScrollStagger className="platform-grid" step={90}>
-        {pipeNodes.map((node) => (
-          <div
-            key={node.cap}
-            className="pipe-node hover-lift"
-            style={{
-              '--accent2': node.color,
-              background: 'rgba(255,255,255,0.94)',
-              backdropFilter: 'blur(14px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(14px) saturate(150%)',
-            } as React.CSSProperties}
+  return (
+    <section id="platform">
+      <div className="section">
+        <ScrollAnimation delay={500}>
+          <span className="eyebrow">Platform</span>
+          <h2
+            className="display"
+            style={{ fontSize: 'clamp(32px,3.5vw,44px)', fontWeight: 700, letterSpacing: '-1.5px', marginBottom: '52px' }}
           >
-            <div className="pipe-cap" style={{ color: node.color }}>{node.cap}</div>
-            <div className="pipe-sub">{node.label}</div>
-            <div className="pipe-desc">{node.sub}</div>
-          </div>
-        ))}
-      </ScrollStagger>
-    </div>
-  </section>
-);
+            How capabilities connect
+          </h2>
+        </ScrollAnimation>
+
+        <div className="platform-flex" ref={ref}>
+          {pipeNodes.map((node, i) => (
+            <React.Fragment key={node.cap}>
+              {/* Card grows from its left edge — looks like it slides out from previous card */}
+              <div
+                className="pipe-node hover-lift"
+                style={{
+                  '--accent2': node.color,
+                  background: 'rgba(255,255,255,0.94)',
+                  backdropFilter: 'blur(14px) saturate(150%)',
+                  WebkitBackdropFilter: 'blur(14px) saturate(150%)',
+                  transformOrigin: 'left center',
+                  transform: inView ? 'scaleX(1)' : 'scaleX(0)',
+                  opacity: inView ? 1 : 0,
+                  transition: `transform ${CARD_DUR}ms cubic-bezier(0.4,0,0.2,1), opacity ${CARD_DUR}ms ease`,
+                  transitionDelay: inView ? `${i * STEP}ms` : '0ms',
+                } as React.CSSProperties}
+              >
+                <div className="pipe-cap" style={{ color: node.color }}>{node.cap}</div>
+                <div className="pipe-sub">{node.label}</div>
+                <div className="pipe-desc">{node.sub}</div>
+              </div>
+              {/* Connector appears after card i settles, just before card i+1 starts */}
+              {i < pipeNodes.length - 1 && (
+                <div
+                  className="pipe-connector"
+                  style={{
+                    opacity: inView ? 1 : 0,
+                    transform: inView ? 'scaleX(1)' : 'scaleX(0)',
+                    transformOrigin: 'left center',
+                    transition: `opacity ${CONN_DUR}ms ease, transform ${CONN_DUR}ms ease`,
+                    transitionDelay: inView ? `${i * STEP + STEP * 0.75}ms` : '0ms',
+                  } as React.CSSProperties}
+                />
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 
 // ─────────────────────────────────────────────────────────────────
 // ── SECTION 8: ARCHITECTURE
 // ─────────────────────────────────────────────────────────────────
-const Architecture: React.FC = () => (
+export const Architecture: React.FC = () => (
   <section id="architecture">
     <div className="section">
       <ScrollAnimation>
@@ -711,22 +751,26 @@ const CaseStudies: React.FC = () => (
             className="case-card hover-lift"
             style={{ '--accent': c.color } as React.CSSProperties}
           >
-            <span
-              className="case-tag"
-              style={{ color: c.color, borderColor: `${c.color}55`, background: `${c.color}14` }}
-            >
-              {c.tag}
-            </span>
-            <h3 className="case-title">{c.title}</h3>
-            <div className="case-step">
-              <span className="case-step-label">Problem</span>
-              <p className="case-step-text">{c.problem}</p>
+            <div className="case-top">
+              <span
+                className="case-tag"
+                style={{ color: c.color, borderColor: `${c.color}55`, background: `${c.color}14` }}
+              >
+                {c.tag}
+              </span>
+              <h3 className="case-title">{c.title}</h3>
             </div>
-            <div className="case-step">
-              <span className="case-step-label" style={{ color: c.color }}>Solution</span>
-              <p className="case-step-text">{c.solution}</p>
+            <div className="case-bottom">
+              <div className="case-step">
+                <span className="case-step-label">Problem</span>
+                <p className="case-step-text">{c.problem}</p>
+              </div>
+              <div className="case-step">
+                <span className="case-step-label" style={{ color: c.color }}>Solution</span>
+                <p className="case-step-text">{c.solution}</p>
+              </div>
             </div>
-            <div className="case-step case-result">
+            <div className="case-result">
               <span className="case-step-label" style={{ color: c.color }}>Result</span>
               <p className="case-step-text">{c.result}</p>
             </div>
@@ -774,7 +818,7 @@ const Resources: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpen
 // ─────────────────────────────────────────────────────────────────
 // ── SECTION 13: PRINCIPLES
 // ─────────────────────────────────────────────────────────────────
-const Principles: React.FC = () => (
+export const Principles: React.FC = () => (
   <section id="principles">
     <div className="section" style={{ paddingBottom: '8px' }}>
       <ScrollAnimation>

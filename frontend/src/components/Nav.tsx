@@ -66,74 +66,72 @@ const Nav: React.FC<NavProps> = ({ onOpenMobile, onOpenContact }) => {
         </div>
       </button>
 
-      <ul role="list" className="nav-links">
-        {/* Products with controlled dropdown — closes on click */}
-        <li
-          className={`nav-dropdown-wrap${dropdownOpen ? ' open' : ''}`}
-          onMouseEnter={() => setDropdownOpen(true)}
-          onMouseLeave={closeDropdown}
-        >
-          <a
-            href="#capabilities"
-            className={activeSection === 'capabilities' ? 'nav-active' : ''}
-            onClick={closeDropdown}
-            onMouseEnter={setUnderlineOrigin}
-            onMouseLeave={setUnderlineOrigin}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginLeft: 'auto', marginRight: '7%' }}>
+        <ul role="list" className="nav-links">
+          {/* Products with controlled dropdown — closes on click */}
+          <li
+            className={`nav-dropdown-wrap${dropdownOpen ? ' open' : ''}`}
+            onMouseEnter={() => setDropdownOpen(true)}
+            onMouseLeave={closeDropdown}
           >
-            Products
-          </a>
-          <div className="nav-dropdown">
-            <div className="nav-dropdown-inner">
-              {PRODUCTS.map((p) => (
-                <Link
-                  key={p.id}
-                  to={`/products/${p.id}`}
-                  className="nav-dropdown-item"
-                  onClick={closeDropdown}
-                >
-                  <span className="nav-dropdown-name">{p.name}</span>
-                  <span className="nav-dropdown-cat">{p.cat}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </li>
-
-        {['platform','principles'].map((id) => (
-          <li key={id}>
             <a
-              href={`#${id}`}
-              className={activeSection === id ? 'nav-active' : ''}
+              href="#capabilities"
+              className={activeSection === 'capabilities' ? 'nav-active' : ''}
+              onClick={closeDropdown}
               onMouseEnter={setUnderlineOrigin}
               onMouseLeave={setUnderlineOrigin}
             >
-              {id.charAt(0).toUpperCase() + id.slice(1)}
+              Products
+            </a>
+            <div className="nav-dropdown">
+              <div className="nav-dropdown-inner">
+                {PRODUCTS.map((p) => (
+                  <Link
+                    key={p.id}
+                    to={`/products/${p.id}`}
+                    className="nav-dropdown-item"
+                    onClick={closeDropdown}
+                  >
+                    <span className="nav-dropdown-name">{p.name}</span>
+                    <span className="nav-dropdown-cat">{p.cat}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </li>
+
+          <li>
+            <Link
+              to="/platform"
+              className={location.pathname === '/platform' ? 'nav-active' : ''}
+              onMouseEnter={setUnderlineOrigin as unknown as React.MouseEventHandler<HTMLAnchorElement>}
+              onMouseLeave={setUnderlineOrigin as unknown as React.MouseEventHandler<HTMLAnchorElement>}
+            >
+              Platform
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/about"
+              onMouseEnter={setUnderlineOrigin as unknown as React.MouseEventHandler<HTMLAnchorElement>}
+              onMouseLeave={setUnderlineOrigin as unknown as React.MouseEventHandler<HTMLAnchorElement>}
+            >
+              About Us
+            </Link>
+          </li>
+
+          <li>
+            <a
+              href="#contact"
+              onClick={(e) => { e.preventDefault(); onOpenContact('Header'); }}
+              onMouseEnter={setUnderlineOrigin}
+              onMouseLeave={setUnderlineOrigin}
+            >
+              Contact Us
             </a>
           </li>
-        ))}
-        <li>
-          <Link
-            to="/about"
-            onMouseEnter={setUnderlineOrigin as unknown as React.MouseEventHandler<HTMLAnchorElement>}
-            onMouseLeave={setUnderlineOrigin as unknown as React.MouseEventHandler<HTMLAnchorElement>}
-          >
-            About Us
-          </Link>
-        </li>
+        </ul>
 
-        <li>
-          <a
-            href="#contact"
-            onClick={(e) => { e.preventDefault(); onOpenContact('Header'); }}
-            onMouseEnter={setUnderlineOrigin}
-            onMouseLeave={setUnderlineOrigin}
-          >
-            Contact Us
-          </a>
-        </li>
-      </ul>
-
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
         <button
           className="nav-hamburger"
           id="hamburger"

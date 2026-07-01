@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface MobileNavProps {
   open: boolean;
@@ -19,8 +20,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ open, onClose, onOpenContact }) =
         </svg>
       </button>
       <a href="#capabilities" className="mobile-nav-link" onClick={handleLink}>Products</a>
-      <a href="#platform" className="mobile-nav-link" onClick={handleLink}>Platform</a>
-      <a href="#principles" className="mobile-nav-link" onClick={handleLink}>Principles</a>
+      <Link to="/platform" className="mobile-nav-link" onClick={handleLink}>Platform</Link>
       <a href="/about" className="mobile-nav-link" onClick={handleLink}>About Us</a>
       <button className="btn-primary mobile-cta" onClick={() => { onClose(); onOpenContact(); }}>
         Request Demo
