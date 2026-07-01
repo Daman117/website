@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Logo from './Logo';
 import { useNavScroll } from '../hooks/useNavScroll';
+import { getLenis } from '../hooks/useLenis';
 
 interface NavProps {
   onOpenMobile: () => void;
@@ -25,11 +26,18 @@ const Nav: React.FC<NavProps> = ({ onOpenMobile, onOpenContact }) => {
   const location = useLocation();
 
   const handleLogoClick = () => {
+    const lenis = getLenis();
     if (location.pathname === '/') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (lenis) lenis.scrollTo(0, { duration: 1 });
+      else window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
+      // Logo always means "go to the very top of home" — drop any saved
+      // scroll position so ScrollRestorer doesn't jump back down to where
+      // the user left off (that restore is only for the browser back button).
+      sessionStorage.removeItem('homeScrollY');
       navigate('/');
-      window.scrollTo({ top: 0, behavior: 'instant' });
+      if (lenis) lenis.scrollTo(0, { immediate: true });
+      else window.scrollTo({ top: 0, behavior: 'instant' });
     }
   };
 

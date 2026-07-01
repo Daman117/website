@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { useLenis } from './hooks/useLenis';
+import { useLenis, getLenis } from './hooks/useLenis';
 import Nav from './components/Nav';
 import MobileNav from './components/MobileNav';
 import LandingPage from './components/LandingPage';
@@ -25,12 +25,11 @@ function HomePage({
   return <LandingPage onOpenContact={onOpenContact} />;
 }
 
+// Opacity-only — no translateY. A `transform` on this wrapper turns any
+// `background-attachment: fixed` hero inside it (enVIEW, Landing) into a
+// fixed-relative-to-this-element background for the transition's duration,
+// which the browser renders as a blurry/glitchy repaint while it animates.
 const pageVariants = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  exit:    { opacity: 0, y: -12 },
-};
-const reducedVariants = {
   initial: { opacity: 0 },
   animate: { opacity: 1 },
   exit:    { opacity: 0 },
@@ -48,7 +47,7 @@ function AnimatedRoutes({
     <AnimatePresence mode="wait">
       <motion.div
         key={location.pathname}
-        variants={reduce ? reducedVariants : pageVariants}
+        variants={pageVariants}
         initial="initial"
         animate="animate"
         exit="exit"
@@ -95,6 +94,18 @@ function AnimatedRoutes({
   );
 }
 
+// Jumps to a scroll position without any easing — bypassing Lenis's own
+// animation loop, which otherwise fights a plain window.scrollTo() and
+// visibly glides from the old position instead of snapping instantly.
+function jumpScrollTo(top: number) {
+  const lenis = getLenis();
+  if (lenis) {
+    lenis.scrollTo(top, { immediate: true });
+  } else {
+    window.scrollTo({ top, behavior: 'instant' });
+  }
+}
+
 function ScrollRestorer() {
   const location = useLocation();
   const prevPath = useRef('/');
@@ -111,12 +122,13 @@ function ScrollRestorer() {
       if (savedY) {
         sessionStorage.removeItem('homeScrollY');
         setTimeout(() => {
-          window.scrollTo({ top: parseInt(savedY, 10), behavior: 'instant' });
+          jumpScrollTo(parseInt(savedY, 10));
         }, 420);
       }
     } else {
-      // Any product page — start at top
-      window.scrollTo(0, 0);
+      // Any product page — start at top, instantly, before the page
+      // transition plays (no visible scroll-down-to-up glide)
+      jumpScrollTo(0);
     }
 
     prevPath.current = location.pathname;
