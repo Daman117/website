@@ -120,9 +120,7 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
 
       {/* ── BACK + PRODUCT NAME ── */}
       <div style={{ paddingTop: 100, paddingLeft: 'var(--gutter)', paddingRight: 'var(--gutter)' }}>
-        <button className="product-back-btn" onClick={() => navigate('/')}>
-          ← Back
-        </button>
+
         <div style={{ marginTop: -20, display: 'flex', justifyContent: 'center' }}>
           <div style={{
             fontFamily: "'Space Grotesk','DM Sans',sans-serif",

@@ -3384,6 +3384,15 @@ button.foot-link {
 }
 @media (prefers-reduced-motion: reduce) { .demo-sticky { position: relative; height: auto; } }
 
+/* ── enVIEW Three Views hover cards ───────────────────────────── */
+.enview-view-card { position: relative; overflow: hidden; height: 280px; cursor: pointer; padding: 0 !important; }
+.enview-view-card-img { position: absolute; inset: 0; background-image: var(--card-bg, url('/enview-views-bg.png')); background-size: cover; background-position: center; transition: transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94); }
+.enview-view-card:hover .enview-view-card-img { transform: scale(1.07); }
+.enview-view-card-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.50) 100%); pointer-events: none; }
+.enview-view-card-header { position: absolute; top: 0; left: 0; right: 0; padding: 16px 18px; display: flex; align-items: center; gap: 8px; background: linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 100%); z-index: 2; }
+.enview-view-card-text { position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; transform: translateY(105%); transition: transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94); z-index: 2; }
+.enview-view-card:hover .enview-view-card-text { transform: translateY(0); }
+
 /* ── How It Works ──────────────────────────────────────────────── */
 .how-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; align-items: stretch; }
 @media (max-width: 980px) { .how-grid { grid-template-columns: repeat(2, 1fr); } }

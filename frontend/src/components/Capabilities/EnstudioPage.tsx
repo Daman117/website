@@ -197,9 +197,7 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
 
       {/* ── BACK + PRODUCT NAME ── */}
       <div style={{ paddingTop: 100, paddingLeft: 'var(--gutter)', paddingRight: 'var(--gutter)' }}>
-        <button className="product-back-btn" onClick={() => navigate('/')}>
-          ← Back
-        </button>
+
         <div style={{ marginTop: -20, display: 'flex', justifyContent: 'center' }}>
           <div style={{
             fontFamily: "'Space Grotesk','DM Sans',sans-serif",
@@ -236,6 +234,96 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
         </div>
       </section>
 
+      {/* ── VISUAL: P&ID → Structured Model ── */}
+      <div className="engram-container" style={{ marginBottom: 48 }}>
+        <div style={{
+          background: 'linear-gradient(135deg,#f5f3ff 0%,#ede9fe 100%)',
+          border: `1px solid ${ACCENT}33`,
+          borderRadius: 20,
+          padding: 'clamp(20px,4vw,48px)',
+          boxShadow: `0 24px 64px rgba(167,139,250,0.12)`,
+        }}>
+          <div style={{ textAlign: 'center', marginBottom: 24 }}>
+            <span style={{ fontSize: 11, fontWeight: 700, color: ACCENT, letterSpacing: 1 }}>HOW enSTUDIO WORKS</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(12px,3vw,32px)', flexWrap: 'wrap' }}>
+
+            {/* LEFT — P&ID Schematic SVG */}
+            <div style={{ flex: '1 1 260px' }}>
+              <div style={{ fontSize: 10, fontWeight: 700, color: '#6b7280', letterSpacing: 1, marginBottom: 8 }}>INPUT — P&ID DRAWING</div>
+              <svg viewBox="0 0 280 200" style={{ width: '100%', height: 'auto', background: 'white', borderRadius: 12, border: `1px solid ${ACCENT}22`, display: 'block' }}>
+                {/* Vessel T-101 */}
+                <ellipse cx={50} cy={90} rx={26} ry={40} fill="none" stroke={ACCENT} strokeWidth={1.5}/>
+                <text x={50} y={142} textAnchor="middle" fontSize={8} fill="#9ca3af" fontFamily="monospace">T-101</text>
+                {/* Pipe */}
+                <line x1={76} y1={90} x2={115} y2={90} stroke="#374151" strokeWidth={2}/>
+                {/* FT circle */}
+                <circle cx={96} cy={72} r={14} fill="white" stroke={ACCENT} strokeWidth={1.5}/>
+                <text x={96} y={69} textAnchor="middle" fontSize={7} fill={ACCENT} fontWeight="700">FT</text>
+                <text x={96} y={79} textAnchor="middle" fontSize={6} fill="#9ca3af">1001</text>
+                <line x1={96} y1={86} x2={96} y2={90} stroke="#374151" strokeWidth={1}/>
+                {/* Valve */}
+                <polygon points="115,83 133,90 115,97" fill="none" stroke="#374151" strokeWidth={1.5}/>
+                <polygon points="151,83 133,90 151,97" fill="none" stroke="#374151" strokeWidth={1.5}/>
+                <line x1={133} y1={83} x2={133} y2={72} stroke="#374151" strokeWidth={1.5}/>
+                {/* Pipe continues */}
+                <line x1={151} y1={90} x2={196} y2={90} stroke="#374151" strokeWidth={2}/>
+                {/* Vessel V-201 */}
+                <rect x={196} y={62} width={40} height={56} rx={5} fill="none" stroke={ACCENT} strokeWidth={1.5}/>
+                <text x={216} y={130} textAnchor="middle" fontSize={8} fill="#9ca3af" fontFamily="monospace">V-201</text>
+                {/* PT circle */}
+                <circle cx={216} cy={50} r={13} fill="white" stroke="#60a5fa" strokeWidth={1.5}/>
+                <text x={216} y={47} textAnchor="middle" fontSize={7} fill="#60a5fa" fontWeight="700">PT</text>
+                <text x={216} y={57} textAnchor="middle" fontSize={6} fill="#9ca3af">2001</text>
+                <line x1={216} y1={63} x2={216} y2={62} stroke="#374151" strokeWidth={1}/>
+                {/* TT circle */}
+                <line x1={236} y1={90} x2={260} y2={90} stroke="#374151" strokeWidth={2}/>
+                <circle cx={248} cy={74} r={13} fill="white" stroke="#34d399" strokeWidth={1.5}/>
+                <text x={248} y={71} textAnchor="middle" fontSize={7} fill="#34d399" fontWeight="700">TT</text>
+                <text x={248} y={81} textAnchor="middle" fontSize={6} fill="#9ca3af">3001</text>
+                <line x1={248} y1={87} x2={248} y2={90} stroke="#374151" strokeWidth={1}/>
+                {/* Footer note */}
+                <text x={8} y={165} fontSize={7} fill="#d1d5db">Sheet 3 of 14 · Rev.C · 2019</text>
+                <text x={8} y={177} fontSize={7} fill="#d1d5db">Scanned PDF · 300 dpi</text>
+              </svg>
+            </div>
+
+            {/* CENTER arrow */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+              <div style={{ fontSize: 9, fontWeight: 800, color: ACCENT, letterSpacing: 1, textAlign: 'center' }}>enSTUDIO<br/>AI</div>
+              <div style={{ fontSize: 32, color: ACCENT, lineHeight: 1 }}>→</div>
+            </div>
+
+            {/* RIGHT — Extracted tags */}
+            <div style={{ flex: '1 1 240px' }}>
+              <div style={{ fontSize: 10, fontWeight: 700, color: '#6b7280', letterSpacing: 1, marginBottom: 8 }}>OUTPUT — STRUCTURED MODEL</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+                {[
+                  { tag: 'FT-1001', type: 'Flow Transmitter',      range: '0–500 m³/h',  conf: 'HIGH', c: '#10b981' },
+                  { tag: 'PT-2001', type: 'Pressure Transmitter',   range: '0–10 bar',    conf: 'HIGH', c: '#10b981' },
+                  { tag: 'TT-3001', type: 'Temperature Element',    range: '0–200 °C',    conf: 'MED',  c: '#f59e0b' },
+                  { tag: 'V-201',   type: 'Vessel',                 range: 'Cap: 12 m³',  conf: 'HIGH', c: '#10b981' },
+                ].map((row) => (
+                  <div key={row.tag} style={{
+                    background: 'white', borderRadius: 9, padding: '8px 12px',
+                    border: `1px solid ${ACCENT}22`,
+                    display: 'flex', alignItems: 'center', gap: 8,
+                  }}>
+                    <code style={{ fontSize: 10, fontWeight: 700, color: ACCENT, minWidth: 64, flexShrink: 0 }}>{row.tag}</code>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: 11, color: '#374151', fontWeight: 600 }}>{row.type}</div>
+                      <div style={{ fontSize: 9, color: '#9ca3af' }}>{row.range}</div>
+                    </div>
+                    <span style={{ fontSize: 8, fontWeight: 700, padding: '2px 7px', borderRadius: 5, background: row.c + '18', color: row.c, flexShrink: 0 }}>{row.conf}</span>
+                  </div>
+                ))}
+                <div style={{ fontSize: 10, color: '#9ca3af', marginTop: 2, textAlign: 'right' }}>Exports → VIDS · YMPL · enVIEW</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* ── OVERVIEW ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">Overview</span>
@@ -249,6 +337,76 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
           </p>
         </div>
       </section>
+
+      {/* ── VISUAL: Before / After comparison ── */}
+      <div className="engram-container" style={{ marginBottom: 0 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+
+          {/* Before */}
+          <div style={{ background: '#f9fafb', borderRadius: 16, border: '1px solid var(--border)', padding: 20, display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div style={{ fontSize: 10, fontWeight: 700, color: '#6b7280', letterSpacing: 1 }}>BEFORE — MANUAL REVIEW</div>
+            <svg viewBox="0 0 260 180" style={{ width: '100%', height: 'auto', display: 'block' }}>
+              {/* Stacked document icons */}
+              {[0,6,12].map((offset) => (
+                <rect key={offset} x={20+offset} y={20+offset} width={80} height={110} rx={4} fill="white" stroke="#d1d5db" strokeWidth={1.2}/>
+              ))}
+              {/* Lines on doc */}
+              {[40,52,64,76,88,100].map((y) => (
+                <line key={y} x1={28} y1={y} x2={88} y2={y} stroke="#e5e7eb" strokeWidth={1.5}/>
+              ))}
+              <text x={32} y={36} fontSize={7} fill="#9ca3af">P&ID-003 Rev.B</text>
+              {/* Arrow */}
+              <text x={120} y={95} fontSize={28} fill="#d1d5db" textAnchor="middle">↓</text>
+              {/* Person icon */}
+              <circle cx={200} cy={55} r={16} fill="#e5e7eb"/>
+              <text x={200} y={60} fontSize={12} textAnchor="middle">👤</text>
+              <rect x={160} y={75} width={80} height={50} rx={4} fill="white" stroke="#d1d5db" strokeWidth={1.2}/>
+              {[85,95,105,115].map((y) => (
+                <line key={y} x1={168} y1={y} x2={232} y2={y} stroke="#e5e7eb" strokeWidth={1.5}/>
+              ))}
+              <text x={130} y={145} fontSize={8} fill="#9ca3af" textAnchor="middle">Hours of manual entry per sheet</text>
+            </svg>
+            <div style={{ fontSize: 11, color: '#ef4444', fontWeight: 600 }}>⏱ 3–8 hours per drawing sheet</div>
+          </div>
+
+          {/* After */}
+          <div style={{ background: `linear-gradient(135deg,#f5f3ff,#ede9fe)`, borderRadius: 16, border: `1px solid ${ACCENT}44`, padding: 20, display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div style={{ fontSize: 10, fontWeight: 700, color: ACCENT, letterSpacing: 1 }}>AFTER — enSTUDIO AI</div>
+            <svg viewBox="0 0 260 180" style={{ width: '100%', height: 'auto', display: 'block' }}>
+              {/* Doc icon */}
+              <rect x={20} y={20} width={60} height={80} rx={4} fill="white" stroke={ACCENT} strokeWidth={1.2}/>
+              {[35,47,59,71].map((y) => (
+                <line key={y} x1={28} y1={y} x2={72} y2={y} stroke={ACCENT+'44'} strokeWidth={1.5}/>
+              ))}
+              {/* Arrow with label */}
+              <line x1={85} y1={60} x2={140} y2={60} stroke={ACCENT} strokeWidth={2} markerEnd="url(#arr2)"/>
+              <rect x={88} y={44} width={46} height={12} rx={3} fill={ACCENT+'22'}/>
+              <text x={111} y={53} fontSize={7} fill={ACCENT} fontWeight="700" textAnchor="middle">AI READS</text>
+              {/* Output cards */}
+              {[
+                { label: 'FT-1001', y: 28, c: ACCENT },
+                { label: 'PT-2001', y: 68, c: '#60a5fa' },
+                { label: 'TT-3001', y: 108, c: '#34d399' },
+              ].map((r) => (
+                <g key={r.label}>
+                  <rect x={148} y={r.y} width={94} height={28} rx={5} fill="white" stroke={r.c} strokeWidth={1.2}/>
+                  <text x={157} y={r.y+12} fontSize={7} fill={r.c} fontWeight="700">{r.label}</text>
+                  <circle cx={231} cy={r.y+9} r={7} fill={r.c+'22'}/>
+                  <text x={231} y={r.y+13} fontSize={6} fill={r.c} textAnchor="middle">✓</text>
+                </g>
+              ))}
+              <defs>
+                <marker id="arr2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+                  <path d="M0,0 L6,3 L0,6 Z" fill={ACCENT}/>
+                </marker>
+              </defs>
+              <text x={130} y={155} fontSize={8} fill="#9ca3af" textAnchor="middle">Seconds per sheet, zero re-typing</text>
+            </svg>
+            <div style={{ fontSize: 11, color: '#10b981', fontWeight: 600 }}>⚡ Seconds per drawing sheet</div>
+          </div>
+
+        </div>
+      </div>
 
       {/* ── CHALLENGE ── */}
       <section className="engram-section engram-container">

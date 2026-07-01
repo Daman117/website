@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Cpu, Gauge, Layers, Zap, Workflow, MonitorPlay, Boxes, MessageSquare, BrainCircuit, Network, TriangleAlert, Plug, FolderInput } from 'lucide-react';
 import ScrollAnimation, { ScrollStagger } from '../ScrollAnimation';
+import { useInView } from 'react-intersection-observer';
+import gsap from 'gsap';
+import EnviewHowItWorksScroll from './EnviewHowItWorksScroll';
+import NativeApproachScroll from './NativeApproachScroll';
 
 interface EnviewPageProps {
   onOpenContact: (source?: string) => void;
@@ -68,6 +72,7 @@ const views = [
     subtitle: 'Engineering',
     desc: 'ISA-101 compliant background, ISA-5.1 instrument bubbles, and an absolute single source of truth topology.',
     color: '#2563EB',
+    img: '/enview-pid-view.png',
   },
   {
     Icon: MonitorPlay,
@@ -75,6 +80,7 @@ const views = [
     subtitle: 'Operations',
     desc: 'Metallic equipment graphics, live value badges, and stream-colored piping for instant situational awareness.',
     color: '#0E9BC4',
+    img: '/enview-mimic-view.png',
   },
   {
     Icon: Boxes,
@@ -82,6 +88,7 @@ const views = [
     subtitle: 'Management',
     desc: 'RealityKit spatial rendering, orbit-camera navigation, and physical asset location mapping.',
     color: '#10B981',
+    img: '/enview-plant-view.png',
   },
 ];
 
@@ -94,7 +101,7 @@ const steps = [
 
 const safety = [
   { title: 'ISA-18.2 Alarm Management', desc: 'Lifecycle alarm management that prevents operator cognitive overload.' },
-  { title: 'Tiered SQLite Historian', desc: 'High-performance local data compression with automatic archiving.' },
+  { title: 'Tiered SQL Historian', desc: 'High-performance local data compression with automatic archiving.' },
   { title: 'Threat Detection', desc: 'Active behavioral-baseline monitoring that flags anomalous patterns.' },
   { title: 'Quorum-OS Failover', desc: 'Resilience against ransomware — primary and backup never share the same OS.' },
 ];
@@ -126,80 +133,120 @@ const transform = [
 const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
   const navigate = useNavigate();
 
+  const { ref: challengeRef,  inView: challengeInView  } = useInView({ triggerOnce: true, threshold: 0.1 });
+  const { ref: safetyRef,     inView: safetyInView     } = useInView({ triggerOnce: true, threshold: 0.1 });
+  const { ref: aiRef,         inView: aiInView         } = useInView({ triggerOnce: true, threshold: 0.1 });
+  const { ref: transformRef,  inView: transformInView  } = useInView({ triggerOnce: true, threshold: 0.1 });
+  const { ref: matrixRef,     inView: matrixInView     } = useInView({ triggerOnce: true, threshold: 0.15 });
+
+  const rowRefs = useRef<(HTMLTableRowElement | null)[]>([]);
+  useLayoutEffect(() => {
+    rowRefs.current.forEach((row) => {
+      if (!row) return;
+      gsap.set(row, { opacity: 0, x: -80, filter: 'blur(6px)' });
+    });
+  }, []);
+  useEffect(() => {
+    if (!matrixInView) return;
+    rowRefs.current.forEach((row, i) => {
+      if (!row) return;
+      gsap.to(row, {
+        opacity: 1, x: 0, filter: 'blur(0px)', duration: 1.2, delay: i * 0.22, ease: 'power4.out',
+        clearProps: 'transform,filter',
+      });
+    });
+  }, [matrixInView]);
+
+  const [activeCell, setActiveCell] = useState(-1);
+  useEffect(() => {
+    if (!matrixInView) return;
+    const totalCells = matrix.rows.length * matrix.cols.length;
+    setActiveCell(0);
+    let cell = 0;
+    const id = setInterval(() => {
+      cell = (cell + 1) % totalCells;
+      setActiveCell(cell);
+    }, 1000);
+    return () => clearInterval(id);
+  }, [matrixInView]);
+
   return (
     <main className="engram-page" style={{ '--accent': ACCENT, '--accent-rgb': ACCENT_RGB } as React.CSSProperties}>
+      <style>{`
+        @keyframes flowPulse  { 0%,100% { opacity:0.3; } 50% { opacity:1; } }
+        @keyframes arrowPulse { 0%,100% { opacity:0.5; transform:scale(0.9); } 50% { opacity:1; transform:scale(1.15); } }
+        @keyframes iconFlash  { 0%,100% { color:inherit; } 40% { color:#f97316; filter:drop-shadow(0 0 6px #f97316); } }
+        @keyframes dotGlow    { 0%,100% { box-shadow:0 0 0 0 rgba(37,99,235,0); } 50% { box-shadow:0 0 0 6px rgba(37,99,235,0.25); } }
+        @keyframes cardGlow   { 0%,100% { box-shadow:var(--card-shadow); } 50% { box-shadow:0 0 0 2px rgba(37,99,235,0.35), 0 8px 32px rgba(37,99,235,0.18); } }
+        @keyframes rowSlide   { from { opacity:0; transform:translateX(-12px); } to { opacity:1; transform:translateX(0); } }
+        @keyframes colShimmer  { 0%,100% { background:rgba(37,99,235,0.06); } 50% { background:rgba(37,99,235,0.14); } }
+        @keyframes cardEntrance { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes iconPulse    { 0%,100% { transform:scale(1); box-shadow:0 0 0 0 rgba(37,99,235,0); } 50% { transform:scale(1.12); box-shadow:0 0 0 6px rgba(37,99,235,0.2); } }
+        @keyframes lineDrawn    { from { stroke-dashoffset:80; opacity:0; filter:drop-shadow(0 0 0px #2563EB); } to { stroke-dashoffset:0; opacity:1; filter:drop-shadow(0 0 4px #2563EB); } }
+        @keyframes bannerFade   { from { opacity:0; transform:scale(0.98); } to { opacity:1; transform:scale(1); } }
+      `}</style>
 
-      {/* ── BACK + PRODUCT NAME ── */}
-      <div style={{ paddingTop: 100, paddingLeft: 'var(--gutter)', paddingRight: 'var(--gutter)' }}>
-        <button className="product-back-btn" onClick={() => navigate('/')}>
-          ← Back
-        </button>
-        <div style={{ marginTop: -20, display: 'flex', justifyContent: 'center' }}>
-          <div style={{
-            fontFamily: "'Space Grotesk','DM Sans',sans-serif",
-            fontSize: 'clamp(28px,4vw,48px)',
-            fontWeight: 700,
-            letterSpacing: '-1.5px',
-            color: 'var(--t1)',
-            lineHeight: 1,
-          }}>
-            en<span style={{ color: ACCENT }}>VIEW</span>
+      {/* ── HERO (fixed parallax background) ── */}
+      <div style={{
+        position: 'relative',
+        backgroundImage: 'url(/enview-hero.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center 30%',
+        backgroundAttachment: 'fixed',
+        minHeight: 'clamp(600px, 95vh, 960px)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+      }}>
+        {/* dark gradient — lighter at top so image shows, darker at bottom for text */}
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: 'linear-gradient(to bottom, rgba(4,6,18,0.20) 0%, rgba(4,6,18,0.60) 55%, rgba(4,6,18,0.94) 100%)',
+          pointerEvents: 'none',
+        }} />
+
+        {/* hero text — pushed to bottom of the image */}
+        <section className="engram-hero engram-container" style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(110px, 16vh, 160px)', paddingBottom: 72 }}>
+          <div className="engram-hero-badge">
+            <span style={{ color: '#93c5fd', fontSize: 10, fontWeight: 700, letterSpacing: 1 }}>MODERN SCADA</span>
           </div>
-        </div>
+          <h1 className="engram-hero-h1" style={{ color: '#ffffff' }}>
+            Modern SCADA for<br />
+            <span style={{ color: '#60a5fa' }}>Industrial &amp; Manufacturing</span>
+          </h1>
+          <p className="engram-hero-sub" style={{ color: 'rgba(255,255,255,0.96)' }}>
+            enVIEW is a ground-up, native control platform — built in Swift for Apple Silicon. Instant startup, sub-100ms latency, and three synchronized views from a single data model.
+          </p>
+          <p className="engram-hero-body" style={{ color: 'rgba(255,255,255,0.82)' }}>
+            Legacy SCADA freezes when it matters most — a 20-year-old single-threaded architecture buckling under alarm floods. enVIEW decouples data from rendering so operators never lose visibility, and turns the P&ID into the live operational source of truth.
+          </p>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 28 }}>
+            {heroChips.map((c) => (
+              <span key={c} className="badge" style={{ color: '#93c5fd', background: 'rgba(37,99,235,0.22)', borderColor: 'rgba(96,165,250,0.4)' }}>
+                {c}
+              </span>
+            ))}
+          </div>
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+            <button className="btn-primary" onClick={() => onOpenContact('Request a Demo')}>
+              Request a Demo
+            </button>
+          </div>
+        </section>
       </div>
 
-      {/* ── HERO ── */}
-      <section className="engram-hero engram-container">
-        <div className="engram-hero-badge">
-          <span style={{ color: ACCENT, fontSize: 10, fontWeight: 700, letterSpacing: 1 }}>MODERN SCADA</span>
-        </div>
-        <h1 className="engram-hero-h1">
-          Modern SCADA for<br />
-          <span style={{ color: ACCENT }}>Industrial &amp; Manufacturing</span>
-        </h1>
-        <p className="engram-hero-sub">
-          enVIEW is a ground-up, native control platform — built in Swift for Apple Silicon. Instant startup, sub-100ms latency, and three synchronized views from a single data model.
-        </p>
-        <p className="engram-hero-body">
-          Legacy SCADA freezes when it matters most — a 20-year-old single-threaded architecture buckling under alarm floods. enVIEW decouples data from rendering so operators never lose visibility, and turns the P&ID into the live operational source of truth.
-        </p>
-        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 28 }}>
-          {heroChips.map((c) => (
-            <span key={c} className="badge" style={{ color: ACCENT, background: 'rgba(37,99,235,0.1)', borderColor: 'rgba(37,99,235,0.32)' }}>
-              {c}
-            </span>
-          ))}
-        </div>
-        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-          <button className="btn-primary" onClick={() => onOpenContact('Request a Demo')}>
-            Request a Demo
-          </button>
-        </div>
-      </section>
-
-      {/* ── STATS ── */}
-      <section className="engram-section engram-container">
-        <ScrollStagger className="engram-stats" step={60}>
-          {stats.map((s) => (
-            <div key={s.label} className="engram-stat">
-              <div className="engram-stat-val">{s.value}</div>
-              <div className="engram-stat-label">{s.label}</div>
-            </div>
-          ))}
-        </ScrollStagger>
-      </section>
 
       {/* ── CHALLENGE ── */}
-      <section className="engram-section engram-container">
+      <section ref={challengeRef} className="engram-section engram-container">
         <span className="eyebrow">The Challenge</span>
         <h2 className="engram-section-h2">The Hidden Cost of Legacy SCADA</h2>
         <p style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 32, maxWidth: 760 }}>
           The problem is not the plant. The problem is a 20-year-old software architecture built on single-threaded paradigms — one processing thread shared between data acquisition and UI rendering. When alarm floods hit, the screen freezes at the worst possible moment.
         </p>
         <ScrollStagger className="engram-quad" step={70}>
-          {challenges.map((c) => (
+          {challenges.map((c, i) => (
             <div key={c.title} className="engram-card">
-              <div style={{ color: ACCENT, marginBottom: 12, lineHeight: 1 }}><TriangleAlert size={22} strokeWidth={1.75} /></div>
+              <div style={{ color: ACCENT, marginBottom: 12, lineHeight: 1, animation: challengeInView ? `iconFlash 2.4s ease-in-out ${i * 0.6}s infinite` : 'none' }}><TriangleAlert size={22} strokeWidth={1.75} /></div>
               <h3 className="engram-card-title" style={{ fontSize: 14, marginBottom: 8 }}>{c.title}</h3>
               <p style={{ fontSize: 12, color: 'var(--t4)', lineHeight: 1.65 }}>{c.desc}</p>
             </div>
@@ -207,29 +254,8 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         </ScrollStagger>
       </section>
 
-      {/* ── NATIVE APPROACH ── */}
-      <section className="engram-section engram-container">
-        <span className="eyebrow">The Approach</span>
-        <h2 className="engram-section-h2">A Native Approach to Industrial Control</h2>
-        <ScrollStagger className="engram-quad" step={70}>
-          {nativeApproach.map((m) => (
-            <div key={m.title} className="engram-cap-card" style={{ '--cap-color': m.color } as React.CSSProperties}>
-              <div className="engram-cap-icon" style={{ color: m.color }}><m.Icon size={26} strokeWidth={1.75} /></div>
-              <h3 className="engram-cap-title" style={{ color: m.color, fontSize: 15 }}>{m.title}</h3>
-              <p className="engram-cap-sub">{m.subtitle}</p>
-              <p className="engram-cap-desc">{m.desc}</p>
-              <ul className="engram-cap-list">
-                {m.features.map((f, i) => (
-                  <li key={i}>
-                    <span style={{ color: m.color, marginRight: 6 }}>—</span>
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </ScrollStagger>
-      </section>
+      {/* ── NATIVE APPROACH — pinned horizontal scroll story ── */}
+      <NativeApproachScroll items={nativeApproach} />
 
       {/* ── THREE VIEWS ── */}
       <section className="engram-section engram-container">
@@ -240,47 +266,31 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         </p>
         <ScrollStagger className="engram-caps-grid" step={80}>
           {views.map((v) => (
-            <div key={v.title} className="engram-cap-card" style={{ '--cap-color': v.color } as React.CSSProperties}>
-              <div className="engram-cap-icon" style={{ color: v.color }}><v.Icon size={26} strokeWidth={1.75} /></div>
-              <h3 className="engram-cap-title" style={{ color: v.color }}>{v.title}</h3>
-              <p className="engram-cap-sub">{v.subtitle}</p>
-              <p className="engram-cap-desc" style={{ marginBottom: 0 }}>{v.desc}</p>
+            <div key={v.title} className="engram-cap-card enview-view-card" style={{ '--cap-color': v.color, ...(v.img ? { '--card-bg': `url(${v.img})` } : {}) } as React.CSSProperties}>
+              {/* Background image — zooms on hover via CSS */}
+              <div className="enview-view-card-img" />
+              {/* Dark gradient overlay */}
+              <div className="enview-view-card-overlay" />
+              {/* Title — always visible at top */}
+              <div className="enview-view-card-header">
+                <div style={{ color: v.color }}><v.Icon size={18} strokeWidth={1.75} /></div>
+                <h3 style={{ fontSize: 15, fontWeight: 700, color: '#fff', margin: 0 }}>{v.title}</h3>
+              </div>
+              {/* Subtitle + desc — slides up on hover */}
+              <div className="enview-view-card-text">
+                <p style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.7)', marginBottom: 6 }}>{v.subtitle}</p>
+                <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.9)', lineHeight: 1.65, margin: 0 }}>{v.desc}</p>
+              </div>
             </div>
           ))}
         </ScrollStagger>
       </section>
 
-      {/* ── HOW IT WORKS ── */}
-      <section className="engram-section engram-container">
-        <span className="eyebrow">How It Works</span>
-        <h2 className="engram-section-h2">From Controller to Operations in Minutes</h2>
-        <ScrollAnimation duration={800}>
-          <div className="engram-flow-row">
-            {steps.map((s, i) => (
-              <React.Fragment key={i}>
-                <div className="engram-flow-card">
-                  <div className="engram-flow-num">
-                    <s.icon size={20} strokeWidth={1.75} />
-                  </div>
-                  <h4 className="engram-flow-title">{s.title}</h4>
-                  <p className="engram-flow-desc">{s.desc}</p>
-                </div>
-                {i < steps.length - 1 && (
-                  <div className="engram-flow-connector" aria-hidden="true" />
-                )}
-              </React.Fragment>
-            ))}
-          </div>
-        </ScrollAnimation>
-        <div className="engram-card" style={{ marginTop: 24, display: 'flex', alignItems: 'center', gap: 12, justifyContent: 'center', textAlign: 'center', borderColor: 'rgba(37,99,235,0.3)' }}>
-          <span style={{ fontSize: 14, color: 'var(--t3)' }}>
-            <b style={{ color: ACCENT }}>Impact:</b> 40 engineer-hours per traditional screen → <b style={{ color: 'var(--t1)' }}>under 2 hours</b> with auto-generation.
-          </span>
-        </div>
-      </section>
+      {/* ── HOW IT WORKS — scroll-driven horizontal timeline ── */}
+      <EnviewHowItWorksScroll />
 
       {/* ── SAFETY ── */}
-      <section className="engram-section engram-container">
+      <section ref={safetyRef} className="engram-section engram-container">
         <span className="eyebrow">Always On</span>
         <h2 className="engram-section-h2">Silent Safety Systems in the Background</h2>
         <p style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 28, maxWidth: 720 }}>
@@ -289,7 +299,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         <ScrollStagger className="engram-quad" step={70}>
           {safety.map((s) => (
             <div key={s.title} className="engram-card">
-              <div style={{ width: 8, height: 8, borderRadius: '50%', background: ACCENT, marginBottom: 12 }} />
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: ACCENT, marginBottom: 12, animation: safetyInView ? 'dotGlow 2s ease-in-out infinite' : 'none' }} />
               <h3 className="engram-card-title" style={{ fontSize: 14, marginBottom: 8 }}>{s.title}</h3>
               <p style={{ fontSize: 12, color: 'var(--t4)', lineHeight: 1.65 }}>{s.desc}</p>
             </div>
@@ -301,39 +311,61 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
       <section className="engram-section engram-container">
         <span className="eyebrow">The Difference</span>
         <h2 className="engram-section-h2">The Modern SCADA Evaluation Matrix</h2>
-        <div className="engram-card" style={{ padding: '10px 18px', overflowX: 'auto' }}>
+        <div ref={matrixRef} className="engram-card" style={{ padding: '10px 18px', overflowX: 'auto' }}>
           <table className="engram-table">
             <thead>
               <tr>
-                <th>Criteria</th>
+                <th style={{ color: 'var(--t1)' }}>Criteria</th>
                 {matrix.cols.map((c, i) => (
-                  <th key={c} style={i === 0 ? { color: ACCENT } : undefined}>{c}</th>
+                  <th key={c} style={i === 0 ? { color: ACCENT } : { color: 'var(--t2)' }}>{c}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {matrix.rows.map((row) => (
-                <tr key={row.c}>
-                  <td style={{ fontWeight: 600, color: 'var(--t2)', whiteSpace: 'nowrap' }}>{row.c}</td>
-                  {row.v.map((val, i) => (
-                    <td
-                      key={i}
-                      style={i === 0
-                        ? { color: 'var(--t2)', fontWeight: 600, background: 'rgba(37,99,235,0.06)' }
-                        : { color: 'var(--t4)' }}
-                    >
-                      {val}
-                    </td>
-                  ))}
-                </tr>
-              ))}
+              {matrix.rows.map((row, idx) => {
+                const activeRow = activeCell === -1 ? -1 : Math.floor(activeCell / matrix.cols.length);
+                const activeCol = activeCell === -1 ? -1 : activeCell % matrix.cols.length;
+                const isActiveRow = idx === activeRow;
+                return (
+                  <tr key={row.c} ref={(el) => { rowRefs.current[idx] = el; }}>
+                    <td style={{ fontWeight: 700, color: 'var(--t1)', whiteSpace: 'nowrap' }}>{row.c}</td>
+                    {row.v.map((val, i) => {
+                      const isEnview = i === 0 && isActiveRow;
+                      const isCompare = isActiveRow && i === activeCol && activeCol > 0;
+                      return (
+                        <td
+                          key={i}
+                          style={{
+                            color: isEnview ? ACCENT : i === 0 ? 'var(--t3)' : 'var(--t4)',
+                            fontWeight: i === 0 ? 600 : undefined,
+                            background: isEnview
+                              ? `rgba(${ACCENT_RGB},0.07)`
+                              : isCompare
+                              ? 'rgba(100,100,120,0.10)'
+                              : undefined,
+                            borderRadius: (isEnview || isCompare) ? 6 : undefined,
+                            transition: 'background 0.35s ease, color 0.35s ease, box-shadow 0.35s ease',
+                            boxShadow: isEnview
+                              ? `inset 0 0 0 1px rgba(${ACCENT_RGB},0.22)`
+                              : isCompare
+                              ? 'inset 0 0 0 1px rgba(120,120,140,0.3)'
+                              : undefined,
+                          }}
+                        >
+                          {val}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
       </section>
 
       {/* ── AI-NATIVE ── */}
-      <section className="engram-section engram-container">
+      <section ref={aiRef} className="engram-section engram-container">
         <span className="eyebrow">AI-Native</span>
         <h2 className="engram-section-h2">Industrial Intelligence, Built In</h2>
         <ScrollStagger className="engram-caps-grid" step={80}>
@@ -348,16 +380,16 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
       </section>
 
       {/* ── TRANSFORM / OUTCOMES ── */}
-      <section className="engram-section engram-container">
+      <section ref={transformRef} className="engram-section engram-container">
         <span className="eyebrow">The Future</span>
         <h2 className="engram-section-h2">Transforming Industrial Operations</h2>
         <ScrollStagger className="engram-three-col" step={90}>
           {transform.map((t) => (
             <div key={t.to} className="engram-card">
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10, fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: 15 }}>
-                <span style={{ color: 'var(--t4)' }}>{t.from}</span>
-                <span style={{ color: ACCENT }}>→</span>
-                <span style={{ color: 'var(--t1)' }}>{t.to}</span>
+                <span style={{ color: 'var(--t4)', textDecoration: 'line-through', opacity: 0.6 }}>{t.from}</span>
+                <span style={{ color: ACCENT, animation: transformInView ? 'arrowPulse 1.5s ease-in-out infinite' : 'none', display: 'inline-block' }}>→</span>
+                <span style={{ color: ACCENT, fontWeight: 800 }}>{t.to}</span>
               </div>
               <p style={{ fontSize: 13, color: 'var(--t4)', lineHeight: 1.7 }}>{t.desc}</p>
             </div>

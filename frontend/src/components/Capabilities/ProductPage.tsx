@@ -152,11 +152,6 @@ const ProductPage: React.FC<ProductPageProps> = ({ onOpenContact }) => {
     <>
       <main className="product-page">
         <div className="product-page-inner">
-          {/* Back */}
-          <button className="product-back-btn" onClick={() => navigate('/')}>
-            ← Back
-          </button>
-
           {/* Header */}
           <div className="product-page-header">
             <div className="product-page-title-row">

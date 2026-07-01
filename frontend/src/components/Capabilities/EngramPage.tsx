@@ -118,9 +118,7 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
 
       {/* ── BACK + PRODUCT NAME ── */}
       <div style={{ paddingTop: 100, paddingLeft: 'var(--gutter)', paddingRight: 'var(--gutter)' }}>
-        <button className="product-back-btn" onClick={() => navigate('/')}>
-          ← Back
-        </button>
+
         <div style={{ marginTop: -20, display: 'flex', justifyContent: 'center' }}>
           <div style={{
             fontFamily: "'Space Grotesk','DM Sans',sans-serif",
@@ -154,9 +152,109 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
           <button className="btn-primary" onClick={() => onOpenContact('Request a Pilot')}>
             Request a Demo
           </button>
-          
         </div>
       </section>
+
+      {/* ── VISUAL: Documents → enGRAM → Cited Answer ── */}
+      <div className="engram-container" style={{ marginBottom: 48 }}>
+        <div style={{
+          background: 'linear-gradient(135deg,#fffbeb 0%,#fef3c7 100%)',
+          border: '1px solid #FDB02233',
+          borderRadius: 20,
+          padding: 'clamp(20px,4vw,48px)',
+          boxShadow: '0 24px 64px rgba(253,176,34,0.10)',
+        }}>
+          <div style={{ textAlign: 'center', marginBottom: 24 }}>
+            <span style={{ fontSize: 11, fontWeight: 700, color: '#FDB022', letterSpacing: 1 }}>HOW enGRAM WORKS</span>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(12px,3vw,28px)', flexWrap: 'wrap' }}>
+
+            {/* LEFT — Document sources */}
+            <div style={{ flex: '1 1 180px' }}>
+              <div style={{ fontSize: 10, fontWeight: 700, color: '#6b7280', letterSpacing: 1, marginBottom: 10 }}>INPUT — PLANT DOCUMENTS</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {[
+                  { label: 'P&ID-003.pdf',          icon: '📄', color: '#FDB022' },
+                  { label: 'SIS-SOP-Rev4.docx',     icon: '📋', color: '#60a5fa' },
+                  { label: 'Instrument Datasheet',  icon: '📊', color: '#34d399' },
+                  { label: 'Maintenance Manual',    icon: '🔧', color: '#f472b6' },
+                ].map((d) => (
+                  <div key={d.label} style={{
+                    display: 'flex', alignItems: 'center', gap: 8,
+                    background: 'white', borderRadius: 8, padding: '7px 10px',
+                    border: '1px solid #f3f4f6', fontSize: 11,
+                  }}>
+                    <span style={{ fontSize: 14 }}>{d.icon}</span>
+                    <span style={{ color: '#374151', fontWeight: 500, flex: 1, fontSize: 10 }}>{d.label}</span>
+                    <span style={{ width: 6, height: 6, borderRadius: '50%', background: d.color, flexShrink: 0 }}/>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* ARROW 1 */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, flexShrink: 0 }}>
+              <div style={{ fontSize: 9, fontWeight: 800, color: '#FDB022', letterSpacing: 1, textAlign: 'center' }}>enGRAM<br/>INDEXES</div>
+              <div style={{ fontSize: 28, color: '#FDB022', lineHeight: 1 }}>→</div>
+            </div>
+
+            {/* CENTER — Knowledge graph */}
+            <div style={{ flex: '1 1 180px' }}>
+              <div style={{ fontSize: 10, fontWeight: 700, color: '#6b7280', letterSpacing: 1, marginBottom: 10 }}>KNOWLEDGE GRAPH</div>
+              <svg viewBox="0 0 180 150" style={{ width: '100%', height: 'auto', background: 'white', borderRadius: 12, border: '1px solid #FDB02222', display: 'block' }}>
+                {/* Central node */}
+                <circle cx={90} cy={75} r={22} fill="#FDB02222" stroke="#FDB022" strokeWidth={2}/>
+                <text x={90} y={71} textAnchor="middle" fontSize={7} fill="#b45309" fontWeight="700">Plant</text>
+                <text x={90} y={81} textAnchor="middle" fontSize={7} fill="#b45309" fontWeight="700">Knowledge</text>
+                {/* Satellite nodes */}
+                {[
+                  { cx: 35,  cy: 35,  label: 'FT-1001', c: '#FDB022' },
+                  { cx: 150, cy: 30,  label: 'P-201',   c: '#60a5fa' },
+                  { cx: 25,  cy: 120, label: 'SOP-14',  c: '#34d399' },
+                  { cx: 155, cy: 118, label: 'Alarm',   c: '#f472b6' },
+                ].map((n) => (
+                  <g key={n.label}>
+                    <line x1={90} y1={75} x2={n.cx} y2={n.cy} stroke={n.c+'66'} strokeWidth={1.5} strokeDasharray="3,2"/>
+                    <circle cx={n.cx} cy={n.cy} r={16} fill="white" stroke={n.c} strokeWidth={1.5}/>
+                    <text x={n.cx} y={n.cy+3} textAnchor="middle" fontSize={6.5} fill={n.c} fontWeight="700">{n.label}</text>
+                  </g>
+                ))}
+              </svg>
+            </div>
+
+            {/* ARROW 2 */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, flexShrink: 0 }}>
+              <div style={{ fontSize: 9, fontWeight: 800, color: '#FDB022', letterSpacing: 1, textAlign: 'center' }}>CITED<br/>ANSWER</div>
+              <div style={{ fontSize: 28, color: '#FDB022', lineHeight: 1 }}>→</div>
+            </div>
+
+            {/* RIGHT — Cited answer output */}
+            <div style={{ flex: '1 1 200px' }}>
+              <div style={{ fontSize: 10, fontWeight: 700, color: '#6b7280', letterSpacing: 1, marginBottom: 10 }}>OUTPUT — INSTANT ANSWER</div>
+              <div style={{ background: 'white', borderRadius: 12, border: '1px solid #FDB02233', padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <div style={{ background: '#f9fafb', borderRadius: 7, padding: '8px 10px' }}>
+                  <div style={{ fontSize: 9, color: '#9ca3af', marginBottom: 4 }}>Q: What is the max operating pressure of V-201?</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: 11, color: '#374151', lineHeight: 1.6 }}>
+                    The maximum operating pressure for <strong>V-201</strong> is <strong style={{ color: '#FDB022' }}>12.4 bar</strong>, with a design pressure of 15 bar.
+                  </div>
+                  <div style={{ marginTop: 8, display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                    {['P&ID-003, Sheet 7', 'Datasheet DS-201'].map((src) => (
+                      <span key={src} style={{ fontSize: 9, background: '#FDB02218', color: '#b45309', padding: '2px 7px', borderRadius: 5, border: '1px solid #FDB02233', fontWeight: 600 }}>
+                        📎 {src}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div style={{ fontSize: 9, color: '#9ca3af', borderTop: '1px solid #f3f4f6', paddingTop: 6 }}>Confidence: 94% · Sources indexed: 4 documents</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
 
       {/* ── OVERVIEW ── */}
       <section className="engram-section engram-container">
