@@ -958,7 +958,7 @@ hr.rule {
   background-image: url("/bg-image.png");
   /* full-bleed photo (not a transparent-bg icon render) — cover the whole hero */
   background-position: top right;
-  background-size: auto 93.5vh;
+  background-size: cover;
   background-repeat: no-repeat;
   /* slight opacity so the photo settles into the page instead of sitting
      at full, flat-on-top intensity */
