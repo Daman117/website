@@ -952,11 +952,14 @@ hr.rule {
      put while the text scrolls past it, then the next (opaque) section
      naturally covers it as it scrolls up over the top */
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: auto;
+  height: calc(100vh - 45px);
   z-index: -2;
   pointer-events: none;
   background-image: url("/bg-image.png");
-  /* full-bleed photo (not a transparent-bg icon render) — cover the whole hero */
   background-position: top right;
   background-size: cover;
   background-repeat: no-repeat;
