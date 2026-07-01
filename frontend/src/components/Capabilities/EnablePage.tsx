@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Boxes, Gauge, MonitorPlay, PenTool, LayoutGrid, Cpu, FileCheck, Play, FileOutput } from 'lucide-react';
 import ScrollAnimation, { ScrollStagger } from '../ScrollAnimation';
 
@@ -113,8 +112,6 @@ const outcomes = [
 ];
 
 const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
-  const navigate = useNavigate();
-
   return (
     <main className="engram-page">
 

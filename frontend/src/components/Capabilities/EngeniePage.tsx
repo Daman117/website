@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Workflow, Search, MessageSquare, Building2, Scale, CircleCheck, ShieldCheck, ClipboardList, BrainCircuit, Sparkles, PackageCheck } from 'lucide-react';
 import ScrollAnimation, { ScrollStagger } from '../ScrollAnimation';
 
@@ -98,8 +97,6 @@ const outcomes = [
 ];
 
 const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
-  const navigate = useNavigate();
-
   return (
     <main className="engram-page" style={{ '--accent': ACCENT, '--accent-rgb': ACCENT_RGB } as React.CSSProperties}>
 

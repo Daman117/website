@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { PencilRuler, Boxes, MessageSquare, Workflow, BadgeCheck, SlidersHorizontal, Upload, ScanSearch, FileOutput } from 'lucide-react';
 import ScrollAnimation, { ScrollStagger } from '../ScrollAnimation';
 
@@ -190,8 +189,6 @@ const outcomes = [
 ];
 
 const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
-  const navigate = useNavigate();
-
   return (
     <main className="engram-page" style={{ '--accent': ACCENT, '--accent-rgb': '167,139,250' } as React.CSSProperties}>
 

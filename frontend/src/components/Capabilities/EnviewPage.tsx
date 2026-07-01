@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Cpu, Gauge, Layers, Zap, Workflow, MonitorPlay, Boxes, MessageSquare, BrainCircuit, Network, TriangleAlert, Plug, FolderInput } from 'lucide-react';
-import ScrollAnimation, { ScrollStagger } from '../ScrollAnimation';
+import { Cpu, Gauge, Layers, Zap, Workflow, MonitorPlay, Boxes, MessageSquare, BrainCircuit, Network, TriangleAlert } from 'lucide-react';
+import { ScrollStagger } from '../ScrollAnimation';
 import { useInView } from 'react-intersection-observer';
 import gsap from 'gsap';
 import EnviewHowItWorksScroll from './EnviewHowItWorksScroll';
@@ -15,13 +14,6 @@ const ACCENT = '#2563EB';
 const ACCENT_RGB = '37,99,235';
 
 const heroChips = ['Native macOS', 'Apple Silicon', 'AI-Ready', 'ISA Compliant'];
-
-const stats = [
-  { value: '<2s', label: 'Startup Time' },
-  { value: '<100ms', label: 'Tag Latency' },
-  { value: '<500MB', label: 'Memory Footprint' },
-  { value: '$5,000', label: 'Flat Entry Pricing' },
-];
 
 const challenges = [
   { title: 'Crippling Startup Times', desc: 'JVM-based platforms take 30–60 seconds to load. Operators wait blindly during critical plant upsets.' },
@@ -92,13 +84,6 @@ const views = [
   },
 ];
 
-const steps = [
-  { icon: Plug,        title: 'Connect', desc: 'OPC-UA / Modbus TCP / MQTT native connections established instantly via the command line.' },
-  { icon: FolderInput, title: 'Import',  desc: 'AI-native ingest of P&IDs, files, and drawings — auto-generating tags and topology.' },
-  { icon: Layers,      title: 'Design',  desc: 'Engineering Studio with a visual importer and 331 pre-built industrial symbols.' },
-  { icon: Zap,         title: 'Run',     desc: 'The system switches seamlessly from Edit to Run mode and live data flows.' },
-];
-
 const safety = [
   { title: 'ISA-18.2 Alarm Management', desc: 'Lifecycle alarm management that prevents operator cognitive overload.' },
   { title: 'Tiered SQL Historian', desc: 'High-performance local data compression with automatic archiving.' },
@@ -131,11 +116,9 @@ const transform = [
 ];
 
 const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
-  const navigate = useNavigate();
-
   const { ref: challengeRef,  inView: challengeInView  } = useInView({ triggerOnce: true, threshold: 0.1 });
   const { ref: safetyRef,     inView: safetyInView     } = useInView({ triggerOnce: true, threshold: 0.1 });
-  const { ref: aiRef,         inView: aiInView         } = useInView({ triggerOnce: true, threshold: 0.1 });
+  const { ref: aiRef } = useInView({ triggerOnce: true, threshold: 0.1 });
   const { ref: transformRef,  inView: transformInView  } = useInView({ triggerOnce: true, threshold: 0.1 });
   const { ref: matrixRef,     inView: matrixInView     } = useInView({ triggerOnce: true, threshold: 0.15 });
 

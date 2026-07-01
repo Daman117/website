@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Workflow, FileText, Network, Upload, ScanSearch, MessageCircle, Sparkles, ShieldCheck } from 'lucide-react';
 import ScrollAnimation, { ScrollStagger } from '../ScrollAnimation';
 
@@ -111,8 +110,6 @@ const outcomes = [
 ];
 
 const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
-  const navigate = useNavigate();
-
   return (
     <main className="engram-page">
 
