@@ -119,7 +119,6 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
   const { ref: challengeRef,  inView: challengeInView  } = useInView({ triggerOnce: true, threshold: 0.1 });
   const { ref: safetyRef,     inView: safetyInView     } = useInView({ triggerOnce: true, threshold: 0.1 });
   const { ref: aiRef } = useInView({ triggerOnce: true, threshold: 0.1 });
-  const { ref: transformRef,  inView: transformInView  } = useInView({ triggerOnce: true, threshold: 0.1 });
   const { ref: matrixRef,     inView: matrixInView     } = useInView({ triggerOnce: true, threshold: 0.15 });
 
   const rowRefs = useRef<(HTMLTableRowElement | null)[]>([]);
@@ -153,11 +152,44 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
     return () => clearInterval(id);
   }, [matrixInView]);
 
+  const transformCardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const strikeRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const arrowRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const toRefs = useRef<(HTMLSpanElement | null)[]>([]);
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      transform.forEach((_, i) => {
+        const card = transformCardRefs.current[i];
+        if (!card) return;
+
+        gsap.set(strikeRefs.current[i], { scaleX: 0, transformOrigin: 'left center' });
+        gsap.set(arrowRefs.current[i], { opacity: 0, scale: 0.5 });
+        gsap.set(toRefs.current[i], { opacity: 0, x: -10 });
+
+        const tl = gsap.timeline({
+          scrollTrigger: { trigger: card, start: 'top 85%', once: true },
+          delay: i * 0.15,
+        });
+
+        tl.to({}, { duration: 0.45 }) // let the plain "from" word be read first
+          .to(strikeRefs.current[i], { scaleX: 1, duration: 0.35, ease: 'power2.out' })
+          .to(arrowRefs.current[i], { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(2)' }, '+=0.05')
+          .to(toRefs.current[i], { opacity: 1, x: 0, duration: 0.35, ease: 'power2.out' }, '-=0.1')
+          .call(() => {
+            gsap.timeline({ repeat: -1, yoyo: true })
+              .to(arrowRefs.current[i], { scale: 1.15, duration: 0.75, ease: 'sine.inOut' });
+          });
+      });
+    });
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <main className="engram-page" style={{ '--accent': ACCENT, '--accent-rgb': ACCENT_RGB } as React.CSSProperties}>
       <style>{`
         @keyframes flowPulse  { 0%,100% { opacity:0.3; } 50% { opacity:1; } }
-        @keyframes arrowPulse { 0%,100% { opacity:0.5; transform:scale(0.9); } 50% { opacity:1; transform:scale(1.15); } }
         @keyframes iconFlash  { 0%,100% { color:inherit; } 40% { color:#f97316; filter:drop-shadow(0 0 6px #f97316); } }
         @keyframes dotGlow    { 0%,100% { box-shadow:0 0 0 0 rgba(37,99,235,0); } 50% { box-shadow:0 0 0 6px rgba(37,99,235,0.25); } }
         @keyframes cardGlow   { 0%,100% { box-shadow:var(--card-shadow); } 50% { box-shadow:0 0 0 2px rgba(37,99,235,0.35), 0 8px 32px rgba(37,99,235,0.18); } }
@@ -205,7 +237,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
           </p>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 28 }}>
             {heroChips.map((c) => (
-              <span key={c} className="badge" style={{ color: '#93c5fd', background: 'rgba(37,99,235,0.22)', borderColor: 'rgba(96,165,250,0.4)' }}>
+              <span key={c} className="badge hero-chip-badge" style={{ color: '#93c5fd', background: 'rgba(37,99,235,0.22)', borderColor: 'rgba(96,165,250,0.4)' }}>
                 {c}
               </span>
             ))}
@@ -363,16 +395,22 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
       </section>
 
       {/* ── TRANSFORM / OUTCOMES ── */}
-      <section ref={transformRef} className="engram-section engram-container">
+      <section className="engram-section engram-container">
         <span className="eyebrow">The Future</span>
         <h2 className="engram-section-h2">Transforming Industrial Operations</h2>
         <ScrollStagger className="engram-three-col" step={90}>
-          {transform.map((t) => (
-            <div key={t.to} className="engram-card">
+          {transform.map((t, i) => (
+            <div key={t.to} ref={(el) => { transformCardRefs.current[i] = el; }} className="engram-card">
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10, fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: 15 }}>
-                <span style={{ color: 'var(--t4)', textDecoration: 'line-through', opacity: 0.6 }}>{t.from}</span>
-                <span style={{ color: ACCENT, animation: transformInView ? 'arrowPulse 1.5s ease-in-out infinite' : 'none', display: 'inline-block' }}>→</span>
-                <span style={{ color: ACCENT, fontWeight: 800 }}>{t.to}</span>
+                <span style={{ position: 'relative', display: 'inline-block', color: 'var(--t4)' }}>
+                  {t.from}
+                  <span
+                    ref={(el) => { strikeRefs.current[i] = el; }}
+                    style={{ position: 'absolute', left: 0, right: 0, top: '52%', height: 2, background: 'var(--t4)', willChange: 'transform' }}
+                  />
+                </span>
+                <span ref={(el) => { arrowRefs.current[i] = el; }} style={{ color: ACCENT, display: 'inline-block', willChange: 'transform, opacity' }}>→</span>
+                <span ref={(el) => { toRefs.current[i] = el; }} style={{ color: ACCENT, fontWeight: 800, display: 'inline-block', willChange: 'transform, opacity' }}>{t.to}</span>
               </div>
               <p style={{ fontSize: 13, color: 'var(--t4)', lineHeight: 1.7 }}>{t.desc}</p>
             </div>

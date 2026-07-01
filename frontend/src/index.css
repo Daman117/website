@@ -663,7 +663,7 @@ img {
   transition: background 0.15s;
 }
 .nav-dropdown-item:hover {
-  background: #eaeef9;
+  background: #d7def2;
 }
 [data-theme="dark"] .nav-dropdown-item:hover {
   background: rgba(31, 95, 224, 0.25);
@@ -939,59 +939,16 @@ hr.rule {
 }
 
 /* ── HERO ────────────────────────────────────────────────────────── */
+/* Background/overlay now set inline on the section (see LandingPage.tsx),
+   matching the enVIEW capability-page hero: a bounded, scoped
+   background-attachment:fixed photo with a bottom-anchored dark gradient,
+   rather than a viewport-spanning fixed pseudo-element. */
 #hero {
-  min-height: 100vh;
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
-  padding: clamp(58px, 6vw, 58px) var(--gutter) 0;
   position: relative;
   overflow: hidden;
-}
-#hero::before {
-  content: "";
-  /* fixed — pinned to the viewport like ControlRooms' hero: the photo stays
-     put while the text scrolls past it, then the next (opaque) section
-     naturally covers it as it scrolls up over the top */
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  pointer-events: none;
-  background-image: url("/bg-image.png");
-  background-position: top right;
-  background-size: cover;
-  background-repeat: no-repeat;
-  /* slight opacity so the photo settles into the page instead of sitting
-     at full, flat-on-top intensity */
-  opacity: 0.92;
-  /* no mask — the photo now runs the full width; the hero-left content
-     sits on its own glass panel instead of relying on a masked-out gap */
-}
-/* Glass sheen over the photo — single smooth highlight (no hard gradient
-   stops, which were creating a visible seam in the upper-right) */
-#hero::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 87vh;
-  z-index: -1;
-  pointer-events: none;
-  background: radial-gradient(
-    140% 90% at 8% -10%,
-    rgba(255, 255, 255, 0.32) 0%,
-    transparent 55%
-  );
-  mix-blend-mode: overlay;
-}
-[data-theme="dark"] #hero::after {
-  mix-blend-mode: soft-light;
-  background: radial-gradient(
-    140% 90% at 8% -10%,
-    rgba(255, 255, 255, 0.18) 0%,
-    transparent 55%
-  );
 }
 /* Glass wash behind the hero copy — fades into the photo instead of
    sitting on top of it as a bordered card */
@@ -1897,6 +1854,13 @@ hr.rule {
   width: 150px;
   text-align: center;
   display: inline-block;
+  white-space: nowrap;
+}
+/* Hero capability chips — size to their own text instead of the fixed
+   150px badge width, so longer labels ("Industrial AI Platform") don't
+   overflow into the next chip; the row wraps onto a second line instead. */
+.hero-chip-badge {
+  width: auto;
   white-space: nowrap;
 }
 

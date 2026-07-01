@@ -18,7 +18,7 @@ interface Props {
   items: ApproachItem[];
 }
 
-const STAGGER = 0.12; // seconds between each card's reveal
+const STAGGER = 0.5; // seconds between each card's reveal
 
 const NativeApproachScroll: React.FC<Props> = ({ items }) => {
   const rowRef = useRef<HTMLDivElement>(null);
