@@ -1,26 +1,33 @@
-import React from 'react';
-import { Workflow, FileText, Network, Upload, ScanSearch, MessageCircle, Sparkles, ShieldCheck } from 'lucide-react';
-import ScrollAnimation, { ScrollStagger } from '../ScrollAnimation';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import { Workflow, FileText, Network, Upload, ScanSearch, MessageCircle, Sparkles, ShieldCheck, Check, X, TriangleAlert, LayoutGrid, MonitorPlay, Image as ImageIcon } from 'lucide-react';
+import { useInView } from 'react-intersection-observer';
+import gsap from 'gsap';
+import { ScrollStagger, LineReveal } from '../ScrollAnimation';
+import HowItWorksScroll from './HowItWorksScroll';
+import NativeApproachScroll from './NativeApproachScroll';
 
 interface EngramPageProps {
   onOpenContact: (source?: string) => void;
 }
 
+const heroChips = ['Local AI', 'Air-Gapped', 'Cited Answers', 'Any Document Format'];
+
 const challenges = [
-  'Thousands of documents scattered across network drives and repositories',
-  'P&IDs and engineering drawings stored as static PDFs',
-  'Engineering information disconnected across departments',
-  'Time-consuming searches for critical asset information',
-  'Loss of institutional knowledge over time',
-  'Manual validation and compliance efforts',
+  { title: 'Thousands of isolated files', desc: 'Datasheets, maintenance records, and logs scattered across network drives.' },
+  { title: 'Static, unreadable diagrams', desc: 'P&IDs and PFDs trapped as disconnected PDFs and scanned images.' },
+  { title: 'Evaporating tribal knowledge', desc: 'Critical context walks out the door when senior engineers retire.' },
+  { title: 'Endless search cycles', desc: 'New engineers spend years learning the paperwork rather than the process.' },
 ];
 
-const existingSolutions = [
-  { solution: 'Network Drives & SharePoint', limitation: 'Store files but do not understand engineering relationships' },
-  { solution: 'Generic AI Assistants', limitation: 'Struggle with industrial drawings, tags, and technical context' },
-  { solution: 'Traditional DMS Platforms', limitation: 'Focus on storage rather than plant intelligence' },
-  { solution: 'Cloud-Based Solutions', limitation: 'Often introduce security and compliance concerns' },
-];
+const comparisonMatrix = {
+  cols: ['enGRAM', 'SharePoint / DMS', 'Generic Cloud AI'],
+  rows: [
+    { c: 'Understands Instrument Tags', v: [true, false, false] },
+    { c: 'Reads P&ID Symbology', v: [true, false, false] },
+    { c: 'Air-Gapped Security', v: [true, false, false] },
+    { c: 'Verifiable Engineering Citations', v: [true, false, false] },
+  ],
+};
 
 const capabilities = [
   {
@@ -30,10 +37,10 @@ const capabilities = [
     desc: 'enGRAM converts static engineering drawings into interactive, searchable plant knowledge.',
     features: [
       'P&ID Digitization – Convert scanned and legacy drawings into intelligent digital assets',
-      'Advanced Symbol Recognition – Detect and classify hundreds of ISA-standard symbols',
-      'Contextual OCR Extraction – Capture tags, annotations, and engineering metadata',
+      'Advanced Symbol Recognition – Automatically detects and classifies 800+ ISA-standard symbols across 51 categories',
+      'Contextual OCR Extraction – Capture tags, annotations, and engineering metadata precisely where they matter',
       'Connectivity Mapping – Understand relationships between instruments, equipment, and processes',
-      'Rapid Processing – Analyze complex drawings quickly and accurately',
+      'Rapid Processing – Analyzes complex, high-density engineering sheets in 15–30 seconds',
     ],
     color: '#FDB022',
   },
@@ -48,6 +55,7 @@ const capabilities = [
       'Equipment-centric knowledge organization',
       'Natural language search and querying',
       'Citation-based answers for engineering confidence',
+      'Knowledge Library – Textbooks, manuals, and vendor standards indexed alongside plant documents',
     ],
     color: '#10B981',
   },
@@ -55,7 +63,7 @@ const capabilities = [
     Icon: Network,
     title: 'Plant Knowledge Graph',
     subtitle: 'Connect Information Across Your Entire Plant',
-    desc: 'enGRAM structures extracted information into an interconnected engineering knowledge base.',
+    desc: 'enGRAM structures extracted information into an interconnected engineering knowledge base — the instrument tag is the unified source of truth, not the folder. Ask about FT-1001 and enGRAM connects every datasheet, drawing, manual, and log that touches it, automatically.',
     features: [
       'Link documents, drawings, equipment, and tags',
       'Eliminate information silos',
@@ -63,6 +71,33 @@ const capabilities = [
       'Provide context-aware answers across systems and assets',
     ],
     color: '#A78BFA',
+  },
+];
+
+const diagramViews = [
+  {
+    Icon: LayoutGrid,
+    title: 'PFD Canvas',
+    subtitle: 'The Engineering View',
+    desc: 'A full interactive PFD editor rendered from the digitized P&ID — auto-placed equipment, routed process streams, and DXF, SVG, and PDF export.',
+    color: '#FDB022',
+    img: '/engram-static-svg.png',
+  },
+  {
+    Icon: MonitorPlay,
+    title: 'Operator Graphics',
+    subtitle: 'The Operator View',
+    desc: 'An HMI-style live process screen, rebuilt purely from connectivity semantics — never the original drawing geometry. Click any tag for a live faceplate.',
+    color: '#60A5FA',
+    img: '/engram-operator-graphics.png',
+  },
+  {
+    Icon: ImageIcon,
+    title: 'Diagram Editor',
+    subtitle: 'The Review & Correction View',
+    desc: 'A triage-first correction workspace — confidence-ranked detections you accept, edit, or reject. Edits stage until Save All, then write a full audit trail and auto-rebuild the PFD Canvas and Operator views.',
+    color: '#34D399',
+    img: '/engram-pfd-canvas.png',
   },
 ];
 
@@ -84,7 +119,7 @@ const validationFeatures = [
 ];
 
 const complianceFeatures = [
-  'Alignment with industrial standards and engineering practices',
+  'Native alignment with ISA, IEC, and DEXPI industrial standards',
   'Design-to-as-built comparison workflows',
   'Automated compliance verification support',
   'Audit-ready traceability',
@@ -107,270 +142,171 @@ const outcomes = [
   'Better operational decision-making',
   'Stronger compliance readiness',
   'Continuous accumulation of plant knowledge',
+  'Compounding ROI — smarter every month',
 ];
 
 const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
+  const { ref: challengeRef, inView: challengeInView } = useInView({ triggerOnce: true, threshold: 0.1 });
+  const { ref: matrixRef, inView: matrixInView } = useInView({ triggerOnce: true, threshold: 0.15 });
+
+  const rowRefs = useRef<(HTMLTableRowElement | null)[]>([]);
+  useLayoutEffect(() => {
+    rowRefs.current.forEach((row) => {
+      if (!row) return;
+      gsap.set(row, { opacity: 0, x: -80, filter: 'blur(6px)' });
+    });
+  }, []);
+  useEffect(() => {
+    if (!matrixInView) return;
+    rowRefs.current.forEach((row, i) => {
+      if (!row) return;
+      gsap.to(row, {
+        opacity: 1, x: 0, filter: 'blur(0px)', duration: 1.2, delay: i * 0.22, ease: 'power4.out',
+        clearProps: 'transform,filter',
+      });
+    });
+  }, [matrixInView]);
+
   return (
     <main className="engram-page">
+      <style>{`
+        @keyframes iconFlash { 0%,100% { color:inherit; } 40% { color:#f97316; filter:drop-shadow(0 0 6px #f97316); } }
+      `}</style>
 
-      {/* ── BACK + PRODUCT NAME ── */}
-      <div style={{ paddingTop: 100, paddingLeft: 'var(--gutter)', paddingRight: 'var(--gutter)' }}>
-
-        <div style={{ marginTop: -20, display: 'flex', justifyContent: 'center' }}>
-          <div style={{
-            fontFamily: "'Space Grotesk','DM Sans',sans-serif",
-            fontSize: 'clamp(28px,4vw,48px)',
-            fontWeight: 700,
-            letterSpacing: '-1.5px',
-            color: 'var(--t1)',
-            lineHeight: 1,
-          }}>
-            en<span style={{ color: '#FDB022' }}>GRAM</span>
-          </div>
-        </div>
-      </div>
-
-      {/* ── HERO ── */}
-      <section className="engram-hero engram-container">
-        <div className="engram-hero-badge">
-          <span style={{ color: '#FDB022', fontSize: 10, fontWeight: 700, letterSpacing: 1 }}>PLANT KNOWLEDGE</span>
-        </div>
-        <h1 className="engram-hero-h1">
-          Turn Engineering Records Into<br />
-          <span style={{ color: '#FDB022' }}>Plant Knowledge</span>
-        </h1>
-        <p className="engram-hero-sub">
-          enGRAM transforms static engineering documents, drawings, and records into a living, searchable knowledge system built specifically for industrial plants.
-        </p>
-        <p className="engram-hero-body">
-          Engineering information is often trapped inside PDFs, scanned drawings, spreadsheets, manuals, and disconnected repositories. enGRAM extracts, connects, and structures that information into a plant-wide intelligence layer that engineers can query, validate, and trust.
-        </p>
-        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-          <button className="btn-primary" onClick={() => onOpenContact('Request a Pilot')}>
-            Request a Demo
-          </button>
-        </div>
-      </section>
-
-      {/* ── VISUAL: Documents → enGRAM → Cited Answer ── */}
-      <div className="engram-container" style={{ marginBottom: 48 }}>
+      {/* ── HERO (fixed parallax background) ── */}
+      <div style={{
+        position: 'relative',
+        backgroundImage: 'url(/engram-hero.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center 30%',
+        backgroundAttachment: 'fixed',
+        minHeight: 'clamp(600px, 95vh, 960px)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+      }}>
+        {/* dark gradient — lighter at top so image shows, darker at bottom for text */}
         <div style={{
-          background: 'linear-gradient(135deg,#fffbeb 0%,#fef3c7 100%)',
-          border: '1px solid #FDB02233',
-          borderRadius: 20,
-          padding: 'clamp(20px,4vw,48px)',
-          boxShadow: '0 24px 64px rgba(253,176,34,0.10)',
-        }}>
-          <div style={{ textAlign: 'center', marginBottom: 24 }}>
-            <span style={{ fontSize: 11, fontWeight: 700, color: '#FDB022', letterSpacing: 1 }}>HOW enGRAM WORKS</span>
+          position: 'absolute', inset: 0,
+          background: 'linear-gradient(to bottom, rgba(4,6,18,0.20) 0%, rgba(4,6,18,0.60) 55%, rgba(4,6,18,0.94) 100%)',
+          pointerEvents: 'none',
+        }} />
+
+        {/* hero text — pushed to bottom of the image */}
+        <section className="engram-hero engram-container" style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(110px, 16vh, 160px)', paddingBottom: 72 }}>
+          <div className="engram-hero-badge">
+            <span style={{ color: '#fde68a', fontSize: 10, fontWeight: 700, letterSpacing: 1 }}>PLANT KNOWLEDGE</span>
           </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(12px,3vw,28px)', flexWrap: 'wrap' }}>
-
-            {/* LEFT — Document sources */}
-            <div style={{ flex: '1 1 180px' }}>
-              <div style={{ fontSize: 10, fontWeight: 700, color: '#6b7280', letterSpacing: 1, marginBottom: 10 }}>INPUT — PLANT DOCUMENTS</div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                {[
-                  { label: 'P&ID-003.pdf',          icon: '📄', color: '#FDB022' },
-                  { label: 'SIS-SOP-Rev4.docx',     icon: '📋', color: '#60a5fa' },
-                  { label: 'Instrument Datasheet',  icon: '📊', color: '#34d399' },
-                  { label: 'Maintenance Manual',    icon: '🔧', color: '#f472b6' },
-                ].map((d) => (
-                  <div key={d.label} style={{
-                    display: 'flex', alignItems: 'center', gap: 8,
-                    background: 'white', borderRadius: 8, padding: '7px 10px',
-                    border: '1px solid #f3f4f6', fontSize: 11,
-                  }}>
-                    <span style={{ fontSize: 14 }}>{d.icon}</span>
-                    <span style={{ color: '#374151', fontWeight: 500, flex: 1, fontSize: 10 }}>{d.label}</span>
-                    <span style={{ width: 6, height: 6, borderRadius: '50%', background: d.color, flexShrink: 0 }}/>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* ARROW 1 */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, flexShrink: 0 }}>
-              <div style={{ fontSize: 9, fontWeight: 800, color: '#FDB022', letterSpacing: 1, textAlign: 'center' }}>enGRAM<br/>INDEXES</div>
-              <div style={{ fontSize: 28, color: '#FDB022', lineHeight: 1 }}>→</div>
-            </div>
-
-            {/* CENTER — Knowledge graph */}
-            <div style={{ flex: '1 1 180px' }}>
-              <div style={{ fontSize: 10, fontWeight: 700, color: '#6b7280', letterSpacing: 1, marginBottom: 10 }}>KNOWLEDGE GRAPH</div>
-              <svg viewBox="0 0 180 150" style={{ width: '100%', height: 'auto', background: 'white', borderRadius: 12, border: '1px solid #FDB02222', display: 'block' }}>
-                {/* Central node */}
-                <circle cx={90} cy={75} r={22} fill="#FDB02222" stroke="#FDB022" strokeWidth={2}/>
-                <text x={90} y={71} textAnchor="middle" fontSize={7} fill="#b45309" fontWeight="700">Plant</text>
-                <text x={90} y={81} textAnchor="middle" fontSize={7} fill="#b45309" fontWeight="700">Knowledge</text>
-                {/* Satellite nodes */}
-                {[
-                  { cx: 35,  cy: 35,  label: 'FT-1001', c: '#FDB022' },
-                  { cx: 150, cy: 30,  label: 'P-201',   c: '#60a5fa' },
-                  { cx: 25,  cy: 120, label: 'SOP-14',  c: '#34d399' },
-                  { cx: 155, cy: 118, label: 'Alarm',   c: '#f472b6' },
-                ].map((n) => (
-                  <g key={n.label}>
-                    <line x1={90} y1={75} x2={n.cx} y2={n.cy} stroke={n.c+'66'} strokeWidth={1.5} strokeDasharray="3,2"/>
-                    <circle cx={n.cx} cy={n.cy} r={16} fill="white" stroke={n.c} strokeWidth={1.5}/>
-                    <text x={n.cx} y={n.cy+3} textAnchor="middle" fontSize={6.5} fill={n.c} fontWeight="700">{n.label}</text>
-                  </g>
-                ))}
-              </svg>
-            </div>
-
-            {/* ARROW 2 */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, flexShrink: 0 }}>
-              <div style={{ fontSize: 9, fontWeight: 800, color: '#FDB022', letterSpacing: 1, textAlign: 'center' }}>CITED<br/>ANSWER</div>
-              <div style={{ fontSize: 28, color: '#FDB022', lineHeight: 1 }}>→</div>
-            </div>
-
-            {/* RIGHT — Cited answer output */}
-            <div style={{ flex: '1 1 200px' }}>
-              <div style={{ fontSize: 10, fontWeight: 700, color: '#6b7280', letterSpacing: 1, marginBottom: 10 }}>OUTPUT — INSTANT ANSWER</div>
-              <div style={{ background: 'white', borderRadius: 12, border: '1px solid #FDB02233', padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 10 }}>
-                <div style={{ background: '#f9fafb', borderRadius: 7, padding: '8px 10px' }}>
-                  <div style={{ fontSize: 9, color: '#9ca3af', marginBottom: 4 }}>Q: What is the max operating pressure of V-201?</div>
-                </div>
-                <div>
-                  <div style={{ fontSize: 11, color: '#374151', lineHeight: 1.6 }}>
-                    The maximum operating pressure for <strong>V-201</strong> is <strong style={{ color: '#FDB022' }}>12.4 bar</strong>, with a design pressure of 15 bar.
-                  </div>
-                  <div style={{ marginTop: 8, display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-                    {['P&ID-003, Sheet 7', 'Datasheet DS-201'].map((src) => (
-                      <span key={src} style={{ fontSize: 9, background: '#FDB02218', color: '#b45309', padding: '2px 7px', borderRadius: 5, border: '1px solid #FDB02233', fontWeight: 600 }}>
-                        📎 {src}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <div style={{ fontSize: 9, color: '#9ca3af', borderTop: '1px solid #f3f4f6', paddingTop: 6 }}>Confidence: 94% · Sources indexed: 4 documents</div>
-              </div>
-            </div>
-
+          <h1 className="engram-hero-h1" style={{ color: '#ffffff' }}>
+            <span className="hero-line-mask">
+              <span className="hero-line-inner" style={{ animationDelay: '150ms' }}>Turn Engineering Records Into</span>
+            </span>
+            <span className="hero-line-mask">
+              <span className="hero-line-inner" style={{ animationDelay: '500ms', color: '#FDB022' }}>Plant Knowledge</span>
+            </span>
+          </h1>
+          <p className="engram-hero-sub hero-fade-up" style={{ color: 'rgba(255,255,255,0.96)', animationDelay: '900ms' }}>
+            enGRAM transforms static engineering documents, drawings, and records into a living, searchable knowledge system built specifically for industrial plants.
+          </p>
+          <p className="engram-hero-body hero-fade-up" style={{ color: 'rgba(255,255,255,0.82)', animationDelay: '1100ms' }}>
+            Engineering information is often trapped inside PDFs, scanned drawings, spreadsheets, manuals, and disconnected repositories. enGRAM extracts, connects, and structures that information into a plant-wide intelligence layer that engineers can query, validate, and trust.
+          </p>
+          <div className="hero-fade-up" style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 28, animationDelay: '1300ms' }}>
+            {heroChips.map((c) => (
+              <span key={c} className="badge hero-chip-badge" style={{ color: '#fde68a', background: 'rgba(253,176,34,0.22)', borderColor: 'rgba(253,224,138,0.4)' }}>
+                {c}
+              </span>
+            ))}
           </div>
-        </div>
+          <div className="hero-fade-up" style={{ display: 'flex', gap: 12, flexWrap: 'wrap', animationDelay: '1500ms' }}>
+            <button className="btn-primary" onClick={() => onOpenContact('Request a Pilot')}>
+              Request a Demo
+            </button>
+          </div>
+        </section>
       </div>
-
-      {/* ── OVERVIEW ── */}
-      <section className="engram-section engram-container">
-        <span className="eyebrow">Overview</span>
-        <h2 className="engram-section-h2">Plant Knowledge, Built for Engineers</h2>
-        <div className="engram-overview-grid">
-          <p style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85 }}>
-            enGRAM is the Plant Intelligence Platform for instrumentation, process, and operations teams. Instead of organizing information by folders and files, enGRAM organizes knowledge around the assets that matter most — equipment tags, instruments, systems, and engineering relationships.
-          </p>
-          <p style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85 }}>
-            By combining diagram intelligence, document intelligence, and AI-powered knowledge extraction, enGRAM turns decades of engineering records into a continuously growing source of operational intelligence.
-          </p>
-        </div>
-      </section>
 
       {/* ── CHALLENGE ── */}
-      <section className="engram-section engram-container">
+      <section ref={challengeRef} className="engram-section engram-container">
         <span className="eyebrow">The Challenge</span>
-        <h2 className="engram-section-h2">The Hidden Cost of Industrial Knowledge</h2>
-        <p style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 32 }}>
-          Industrial facilities generate enormous amounts of engineering data, but critical knowledge remains difficult to access.
-        </p>
+        <LineReveal as="h2" className="engram-section-h2" text="The Hidden Cost of Industrial Knowledge" />
+        <LineReveal
+          as="p"
+          style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 32 }}
+          text="Industrial facilities generate enormous amounts of engineering data, but critical knowledge remains difficult to access."
+        />
 
-        <div className="engram-two-col">
-          {/* Challenges list */}
-          <div className="engram-card">
-            <h3 className="engram-card-title">Common Challenges</h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {challenges.map((c, i) => (
-                <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
-                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#FDB022', marginTop: 8, flexShrink: 0 }} />
-                  <span style={{ fontSize: 13, color: 'var(--t3)', lineHeight: 1.7 }}>{c}</span>
-                </div>
-              ))}
+        <ScrollStagger className="engram-quad" step={400} duration={600}>
+          {challenges.map((c, i) => (
+            <div key={i} className="engram-card">
+              <div style={{ color: '#FDB022', marginBottom: 12, lineHeight: 1, animation: challengeInView ? `iconFlash 2.4s ease-in-out ${i * 0.6}s infinite` : 'none' }}><TriangleAlert size={22} strokeWidth={1.75} /></div>
+              <h3 className="engram-card-title" style={{ fontSize: 14, marginBottom: 8 }}>{c.title}</h3>
+              <p style={{ fontSize: 12, color: 'var(--t4)', lineHeight: 1.65 }}>{c.desc}</p>
             </div>
-            <p style={{ fontSize: 12, color: 'var(--t5)', marginTop: 20, fontStyle: 'italic' }}>
-              Engineers spend valuable time locating information instead of solving operational problems.
-            </p>
-          </div>
-
-          {/* Comparison table */}
-          <div className="engram-card">
-            <h3 className="engram-card-title">Why Existing Solutions Fall Short</h3>
-            <p style={{ fontSize: 12, color: 'var(--t4)', marginBottom: 16, lineHeight: 1.6 }}>
-              Traditional document repositories and generic AI tools are not designed for industrial engineering environments.
-            </p>
-            <table className="engram-table">
-              <thead>
-                <tr>
-                  <th>Solution</th>
-                  <th>Limitation</th>
-                </tr>
-              </thead>
-              <tbody>
-                {existingSolutions.map((row, i) => (
-                  <tr key={i}>
-                    <td style={{ fontWeight: 600, color: 'var(--t2)', whiteSpace: 'nowrap' }}>{row.solution}</td>
-                    <td style={{ color: 'var(--t4)' }}>{row.limitation}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <p style={{ fontSize: 12, color: 'var(--primary)', marginTop: 14, fontWeight: 500 }}>
-              enGRAM was built specifically for industrial engineering data, diagrams, and workflows.
-            </p>
-          </div>
-        </div>
+          ))}
+        </ScrollStagger>
+        <p style={{ fontSize: 12, color: 'var(--t5)', marginTop: 20, fontStyle: 'italic' }}>
+          Engineers spend valuable time locating information instead of solving operational problems.
+        </p>
       </section>
 
       {/* ── CAPABILITIES ── */}
+      <NativeApproachScroll
+        items={capabilities}
+        eyebrow="Key Capabilities"
+        title="Three Layers of Plant Intelligence"
+      />
+
+      {/* ── DIAGRAM VIEWS ── */}
       <section className="engram-section engram-container">
-        <span className="eyebrow">Key Capabilities</span>
-        <h2 className="engram-section-h2">Three Layers of Plant Intelligence</h2>
+        <span className="eyebrow">One Diagram · Three Views</span>
+        <LineReveal as="h2" className="engram-section-h2" text="From Scanned Drawing to Three Live Views" />
+        <LineReveal
+          as="p"
+          style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 32, maxWidth: 720 }}
+          text="A scanned P&ID doesn't stay a picture. enGRAM detects every symbol, tag, and line, then digitizes the drawing into a structured scene — rendered as three synchronized views of the same diagram, not three separate files."
+        />
         <ScrollStagger className="engram-caps-grid" step={80}>
-          {capabilities.map((cap) => (
-            <div key={cap.title} className="engram-cap-card" style={{ '--cap-color': cap.color } as React.CSSProperties}>
-              <div className="engram-cap-icon" style={{ color: cap.color }}><cap.Icon size={26} strokeWidth={1.75} /></div>
-              <h3 className="engram-cap-title" style={{ color: cap.color }}>{cap.title}</h3>
-              <p className="engram-cap-sub">{cap.subtitle}</p>
-              <p className="engram-cap-desc">{cap.desc}</p>
-              <ul className="engram-cap-list">
-                {cap.features.map((f, i) => (
-                  <li key={i}>
-                    <span style={{ color: cap.color, marginRight: 6 }}>—</span>
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ul>
+          {diagramViews.map((v) => (
+            <div
+              key={v.title}
+              className="engram-cap-card enview-view-card"
+              style={{ '--cap-color': v.color, '--card-bg': `url(${v.img})` } as React.CSSProperties}
+            >
+              {/* Real screenshot background — zooms on hover via CSS */}
+              <div className="enview-view-card-img" />
+              <div className="enview-view-card-overlay" />
+              <div className="enview-view-card-header">
+                <div style={{ color: v.color }}><v.Icon size={18} strokeWidth={1.75} /></div>
+                <h3 style={{ fontSize: 15, fontWeight: 700, color: '#fff', margin: 0 }}>{v.title}</h3>
+              </div>
+              <div className="enview-view-card-text">
+                <p style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.7)', marginBottom: 6 }}>{v.subtitle}</p>
+                <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.9)', lineHeight: 1.65, margin: 0 }}>{v.desc}</p>
+              </div>
             </div>
           ))}
         </ScrollStagger>
       </section>
 
       {/* ── HOW IT WORKS ── */}
-      <section className="engram-section engram-container">
-        <span className="eyebrow">How It Works</span>
-        <h2 className="engram-section-h2">From Raw Files to Actionable Intelligence</h2>
-        <ScrollAnimation duration={800}>
-          <div className="engram-flow-row">
-            {steps.map((s, i) => (
-              <React.Fragment key={i}>
-                <div className="engram-flow-card">
-                  <div className="engram-flow-num">
-                    <s.icon size={20} strokeWidth={1.75} />
-                  </div>
-                  <h4 className="engram-flow-title">{s.title}</h4>
-                  <p className="engram-flow-desc">{s.desc}</p>
-                </div>
-                {i < steps.length - 1 && (
-                  <div className="engram-flow-connector" aria-hidden="true" />
-                )}
-              </React.Fragment>
-            ))}
-          </div>
-        </ScrollAnimation>
-      </section>
+      <HowItWorksScroll
+        eyebrow="How It Works"
+        title="From Raw Files to Actionable Intelligence"
+        steps={steps}
+        accent="#FDB022"
+        accentRgb="253,176,34"
+      />
 
       {/* ── VALIDATION + COMPLIANCE + SECURITY ── */}
       <section className="engram-section engram-container">
+        <span className="eyebrow">Trust & Control</span>
+        <LineReveal as="h2" className="engram-section-h2" text="Built to Earn Engineering Trust" />
+        <LineReveal
+          as="p"
+          style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 32 }}
+          text="Human oversight, regulatory alignment, and airtight security — the three things engineers check before they trust a system."
+        />
         <ScrollStagger className="engram-three-col" step={90}>
 
           {/* Human in the Loop */}
@@ -423,13 +359,60 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
         </ScrollStagger>
       </section>
 
+      {/* ── THE DIFFERENCE ── */}
+      <section className="engram-section engram-container">
+        <span className="eyebrow">The Difference</span>
+        <LineReveal as="h2" className="engram-section-h2" text="Why Existing Solutions Fall Short" />
+        <LineReveal
+          as="p"
+          style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 32 }}
+          text="Traditional document repositories and generic AI tools are not designed for industrial engineering environments."
+        />
+
+        <div ref={matrixRef} className="engram-card" style={{ padding: '10px 18px', overflowX: 'auto' }}>
+          <table className="engram-table" style={{ tableLayout: 'fixed' }}>
+            <colgroup>
+              <col style={{ width: '34%' }} />
+              {comparisonMatrix.cols.map((c) => <col key={c} style={{ width: `${66 / comparisonMatrix.cols.length}%` }} />)}
+            </colgroup>
+            <thead>
+              <tr>
+                <th></th>
+                {comparisonMatrix.cols.map((c, i) => (
+                  <th key={c} style={i === 0 ? { color: '#FDB022', textAlign: 'center' } : { textAlign: 'center' }}>{c}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {comparisonMatrix.rows.map((row, idx) => (
+                <tr key={row.c} ref={(el) => { rowRefs.current[idx] = el; }}>
+                  <td style={{ fontWeight: 600, color: 'var(--t2)' }}>{row.c}</td>
+                  {row.v.map((ok, i) => (
+                    <td key={i} style={{ textAlign: 'center' }}>
+                      {ok
+                        ? <Check size={16} color="#10B981" strokeWidth={2.5} style={{ display: 'inline-block' }} />
+                        : <X size={16} color="var(--t5)" strokeWidth={2} style={{ display: 'inline-block' }} />}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p style={{ fontSize: 13, color: 'var(--primary)', marginTop: 16, fontWeight: 500 }}>
+          enGRAM was built specifically for industrial engineering data, diagrams, and workflows.
+        </p>
+      </section>
+
       {/* ── VISION ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">Vision</span>
-        <h2 className="engram-section-h2">From Engineering Records to Plant Memory</h2>
-        <p style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85, maxWidth: 680, marginBottom: 32 }}>
-          enGRAM transforms engineering information from static documentation into a continuously evolving intelligence system. As more information is added, the system becomes increasingly valuable — creating a long-term institutional memory for the entire facility.
-        </p>
+        <LineReveal as="h2" className="engram-section-h2" text="From Engineering Records to Plant Memory" />
+        <LineReveal
+          as="p"
+          style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85, maxWidth: 680, marginBottom: 32 }}
+          text="enGRAM transforms engineering information from static documentation into a continuously evolving intelligence system. As more information is added, the system becomes increasingly valuable — creating a long-term institutional memory for the entire facility."
+        />
         <ScrollStagger className="engram-outcomes-grid" step={50}>
           {outcomes.map((o, i) => (
             <div key={i} className="engram-outcome-pill">

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { Cpu, Gauge, Layers, Zap, Workflow, MonitorPlay, Boxes, MessageSquare, BrainCircuit, Network, TriangleAlert } from 'lucide-react';
-import { ScrollStagger } from '../ScrollAnimation';
+import { ScrollStagger, LineReveal } from '../ScrollAnimation';
 import { useInView } from 'react-intersection-observer';
 import gsap from 'gsap';
 import EnviewHowItWorksScroll from './EnviewHowItWorksScroll';
@@ -226,23 +226,27 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
             <span style={{ color: '#93c5fd', fontSize: 10, fontWeight: 700, letterSpacing: 1 }}>MODERN SCADA</span>
           </div>
           <h1 className="engram-hero-h1" style={{ color: '#ffffff' }}>
-            Modern SCADA for<br />
-            <span style={{ color: '#60a5fa' }}>Industrial &amp; Manufacturing</span>
+            <span className="hero-line-mask">
+              <span className="hero-line-inner" style={{ animationDelay: '150ms' }}>Modern SCADA for</span>
+            </span>
+            <span className="hero-line-mask">
+              <span className="hero-line-inner" style={{ animationDelay: '500ms', color: '#60a5fa' }}>Industrial &amp; Manufacturing</span>
+            </span>
           </h1>
-          <p className="engram-hero-sub" style={{ color: 'rgba(255,255,255,0.96)' }}>
+          <p className="engram-hero-sub hero-fade-up" style={{ color: 'rgba(255,255,255,0.96)', animationDelay: '900ms' }}>
             enVIEW is a ground-up, native control platform — built in Swift for Apple Silicon. Instant startup, sub-100ms latency, and three synchronized views from a single data model.
           </p>
-          <p className="engram-hero-body" style={{ color: 'rgba(255,255,255,0.82)' }}>
+          <p className="engram-hero-body hero-fade-up" style={{ color: 'rgba(255,255,255,0.82)', animationDelay: '1100ms' }}>
             Legacy SCADA freezes when it matters most — a 20-year-old single-threaded architecture buckling under alarm floods. enVIEW decouples data from rendering so operators never lose visibility, and turns the P&ID into the live operational source of truth.
           </p>
-          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 28 }}>
+          <div className="hero-fade-up" style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 28, animationDelay: '1300ms' }}>
             {heroChips.map((c) => (
               <span key={c} className="badge hero-chip-badge" style={{ color: '#93c5fd', background: 'rgba(37,99,235,0.22)', borderColor: 'rgba(96,165,250,0.4)' }}>
                 {c}
               </span>
             ))}
           </div>
-          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+          <div className="hero-fade-up" style={{ display: 'flex', gap: 12, flexWrap: 'wrap', animationDelay: '1500ms' }}>
             <button className="btn-primary" onClick={() => onOpenContact('Request a Demo')}>
               Request a Demo
             </button>
@@ -254,10 +258,12 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
       {/* ── CHALLENGE ── */}
       <section ref={challengeRef} className="engram-section engram-container">
         <span className="eyebrow">The Challenge</span>
-        <h2 className="engram-section-h2">The Hidden Cost of Legacy SCADA</h2>
-        <p style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 32, maxWidth: 760 }}>
-          The problem is not the plant. The problem is a 20-year-old software architecture built on single-threaded paradigms — one processing thread shared between data acquisition and UI rendering. When alarm floods hit, the screen freezes at the worst possible moment.
-        </p>
+        <LineReveal as="h2" className="engram-section-h2" text="The Hidden Cost of Legacy SCADA" />
+        <LineReveal
+          as="p"
+          style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 32, maxWidth: 760 }}
+          text="The problem is not the plant. The problem is a 20-year-old software architecture built on single-threaded paradigms — one processing thread shared between data acquisition and UI rendering. When alarm floods hit, the screen freezes at the worst possible moment."
+        />
         <ScrollStagger className="engram-quad" step={70}>
           {challenges.map((c, i) => (
             <div key={c.title} className="engram-card">
@@ -275,10 +281,12 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
       {/* ── THREE VIEWS ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">One Data Model · Three Views</span>
-        <h2 className="engram-section-h2">The Unified Visual Paradigm</h2>
-        <p style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 28, maxWidth: 720 }}>
-          enVIEW treats the P&amp;ID as the master blueprint. No rebuilding, no version drift — what the engineer designs is exactly what the operator sees.
-        </p>
+        <LineReveal as="h2" className="engram-section-h2" text="The Unified Visual Paradigm" />
+        <LineReveal
+          as="p"
+          style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 28, maxWidth: 720 }}
+          text="enVIEW treats the P&ID as the master blueprint. No rebuilding, no version drift — what the engineer designs is exactly what the operator sees."
+        />
         <ScrollStagger className="engram-caps-grid" step={80}>
           {views.map((v) => (
             <div key={v.title} className="engram-cap-card enview-view-card" style={{ '--cap-color': v.color, ...(v.img ? { '--card-bg': `url(${v.img})` } : {}) } as React.CSSProperties}>
@@ -307,10 +315,12 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
       {/* ── SAFETY ── */}
       <section ref={safetyRef} className="engram-section engram-container">
         <span className="eyebrow">Always On</span>
-        <h2 className="engram-section-h2">Silent Safety Systems in the Background</h2>
-        <p style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 28, maxWidth: 720 }}>
-          By decoupling data ingestion from visual rendering, enVIEW guarantees operators never lose visibility during an alarm flood — the “flood vs. flow” architecture.
-        </p>
+        <LineReveal as="h2" className="engram-section-h2" text="Silent Safety Systems in the Background" />
+        <LineReveal
+          as="p"
+          style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 28, maxWidth: 720 }}
+          text="By decoupling data ingestion from visual rendering, enVIEW guarantees operators never lose visibility during an alarm flood — the “flood vs. flow” architecture."
+        />
         <ScrollStagger className="engram-quad" step={70}>
           {safety.map((s) => (
             <div key={s.title} className="engram-card">
@@ -325,7 +335,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
       {/* ── EVALUATION MATRIX ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">The Difference</span>
-        <h2 className="engram-section-h2">The Modern SCADA Evaluation Matrix</h2>
+        <LineReveal as="h2" className="engram-section-h2" text="The Modern SCADA Evaluation Matrix" />
         <div ref={matrixRef} className="engram-card" style={{ padding: '10px 18px', overflowX: 'auto' }}>
           <table className="engram-table">
             <thead>
@@ -382,7 +392,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
       {/* ── AI-NATIVE ── */}
       <section ref={aiRef} className="engram-section engram-container">
         <span className="eyebrow">AI-Native</span>
-        <h2 className="engram-section-h2">Industrial Intelligence, Built In</h2>
+        <LineReveal as="h2" className="engram-section-h2" text="Industrial Intelligence, Built In" />
         <ScrollStagger className="engram-caps-grid" step={80}>
           {aiFeatures.map((f) => (
             <div key={f.title} className="engram-cap-card" style={{ '--cap-color': ACCENT } as React.CSSProperties}>
@@ -397,7 +407,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
       {/* ── TRANSFORM / OUTCOMES ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">The Future</span>
-        <h2 className="engram-section-h2">Transforming Industrial Operations</h2>
+        <LineReveal as="h2" className="engram-section-h2" text="Transforming Industrial Operations" />
         <ScrollStagger className="engram-three-col" step={90}>
           {transform.map((t, i) => (
             <div key={t.to} ref={(el) => { transformCardRefs.current[i] = el; }} className="engram-card">
@@ -416,9 +426,11 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
             </div>
           ))}
         </ScrollStagger>
-        <p style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85, maxWidth: 720, marginTop: 28 }}>
-          enVIEW is not just a SCADA system. It is the operational intelligence platform that connects your physical plant to your digital future.
-        </p>
+        <LineReveal
+          as="p"
+          style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85, maxWidth: 720, marginTop: 28 }}
+          text="enVIEW is not just a SCADA system. It is the operational intelligence platform that connects your physical plant to your digital future."
+        />
         <div style={{ marginTop: 36, display: 'flex', justifyContent: 'flex-end' }}>
           <button className="btn-primary" onClick={() => onOpenContact('Request a Demo')}>
             Request a Demo →

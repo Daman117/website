@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Globe } from 'lucide-react';
 import Logo from './Logo';
+import { LineReveal, ScrollStagger } from './ScrollAnimation';
 
 interface FooterProps {
   onOpenContact: (source?: string) => void;
@@ -41,34 +42,42 @@ const Footer: React.FC<FooterProps> = ({ onOpenContact }) => (
           </div>
           <div className="nav-word"><span>en</span><span>X</span></div>
         </div>
-        <p className="foot-tag">
-          Industrial intelligence capabilities for the plant floor. Built by plant engineers, for plant engineers — local, open, and connected.
-        </p>
+        <LineReveal
+          as="p"
+          className="foot-tag"
+          text="Industrial intelligence capabilities for the plant floor. Built by plant engineers, for plant engineers — local, open, and connected."
+        />
       </div>
 
       {/* Products */}
       <div>
-        <p className="foot-title">Products</p>
-        {products.map((p) => (
-          <Link key={p.id} className="foot-link" to={`/products/${p.id}`}>{p.name}</Link>
-        ))}
+        <LineReveal as="p" className="foot-title" text="Products" />
+        <ScrollStagger step={60} duration={550}>
+          {products.map((p) => (
+            <Link key={p.id} className="foot-link" to={`/products/${p.id}`}>{p.name}</Link>
+          ))}
+        </ScrollStagger>
       </div>
 
       {/* Company */}
       <div>
-        <p className="foot-title">Company</p>
-        {companyLinks.map((l) => (
-          <a key={l.label} className="foot-link" href={l.href}>{l.label}</a>
-        ))}
-        <button className="foot-link" onClick={() => onOpenContact('Footer')}>Contact Us</button>
+        <LineReveal as="p" className="foot-title" text="Company" />
+        <ScrollStagger step={60} duration={550}>
+          {companyLinks.map((l) => (
+            <a key={l.label} className="foot-link" href={l.href}>{l.label}</a>
+          ))}
+          <button className="foot-link" onClick={() => onOpenContact('Footer')}>Contact Us</button>
+        </ScrollStagger>
       </div>
 
       {/* Resources */}
       <div>
-        <p className="foot-title">Resources</p>
-        {resourceLinks.map((r) => (
-          <a key={r} className="foot-link" href="#" onClick={(e) => e.preventDefault()}>{r}</a>
-        ))}
+        <LineReveal as="p" className="foot-title" text="Resources" />
+        <ScrollStagger step={60} duration={550}>
+          {resourceLinks.map((r) => (
+            <a key={r} className="foot-link" href="#" onClick={(e) => e.preventDefault()}>{r}</a>
+          ))}
+        </ScrollStagger>
       </div>
     </div>
 

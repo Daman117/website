@@ -10,6 +10,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useScroll, useTransform, motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { setLenisIntroLocked } from '../hooks/useLenis';
 
 import {
   heroChips,
@@ -26,7 +27,7 @@ import { CAPS } from '../data/caps';
 import { principles } from '../data/company';
 import { pipeNodes } from '../data/platform';
 import Icon from './Icon';
-import ScrollAnimation, { ScrollStagger } from './ScrollAnimation';
+import ScrollAnimation, { ScrollStagger, LineReveal, RevealLines } from './ScrollAnimation';
 import type { Cap } from '../types';
 
 interface LandingPageProps {
@@ -36,23 +37,33 @@ interface LandingPageProps {
 // ─────────────────────────────────────────────────────────────────
 // TICKER
 // ─────────────────────────────────────────────────────────────────
-const TickerItems: React.FC = () => (
-  <>
-    {CAPS.map((c) => (
-      <span key={c.id} className="ticker-item">
-        <span className="ticker-dot" style={{ background: c.color }} />
-        <span className="ticker-name">{c.name}</span>
-        <span className="ticker-cat">{c.cat}</span>
-      </span>
-    ))}
-  </>
-);
+const TickerItems: React.FC = () => {
+  const navigate = useNavigate();
+  return (
+    <>
+      {CAPS.map((c) => (
+        <button
+          key={c.id}
+          type="button"
+          className="ticker-item"
+          onClick={() => navigate(`/products/${c.id}`)}
+        >
+          <span className="ticker-dot" style={{ background: c.color }} />
+          <span className="ticker-name">{c.name}</span>
+          <span className="ticker-cat">{c.cat}</span>
+        </button>
+      ))}
+    </>
+  );
+};
 
-const Ticker: React.FC = () => (
-  <div className="ticker-wrap">
-    <div className="ticker-inner">
-      <div className="ticker-half"><TickerItems /></div>
-      <div className="ticker-half"><TickerItems /></div>
+const Ticker: React.FC<{ visible: boolean }> = ({ visible }) => (
+  <div className={`ticker-wrap${visible ? ' ticker-wrap-visible' : ''}`}>
+    <div className="ticker-track">
+      <div className="ticker-inner">
+        <div className="ticker-half"><TickerItems /></div>
+        <div className="ticker-half"><TickerItems /></div>
+      </div>
     </div>
   </div>
 );
@@ -228,7 +239,36 @@ const CapCard: React.FC<{ cap: Cap }> = ({ cap }) => {
 //    gradient for legibility, and a single-column text block pinned
 //    to the bottom of the image.
 // ─────────────────────────────────────────────────────────────────
-const Hero: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenContact }) => (
+// Fires once per session (module state survives SPA nav, resets on refresh):
+// scroll unlocks and the ticker slides in at this point in the intro.
+let heroIntroPlayed = false;
+const HERO_INTRO_MS = 1800;
+
+const Hero: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenContact }) => {
+  // Ticker stays hidden until the intro text finishes — same gate as the scroll lock
+  const [introDone, setIntroDone] = useState(heroIntroPlayed);
+
+  useEffect(() => {
+    if (heroIntroPlayed) return;
+    setLenisIntroLocked(true);
+    document.documentElement.style.overflow = 'hidden';
+    const t = setTimeout(() => {
+      // Only mark "played" once the timer actually completes — setting this
+      // at the start instead makes React StrictMode's dev-only double-invoke
+      // (mount -> cleanup -> mount) skip the real timer on the second mount.
+      heroIntroPlayed = true;
+      setLenisIntroLocked(false);
+      document.documentElement.style.overflow = '';
+      setIntroDone(true);
+    }, HERO_INTRO_MS);
+    return () => {
+      clearTimeout(t);
+      setLenisIntroLocked(false);
+      document.documentElement.style.overflow = '';
+    };
+  }, []);
+
+  return (
   <section
     id="hero"
     style={{
@@ -253,33 +293,38 @@ const Hero: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenConta
     {/* hero text — pushed to bottom of the image */}
     <div className="section" style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(110px, 16vh, 160px)', paddingBottom: 72 }}>
       <h1 className="engram-hero-h1" style={{ color: '#ffffff' }}>
-        Your plant.<br />
-        <span style={{ color: '#60a5fa' }}>Understood.</span>
+        <span className="hero-line-mask">
+          <span className="hero-line-inner" style={{ animationDelay: '150ms' }}>Your plant.</span>
+        </span>
+        <span className="hero-line-mask">
+          <span className="hero-line-inner" style={{ animationDelay: '500ms', color: '#60a5fa' }}>Understood.</span>
+        </span>
       </h1>
-      <p className="engram-hero-sub" style={{ color: 'rgba(255,255,255,0.96)' }}>
+      <p className="engram-hero-sub hero-fade-up" style={{ color: 'rgba(255,255,255,0.96)', animationDelay: '900ms' }}>
         The local-first industrial intelligence platform that turns drawings, documents, SCADA
         systems and engineering knowledge into structured, searchable plant intelligence.
       </p>
-      <p className="engram-hero-body" style={{ color: 'rgba(255,255,255,0.82)' }}>
+      <p className="engram-hero-body hero-fade-up" style={{ color: 'rgba(255,255,255,0.82)', animationDelay: '1100ms' }}>
         Each capability is complete on its own and more powerful together — and it all runs
         entirely inside your network.
       </p>
-      <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', maxWidth: 640, marginBottom: 28 }} aria-label="Platform capabilities">
+      <div className="hero-fade-up" style={{ display: 'flex', gap: 10, flexWrap: 'wrap', maxWidth: 640, marginBottom: 28, animationDelay: '1300ms' }} aria-label="Platform capabilities">
         {heroChips.map((c) => (
           <span key={c} className="badge hero-chip-badge" style={{ color: '#93c5fd', background: 'rgba(37,99,235,0.22)', borderColor: 'rgba(96,165,250,0.4)' }}>
             {c}
           </span>
         ))}
       </div>
-      <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+      <div className="hero-fade-up" style={{ display: 'flex', gap: 12, flexWrap: 'wrap', animationDelay: '1500ms' }}>
         <button className="btn-primary" onClick={() => onOpenContact('Explore enX')}>Explore enX →</button>
         <button className="btn-outline" onClick={() => onOpenContact('Request a Pilot')}>Request a Pilot</button>
       </div>
     </div>
 
-    <Ticker />
+    <Ticker visible={introDone} />
   </section>
-);
+  );
+};
 
 // ─────────────────────────────────────────────────────────────────
 // ── SECTION 2: PRODUCT DEMO
@@ -301,24 +346,12 @@ const ProductDemo: React.FC = () => {
       <div className="demo-sticky">
         {/* Left — heading + progress list */}
         <div className="demo-sticky-left">
-          <motion.span
-            className="eyebrow"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            Product output, not slideware
-          </motion.span>
-          <motion.h2
-            className="display demo-sticky-h2"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.08 }}
-          >
-            See enX<br />in Action
-          </motion.h2>
+          <ScrollAnimation>
+            <span className="eyebrow">Product output, not slideware</span>
+          </ScrollAnimation>
+          <RevealLines as="h2" className="display demo-sticky-h2" lines={['See enX', 'in Action']} />
 
-          <div className="demo-step-list">
+          <ScrollStagger className="demo-step-list" step={70}>
             {demos.map((d, i) => (
               <button
                 key={d.id}
@@ -337,7 +370,7 @@ const ProductDemo: React.FC = () => {
                 <span className="demo-step-title">{d.title}</span>
               </button>
             ))}
-          </div>
+          </ScrollStagger>
 
           <div className="demo-progress-track">
             <motion.div
@@ -347,8 +380,8 @@ const ProductDemo: React.FC = () => {
           </div>
         </div>
 
-        {/* Right — animated card */}
-        <div className="demo-sticky-right">
+        {/* Right — animated card. Delayed so it appears after the left column has settled. */}
+        <ScrollAnimation delay={900} className="demo-sticky-right">
           <AnimatePresence mode="wait">
             <motion.div
               key={active.id}
@@ -379,7 +412,7 @@ const ProductDemo: React.FC = () => {
               />
             ))}
           </div>
-        </div>
+        </ScrollAnimation>
       </div>
     </div>
   );
@@ -409,14 +442,15 @@ const HowItWorks: React.FC = () => {
   return (
     <section id="how">
       <div className="section">
-        <ScrollAnimation delay={500}>
+        <ScrollAnimation>
           <span className="eyebrow">The workflow</span>
-          <h2 className="display section-title">How Industrial Intelligence Is Built</h2>
-          <p className="section-lead">
-            Four steps from the documents you already have to live, defensible plant intelligence —
-            all inside your network.
-          </p>
         </ScrollAnimation>
+        <LineReveal as="h2" className="display section-title" text="How Industrial Intelligence Is Built" />
+        <LineReveal
+          as="p"
+          className="section-lead"
+          text="Four steps from the documents you already have to live, defensible plant intelligence — all inside your network."
+        />
 
         <div className="how-grid" ref={ref}>
           {workSteps.map((s, i) => (
@@ -428,9 +462,9 @@ const HowItWorks: React.FC = () => {
                 opacity: inView ? 1 : 0.15,
                 filter: inView ? 'none' : 'grayscale(0.8)',
                 transition: `opacity 700ms ease, filter 700ms ease`,
-                transitionDelay: inView ? `${i * STEP}ms` : '0ms',
-              } as React.CSSProperties}
-            >
+                // header (ScrollAnimation, ~700ms) settles first, then steps stagger in
+                transitionDelay: inView ? `${450 + i * STEP}ms` : '0ms',
+              } as React.CSSProperties}>
               <div className="how-step-top">
                 <span className="how-num">
                   <Icon name={s.icon} size={22} strokeWidth={1.75} />
@@ -469,10 +503,16 @@ const HowItWorks: React.FC = () => {
 const CapGrid: React.FC = () => (
   <section id="capabilities">
     <div className="cap-head">
-      <ScrollAnimation>
-        <span className="eyebrow">Products</span>
-        <h2 className="display">Every capability.<br /><span>One platform.</span></h2>
-      </ScrollAnimation>
+      <div>
+        <ScrollAnimation>
+          <span className="eyebrow">Products</span>
+        </ScrollAnimation>
+        <RevealLines
+          as="h2"
+          className="display"
+          lines={[{ text: 'Every capability.', className: 'cap-head-bold' }, { text: 'One platform.', className: 'cap-head-light' }]}
+        />
+      </div>
     </div>
     <ScrollStagger className="cap-grid" step={80}>
       {CAPS.map((cap) => <CapCard key={cap.id} cap={cap} />)}
@@ -488,12 +528,13 @@ const Industries: React.FC = () => (
     <div className="section">
       <ScrollAnimation>
         <span className="eyebrow">Where it runs</span>
-        <h2 className="display section-title">Built for Industrial Operations</h2>
-        <p className="section-lead">
-          enX works wherever the plant floor lives in drawings, documents and live process data.
-          Find your industry.
-        </p>
       </ScrollAnimation>
+      <LineReveal as="h2" className="display section-title" text="Built for Industrial Operations" />
+      <LineReveal
+        as="p"
+        className="section-lead"
+        text="enX works wherever the plant floor lives in drawings, documents and live process data. Find your industry."
+      />
 
       <ScrollStagger className="ind-grid" step={70}>
         {industries.map((ind) => (
@@ -523,15 +564,15 @@ export const Platform: React.FC = () => {
   return (
     <section id="platform">
       <div className="section">
-        <ScrollAnimation delay={500}>
+        <ScrollAnimation>
           <span className="eyebrow">Platform</span>
-          <h2
-            className="display"
-            style={{ fontSize: 'clamp(32px,3.5vw,44px)', fontWeight: 700, letterSpacing: '-1.5px', marginBottom: '52px' }}
-          >
-            How capabilities connect
-          </h2>
         </ScrollAnimation>
+        <LineReveal
+          as="h2"
+          className="display"
+          style={{ fontSize: 'clamp(32px,3.5vw,44px)', fontWeight: 700, letterSpacing: '-1.5px', marginBottom: '52px' }}
+          text="How capabilities connect"
+        />
 
         <div className="platform-flex" ref={ref}>
           {pipeNodes.map((node, i) => (
@@ -548,7 +589,8 @@ export const Platform: React.FC = () => {
                   transform: inView ? 'scaleX(1)' : 'scaleX(0)',
                   opacity: inView ? 1 : 0,
                   transition: `transform ${CARD_DUR}ms cubic-bezier(0.4,0,0.2,1), opacity ${CARD_DUR}ms ease`,
-                  transitionDelay: inView ? `${i * STEP}ms` : '0ms',
+                  // header (ScrollAnimation, ~700ms) settles first, then cards stagger in
+                  transitionDelay: inView ? `${450 + i * STEP}ms` : '0ms',
                 } as React.CSSProperties}
               >
                 <div className="pipe-cap" style={{ color: node.color }}>{node.cap}</div>
@@ -564,7 +606,7 @@ export const Platform: React.FC = () => {
                     transform: inView ? 'scaleX(1)' : 'scaleX(0)',
                     transformOrigin: 'left center',
                     transition: `opacity ${CONN_DUR}ms ease, transform ${CONN_DUR}ms ease`,
-                    transitionDelay: inView ? `${i * STEP + STEP * 0.75}ms` : '0ms',
+                    transitionDelay: inView ? `${450 + i * STEP + STEP * 0.75}ms` : '0ms',
                   } as React.CSSProperties}
                 />
               )}
@@ -584,12 +626,13 @@ export const Architecture: React.FC = () => (
     <div className="section">
       <ScrollAnimation>
         <span className="eyebrow">Platform architecture</span>
-        <h2 className="display section-title">One Platform. Multiple Sources.</h2>
-        <p className="section-lead">
-          Every plant data source flows into one local platform, becomes connected intelligence,
-          and reaches every team that needs it.
-        </p>
       </ScrollAnimation>
+      <LineReveal as="h2" className="display section-title" text="One Platform. Multiple Sources." />
+      <LineReveal
+        as="p"
+        className="section-lead"
+        text="Every plant data source flows into one local platform, becomes connected intelligence, and reaches every team that needs it."
+      />
 
       <ScrollAnimation delay={150} duration={900} threshold={0.06}>
         <div className="arch-diagram">
@@ -667,12 +710,13 @@ const BusinessImpact: React.FC = () => (
     <div className="section">
       <ScrollAnimation>
         <span className="eyebrow">Outcomes</span>
-        <h2 className="display section-title">Business Impact</h2>
-        <p className="section-lead">
-          Industrial buyers purchase outcomes. enX shortens the path from a question to a defensible
-          answer — and keeps engineering knowledge in the business.
-        </p>
       </ScrollAnimation>
+      <LineReveal as="h2" className="display section-title" text="Business Impact" />
+      <LineReveal
+        as="p"
+        className="section-lead"
+        text="Industrial buyers purchase outcomes. enX shortens the path from a question to a defensible answer — and keeps engineering knowledge in the business."
+      />
 
       <ScrollStagger className="impact-grid" step={80}>
         {impacts.map((m) => (
@@ -698,12 +742,13 @@ const Security: React.FC = () => (
     <div className="section">
       <ScrollAnimation>
         <span className="eyebrow">Security &amp; deployment</span>
-        <h2 className="display section-title">Security by Design</h2>
-        <p className="section-lead">
-          enX is built to run where the network never leaves the fence line. No cloud, no external
-          calls, no vendor inside your perimeter.
-        </p>
       </ScrollAnimation>
+      <LineReveal as="h2" className="display section-title" text="Security by Design" />
+      <LineReveal
+        as="p"
+        className="section-lead"
+        text="enX is built to run where the network never leaves the fence line. No cloud, no external calls, no vendor inside your perimeter."
+      />
 
       <ScrollStagger className="sec-grid" step={90}>
         {securityPrinciples.map((p) => (
@@ -726,12 +771,13 @@ const CaseStudies: React.FC = () => (
     <div className="section">
       <ScrollAnimation>
         <span className="eyebrow">Proof in practice</span>
-        <h2 className="display section-title">Case Studies &amp; Use Cases</h2>
-        <p className="section-lead">
-          Drawn from internal pilots and real engineering scenarios — structured as problem,
-          solution and result.
-        </p>
       </ScrollAnimation>
+      <LineReveal as="h2" className="display section-title" text="Case Studies & Use Cases" />
+      <LineReveal
+        as="p"
+        className="section-lead"
+        text="Drawn from internal pilots and real engineering scenarios — structured as problem, solution and result."
+      />
 
       <ScrollStagger className="case-grid" step={130}>
         {caseStudies.map((c) => (
@@ -778,12 +824,13 @@ const Resources: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpen
     <div className="section">
       <ScrollAnimation>
         <span className="eyebrow">Resource center</span>
-        <h2 className="display section-title">Resources</h2>
-        <p className="section-lead">
-          Whitepapers, technical notes, product briefs and deployment guides. Request any resource
-          and we'll send it over.
-        </p>
       </ScrollAnimation>
+      <LineReveal as="h2" className="display section-title" text="Resources" />
+      <LineReveal
+        as="p"
+        className="section-lead"
+        text="Whitepapers, technical notes, product briefs and deployment guides. Request any resource and we'll send it over."
+      />
 
       <ScrollStagger className="res-grid" step={80}>
         {resources.map((r) => (
@@ -812,13 +859,13 @@ export const Principles: React.FC = () => (
     <div className="section" style={{ paddingBottom: '8px' }}>
       <ScrollAnimation>
         <span className="eyebrow">What we believe</span>
-        <h2
-          className="display"
-          style={{ fontSize: 'clamp(32px,3.5vw,44px)', fontWeight: 700, letterSpacing: '-1.5px', marginBottom: 0 }}
-        >
-          Four commitments we don't negotiate
-        </h2>
       </ScrollAnimation>
+      <LineReveal
+        as="h2"
+        className="display"
+        style={{ fontSize: 'clamp(32px,3.5vw,44px)', fontWeight: 700, letterSpacing: '-1.5px', marginBottom: 0 }}
+        text="Four commitments we don't negotiate"
+      />
     </div>
     <ScrollStagger className="princ-grid" step={110}>
       {principles.map((p) => (
@@ -841,11 +888,12 @@ const CTA: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenContac
     <ScrollAnimation threshold={0.2}>
       <div className="cta-panel">
         <span className="eyebrow">Start here</span>
-        <h2 className="cta-h">Your plant.<br />Your documents.<br />90 days.</h2>
-        <p className="cta-p">
-          No vendor inside your network. No data leaving your plant. At 90 days you'll know
-          exactly what changed.
-        </p>
+        <RevealLines as="h2" className="cta-h" lines={['Your plant.', 'Your documents.', '90 days.']} />
+        <LineReveal
+          as="p"
+          className="cta-p"
+          text="No vendor inside your network. No data leaving your plant. At 90 days you'll know exactly what changed."
+        />
         <div className="cta-btns">
           <button className="btn-primary" onClick={() => onOpenContact('Book a Demo')}>Book a Demo →</button>
           <button className="btn-outline" onClick={() => onOpenContact('Request a Pilot')}>Request a Pilot</button>
@@ -878,7 +926,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onOpenContact }) => (
       <CapGrid />
       <Industries />
       <Platform />
-      <Architecture />
       <BusinessImpact />
       <Security />
       <CaseStudies />

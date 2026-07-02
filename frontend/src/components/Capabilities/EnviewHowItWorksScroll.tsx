@@ -1,6 +1,7 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Plug, FolderInput, Layers, Zap } from 'lucide-react';
+import { Plug, FolderInput, Layers, Zap, Play } from 'lucide-react';
+import { LineReveal } from '../ScrollAnimation';
 
 const ACCENT     = '#2563EB';
 const ACCENT_RGB = '37,99,235';
@@ -22,8 +23,6 @@ const Connector: React.FC<{ index: number; inView: boolean }> = ({ index, inView
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <svg width="80" height="10" viewBox="0 0 80 10" style={{ overflow: 'visible', width: '100%' }}>
-        {/* faint track */}
-        <path d="M 0,5 L 80,5" stroke={`rgba(${ACCENT_RGB},0.15)`} strokeWidth={1.5} fill="none" />
         {/* animated draw */}
         <motion.path
           d="M 0,5 L 80,5"
@@ -101,6 +100,66 @@ const Card: React.FC<{ step: typeof steps[0]; index: number; inView: boolean }> 
   );
 };
 
+// ── Click-to-play promo video — appears after the cards, before Impact ───────
+const PromoVideo: React.FC<{ inView: boolean; delay: number }> = ({ inView, delay }) => {
+  const [playing, setPlaying] = useState(false);
+
+  return (
+    <motion.div
+      className="engram-card"
+      initial={{ opacity: 0, y: 18 }}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
+      transition={{ duration: 0.55, delay, ease: [0.16, 1, 0.3, 1] }}
+      style={{ marginTop: 20, padding: 0, overflow: 'hidden', position: 'relative' }}
+    >
+      {playing ? (
+        <video
+          src="/enview-promo.mp4"
+          controls
+          autoPlay
+          style={{ width: '100%', display: 'block', borderRadius: 16 }}
+        />
+      ) : (
+        <button
+          onClick={() => setPlaying(true)}
+          aria-label="Play enVIEW promo video"
+          style={{
+            all: 'unset',
+            display: 'block',
+            position: 'relative',
+            width: '100%',
+            cursor: 'pointer',
+          }}
+        >
+          <video
+            src="/enview-promo.mp4"
+            muted
+            preload="metadata"
+            style={{ width: '100%', display: 'block', borderRadius: 16 }}
+          />
+          <div
+            style={{
+              position: 'absolute', inset: 0,
+              background: 'rgba(4,6,18,0.30)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              transition: 'background 0.25s ease',
+            }}
+          >
+            <div style={{
+              width: 68, height: 68, borderRadius: '50%',
+              background: 'rgba(255,255,255,0.95)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: `0 8px 28px rgba(${ACCENT_RGB},0.4)`,
+            }}>
+              <Play size={26} color={ACCENT} fill={ACCENT} style={{ marginLeft: 3 }} />
+            </div>
+          </div>
+        </button>
+      )}
+    </motion.div>
+  );
+};
+
 // ── Main section ─────────────────────────────────────────────────────────────
 const EnviewHowItWorksScroll: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -109,7 +168,7 @@ const EnviewHowItWorksScroll: React.FC = () => {
   return (
     <section className="engram-section engram-container">
       <span className="eyebrow">How It Works</span>
-      <h2 className="engram-section-h2">From Controller to Operations in Minutes</h2>
+      <LineReveal as="h2" className="engram-section-h2" text="From Controller to Operations in Minutes" />
 
       {/* Timeline row */}
       <div
@@ -129,12 +188,15 @@ const EnviewHowItWorksScroll: React.FC = () => {
         ))}
       </div>
 
-      {/* Impact banner — appears after all cards */}
+      {/* Promo video — appears after all cards, before Impact */}
+      <PromoVideo inView={inView} delay={(steps.length - 1) * STEP_DELAY + CARD_DUR + 0.25} />
+
+      {/* Impact banner — appears after the video */}
       <motion.div
         className="engram-card"
         initial={{ opacity: 0, y: 18 }}
         animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
-        transition={{ duration: 0.55, delay: (steps.length - 1) * STEP_DELAY + CARD_DUR + 0.25, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.55, delay: (steps.length - 1) * STEP_DELAY + CARD_DUR + 0.65, ease: [0.16, 1, 0.3, 1] }}
         style={{
           marginTop: 20,
           textAlign: 'center',

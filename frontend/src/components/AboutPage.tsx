@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { facts } from '../data/company';
 import { founder, standards, techStack } from '../data/v2';
 import Icon from './Icon';
+import { LineReveal } from './ScrollAnimation';
 
 const AboutPage: React.FC = () => {
   const navigate = useNavigate();
@@ -23,13 +24,17 @@ const AboutPage: React.FC = () => {
           <span style={{ color: 'var(--primary)', fontSize: 10, fontWeight: 700, letterSpacing: 1 }}>ABOUT ENSAR SOLUTIONS · ENX DIVISION</span>
         </div>
         <h1 className="engram-hero-h1">
-          Built because it<br />
-          <span style={{ color: 'var(--primary)' }}>needed to exist.</span>
+          <span className="hero-line-mask">
+            <span className="hero-line-inner" style={{ animationDelay: '150ms' }}>Built because it</span>
+          </span>
+          <span className="hero-line-mask">
+            <span className="hero-line-inner" style={{ animationDelay: '500ms', color: 'var(--primary)' }}>needed to exist.</span>
+          </span>
         </h1>
-        <p className="engram-hero-sub">
+        <p className="engram-hero-sub hero-fade-up" style={{ animationDelay: '900ms' }}>
           enX is a division of enSAR Solutions Inc. The industrial intelligence work grew from a real frustration: a practicing I&C engineer who couldn't find the answer he needed fast enough when it mattered.
         </p>
-        <p className="engram-hero-body">
+        <p className="engram-hero-body hero-fade-up" style={{ animationDelay: '1100ms' }}>
           The existing tools required data migration, cloud connectivity, vendor relationships, and IT projects. They produced dashboards nobody used and answers engineers didn't trust. So the software was built from scratch — grounded in how plant engineers actually think, how engineering documents are actually structured, and what an engineer needs when something goes wrong at 2AM.
         </p>
       </section>
@@ -37,7 +42,7 @@ const AboutPage: React.FC = () => {
       {/* ── FOUNDER ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">Founder</span>
-        <h2 className="engram-section-h2">The Engineer Behind enX</h2>
+        <LineReveal as="h2" className="engram-section-h2" text="The Engineer Behind enX" />
 
         <div className="engram-two-col" style={{ alignItems: 'start' }}>
           {/* Left — founder card */}
@@ -100,7 +105,7 @@ const AboutPage: React.FC = () => {
           {/* Standards */}
           <div className="engram-card">
             <span className="eyebrow" style={{ marginBottom: 14, display: 'block' }}>Engineering Standards</span>
-            <h3 className="engram-card-title" style={{ marginBottom: 18 }}>Built on Industrial Standards</h3>
+            <LineReveal as="h3" className="engram-card-title" style={{ marginBottom: 18 }} text="Built on Industrial Standards" />
             <div className="trust-std-list">
               {standards.map((s) => (
                 <div key={s.code} className="trust-std">
@@ -114,7 +119,7 @@ const AboutPage: React.FC = () => {
           {/* Tech */}
           <div className="engram-card">
             <span className="eyebrow" style={{ marginBottom: 14, display: 'block' }}>Technology Stack</span>
-            <h3 className="engram-card-title" style={{ marginBottom: 18 }}>Built for the Security Perimeter</h3>
+            <LineReveal as="h3" className="engram-card-title" style={{ marginBottom: 18 }} text="Built for the Security Perimeter" />
             <div className="trust-tech-row">
               {techStack.map((t) => (
                 <span key={t.name} className="trust-tech">

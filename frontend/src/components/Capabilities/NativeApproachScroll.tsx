@@ -2,6 +2,7 @@ import React, { useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { LucideIcon } from 'lucide-react';
+import { LineReveal } from '../ScrollAnimation';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,11 +17,17 @@ export interface ApproachItem {
 
 interface Props {
   items: ApproachItem[];
+  eyebrow?: string;
+  title?: string;
 }
 
 const STAGGER = 0.5; // seconds between each card's reveal
 
-const NativeApproachScroll: React.FC<Props> = ({ items }) => {
+const NativeApproachScroll: React.FC<Props> = ({
+  items,
+  eyebrow = 'The Approach',
+  title = 'A Native Approach to Industrial Control',
+}) => {
   const rowRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const iconWrapRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -97,8 +104,8 @@ const NativeApproachScroll: React.FC<Props> = ({ items }) => {
         }
       `}</style>
 
-      <span className="eyebrow">The Approach</span>
-      <h2 className="engram-section-h2">A Native Approach to Industrial Control</h2>
+      <span className="eyebrow">{eyebrow}</span>
+      <LineReveal as="h2" className="engram-section-h2" text={title} />
 
       <div ref={rowRef} className="approach-grid">
         {items.map((item, i) => (

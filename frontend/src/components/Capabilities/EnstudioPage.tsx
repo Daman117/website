@@ -1,12 +1,15 @@
 import React from 'react';
 import { PencilRuler, Boxes, MessageSquare, Workflow, BadgeCheck, SlidersHorizontal, Upload, ScanSearch, FileOutput } from 'lucide-react';
-import ScrollAnimation, { ScrollStagger } from '../ScrollAnimation';
+import { ScrollStagger, LineReveal } from '../ScrollAnimation';
+import HowItWorksScroll from './HowItWorksScroll';
 
 interface EnstudioPageProps {
   onOpenContact: (source?: string) => void;
 }
 
 const ACCENT = '#A78BFA';
+
+const heroChips = ['Local AI', 'Air-Gapped', 'ISA-5.1 Symbols', 'Any Drawing Format'];
 
 const challenges = [
   'P&IDs are missing, outdated, or locked in scanned PDFs from decades ago',
@@ -192,226 +195,86 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
   return (
     <main className="engram-page" style={{ '--accent': ACCENT, '--accent-rgb': '167,139,250' } as React.CSSProperties}>
 
-      {/* ── BACK + PRODUCT NAME ── */}
-      <div style={{ paddingTop: 100, paddingLeft: 'var(--gutter)', paddingRight: 'var(--gutter)' }}>
-
-        <div style={{ marginTop: -20, display: 'flex', justifyContent: 'center' }}>
-          <div style={{
-            fontFamily: "'Space Grotesk','DM Sans',sans-serif",
-            fontSize: 'clamp(28px,4vw,48px)',
-            fontWeight: 700,
-            letterSpacing: '-1.5px',
-            color: 'var(--t1)',
-            lineHeight: 1,
-          }}>
-            en<span style={{ color: ACCENT }}>STUDIO</span>
-          </div>
-        </div>
-      </div>
-
-      {/* ── HERO ── */}
-      <section className="engram-hero engram-container">
-        <div className="engram-hero-badge">
-          <span style={{ color: ACCENT, fontSize: 10, fontWeight: 700, letterSpacing: 1 }}>DRAWING INTELLIGENCE</span>
-        </div>
-        <h1 className="engram-hero-h1">
-          Turn Engineering Drawings Into<br />
-          <span style={{ color: ACCENT }}>Plant Configuration</span>
-        </h1>
-        <p className="engram-hero-sub">
-          enSTUDIO is the intelligent middle layer between your drawings and your systems. Upload it, draw it, or describe it — it becomes structured, validated, downstream-ready configuration.
-        </p>
-        <p className="engram-hero-body">
-          Engineering drawings sit in scanned PDFs, legacy CAD files, and decades-old archives. enSTUDIO reads them with local AI, builds one normalized project model, and exports VIDS for enVIEW and YMPL for enableSim — without re-keying a single tag.
-        </p>
-        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-          <button className="btn-primary" onClick={() => onOpenContact('Request a Demo')}>
-            Request a Demo
-          </button>
-        </div>
-      </section>
-
-      {/* ── VISUAL: P&ID → Structured Model ── */}
-      <div className="engram-container" style={{ marginBottom: 48 }}>
+      {/* ── HERO (fixed parallax background) ── */}
+      <div style={{
+        position: 'relative',
+        backgroundImage: 'url(/enstudio-hero.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center 30%',
+        backgroundAttachment: 'fixed',
+        minHeight: 'clamp(600px, 95vh, 960px)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+      }}>
+        {/* dark gradient — lighter at top so image shows, darker at bottom for text */}
         <div style={{
-          background: 'linear-gradient(135deg,#f5f3ff 0%,#ede9fe 100%)',
-          border: `1px solid ${ACCENT}33`,
-          borderRadius: 20,
-          padding: 'clamp(20px,4vw,48px)',
-          boxShadow: `0 24px 64px rgba(167,139,250,0.12)`,
-        }}>
-          <div style={{ textAlign: 'center', marginBottom: 24 }}>
-            <span style={{ fontSize: 11, fontWeight: 700, color: ACCENT, letterSpacing: 1 }}>HOW enSTUDIO WORKS</span>
+          position: 'absolute', inset: 0,
+          background: 'linear-gradient(to bottom, rgba(4,6,18,0.20) 0%, rgba(4,6,18,0.60) 55%, rgba(4,6,18,0.94) 100%)',
+          pointerEvents: 'none',
+        }} />
+
+        {/* hero text — pushed to bottom of the image */}
+        <section className="engram-hero engram-container" style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(110px, 16vh, 160px)', paddingBottom: 72 }}>
+          <div className="engram-hero-badge">
+            <span style={{ color: '#c4b5fd', fontSize: 10, fontWeight: 700, letterSpacing: 1 }}>DRAWING INTELLIGENCE</span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(12px,3vw,32px)', flexWrap: 'wrap' }}>
-
-            {/* LEFT — P&ID Schematic SVG */}
-            <div style={{ flex: '1 1 260px' }}>
-              <div style={{ fontSize: 10, fontWeight: 700, color: '#6b7280', letterSpacing: 1, marginBottom: 8 }}>INPUT — P&ID DRAWING</div>
-              <svg viewBox="0 0 280 200" style={{ width: '100%', height: 'auto', background: 'white', borderRadius: 12, border: `1px solid ${ACCENT}22`, display: 'block' }}>
-                {/* Vessel T-101 */}
-                <ellipse cx={50} cy={90} rx={26} ry={40} fill="none" stroke={ACCENT} strokeWidth={1.5}/>
-                <text x={50} y={142} textAnchor="middle" fontSize={8} fill="#9ca3af" fontFamily="monospace">T-101</text>
-                {/* Pipe */}
-                <line x1={76} y1={90} x2={115} y2={90} stroke="#374151" strokeWidth={2}/>
-                {/* FT circle */}
-                <circle cx={96} cy={72} r={14} fill="white" stroke={ACCENT} strokeWidth={1.5}/>
-                <text x={96} y={69} textAnchor="middle" fontSize={7} fill={ACCENT} fontWeight="700">FT</text>
-                <text x={96} y={79} textAnchor="middle" fontSize={6} fill="#9ca3af">1001</text>
-                <line x1={96} y1={86} x2={96} y2={90} stroke="#374151" strokeWidth={1}/>
-                {/* Valve */}
-                <polygon points="115,83 133,90 115,97" fill="none" stroke="#374151" strokeWidth={1.5}/>
-                <polygon points="151,83 133,90 151,97" fill="none" stroke="#374151" strokeWidth={1.5}/>
-                <line x1={133} y1={83} x2={133} y2={72} stroke="#374151" strokeWidth={1.5}/>
-                {/* Pipe continues */}
-                <line x1={151} y1={90} x2={196} y2={90} stroke="#374151" strokeWidth={2}/>
-                {/* Vessel V-201 */}
-                <rect x={196} y={62} width={40} height={56} rx={5} fill="none" stroke={ACCENT} strokeWidth={1.5}/>
-                <text x={216} y={130} textAnchor="middle" fontSize={8} fill="#9ca3af" fontFamily="monospace">V-201</text>
-                {/* PT circle */}
-                <circle cx={216} cy={50} r={13} fill="white" stroke="#60a5fa" strokeWidth={1.5}/>
-                <text x={216} y={47} textAnchor="middle" fontSize={7} fill="#60a5fa" fontWeight="700">PT</text>
-                <text x={216} y={57} textAnchor="middle" fontSize={6} fill="#9ca3af">2001</text>
-                <line x1={216} y1={63} x2={216} y2={62} stroke="#374151" strokeWidth={1}/>
-                {/* TT circle */}
-                <line x1={236} y1={90} x2={260} y2={90} stroke="#374151" strokeWidth={2}/>
-                <circle cx={248} cy={74} r={13} fill="white" stroke="#34d399" strokeWidth={1.5}/>
-                <text x={248} y={71} textAnchor="middle" fontSize={7} fill="#34d399" fontWeight="700">TT</text>
-                <text x={248} y={81} textAnchor="middle" fontSize={6} fill="#9ca3af">3001</text>
-                <line x1={248} y1={87} x2={248} y2={90} stroke="#374151" strokeWidth={1}/>
-                {/* Footer note */}
-                <text x={8} y={165} fontSize={7} fill="#d1d5db">Sheet 3 of 14 · Rev.C · 2019</text>
-                <text x={8} y={177} fontSize={7} fill="#d1d5db">Scanned PDF · 300 dpi</text>
-              </svg>
-            </div>
-
-            {/* CENTER arrow */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, flexShrink: 0 }}>
-              <div style={{ fontSize: 9, fontWeight: 800, color: ACCENT, letterSpacing: 1, textAlign: 'center' }}>enSTUDIO<br/>AI</div>
-              <div style={{ fontSize: 32, color: ACCENT, lineHeight: 1 }}>→</div>
-            </div>
-
-            {/* RIGHT — Extracted tags */}
-            <div style={{ flex: '1 1 240px' }}>
-              <div style={{ fontSize: 10, fontWeight: 700, color: '#6b7280', letterSpacing: 1, marginBottom: 8 }}>OUTPUT — STRUCTURED MODEL</div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
-                {[
-                  { tag: 'FT-1001', type: 'Flow Transmitter',      range: '0–500 m³/h',  conf: 'HIGH', c: '#10b981' },
-                  { tag: 'PT-2001', type: 'Pressure Transmitter',   range: '0–10 bar',    conf: 'HIGH', c: '#10b981' },
-                  { tag: 'TT-3001', type: 'Temperature Element',    range: '0–200 °C',    conf: 'MED',  c: '#f59e0b' },
-                  { tag: 'V-201',   type: 'Vessel',                 range: 'Cap: 12 m³',  conf: 'HIGH', c: '#10b981' },
-                ].map((row) => (
-                  <div key={row.tag} style={{
-                    background: 'white', borderRadius: 9, padding: '8px 12px',
-                    border: `1px solid ${ACCENT}22`,
-                    display: 'flex', alignItems: 'center', gap: 8,
-                  }}>
-                    <code style={{ fontSize: 10, fontWeight: 700, color: ACCENT, minWidth: 64, flexShrink: 0 }}>{row.tag}</code>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 11, color: '#374151', fontWeight: 600 }}>{row.type}</div>
-                      <div style={{ fontSize: 9, color: '#9ca3af' }}>{row.range}</div>
-                    </div>
-                    <span style={{ fontSize: 8, fontWeight: 700, padding: '2px 7px', borderRadius: 5, background: row.c + '18', color: row.c, flexShrink: 0 }}>{row.conf}</span>
-                  </div>
-                ))}
-                <div style={{ fontSize: 10, color: '#9ca3af', marginTop: 2, textAlign: 'right' }}>Exports → VIDS · YMPL · enVIEW</div>
-              </div>
-            </div>
+          <h1 className="engram-hero-h1" style={{ color: '#ffffff' }}>
+            <span className="hero-line-mask">
+              <span className="hero-line-inner" style={{ animationDelay: '150ms' }}>Turn Engineering Drawings Into</span>
+            </span>
+            <span className="hero-line-mask">
+              <span className="hero-line-inner" style={{ animationDelay: '500ms', color: ACCENT }}>Plant Configuration</span>
+            </span>
+          </h1>
+          <p className="engram-hero-sub hero-fade-up" style={{ color: 'rgba(255,255,255,0.96)', animationDelay: '900ms' }}>
+            enSTUDIO is the intelligent middle layer between your drawings and your systems. Upload it, draw it, or describe it — it becomes structured, validated, downstream-ready configuration.
+          </p>
+          <p className="engram-hero-body hero-fade-up" style={{ color: 'rgba(255,255,255,0.82)', animationDelay: '1100ms' }}>
+            Engineering drawings sit in scanned PDFs, legacy CAD files, and decades-old archives. enSTUDIO reads them with local AI, builds one normalized project model, and exports VIDS for enVIEW and YMPL for enableSim — without re-keying a single tag.
+          </p>
+          <div className="hero-fade-up" style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 28, animationDelay: '1300ms' }}>
+            {heroChips.map((c) => (
+              <span key={c} className="badge hero-chip-badge" style={{ color: '#c4b5fd', background: 'rgba(167,139,250,0.22)', borderColor: 'rgba(196,181,253,0.4)' }}>
+                {c}
+              </span>
+            ))}
           </div>
-        </div>
+          <div className="hero-fade-up" style={{ display: 'flex', gap: 12, flexWrap: 'wrap', animationDelay: '1500ms' }}>
+            <button className="btn-primary" onClick={() => onOpenContact('Request a Demo')}>
+              Request a Demo
+            </button>
+          </div>
+        </section>
       </div>
 
       {/* ── OVERVIEW ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">Overview</span>
-        <h2 className="engram-section-h2">Flexible Input → AI Processing → Flexible Output</h2>
+        <LineReveal as="h2" className="engram-section-h2" text="Flexible Input → AI Processing → Flexible Output" />
         <div className="engram-overview-grid">
-          <p style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85 }}>
-            enSTUDIO does not force a single schema on either end. The AI understands both the drawing in front of you and the systems downstream. P&IDs, equipment lists, datasheets, YMPL files, or plain text all flow into one normalized internal model.
-          </p>
-          <p style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85 }}>
-            That model is the working representation — not a file format. From it, schema-driven adapters generate exactly what each target system needs. The engineer never edits an output format by hand. It is a configuration tool for commissioning and change — it never runs at operator runtime.
-          </p>
+          <LineReveal
+            as="p"
+            style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85 }}
+            text="enSTUDIO does not force a single schema on either end. The AI understands both the drawing in front of you and the systems downstream. P&IDs, equipment lists, datasheets, YMPL files, or plain text all flow into one normalized internal model."
+          />
+          <LineReveal
+            as="p"
+            style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85 }}
+            text="That model is the working representation — not a file format. From it, schema-driven adapters generate exactly what each target system needs. The engineer never edits an output format by hand. It is a configuration tool for commissioning and change — it never runs at operator runtime."
+          />
         </div>
       </section>
-
-      {/* ── VISUAL: Before / After comparison ── */}
-      <div className="engram-container" style={{ marginBottom: 0 }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-
-          {/* Before */}
-          <div style={{ background: '#f9fafb', borderRadius: 16, border: '1px solid var(--border)', padding: 20, display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <div style={{ fontSize: 10, fontWeight: 700, color: '#6b7280', letterSpacing: 1 }}>BEFORE — MANUAL REVIEW</div>
-            <svg viewBox="0 0 260 180" style={{ width: '100%', height: 'auto', display: 'block' }}>
-              {/* Stacked document icons */}
-              {[0,6,12].map((offset) => (
-                <rect key={offset} x={20+offset} y={20+offset} width={80} height={110} rx={4} fill="white" stroke="#d1d5db" strokeWidth={1.2}/>
-              ))}
-              {/* Lines on doc */}
-              {[40,52,64,76,88,100].map((y) => (
-                <line key={y} x1={28} y1={y} x2={88} y2={y} stroke="#e5e7eb" strokeWidth={1.5}/>
-              ))}
-              <text x={32} y={36} fontSize={7} fill="#9ca3af">P&ID-003 Rev.B</text>
-              {/* Arrow */}
-              <text x={120} y={95} fontSize={28} fill="#d1d5db" textAnchor="middle">↓</text>
-              {/* Person icon */}
-              <circle cx={200} cy={55} r={16} fill="#e5e7eb"/>
-              <text x={200} y={60} fontSize={12} textAnchor="middle">👤</text>
-              <rect x={160} y={75} width={80} height={50} rx={4} fill="white" stroke="#d1d5db" strokeWidth={1.2}/>
-              {[85,95,105,115].map((y) => (
-                <line key={y} x1={168} y1={y} x2={232} y2={y} stroke="#e5e7eb" strokeWidth={1.5}/>
-              ))}
-              <text x={130} y={145} fontSize={8} fill="#9ca3af" textAnchor="middle">Hours of manual entry per sheet</text>
-            </svg>
-            <div style={{ fontSize: 11, color: '#ef4444', fontWeight: 600 }}>⏱ 3–8 hours per drawing sheet</div>
-          </div>
-
-          {/* After */}
-          <div style={{ background: `linear-gradient(135deg,#f5f3ff,#ede9fe)`, borderRadius: 16, border: `1px solid ${ACCENT}44`, padding: 20, display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <div style={{ fontSize: 10, fontWeight: 700, color: ACCENT, letterSpacing: 1 }}>AFTER — enSTUDIO AI</div>
-            <svg viewBox="0 0 260 180" style={{ width: '100%', height: 'auto', display: 'block' }}>
-              {/* Doc icon */}
-              <rect x={20} y={20} width={60} height={80} rx={4} fill="white" stroke={ACCENT} strokeWidth={1.2}/>
-              {[35,47,59,71].map((y) => (
-                <line key={y} x1={28} y1={y} x2={72} y2={y} stroke={ACCENT+'44'} strokeWidth={1.5}/>
-              ))}
-              {/* Arrow with label */}
-              <line x1={85} y1={60} x2={140} y2={60} stroke={ACCENT} strokeWidth={2} markerEnd="url(#arr2)"/>
-              <rect x={88} y={44} width={46} height={12} rx={3} fill={ACCENT+'22'}/>
-              <text x={111} y={53} fontSize={7} fill={ACCENT} fontWeight="700" textAnchor="middle">AI READS</text>
-              {/* Output cards */}
-              {[
-                { label: 'FT-1001', y: 28, c: ACCENT },
-                { label: 'PT-2001', y: 68, c: '#60a5fa' },
-                { label: 'TT-3001', y: 108, c: '#34d399' },
-              ].map((r) => (
-                <g key={r.label}>
-                  <rect x={148} y={r.y} width={94} height={28} rx={5} fill="white" stroke={r.c} strokeWidth={1.2}/>
-                  <text x={157} y={r.y+12} fontSize={7} fill={r.c} fontWeight="700">{r.label}</text>
-                  <circle cx={231} cy={r.y+9} r={7} fill={r.c+'22'}/>
-                  <text x={231} y={r.y+13} fontSize={6} fill={r.c} textAnchor="middle">✓</text>
-                </g>
-              ))}
-              <defs>
-                <marker id="arr2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-                  <path d="M0,0 L6,3 L0,6 Z" fill={ACCENT}/>
-                </marker>
-              </defs>
-              <text x={130} y={155} fontSize={8} fill="#9ca3af" textAnchor="middle">Seconds per sheet, zero re-typing</text>
-            </svg>
-            <div style={{ fontSize: 11, color: '#10b981', fontWeight: 600 }}>⚡ Seconds per drawing sheet</div>
-          </div>
-
-        </div>
-      </div>
 
       {/* ── CHALLENGE ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">The Challenge</span>
-        <h2 className="engram-section-h2">Configuration Is the Bottleneck</h2>
-        <p style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 32 }}>
-          Standing up a plant configuration means reading drawings and re-typing them into every system — by hand, again and again.
-        </p>
+        <LineReveal as="h2" className="engram-section-h2" text="Configuration Is the Bottleneck" />
+        <LineReveal
+          as="p"
+          style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 32 }}
+          text="Standing up a plant configuration means reading drawings and re-typing them into every system — by hand, again and again."
+        />
 
         <div className="engram-two-col">
           <div className="engram-card">
@@ -460,7 +323,7 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
       {/* ── INPUT MODES ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">Three Ways In</span>
-        <h2 className="engram-section-h2">Meet Engineers Where They Are</h2>
+        <LineReveal as="h2" className="engram-section-h2" text="Meet Engineers Where They Are" />
         <ScrollStagger className="engram-caps-grid" step={80}>
           {inputModes.map((m) => (
             <div key={m.title} className="engram-cap-card" style={{ '--cap-color': ACCENT } as React.CSSProperties}>
@@ -484,7 +347,7 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
       {/* ── CAPABILITIES ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">Key Capabilities</span>
-        <h2 className="engram-section-h2">From Drawing to Validated Configuration</h2>
+        <LineReveal as="h2" className="engram-section-h2" text="From Drawing to Validated Configuration" />
         <ScrollStagger className="engram-caps-grid" step={80}>
           {capabilities.map((cap) => (
             <div key={cap.title} className="engram-cap-card" style={{ '--cap-color': cap.color } as React.CSSProperties}>
@@ -506,33 +369,18 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
       </section>
 
       {/* ── HOW IT WORKS ── */}
-      <section className="engram-section engram-container">
-        <span className="eyebrow">How It Works</span>
-        <h2 className="engram-section-h2">From Raw Drawing to Downstream-Ready</h2>
-        <ScrollAnimation duration={800}>
-          <div className="engram-flow-row">
-            {steps.map((s, i) => (
-              <React.Fragment key={i}>
-                <div className="engram-flow-card">
-                  <div className="engram-flow-num">
-                    <s.icon size={20} strokeWidth={1.75} />
-                  </div>
-                  <h4 className="engram-flow-title">{s.title}</h4>
-                  <p className="engram-flow-desc">{s.desc}</p>
-                </div>
-                {i < steps.length - 1 && (
-                  <div className="engram-flow-connector" aria-hidden="true" />
-                )}
-              </React.Fragment>
-            ))}
-          </div>
-        </ScrollAnimation>
-      </section>
+      <HowItWorksScroll
+        eyebrow="How It Works"
+        title="From Raw Drawing to Downstream-Ready"
+        steps={steps}
+        accent={ACCENT}
+        accentRgb="167,139,250"
+      />
 
       {/* ── OUTPUT ADAPTERS ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">Output Adapters</span>
-        <h2 className="engram-section-h2">One Model, Every Target System</h2>
+        <LineReveal as="h2" className="engram-section-h2" text="One Model, Every Target System" />
         <ScrollStagger className="engram-three-col" step={90}>
           {adapters.map((a) => (
             <div key={a.label} className="engram-card" style={{ borderColor: `${a.color}40` }}>
@@ -604,10 +452,12 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
       {/* ── VISION ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">Outcomes</span>
-        <h2 className="engram-section-h2">Drawings Become Living Configuration</h2>
-        <p style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85, maxWidth: 680, marginBottom: 32 }}>
-          enSTUDIO collapses the configuration bottleneck. The same project model feeds operator displays and physics simulation, stays in sync through surgical patches, and turns static drawings into a single source of truth for the entire plant lifecycle.
-        </p>
+        <LineReveal as="h2" className="engram-section-h2" text="Drawings Become Living Configuration" />
+        <LineReveal
+          as="p"
+          style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85, maxWidth: 680, marginBottom: 32 }}
+          text="enSTUDIO collapses the configuration bottleneck. The same project model feeds operator displays and physics simulation, stays in sync through surgical patches, and turns static drawings into a single source of truth for the entire plant lifecycle."
+        />
         <ScrollStagger className="engram-outcomes-grid" step={50}>
           {outcomes.map((o, i) => (
             <div key={i} className="engram-outcome-pill">

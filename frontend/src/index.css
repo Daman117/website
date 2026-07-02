@@ -301,6 +301,29 @@ img {
   .sa-hidden-up, .sa-hidden-down, .sa-hidden-left, .sa-hidden-right { opacity: 1; transform: none; }
 }
 
+/* LineReveal — word-by-word masked reveal, same look as the hero headline,
+   but scroll-triggered. Used for section headings and lead paragraphs. */
+.lr-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+.lr-inner {
+  display: inline-block;
+  transform: translateY(110%);
+  opacity: 0;
+  transition-property: opacity, transform;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.lr-inner.lr-in {
+  transform: translateY(0);
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lr-inner { transition: none !important; opacity: 1 !important; transform: none !important; }
+}
+
 /* Stagger delay utility classes (0.1s increments) */
 .stagger-1  { transition-delay: 0.1s; }
 .stagger-2  { transition-delay: 0.2s; }
@@ -328,6 +351,32 @@ img {
 .animate-item.stagger-6 { animation-delay: 0.6s; }
 .animate-item.stagger-7 { animation-delay: 0.7s; }
 .animate-item.stagger-8 { animation-delay: 0.8s; }
+
+/* Hero entrance — line-by-line reveal on page load/refresh (not scroll-triggered) */
+.hero-line-mask {
+  display: block;
+  overflow: hidden;
+}
+.hero-line-inner {
+  display: block;
+  transform: translateY(100%);
+  opacity: 0;
+  animation: heroLineIn 1200ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes heroLineIn {
+  to { transform: translateY(0); opacity: 1; }
+}
+.hero-fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  animation: heroFadeUp 1000ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes heroFadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-line-inner, .hero-fade-up { animation: none !important; opacity: 1 !important; transform: none !important; }
+}
 
 /* Floating badge cards in hero — each on its own duration/amplitude so motion never syncs */
 @keyframes float {
@@ -772,14 +821,7 @@ img {
   transition: left 0.85s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .btn-primary:hover {
-  transform: translateY(-2px) scale(1.018);
-  box-shadow:
-    0 6px 14px rgba(11, 37, 69, 0.2),
-    0 14px 32px rgba(31, 95, 224, 0.3),
-    0 0 0 4px rgba(31, 95, 224, 0.1);
-}
-.btn-primary:hover::before {
-  left: 140%;
+  transform: scale(1.018);
 }
 .btn-primary:active {
   transform: translateY(0) scale(0.99);
@@ -810,11 +852,7 @@ img {
   position: relative;
 }
 .btn-outline:hover {
-  color: var(--primary);
-  border-color: var(--primary);
-  background: rgba(31, 95, 224, 0.06);
-  transform: translateY(-2px) scale(1.018);
-  box-shadow: 0 8px 20px rgba(31, 95, 224, 0.12), 0 0 0 4px rgba(31, 95, 224, 0.06);
+  transform: scale(1.018);
 }
 .btn-outline:active {
   transform: translateY(0) scale(0.99);
@@ -1350,13 +1388,49 @@ hr.rule {
   margin-top: -40px;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
+  /* the whole bar — border lines included — stays invisible until the hero
+     intro text finishes; then it appears and the track (below) slides the
+     strip in from the right edge so words arrive one by one */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 250ms ease;
+}
+.ticker-wrap-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+/* One-shot entrance: starts exactly at the right edge of the track (the
+   first word's left edge sits right at the visible boundary, so it appears
+   immediately once the line fades in — no dead wait), then drifts across at
+   a constant speed. Its rate (100% of the viewport-wide track in 28000ms)
+   matches the .ticker-inner marquee's own rate below (roughly one
+   viewport-width per 28s) — and, critically, the marquee's motion is held
+   off via animation-delay until this entrance is done, so the two motions
+   never run at the same time and add together. Without that delay the
+   entrance speed and the loop speed would stack during the overlap, which
+   is what made it look like a fast rush that suddenly slowed down. */
+.ticker-track {
+  width: 100%;
+  transform: translateX(100%);
+}
+.ticker-wrap-visible .ticker-track {
+  animation: tickerEnter 28000ms linear forwards;
+}
+@keyframes tickerEnter {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0%); }
 }
 .ticker-inner {
   display: flex;
   animation: marquee 28s linear infinite;
+  animation-play-state: paused;
   white-space: nowrap;
   width: fit-content;
   gap: 52px;
+}
+.ticker-wrap-visible .ticker-inner {
+  animation-play-state: running;
+  animation-delay: 28000ms;
 }
 .ticker-half {
   display: inline-flex;
@@ -1368,6 +1442,18 @@ hr.rule {
   align-items: center;
   gap: 9px;
   flex-shrink: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+}
+.ticker-item:hover .ticker-name {
+  color: #93c5fd;
+}
+.ticker-item:hover .ticker-cat {
+  color: rgba(255, 255, 255, 0.92);
 }
 .ticker-dot {
   width: 4px;
@@ -1387,7 +1473,8 @@ hr.rule {
   color: rgba(255, 255, 255, 0.75);
   white-space: nowrap;
 }
-.ticker-wrap:hover .ticker-inner {
+.ticker-wrap:hover .ticker-inner,
+.ticker-wrap:hover .ticker-track {
   animation-play-state: paused;
 }
 @media (max-width: 768px) {
@@ -1542,7 +1629,19 @@ hr.rule {
 [data-theme="dark"] .cap-head h2 {
   color: var(--t1);
 }
-.cap-head h2 span {
+.cap-head-bold {
+  /* Space Grotesk only ships weights up to 700 (see index.html) — that's the
+     heaviest actually available, an 800 request just silently reuses 700. */
+  font-weight: 700;
+  color: #000000;
+}
+[data-theme="dark"] .cap-head-bold {
+  color: #ffffff;
+}
+.cap-head-light {
+  /* widens the gap from the line above so the bold difference reads clearly
+     even though 700 vs the base 600 alone was too close to notice */
+  font-weight: 500;
   color: var(--t5);
 }
 .cap-head p {

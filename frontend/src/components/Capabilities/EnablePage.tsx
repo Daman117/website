@@ -1,6 +1,7 @@
 import React from 'react';
 import { Boxes, Gauge, MonitorPlay, PenTool, LayoutGrid, Cpu, FileCheck, Play, FileOutput } from 'lucide-react';
-import ScrollAnimation, { ScrollStagger } from '../ScrollAnimation';
+import { ScrollStagger, LineReveal } from '../ScrollAnimation';
+import HowItWorksScroll from './HowItWorksScroll';
 
 interface EnablePageProps {
   onOpenContact: (source?: string) => void;
@@ -138,16 +139,20 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
           <span style={{ color: ACCENT, fontSize: 10, fontWeight: 700, letterSpacing: 1 }}>PROCESS INTELLIGENCE FOR DESIGN &amp; CONTROL</span>
         </div>
         <h1 className="engram-hero-h1">
-          Turn Your Plant Into a<br />
-          <span style={{ color: ACCENT }}>Matrix</span>
+          <span className="hero-line-mask">
+            <span className="hero-line-inner" style={{ animationDelay: '150ms' }}>Turn Your Plant Into a</span>
+          </span>
+          <span className="hero-line-mask">
+            <span className="hero-line-inner" style={{ animationDelay: '500ms', color: ACCENT }}>Matrix</span>
+          </span>
         </h1>
-        <p className="engram-hero-sub">
+        <p className="engram-hero-sub hero-fade-up" style={{ animationDelay: '900ms' }}>
           enABLE is a desktop engineering application for process and control engineers. Draw your plant as a flowsheet and it becomes a block-matrix model — dx/dt = M·x + B·u — that yields eigenvalue-based engineering judgment at design time.
         </p>
-        <p className="engram-hero-body">
+        <p className="engram-hero-body hero-fade-up" style={{ animationDelay: '1100ms' }}>
           From that one matrix, enABLE computes stability, controllability, loop pairing, recommended changes, alarm bounds and a HAZOP pre-fill — then runs the same plant as a live closed-loop dynamic simulation. Questions that normally take years of experience or long dynamic studies become calculations.
         </p>
-        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+        <div className="hero-fade-up" style={{ display: 'flex', gap: 12, flexWrap: 'wrap', animationDelay: '1300ms' }}>
           <button className="btn-primary" onClick={() => onOpenContact('Waitlist')}>
             Join the Waitlist
           </button>
@@ -157,14 +162,18 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
       {/* ── OVERVIEW ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">Overview</span>
-        <h2 className="engram-section-h2">An Intelligence Layer for Process Design</h2>
+        <LineReveal as="h2" className="engram-section-h2" text="An Intelligence Layer for Process Design" />
         <div className="engram-overview-grid">
-          <p style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85 }}>
-            enABLE turns a plant model into eigenvalue-based engineering judgment, and is honest about the difference between what it computes exactly, what it predicts, and what a human must still confirm. It complements the steady-state and dynamic simulators an organisation already uses — adding analysis those tools do not provide — rather than replacing them.
-          </p>
-          <p style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85 }}>
-            Results are presented verdict-first: a plain-language conclusion about the design leads, with the supporting detail available on demand. Because the model that produces the analysis is the model that drives the simulation, a plant can move from a static design judgment to a running virtual plant without re-modelling.
-          </p>
+          <LineReveal
+            as="p"
+            style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85 }}
+            text="enABLE turns a plant model into eigenvalue-based engineering judgment, and is honest about the difference between what it computes exactly, what it predicts, and what a human must still confirm. It complements the steady-state and dynamic simulators an organisation already uses — adding analysis those tools do not provide — rather than replacing them."
+          />
+          <LineReveal
+            as="p"
+            style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85 }}
+            text="Results are presented verdict-first: a plain-language conclusion about the design leads, with the supporting detail available on demand. Because the model that produces the analysis is the model that drives the simulation, a plant can move from a static design judgment to a running virtual plant without re-modelling."
+          />
         </div>
         <div className="matrix-eq" style={{ marginTop: 28, maxWidth: 620 }}>
           dx/dt = M·x + B·u<br /><br />
@@ -177,10 +186,12 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
       {/* ── CHALLENGE ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">The Challenge</span>
-        <h2 className="engram-section-h2">Design Judgment Arrives Too Late</h2>
-        <p style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 32 }}>
-          Whether a plant will be stable, controllable and operable is often only discovered late — when changes are expensive — and the experience needed to judge it is walking out the door.
-        </p>
+        <LineReveal as="h2" className="engram-section-h2" text="Design Judgment Arrives Too Late" />
+        <LineReveal
+          as="p"
+          style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 32 }}
+          text="Whether a plant will be stable, controllable and operable is often only discovered late — when changes are expensive — and the experience needed to judge it is walking out the door."
+        />
 
         <div className="engram-two-col">
           <div className="engram-card">
@@ -229,7 +240,7 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
       {/* ── CAPABILITIES ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">Key Capabilities</span>
-        <h2 className="engram-section-h2">From a Matrix to a Running Plant</h2>
+        <LineReveal as="h2" className="engram-section-h2" text="From a Matrix to a Running Plant" />
         <ScrollStagger className="engram-caps-grid" step={80}>
           {capabilities.map((cap) => (
             <div key={cap.title} className="engram-cap-card" style={{ '--cap-color': cap.color } as React.CSSProperties}>
@@ -251,28 +262,13 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
       </section>
 
       {/* ── HOW IT WORKS ── */}
-      <section className="engram-section engram-container">
-        <span className="eyebrow">How It Works</span>
-        <h2 className="engram-section-h2">One Model, Two Depths</h2>
-        <ScrollAnimation duration={800}>
-          <div className="engram-flow-row">
-            {steps.map((s, i) => (
-              <React.Fragment key={i}>
-                <div className="engram-flow-card">
-                  <div className="engram-flow-num">
-                    <s.icon size={20} strokeWidth={1.75} />
-                  </div>
-                  <h4 className="engram-flow-title">{s.title}</h4>
-                  <p className="engram-flow-desc">{s.desc}</p>
-                </div>
-                {i < steps.length - 1 && (
-                  <div className="engram-flow-connector" aria-hidden="true" />
-                )}
-              </React.Fragment>
-            ))}
-          </div>
-        </ScrollAnimation>
-      </section>
+      <HowItWorksScroll
+        eyebrow="How It Works"
+        title="One Model, Two Depths"
+        steps={steps}
+        accent={ACCENT}
+        accentRgb="16,185,129"
+      />
 
       {/* ── VALIDATION + HONESTY + SECURITY ── */}
       <section className="engram-section engram-container">
@@ -331,10 +327,12 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
       {/* ── VISION ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">Vision</span>
-        <h2 className="engram-section-h2">From Tribal Knowledge to a Shared Engineering Language</h2>
-        <p style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85, maxWidth: 680, marginBottom: 32 }}>
-          Instead of plant wisdom living as informal stories, it can live as structure in the matrix that a junior engineer, a senior engineer, and a piece of software can all read. The matrix becomes the common ground for design review, for safety analysis, and for passing knowledge from one generation of engineers to the next.
-        </p>
+        <LineReveal as="h2" className="engram-section-h2" text="From Tribal Knowledge to a Shared Engineering Language" />
+        <LineReveal
+          as="p"
+          style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85, maxWidth: 680, marginBottom: 32 }}
+          text="Instead of plant wisdom living as informal stories, it can live as structure in the matrix that a junior engineer, a senior engineer, and a piece of software can all read. The matrix becomes the common ground for design review, for safety analysis, and for passing knowledge from one generation of engineers to the next."
+        />
         <ScrollStagger className="engram-outcomes-grid" step={50}>
           {outcomes.map((o, i) => (
             <div key={i} className="engram-outcome-pill">

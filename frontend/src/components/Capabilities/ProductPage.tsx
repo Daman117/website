@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { CAPS } from '../../data/caps';
 import { productExtras } from '../../data/v2';
 import type { Cap } from '../../types';
+import { LineReveal } from '../ScrollAnimation';
 
 const ProductExtras: React.FC<{ cap: Cap }> = ({ cap }) => {
   const extra = productExtras[cap.id];
@@ -11,7 +12,7 @@ const ProductExtras: React.FC<{ cap: Cap }> = ({ cap }) => {
     <div className="pp-extras">
       {/* Capability diagram: Inputs → Processing → Outputs */}
       <div className="pp-block">
-        <h2 className="pp-block-title">How it works</h2>
+        <LineReveal as="h2" className="pp-block-title" text="How it works" />
         <div className="pp-flow">
           {(['inputs', 'processing', 'outputs'] as const).map((k, i) => (
             <React.Fragment key={k}>
@@ -31,7 +32,7 @@ const ProductExtras: React.FC<{ cap: Cap }> = ({ cap }) => {
 
       {/* Use cases by role */}
       <div className="pp-block">
-        <h2 className="pp-block-title">Use cases</h2>
+        <LineReveal as="h2" className="pp-block-title" text="Use cases" />
         <div className="pp-uc-grid">
           {extra.useCases.map((u) => (
             <div key={u.role} className="pp-uc">
@@ -44,7 +45,7 @@ const ProductExtras: React.FC<{ cap: Cap }> = ({ cap }) => {
 
       {/* Expected outcomes */}
       <div className="pp-block">
-        <h2 className="pp-block-title">Expected outcomes</h2>
+        <LineReveal as="h2" className="pp-block-title" text="Expected outcomes" />
         <ul className="pp-outcomes">
           {extra.outcomes.map((o) => (
             <li key={o}><span style={{ color: cap.color }}>✓</span>{o}</li>
@@ -156,10 +157,10 @@ const ProductPage: React.FC<ProductPageProps> = ({ onOpenContact }) => {
           <div className="product-page-header">
             <div className="product-page-title-row">
               <div className="cap-card-dot" style={{ background: cap.color, width: 14, height: 14 }} />
-              <h1 className="product-page-name">{cap.name}</h1>
+              <LineReveal as="h1" className="product-page-name" text={cap.name} />
             </div>
             <div className="product-page-cat">{cap.cat}</div>
-            <p className="product-page-tag">{cap.tag}</p>
+            <LineReveal as="p" className="product-page-tag" text={cap.tag} />
           </div>
 
           {/* Feature strips */}
@@ -188,13 +189,17 @@ const ProductPage: React.FC<ProductPageProps> = ({ onOpenContact }) => {
           {/* Body + right panel */}
           <div className="product-page-content">
             <div className="product-page-left">
-              <p style={{ fontSize: '15px', color: 'var(--t3)', lineHeight: '1.85', marginBottom: cap.body2 ? '16px' : '28px' }}>
-                {cap.body}
-              </p>
+              <LineReveal
+                as="p"
+                style={{ fontSize: '15px', color: 'var(--t3)', lineHeight: '1.85', marginBottom: cap.body2 ? '16px' : '28px' }}
+                text={cap.body}
+              />
               {cap.body2 && (
-                <p style={{ fontSize: '14px', color: 'var(--t4)', lineHeight: '1.8', marginBottom: '28px' }}>
-                  {cap.body2}
-                </p>
+                <LineReveal
+                  as="p"
+                  style={{ fontSize: '14px', color: 'var(--t4)', lineHeight: '1.8', marginBottom: '28px' }}
+                  text={cap.body2}
+                />
               )}
 
               {/* Tabs */}
