@@ -77,7 +77,7 @@ const capabilities = [
 const diagramViews = [
   {
     Icon: LayoutGrid,
-    title: 'PFD Canvas',
+    title: 'Diagram Editor',
     subtitle: 'The Engineering View',
     desc: 'A full interactive PFD editor rendered from the digitized P&ID — auto-placed equipment, routed process streams, and DXF, SVG, and PDF export.',
     color: '#FDB022',
@@ -93,7 +93,7 @@ const diagramViews = [
   },
   {
     Icon: ImageIcon,
-    title: 'Diagram Editor',
+    title: 'Digitized P&ID',
     subtitle: 'The Review & Correction View',
     desc: 'A triage-first correction workspace — confidence-ranked detections you accept, edit, or reject. Edits stage until Save All, then write a full audit trail and auto-rebuild the PFD Canvas and Operator views.',
     color: '#34D399',
