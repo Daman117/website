@@ -469,7 +469,7 @@ const HowItWorks: React.FC = () => {
                 <span className="how-num">
                   <Icon name={s.icon} size={22} strokeWidth={1.75} />
                 </span>
-                {i < workSteps.length - 1 && <span className="how-connector" aria-hidden="true" />}
+                <span className="how-connector" aria-hidden="true" />
               </div>
               <span className="how-actor" style={{ color: s.color }}>{s.actor}</span>
               <h3 className="how-title">{s.title}</h3>
