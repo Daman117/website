@@ -1,7 +1,10 @@
-import React from 'react';
-import { PencilRuler, Boxes, MessageSquare, Workflow, BadgeCheck, SlidersHorizontal, Upload, ScanSearch, FileOutput } from 'lucide-react';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import { PencilRuler, Boxes, MessageSquare, Workflow, BadgeCheck, SlidersHorizontal, Upload, ScanSearch, FileOutput, TriangleAlert } from 'lucide-react';
+import { useInView } from 'react-intersection-observer';
+import gsap from 'gsap';
 import { ScrollStagger, LineReveal } from '../ScrollAnimation';
 import HowItWorksScroll from './HowItWorksScroll';
+import NativeApproachScroll from './NativeApproachScroll';
 
 interface EnstudioPageProps {
   onOpenContact: (source?: string) => void;
@@ -21,10 +24,26 @@ const challenges = [
 ];
 
 const existingSolutions = [
-  { solution: 'Manual Configuration', limitation: 'Engineer types every tag, range, and connection by hand — slow and error-prone' },
-  { solution: 'Generic OCR Tools', limitation: 'Read text but cannot understand equipment, topology, or control loops' },
-  { solution: 'Vendor Import Wizards', limitation: 'Locked to one DCS format — no path to simulation or other systems' },
-  { solution: 'CAD-Based Extractors', limitation: 'Need clean vector drawings — useless for scanned or brownfield P&IDs' },
+  {
+    solution: 'Manual Configuration',
+    limitation: 'Engineer types every tag, range, and connection by hand — slow and error-prone',
+    fix: 'AI reads the drawing directly and auto-populates the model',
+  },
+  {
+    solution: 'Generic OCR Tools',
+    limitation: 'Read text but cannot understand equipment, topology, or control loops',
+    fix: 'Recognizes ISA symbols and builds real equipment/topology relationships, not just raw text',
+  },
+  {
+    solution: 'Vendor Import Wizards',
+    limitation: 'Locked to one DCS format — no path to simulation or other systems',
+    fix: 'Schema-driven adapters export to multiple targets (VIDS for enVIEW, YMPL for enableSim) from one model',
+  },
+  {
+    solution: 'CAD-Based Extractors',
+    limitation: 'Need clean vector drawings — useless for scanned or brownfield P&IDs',
+    fix: 'Handles vector and scanned drawings alike — including reading existing DCS HMI screens for brownfield plants',
+  },
 ];
 
 const inputModes = [
@@ -33,6 +52,8 @@ const inputModes = [
     title: 'Draw',
     subtitle: 'Author from scratch',
     desc: 'Drag ISA-5.1 symbols onto the canvas, draw connections, and fill parameter forms. Every action writes straight to the internal model.',
+    color: '#A78BFA',
+    img: '/enstudio-draw.png',
     features: [
       'ISA-5.1 symbol palette',
       'Direct topology editing',
@@ -45,6 +66,8 @@ const inputModes = [
     title: 'Import',
     subtitle: 'Upload any drawing',
     desc: 'Drop a P&ID PDF, scanned sheet, equipment CSV, datasheet, or YMPL file. AI reads it and renders equipment and connections on the canvas.',
+    color: '#60A5FA',
+    img: '/enstudio-import.png',
     features: [
       'Vector & scanned P&ID PDFs',
       'Multi-page sheets in parallel',
@@ -57,6 +80,8 @@ const inputModes = [
     title: 'Describe',
     subtitle: 'Plain-language topology',
     desc: 'Type or talk through a process unit. The same parser used by enableSim extracts equipment, instruments, and connections into the model.',
+    color: '#34D399',
+    img: '/enstudio-describe.png',
     features: [
       'Natural-language extraction',
       'Conversational model building',
@@ -192,8 +217,32 @@ const outcomes = [
 ];
 
 const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
+  const { ref: challengeRef, inView: challengeInView } = useInView({ triggerOnce: true, threshold: 0.1 });
+  const { ref: matrixRef, inView: matrixInView } = useInView({ triggerOnce: true, threshold: 0.15 });
+
+  const rowRefs = useRef<(HTMLTableRowElement | null)[]>([]);
+  useLayoutEffect(() => {
+    rowRefs.current.forEach((row) => {
+      if (!row) return;
+      gsap.set(row, { opacity: 0, x: -80, filter: 'blur(6px)' });
+    });
+  }, []);
+  useEffect(() => {
+    if (!matrixInView) return;
+    rowRefs.current.forEach((row, i) => {
+      if (!row) return;
+      gsap.to(row, {
+        opacity: 1, x: 0, filter: 'blur(0px)', duration: 1.2, delay: i * 0.22, ease: 'power4.out',
+        clearProps: 'transform,filter',
+      });
+    });
+  }, [matrixInView]);
+
   return (
     <main className="engram-page" style={{ '--accent': ACCENT, '--accent-rgb': '167,139,250' } as React.CSSProperties}>
+      <style>{`
+        @keyframes iconFlash { 0%,100% { color:inherit; } 40% { color:#f97316; filter:drop-shadow(0 0 6px #f97316); } }
+      `}</style>
 
       {/* ── HERO (fixed parallax background) ── */}
       <div style={{
@@ -248,26 +297,8 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
         </section>
       </div>
 
-      {/* ── OVERVIEW ── */}
-      <section className="engram-section engram-container">
-        <span className="eyebrow">Overview</span>
-        <LineReveal as="h2" className="engram-section-h2" text="Flexible Input → AI Processing → Flexible Output" />
-        <div className="engram-overview-grid">
-          <LineReveal
-            as="p"
-            style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85 }}
-            text="enSTUDIO does not force a single schema on either end. The AI understands both the drawing in front of you and the systems downstream. P&IDs, equipment lists, datasheets, YMPL files, or plain text all flow into one normalized internal model."
-          />
-          <LineReveal
-            as="p"
-            style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85 }}
-            text="That model is the working representation — not a file format. From it, schema-driven adapters generate exactly what each target system needs. The engineer never edits an output format by hand. It is a configuration tool for commissioning and change — it never runs at operator runtime."
-          />
-        </div>
-      </section>
-
       {/* ── CHALLENGE ── */}
-      <section className="engram-section engram-container">
+      <section ref={challengeRef} className="engram-section engram-container">
         <span className="eyebrow">The Challenge</span>
         <LineReveal as="h2" className="engram-section-h2" text="Configuration Is the Bottleneck" />
         <LineReveal
@@ -275,50 +306,25 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
           style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 32 }}
           text="Standing up a plant configuration means reading drawings and re-typing them into every system — by hand, again and again."
         />
-
-        <div className="engram-two-col">
-          <div className="engram-card">
-            <h3 className="engram-card-title">Common Challenges</h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {challenges.map((c, i) => (
-                <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
-                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: ACCENT, marginTop: 8, flexShrink: 0 }} />
-                  <span style={{ fontSize: 13, color: 'var(--t3)', lineHeight: 1.7 }}>{c}</span>
-                </div>
-              ))}
+        <ScrollStagger className="engram-three-col" step={70}>
+          {challenges.map((c, i) => (
+            <div key={i} className="engram-card">
+              <div style={{ color: ACCENT, marginBottom: 12, lineHeight: 1, animation: challengeInView ? `iconFlash 2.4s ease-in-out ${i * 0.6}s infinite` : 'none' }}><TriangleAlert size={22} strokeWidth={1.75} /></div>
+              <span style={{ fontSize: 13, color: 'var(--t3)', lineHeight: 1.7 }}>{c}</span>
             </div>
-            <p style={{ fontSize: 12, color: 'var(--t5)', marginTop: 20, fontStyle: 'italic' }}>
-              The target: 40 engineer-hours per sheet reduced to under two.
-            </p>
-          </div>
-
-          <div className="engram-card">
-            <h3 className="engram-card-title">Why Existing Tools Fall Short</h3>
-            <p style={{ fontSize: 12, color: 'var(--t4)', marginBottom: 16, lineHeight: 1.6 }}>
-              Generic readers and vendor wizards were never built for industrial topology and dual-system output.
-            </p>
-            <table className="engram-table">
-              <thead>
-                <tr>
-                  <th>Approach</th>
-                  <th>Limitation</th>
-                </tr>
-              </thead>
-              <tbody>
-                {existingSolutions.map((row, i) => (
-                  <tr key={i}>
-                    <td style={{ fontWeight: 600, color: 'var(--t2)', whiteSpace: 'nowrap' }}>{row.solution}</td>
-                    <td style={{ color: 'var(--t4)' }}>{row.limitation}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <p style={{ fontSize: 12, color: ACCENT, marginTop: 14, fontWeight: 500 }}>
-              enSTUDIO reads the drawing, understands the topology, and exports to every target.
-            </p>
-          </div>
-        </div>
+          ))}
+        </ScrollStagger>
+        <p style={{ fontSize: 12, color: 'var(--t5)', marginTop: 20, fontStyle: 'italic' }}>
+          The target: 40 engineer-hours per sheet reduced to under two.
+        </p>
       </section>
+
+      {/* ── CAPABILITIES ── */}
+      <NativeApproachScroll
+        items={capabilities}
+        eyebrow="Key Capabilities"
+        title="From Drawing to Validated Configuration"
+      />
 
       {/* ── INPUT MODES ── */}
       <section className="engram-section engram-container">
@@ -326,43 +332,21 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
         <LineReveal as="h2" className="engram-section-h2" text="Meet Engineers Where They Are" />
         <ScrollStagger className="engram-caps-grid" step={80}>
           {inputModes.map((m) => (
-            <div key={m.title} className="engram-cap-card" style={{ '--cap-color': ACCENT } as React.CSSProperties}>
-              <div className="engram-cap-icon" style={{ color: ACCENT }}><m.Icon size={26} strokeWidth={1.75} /></div>
-              <h3 className="engram-cap-title" style={{ color: ACCENT }}>{m.title}</h3>
-              <p className="engram-cap-sub">{m.subtitle}</p>
-              <p className="engram-cap-desc">{m.desc}</p>
-              <ul className="engram-cap-list">
-                {m.features.map((f, i) => (
-                  <li key={i}>
-                    <span style={{ color: ACCENT, marginRight: 6 }}>—</span>
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </ScrollStagger>
-      </section>
-
-      {/* ── CAPABILITIES ── */}
-      <section className="engram-section engram-container">
-        <span className="eyebrow">Key Capabilities</span>
-        <LineReveal as="h2" className="engram-section-h2" text="From Drawing to Validated Configuration" />
-        <ScrollStagger className="engram-caps-grid" step={80}>
-          {capabilities.map((cap) => (
-            <div key={cap.title} className="engram-cap-card" style={{ '--cap-color': cap.color } as React.CSSProperties}>
-              <div className="engram-cap-icon" style={{ color: cap.color }}><cap.Icon size={26} strokeWidth={1.75} /></div>
-              <h3 className="engram-cap-title" style={{ color: cap.color }}>{cap.title}</h3>
-              <p className="engram-cap-sub">{cap.subtitle}</p>
-              <p className="engram-cap-desc">{cap.desc}</p>
-              <ul className="engram-cap-list">
-                {cap.features.map((f, i) => (
-                  <li key={i}>
-                    <span style={{ color: cap.color, marginRight: 6 }}>—</span>
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ul>
+            <div key={m.title} className="engram-cap-card enview-view-card" style={{ '--cap-color': m.color, '--card-bg': `url(${m.img})` } as React.CSSProperties}>
+              {/* Background image — zooms on hover via CSS */}
+              <div className="enview-view-card-img" />
+              {/* Dark gradient overlay */}
+              <div className="enview-view-card-overlay" />
+              {/* Title — always visible at top */}
+              <div className="enview-view-card-header">
+                <div style={{ color: m.color }}><m.Icon size={18} strokeWidth={1.75} /></div>
+                <h3 style={{ fontSize: 15, fontWeight: 700, color: '#fff', margin: 0 }}>{m.title}</h3>
+              </div>
+              {/* Subtitle + desc — slides up on hover */}
+              <div className="enview-view-card-text">
+                <p style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.7)', marginBottom: 6 }}>{m.subtitle}</p>
+                <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.9)', lineHeight: 1.65, margin: 0 }}>{m.desc}</p>
+              </div>
             </div>
           ))}
         </ScrollStagger>
@@ -375,34 +359,18 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
         steps={steps}
         accent={ACCENT}
         accentRgb="167,139,250"
+        video="/enstudio-demo.mp4"
       />
-
-      {/* ── OUTPUT ADAPTERS ── */}
-      <section className="engram-section engram-container">
-        <span className="eyebrow">Output Adapters</span>
-        <LineReveal as="h2" className="engram-section-h2" text="One Model, Every Target System" />
-        <ScrollStagger className="engram-three-col" step={90}>
-          {adapters.map((a) => (
-            <div key={a.label} className="engram-card" style={{ borderColor: `${a.color}40` }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-                <div style={{ width: 8, height: 8, borderRadius: '50%', background: a.color, flexShrink: 0 }} />
-                <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', color: a.color }}>{a.target}</span>
-              </div>
-              <h3 className="engram-card-title" style={{ marginBottom: 8 }}>{a.label}</h3>
-              <p style={{ fontSize: 12, color: 'var(--t4)', marginBottom: 16, lineHeight: 1.6 }}>{a.desc}</p>
-              {a.points.map((p, i) => (
-                <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'flex-start', marginBottom: 8 }}>
-                  <div style={{ width: 5, height: 5, borderRadius: '50%', background: a.color, marginTop: 8, flexShrink: 0 }} />
-                  <span style={{ fontSize: 12, color: 'var(--t3)', lineHeight: 1.6 }}>{p}</span>
-                </div>
-              ))}
-            </div>
-          ))}
-        </ScrollStagger>
-      </section>
 
       {/* ── SAFETY + LOCAL + BROWNFIELD ── */}
       <section className="engram-section engram-container">
+        <span className="eyebrow">Trust & Control</span>
+        <LineReveal as="h2" className="engram-section-h2" text="Built to Run Inside Your Perimeter" />
+        <LineReveal
+          as="p"
+          style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 32 }}
+          text="Human oversight, local-only deployment, and brownfield readiness — the three things engineers check before they trust a system."
+        />
         <ScrollStagger className="engram-three-col" step={90}>
 
           <div className="engram-card">
@@ -446,6 +414,64 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
               </div>
             ))}
           </div>
+        </ScrollStagger>
+      </section>
+
+      {/* ── THE DIFFERENCE ── */}
+      <section className="engram-section engram-container">
+        <span className="eyebrow">The Difference</span>
+        <LineReveal as="h2" className="engram-section-h2" text="Why Existing Tools Fall Short" />
+        <LineReveal
+          as="p"
+          style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 32 }}
+          text="Every existing approach solves one piece of the problem — typing, OCR, one vendor's format, or clean vector drawings only. enSTUDIO is the only one that handles the whole chain."
+        />
+        <div ref={matrixRef} className="engram-card" style={{ padding: '10px 18px', overflowX: 'auto' }}>
+          <table className="engram-table">
+            <thead>
+              <tr>
+                <th>Approach</th>
+                <th>Limitation</th>
+                <th style={{ color: ACCENT }}>enSTUDIO</th>
+              </tr>
+            </thead>
+            <tbody>
+              {existingSolutions.map((row, i) => (
+                <tr key={i} ref={(el) => { rowRefs.current[i] = el; }}>
+                  <td style={{ fontWeight: 600, color: 'var(--t2)', whiteSpace: 'nowrap' }}>{row.solution}</td>
+                  <td style={{ color: 'var(--t4)' }}>{row.limitation}</td>
+                  <td style={{ color: 'var(--t3)' }}>{row.fix}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p style={{ fontSize: 13, color: ACCENT, marginTop: 16, fontWeight: 500 }}>
+          enSTUDIO reads the drawing, understands the topology, and exports to every target.
+        </p>
+      </section>
+
+      {/* ── OUTPUT ADAPTERS ── */}
+      <section className="engram-section engram-container">
+        <span className="eyebrow">Output Adapters</span>
+        <LineReveal as="h2" className="engram-section-h2" text="One Model, Every Target System" />
+        <ScrollStagger className="engram-three-col" step={90}>
+          {adapters.map((a) => (
+            <div key={a.label} className="engram-card" style={{ borderColor: `${a.color}40` }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                <div style={{ width: 8, height: 8, borderRadius: '50%', background: a.color, flexShrink: 0 }} />
+                <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', color: a.color }}>{a.target}</span>
+              </div>
+              <h3 className="engram-card-title" style={{ marginBottom: 8 }}>{a.label}</h3>
+              <p style={{ fontSize: 12, color: 'var(--t4)', marginBottom: 16, lineHeight: 1.6 }}>{a.desc}</p>
+              {a.points.map((p, i) => (
+                <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'flex-start', marginBottom: 8 }}>
+                  <div style={{ width: 5, height: 5, borderRadius: '50%', background: a.color, marginTop: 8, flexShrink: 0 }} />
+                  <span style={{ fontSize: 12, color: 'var(--t3)', lineHeight: 1.6 }}>{p}</span>
+                </div>
+              ))}
+            </div>
+          ))}
         </ScrollStagger>
       </section>
 

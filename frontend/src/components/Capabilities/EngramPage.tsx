@@ -296,6 +296,7 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
         steps={steps}
         accent="#FDB022"
         accentRgb="253,176,34"
+        video="/engram-demo.mp4"
       />
 
       {/* ── VALIDATION + COMPLIANCE + SECURITY ── */}

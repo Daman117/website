@@ -1,7 +1,10 @@
-import React from 'react';
-import { Boxes, Gauge, MonitorPlay, PenTool, LayoutGrid, Cpu, FileCheck, Play, FileOutput } from 'lucide-react';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import { Boxes, Gauge, MonitorPlay, PenTool, LayoutGrid, Cpu, FileCheck, Play, FileOutput, TriangleAlert } from 'lucide-react';
+import { useInView } from 'react-intersection-observer';
+import gsap from 'gsap';
 import { ScrollStagger, LineReveal } from '../ScrollAnimation';
 import HowItWorksScroll from './HowItWorksScroll';
+import NativeApproachScroll from './NativeApproachScroll';
 
 interface EnablePageProps {
   onOpenContact: (source?: string) => void;
@@ -18,10 +21,26 @@ const challenges = [
 ];
 
 const existingSolutions = [
-  { solution: 'Steady-state simulators', limitation: 'Compute a fixed operating point — no transient stability, loop interaction or controllability' },
-  { solution: 'Dynamic simulators', limitation: 'Answer stability only after costly model-building and trial-and-error step tests' },
-  { solution: 'RGA / eigenvalues in MATLAB', limitation: 'Require exporting a linearised model and a prior dynamic build' },
-  { solution: 'Tribal knowledge', limitation: 'Informal, unverifiable, and lost when experienced engineers leave' },
+  {
+    solution: 'Steady-state simulators',
+    limitation: 'Compute a fixed operating point — no transient stability, loop interaction or controllability',
+    fix: 'Derives stability and loop interaction directly from the linearised matrix — no separate dynamic model needed',
+  },
+  {
+    solution: 'Dynamic simulators',
+    limitation: 'Answer stability only after costly model-building and trial-and-error step tests',
+    fix: 'Computes the same verdict analytically at design time, before any step test is run',
+  },
+  {
+    solution: 'RGA / eigenvalues in MATLAB',
+    limitation: 'Require exporting a linearised model and a prior dynamic build',
+    fix: 'Assembles the linearised matrix live from the drawing — no export step, no prior build',
+  },
+  {
+    solution: 'Tribal knowledge',
+    limitation: 'Informal, unverifiable, and lost when experienced engineers leave',
+    fix: 'Encodes the judgment as a shared, computable matrix that outlives any one engineer',
+  },
 ];
 
 const capabilities = [
@@ -112,79 +131,91 @@ const outcomes = [
   'Decision support, not a replacement for review',
 ];
 
+const heroChips = ['Eigenvalue Analysis', 'Desktop App', 'Air-Gapped', 'Live Simulation'];
+
 const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
+  const { ref: challengeRef, inView: challengeInView } = useInView({ triggerOnce: true, threshold: 0.1 });
+  const { ref: matrixRef, inView: matrixInView } = useInView({ triggerOnce: true, threshold: 0.15 });
+
+  const rowRefs = useRef<(HTMLTableRowElement | null)[]>([]);
+  useLayoutEffect(() => {
+    rowRefs.current.forEach((row) => {
+      if (!row) return;
+      gsap.set(row, { opacity: 0, x: -80, filter: 'blur(6px)' });
+    });
+  }, []);
+  useEffect(() => {
+    if (!matrixInView) return;
+    rowRefs.current.forEach((row, i) => {
+      if (!row) return;
+      gsap.to(row, {
+        opacity: 1, x: 0, filter: 'blur(0px)', duration: 1.2, delay: i * 0.22, ease: 'power4.out',
+        clearProps: 'transform,filter',
+      });
+    });
+  }, [matrixInView]);
+
   return (
     <main className="engram-page">
+      <style>{`
+        @keyframes iconFlash { 0%,100% { color:inherit; } 40% { color:#f97316; filter:drop-shadow(0 0 6px #f97316); } }
+      `}</style>
 
-      {/* ── BACK + PRODUCT NAME ── */}
-      <div style={{ paddingTop: 100, paddingLeft: 'var(--gutter)', paddingRight: 'var(--gutter)' }}>
+      {/* ── HERO (fixed parallax background) ── */}
+      <div style={{
+        position: 'relative',
+        backgroundImage: 'url(/enable-hero.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center 30%',
+        backgroundAttachment: 'fixed',
+        minHeight: 'clamp(600px, 95vh, 960px)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+      }}>
+        {/* dark gradient — lighter at top so image shows, darker at bottom for text */}
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: 'linear-gradient(to bottom, rgba(4,6,18,0.20) 0%, rgba(4,6,18,0.60) 55%, rgba(4,6,18,0.94) 100%)',
+          pointerEvents: 'none',
+        }} />
 
-        <div style={{ marginTop: -20, display: 'flex', justifyContent: 'center' }}>
-          <div style={{
-            fontFamily: "'Space Grotesk','DM Sans',sans-serif",
-            fontSize: 'clamp(28px,4vw,48px)',
-            fontWeight: 700,
-            letterSpacing: '-1.5px',
-            color: 'var(--t1)',
-            lineHeight: 1,
-          }}>
-            en<span style={{ color: ACCENT }}>ABLE</span>
+        {/* hero text — pushed to bottom of the image */}
+        <section className="engram-hero engram-container" style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(110px, 16vh, 160px)', paddingBottom: 72 }}>
+          <div className="engram-hero-badge">
+            <span style={{ color: '#6ee7b7', fontSize: 10, fontWeight: 700, letterSpacing: 1 }}>PROCESS INTELLIGENCE FOR DESIGN &amp; CONTROL</span>
           </div>
-        </div>
+          <h1 className="engram-hero-h1" style={{ color: '#ffffff' }}>
+            <span className="hero-line-mask">
+              <span className="hero-line-inner" style={{ animationDelay: '150ms' }}>Turn Your Plant Into a</span>
+            </span>
+            <span className="hero-line-mask">
+              <span className="hero-line-inner" style={{ animationDelay: '500ms', color: ACCENT }}>Matrix</span>
+            </span>
+          </h1>
+          <p className="engram-hero-sub hero-fade-up" style={{ color: 'rgba(255,255,255,0.96)', animationDelay: '900ms' }}>
+            enABLE is a desktop engineering application for process and control engineers. Draw your plant as a flowsheet and it becomes a block-matrix model — dx/dt = M·x + B·u — that yields eigenvalue-based engineering judgment at design time.
+          </p>
+          <p className="engram-hero-body hero-fade-up" style={{ color: 'rgba(255,255,255,0.82)', animationDelay: '1100ms' }}>
+            From that one matrix, enABLE computes stability, controllability, loop pairing, recommended changes, alarm bounds and a HAZOP pre-fill — then runs the same plant as a live closed-loop dynamic simulation. Questions that normally take years of experience or long dynamic studies become calculations.
+          </p>
+          <div className="hero-fade-up" style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 28, animationDelay: '1300ms' }}>
+            {heroChips.map((c) => (
+              <span key={c} className="badge hero-chip-badge" style={{ color: '#6ee7b7', background: 'rgba(16,185,129,0.22)', borderColor: 'rgba(110,231,183,0.4)' }}>
+                {c}
+              </span>
+            ))}
+          </div>
+          <div className="hero-fade-up" style={{ display: 'flex', gap: 12, flexWrap: 'wrap', animationDelay: '1500ms' }}>
+            <button className="btn-primary" onClick={() => onOpenContact('Waitlist')}>
+              Join the Waitlist
+            </button>
+          </div>
+        </section>
       </div>
 
-      {/* ── HERO ── */}
-      <section className="engram-hero engram-container">
-        <div className="engram-hero-badge">
-          <span style={{ color: ACCENT, fontSize: 10, fontWeight: 700, letterSpacing: 1 }}>PROCESS INTELLIGENCE FOR DESIGN &amp; CONTROL</span>
-        </div>
-        <h1 className="engram-hero-h1">
-          <span className="hero-line-mask">
-            <span className="hero-line-inner" style={{ animationDelay: '150ms' }}>Turn Your Plant Into a</span>
-          </span>
-          <span className="hero-line-mask">
-            <span className="hero-line-inner" style={{ animationDelay: '500ms', color: ACCENT }}>Matrix</span>
-          </span>
-        </h1>
-        <p className="engram-hero-sub hero-fade-up" style={{ animationDelay: '900ms' }}>
-          enABLE is a desktop engineering application for process and control engineers. Draw your plant as a flowsheet and it becomes a block-matrix model — dx/dt = M·x + B·u — that yields eigenvalue-based engineering judgment at design time.
-        </p>
-        <p className="engram-hero-body hero-fade-up" style={{ animationDelay: '1100ms' }}>
-          From that one matrix, enABLE computes stability, controllability, loop pairing, recommended changes, alarm bounds and a HAZOP pre-fill — then runs the same plant as a live closed-loop dynamic simulation. Questions that normally take years of experience or long dynamic studies become calculations.
-        </p>
-        <div className="hero-fade-up" style={{ display: 'flex', gap: 12, flexWrap: 'wrap', animationDelay: '1300ms' }}>
-          <button className="btn-primary" onClick={() => onOpenContact('Waitlist')}>
-            Join the Waitlist
-          </button>
-        </div>
-      </section>
-
-      {/* ── OVERVIEW ── */}
-      <section className="engram-section engram-container">
-        <span className="eyebrow">Overview</span>
-        <LineReveal as="h2" className="engram-section-h2" text="An Intelligence Layer for Process Design" />
-        <div className="engram-overview-grid">
-          <LineReveal
-            as="p"
-            style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85 }}
-            text="enABLE turns a plant model into eigenvalue-based engineering judgment, and is honest about the difference between what it computes exactly, what it predicts, and what a human must still confirm. It complements the steady-state and dynamic simulators an organisation already uses — adding analysis those tools do not provide — rather than replacing them."
-          />
-          <LineReveal
-            as="p"
-            style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85 }}
-            text="Results are presented verdict-first: a plain-language conclusion about the design leads, with the supporting detail available on demand. Because the model that produces the analysis is the model that drives the simulation, a plant can move from a static design judgment to a running virtual plant without re-modelling."
-          />
-        </div>
-        <div className="matrix-eq" style={{ marginTop: 28, maxWidth: 620 }}>
-          dx/dt = M·x + B·u<br /><br />
-          M  = unit-operation blocks + stream coupling<br />
-          stable&nbsp;&nbsp; → all eigenvalues have negative real parts<br />
-          unstable → any eigenvalue has a positive real part
-        </div>
-      </section>
-
       {/* ── CHALLENGE ── */}
-      <section className="engram-section engram-container">
+      <section ref={challengeRef} className="engram-section engram-container">
         <span className="eyebrow">The Challenge</span>
         <LineReveal as="h2" className="engram-section-h2" text="Design Judgment Arrives Too Late" />
         <LineReveal
@@ -192,74 +223,25 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
           style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 32 }}
           text="Whether a plant will be stable, controllable and operable is often only discovered late — when changes are expensive — and the experience needed to judge it is walking out the door."
         />
-
-        <div className="engram-two-col">
-          <div className="engram-card">
-            <h3 className="engram-card-title">The Problems enABLE Addresses</h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {challenges.map((c, i) => (
-                <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
-                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: ACCENT, marginTop: 8, flexShrink: 0 }} />
-                  <span style={{ fontSize: 13, color: 'var(--t3)', lineHeight: 1.7 }}>{c}</span>
-                </div>
-              ))}
-            </div>
-            <p style={{ fontSize: 12, color: 'var(--t5)', marginTop: 20, fontStyle: 'italic' }}>
-              The knowledge cliff is real: a generation of experienced engineers is retiring with their plant models held only in their heads.
-            </p>
-          </div>
-
-          <div className="engram-card">
-            <h3 className="engram-card-title">Why Conventional Tools Fall Short</h3>
-            <p style={{ fontSize: 12, color: 'var(--t4)', marginBottom: 16, lineHeight: 1.6 }}>
-              The control-theory techniques are decades old and uncontroversial — but delivering them as automatic, live, design-time outputs from a single matrix is uncommon.
-            </p>
-            <table className="engram-table">
-              <thead>
-                <tr>
-                  <th>Approach</th>
-                  <th>Limitation</th>
-                </tr>
-              </thead>
-              <tbody>
-                {existingSolutions.map((row, i) => (
-                  <tr key={i}>
-                    <td style={{ fontWeight: 600, color: 'var(--t2)', whiteSpace: 'nowrap' }}>{row.solution}</td>
-                    <td style={{ color: 'var(--t4)' }}>{row.limitation}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <p style={{ fontSize: 12, color: 'var(--primary)', marginTop: 14, fontWeight: 500 }}>
-              enABLE computes eigenvalue stability, RGA pairing, condition number and zoning automatically, at design time, from one block matrix.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── CAPABILITIES ── */}
-      <section className="engram-section engram-container">
-        <span className="eyebrow">Key Capabilities</span>
-        <LineReveal as="h2" className="engram-section-h2" text="From a Matrix to a Running Plant" />
-        <ScrollStagger className="engram-caps-grid" step={80}>
-          {capabilities.map((cap) => (
-            <div key={cap.title} className="engram-cap-card" style={{ '--cap-color': cap.color } as React.CSSProperties}>
-              <div className="engram-cap-icon" style={{ color: cap.color }}><cap.Icon size={26} strokeWidth={1.75} /></div>
-              <h3 className="engram-cap-title" style={{ color: cap.color }}>{cap.title}</h3>
-              <p className="engram-cap-sub">{cap.subtitle}</p>
-              <p className="engram-cap-desc">{cap.desc}</p>
-              <ul className="engram-cap-list">
-                {cap.features.map((f, i) => (
-                  <li key={i}>
-                    <span style={{ color: cap.color, marginRight: 6 }}>—</span>
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ul>
+        <ScrollStagger className="engram-quad" step={70} style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
+          {challenges.map((c, i) => (
+            <div key={i} className="engram-card">
+              <div style={{ color: ACCENT, marginBottom: 12, lineHeight: 1, animation: challengeInView ? `iconFlash 2.4s ease-in-out ${i * 0.6}s infinite` : 'none' }}><TriangleAlert size={22} strokeWidth={1.75} /></div>
+              <span style={{ fontSize: 13, color: 'var(--t3)', lineHeight: 1.7 }}>{c}</span>
             </div>
           ))}
         </ScrollStagger>
+        <p style={{ fontSize: 12, color: 'var(--t5)', marginTop: 20, fontStyle: 'italic' }}>
+          The knowledge cliff is real: a generation of experienced engineers is retiring with their plant models held only in their heads.
+        </p>
       </section>
+
+      {/* ── CAPABILITIES ── */}
+      <NativeApproachScroll
+        items={capabilities}
+        eyebrow="Key Capabilities"
+        title="From a Matrix to a Running Plant"
+      />
 
       {/* ── HOW IT WORKS ── */}
       <HowItWorksScroll
@@ -272,6 +254,13 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
 
       {/* ── VALIDATION + HONESTY + SECURITY ── */}
       <section className="engram-section engram-container">
+        <span className="eyebrow">Trust & Control</span>
+        <LineReveal as="h2" className="engram-section-h2" text="Built to Earn Engineering Trust" />
+        <LineReveal
+          as="p"
+          style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 32 }}
+          text="Every output is validated, labelled by how much to trust it, and computed entirely inside your own perimeter — the three things engineers check before they rely on a verdict."
+        />
         <ScrollStagger className="engram-three-col" step={90}>
 
           {/* Validation */}
@@ -324,9 +313,43 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
         </ScrollStagger>
       </section>
 
+      {/* ── THE DIFFERENCE ── */}
+      <section className="engram-section engram-container">
+        <span className="eyebrow">The Difference</span>
+        <LineReveal as="h2" className="engram-section-h2" text="Why Conventional Tools Fall Short" />
+        <LineReveal
+          as="p"
+          style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 32 }}
+          text="The control-theory techniques are decades old and uncontroversial — but delivering them as automatic, live, design-time outputs from a single matrix is uncommon."
+        />
+        <div ref={matrixRef} className="engram-card" style={{ padding: '10px 18px', overflowX: 'auto' }}>
+          <table className="engram-table">
+            <thead>
+              <tr>
+                <th>Approach</th>
+                <th>Limitation</th>
+                <th style={{ color: ACCENT }}>enABLE</th>
+              </tr>
+            </thead>
+            <tbody>
+              {existingSolutions.map((row, i) => (
+                <tr key={i} ref={(el) => { rowRefs.current[i] = el; }}>
+                  <td style={{ fontWeight: 600, color: 'var(--t2)', whiteSpace: 'nowrap' }}>{row.solution}</td>
+                  <td style={{ color: 'var(--t4)' }}>{row.limitation}</td>
+                  <td style={{ color: 'var(--t3)' }}>{row.fix}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p style={{ fontSize: 13, color: ACCENT, marginTop: 16, fontWeight: 500 }}>
+          enABLE computes eigenvalue stability, RGA pairing, condition number and zoning automatically, at design time, from one block matrix.
+        </p>
+      </section>
+
       {/* ── VISION ── */}
       <section className="engram-section engram-container">
-        <span className="eyebrow">Vision</span>
+        <span className="eyebrow">Outcomes</span>
         <LineReveal as="h2" className="engram-section-h2" text="From Tribal Knowledge to a Shared Engineering Language" />
         <LineReveal
           as="p"

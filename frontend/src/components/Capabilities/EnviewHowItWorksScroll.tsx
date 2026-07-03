@@ -110,14 +110,14 @@ const PromoVideo: React.FC<{ inView: boolean; delay: number }> = ({ inView, dela
       initial={{ opacity: 0, y: 18 }}
       animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
       transition={{ duration: 0.55, delay, ease: [0.16, 1, 0.3, 1] }}
-      style={{ marginTop: 20, padding: 0, overflow: 'hidden', position: 'relative' }}
+      style={{ marginTop: 48, padding: 0, overflow: 'hidden', position: 'relative' }}
     >
       {playing ? (
         <video
           src="/enview-promo.mp4"
           controls
           autoPlay
-          style={{ width: '100%', display: 'block', borderRadius: 16 }}
+          style={{ width: '100%', height: 480, objectFit: 'cover', display: 'block', borderRadius: 16 }}
         />
       ) : (
         <button
@@ -135,7 +135,7 @@ const PromoVideo: React.FC<{ inView: boolean; delay: number }> = ({ inView, dela
             src="/enview-promo.mp4"
             muted
             preload="metadata"
-            style={{ width: '100%', display: 'block', borderRadius: 16 }}
+            style={{ width: '100%', height: 480, objectFit: 'cover', display: 'block', borderRadius: 16 }}
           />
           <div
             style={{

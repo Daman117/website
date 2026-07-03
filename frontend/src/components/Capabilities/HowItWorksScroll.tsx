@@ -1,5 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { Play } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { LineReveal } from '../ScrollAnimation';
 
@@ -20,6 +21,7 @@ interface HowItWorksScrollProps {
   accent: string;
   accentRgb: string;
   impact?: { label: string; before: string; after: string };
+  video?: string;
 }
 
 // ── Connector SVG line — same drawn-arrow animation as enVIEW's version ──────
@@ -109,9 +111,55 @@ const Card: React.FC<{ step: HowItWorksStep; index: number; inView: boolean; acc
   );
 };
 
+// ── Click-to-play demo video — same pattern as enVIEW's How It Works ─────────
+const PromoVideo: React.FC<{ src: string; inView: boolean; delay: number; accent: string; accentRgb: string }> = ({
+  src, inView, delay, accent, accentRgb,
+}) => {
+  const [playing, setPlaying] = useState(false);
+
+  return (
+    <motion.div
+      className="engram-card"
+      initial={{ opacity: 0, y: 18 }}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
+      transition={{ duration: 0.55, delay, ease: [0.16, 1, 0.3, 1] }}
+      style={{ marginTop: 48, padding: 0, overflow: 'hidden', position: 'relative' }}
+    >
+      {playing ? (
+        <video src={src} controls autoPlay style={{ width: '100%', height: 480, objectFit: 'cover', display: 'block', borderRadius: 16 }} />
+      ) : (
+        <button
+          onClick={() => setPlaying(true)}
+          aria-label="Play demo video"
+          style={{ all: 'unset', display: 'block', position: 'relative', width: '100%', cursor: 'pointer' }}
+        >
+          <video src={src} muted preload="metadata" style={{ width: '100%', height: 480, objectFit: 'cover', display: 'block', borderRadius: 16 }} />
+          <div
+            style={{
+              position: 'absolute', inset: 0,
+              background: 'rgba(4,6,18,0.30)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              transition: 'background 0.25s ease',
+            }}
+          >
+            <div style={{
+              width: 68, height: 68, borderRadius: '50%',
+              background: 'rgba(255,255,255,0.95)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: `0 8px 28px rgba(${accentRgb},0.4)`,
+            }}>
+              <Play size={26} color={accent} fill={accent} style={{ marginLeft: 3 }} />
+            </div>
+          </div>
+        </button>
+      )}
+    </motion.div>
+  );
+};
+
 // ── Main section — same scroll-into-view, staggered card + drawn-connector
 // animation used by enVIEW's "How It Works", generalized for any product page ──
-const HowItWorksScroll: React.FC<HowItWorksScrollProps> = ({ eyebrow, title, steps, accent, accentRgb, impact }) => {
+const HowItWorksScroll: React.FC<HowItWorksScrollProps> = ({ eyebrow, title, steps, accent, accentRgb, impact, video }) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const inView = useInView(sectionRef, { once: true, margin: '-80px' });
 
@@ -140,13 +188,24 @@ const HowItWorksScroll: React.FC<HowItWorksScrollProps> = ({ eyebrow, title, ste
         ))}
       </div>
 
+      {/* Demo video — appears after all cards, before Impact */}
+      {video && (
+        <PromoVideo
+          src={video}
+          inView={inView}
+          delay={(steps.length - 1) * STEP_DELAY + CARD_DUR + 0.25}
+          accent={accent}
+          accentRgb={accentRgb}
+        />
+      )}
+
       {/* Impact banner — appears after all cards */}
       {impact && (
         <motion.div
           className="engram-card"
           initial={{ opacity: 0, y: 18 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
-          transition={{ duration: 0.55, delay: (steps.length - 1) * STEP_DELAY + CARD_DUR + 0.25, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.55, delay: (steps.length - 1) * STEP_DELAY + CARD_DUR + (video ? 0.65 : 0.25), ease: [0.16, 1, 0.3, 1] }}
           style={{
             marginTop: 20,
             textAlign: 'center',
