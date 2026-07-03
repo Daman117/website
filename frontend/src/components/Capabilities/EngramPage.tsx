@@ -78,8 +78,8 @@ const diagramViews = [
   {
     Icon: LayoutGrid,
     title: 'Diagram Editor',
-    subtitle: 'The Engineering View',
-    desc: 'A full interactive PFD editor rendered from the digitized P&ID — auto-placed equipment, routed process streams, and DXF, SVG, and PDF export.',
+    subtitle: 'The Review & Correction View',
+    desc: 'A triage-first correction workspace — confidence-ranked detections you accept, edit, or reject. Edits stage until Save All, then write a full audit trail and auto-rebuild the PFD Canvas and Operator views.',
     color: '#FDB022',
     img: '/engram-static-svg.png',
   },
@@ -94,8 +94,8 @@ const diagramViews = [
   {
     Icon: ImageIcon,
     title: 'Digitized P&ID',
-    subtitle: 'The Review & Correction View',
-    desc: 'A triage-first correction workspace — confidence-ranked detections you accept, edit, or reject. Edits stage until Save All, then write a full audit trail and auto-rebuild the PFD Canvas and Operator views.',
+    subtitle: 'The Engineering View',
+    desc: 'A full interactive PFD editor rendered from the digitized P&ID — auto-placed equipment, routed process streams, and DXF, SVG, and PDF export.',
     color: '#34D399',
     img: '/engram-pfd-canvas.png',
   },
