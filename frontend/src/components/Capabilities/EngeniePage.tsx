@@ -4,6 +4,7 @@ import { useInView } from 'react-intersection-observer';
 import gsap from 'gsap';
 import { ScrollStagger, LineReveal } from '../ScrollAnimation';
 import HowItWorksScroll from './HowItWorksScroll';
+import NativeApproachScroll from './NativeApproachScroll';
 
 interface EngeniePageProps {
   onOpenContact: (source?: string) => void;
@@ -243,28 +244,11 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
       </section>
 
       {/* ── MODULES ── */}
-      <section className="engram-section engram-container">
-        <span className="eyebrow">Powerful Capabilities</span>
-        <LineReveal as="h2" className="engram-section-h2" text="Three Intelligent Modules, One Platform" />
-        <ScrollStagger className="engram-caps-grid" step={80}>
-          {modules.map((m) => (
-            <div key={m.title} className="engram-cap-card" style={{ '--cap-color': m.color } as React.CSSProperties}>
-              <div className="engram-cap-icon" style={{ color: m.color }}><m.Icon size={26} strokeWidth={1.75} /></div>
-              <h3 className="engram-cap-title" style={{ color: m.color }}>{m.title}</h3>
-              <p className="engram-cap-sub">{m.subtitle}</p>
-              <p className="engram-cap-desc">{m.desc}</p>
-              <ul className="engram-cap-list">
-                {m.features.map((f, i) => (
-                  <li key={i}>
-                    <span style={{ color: m.color, marginRight: 6 }}>—</span>
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </ScrollStagger>
-      </section>
+      <NativeApproachScroll
+        items={modules}
+        eyebrow="Powerful Capabilities"
+        title="Three Intelligent Modules, One Platform"
+      />
 
       {/* ── HOW IT WORKS ── */}
       <HowItWorksScroll
