@@ -10,7 +10,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useScroll, useTransform, motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { setLenisIntroLocked } from '../hooks/useLenis';
 
 import {
   heroChips,
@@ -27,6 +26,7 @@ import { CAPS } from '../data/caps';
 import { principles } from '../data/company';
 import { pipeNodes } from '../data/platform';
 import Icon from './Icon';
+import HeroShell from './HeroShell';
 import ScrollAnimation, { ScrollStagger, LineReveal, RevealLines } from './ScrollAnimation';
 import type { Cap } from '../types';
 
@@ -207,6 +207,12 @@ const CapCard: React.FC<{ cap: Cap }> = ({ cap }) => {
       className="cap-card"
       style={{ '--accent': cap.color } as React.CSSProperties}
       onClick={go}
+      role="link"
+      tabIndex={0}
+      aria-label={`${cap.name} — view details`}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
+      }}
     >
       <div className="cap-card-top">
         <div className="cap-card-name-row">
@@ -240,58 +246,28 @@ const CapCard: React.FC<{ cap: Cap }> = ({ cap }) => {
 //    to the bottom of the image.
 // ─────────────────────────────────────────────────────────────────
 // Fires once per session (module state survives SPA nav, resets on refresh):
-// scroll unlocks and the ticker slides in at this point in the intro.
+// the ticker slides in once the intro text has finished revealing. Scroll is
+// never locked — users who scroll early simply cut the show short.
 let heroIntroPlayed = false;
 const HERO_INTRO_MS = 1800;
 
 const Hero: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenContact }) => {
-  // Ticker stays hidden until the intro text finishes — same gate as the scroll lock
   const [introDone, setIntroDone] = useState(heroIntroPlayed);
 
   useEffect(() => {
     if (heroIntroPlayed) return;
-    setLenisIntroLocked(true);
-    document.documentElement.style.overflow = 'hidden';
     const t = setTimeout(() => {
       // Only mark "played" once the timer actually completes — setting this
       // at the start instead makes React StrictMode's dev-only double-invoke
       // (mount -> cleanup -> mount) skip the real timer on the second mount.
       heroIntroPlayed = true;
-      setLenisIntroLocked(false);
-      document.documentElement.style.overflow = '';
       setIntroDone(true);
     }, HERO_INTRO_MS);
-    return () => {
-      clearTimeout(t);
-      setLenisIntroLocked(false);
-      document.documentElement.style.overflow = '';
-    };
+    return () => clearTimeout(t);
   }, []);
 
   return (
-  <section
-    id="hero"
-    style={{
-      position: 'relative',
-      backgroundImage: 'url(/bg-image.png)',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center 30%',
-      backgroundAttachment: 'fixed',
-      minHeight: 'clamp(600px, 95vh, 960px)',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'flex-end',
-    }}
-  >
-    {/* dark gradient — lighter at top so the photo shows, darker at bottom for text */}
-    <div style={{
-      position: 'absolute', inset: 0,
-      background: 'linear-gradient(to bottom, rgba(4,6,18,0.20) 0%, rgba(4,6,18,0.60) 55%, rgba(4,6,18,0.94) 100%)',
-      pointerEvents: 'none',
-    }} />
-
-    {/* hero text — pushed to bottom of the image */}
-    <div className="section" style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(110px, 16vh, 160px)', paddingBottom: 72 }}>
+  <HeroShell id="hero" image="/bg-image.webp" contentClassName="section" after={<Ticker visible={introDone} />}>
       <h1 className="engram-hero-h1" style={{ color: '#ffffff' }}>
         <span className="hero-line-mask">
           <span className="hero-line-inner" style={{ animationDelay: '150ms' }}>Your plant.</span>
@@ -319,10 +295,7 @@ const Hero: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenConta
         <button className="btn-primary" onClick={() => onOpenContact('Explore enX')}>Explore enX →</button>
         <button className="btn-outline" onClick={() => onOpenContact('Request a Pilot')}>Request a Pilot</button>
       </div>
-    </div>
-
-    <Ticker visible={introDone} />
-  </section>
+  </HeroShell>
   );
 };
 
@@ -381,7 +354,7 @@ const ProductDemo: React.FC = () => {
         </div>
 
         {/* Right — animated card. Delayed so it appears after the left column has settled. */}
-        <ScrollAnimation delay={900} className="demo-sticky-right">
+        <ScrollAnimation delay={300} className="demo-sticky-right">
           <AnimatePresence mode="wait">
             <motion.div
               key={active.id}
@@ -463,7 +436,7 @@ const HowItWorks: React.FC = () => {
                 filter: inView ? 'none' : 'grayscale(0.8)',
                 transition: `opacity 700ms ease, filter 700ms ease`,
                 // header (ScrollAnimation, ~700ms) settles first, then steps stagger in
-                transitionDelay: inView ? `${450 + i * STEP}ms` : '0ms',
+                transitionDelay: inView ? `${120 + i * STEP}ms` : '0ms',
               } as React.CSSProperties}>
               <div className="how-step-top">
                 <span className="how-num">
@@ -557,7 +530,7 @@ const Industries: React.FC = () => (
 // ─────────────────────────────────────────────────────────────────
 export const Platform: React.FC = () => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
-  const STEP = 1000;
+  const STEP = 700;
   const CARD_DUR = 550;
   const CONN_DUR = 280;
 
@@ -590,7 +563,7 @@ export const Platform: React.FC = () => {
                   opacity: inView ? 1 : 0,
                   transition: `transform ${CARD_DUR}ms cubic-bezier(0.4,0,0.2,1), opacity ${CARD_DUR}ms ease`,
                   // header (ScrollAnimation, ~700ms) settles first, then cards stagger in
-                  transitionDelay: inView ? `${450 + i * STEP}ms` : '0ms',
+                  transitionDelay: inView ? `${120 + i * STEP}ms` : '0ms',
                 } as React.CSSProperties}
               >
                 <div className="pipe-cap" style={{ color: node.color }}>{node.cap}</div>
@@ -606,7 +579,7 @@ export const Platform: React.FC = () => {
                     transform: inView ? 'scaleX(1)' : 'scaleX(0)',
                     transformOrigin: 'left center',
                     transition: `opacity ${CONN_DUR}ms ease, transform ${CONN_DUR}ms ease`,
-                    transitionDelay: inView ? `${450 + i * STEP + STEP * 0.75}ms` : '0ms',
+                    transitionDelay: inView ? `${120 + i * STEP + STEP * 0.75}ms` : '0ms',
                   } as React.CSSProperties}
                 />
               )}
@@ -901,7 +874,7 @@ const CTA: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenContac
         <div className="cta-paths">
           <button className="cta-path" onClick={() => onOpenContact('Talk to Engineering Team')}>Talk to Engineering Team</button>
           <span className="cta-path-sep" aria-hidden="true">·</span>
-          <button className="cta-path" onClick={() => window.open('enx-overview.pdf', '_blank')}>Download Technical Overview</button>
+          <button className="cta-path" onClick={() => onOpenContact('Technical Overview')}>Request Technical Overview</button>
           <span className="cta-path-sep" aria-hidden="true">·</span>
           <button className="cta-path" onClick={() => onOpenContact('Waitlist')}>Join Waitlist</button>
         </div>

@@ -15,11 +15,13 @@ Run:
 import os
 import smtplib
 import ssl
+from collections import defaultdict, deque
 from email.message import EmailMessage
 from email.utils import formataddr
+from time import monotonic
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr, Field
 
@@ -66,6 +68,23 @@ app.add_middleware(
 )
 
 
+# ── Simple in-memory rate limit (per client IP, sliding window) ─────────────
+RATE_LIMIT = int(os.getenv("RATE_LIMIT", "5"))          # submissions…
+RATE_WINDOW = float(os.getenv("RATE_WINDOW", "3600"))   # …per this many seconds
+_recent_submissions: dict[str, deque] = defaultdict(deque)
+
+
+def _rate_limited(ip: str) -> bool:
+    now = monotonic()
+    q = _recent_submissions[ip]
+    while q and now - q[0] > RATE_WINDOW:
+        q.popleft()
+    if len(q) >= RATE_LIMIT:
+        return True
+    q.append(now)
+    return False
+
+
 # ── Request model ───────────────────────────────────────────────────────────
 class ContactForm(BaseModel):
     name: str = Field(min_length=1, max_length=200)
@@ -73,6 +92,8 @@ class ContactForm(BaseModel):
     company: str = Field(min_length=1, max_length=200)
     interest: str = Field(min_length=1, max_length=80)
     message: str = Field(min_length=1, max_length=5000)
+    # Honeypot — hidden field on the website form; humans never fill it
+    website: str = Field(default="", max_length=200)
 
 
 @app.get("/health")
@@ -81,7 +102,18 @@ def health():
 
 
 @app.post("/api/contact")
-def submit_contact(form: ContactForm):
+def submit_contact(form: ContactForm, request: Request):
+    # Honeypot filled → almost certainly a bot. Pretend success, send nothing.
+    if form.website.strip():
+        return {"ok": True, "message": "Your message has been sent."}
+
+    client_ip = request.client.host if request.client else "unknown"
+    if _rate_limited(client_ip):
+        raise HTTPException(
+            status_code=429,
+            detail="Too many submissions — please try again later.",
+        )
+
     if not SMTP_USER or not SMTP_PASSWORD:
         raise HTTPException(status_code=500, detail="Email service is not configured.")
 

@@ -115,6 +115,7 @@ const PromoVideo: React.FC<{ inView: boolean; delay: number }> = ({ inView, dela
       {playing ? (
         <video
           src="/enview-promo.mp4"
+          poster="/enview-promo-poster.webp"
           controls
           autoPlay
           style={{ width: '100%', height: 480, objectFit: 'cover', display: 'block', borderRadius: 16 }}
@@ -131,10 +132,10 @@ const PromoVideo: React.FC<{ inView: boolean; delay: number }> = ({ inView, dela
             cursor: 'pointer',
           }}
         >
-          <video
-            src="/enview-promo.mp4"
-            muted
-            preload="metadata"
+          <img
+            src="/enview-promo-poster.webp"
+            alt="enVIEW promo video preview"
+            loading="lazy"
             style={{ width: '100%', height: 480, objectFit: 'cover', display: 'block', borderRadius: 16 }}
           />
           <div

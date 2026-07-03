@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { Cpu, Gauge, Layers, Zap, Workflow, MonitorPlay, Boxes, MessageSquare, BrainCircuit, Network, TriangleAlert } from 'lucide-react';
 import { ScrollStagger, LineReveal } from '../ScrollAnimation';
+import { prefersReducedMotion } from '../../utils/motion';
 import { useInView } from 'react-intersection-observer';
 import gsap from 'gsap';
 import EnviewHowItWorksScroll from './EnviewHowItWorksScroll';
 import NativeApproachScroll from './NativeApproachScroll';
+import HeroShell from '../HeroShell';
 
 interface EnviewPageProps {
   onOpenContact: (source?: string) => void;
@@ -64,7 +66,7 @@ const views = [
     subtitle: 'Engineering',
     desc: 'ISA-101 compliant background, ISA-5.1 instrument bubbles, and an absolute single source of truth topology.',
     color: '#2563EB',
-    img: '/enview-pid-view.png',
+    img: '/enview-pid-view.webp',
   },
   {
     Icon: MonitorPlay,
@@ -72,7 +74,7 @@ const views = [
     subtitle: 'Operations',
     desc: 'Metallic equipment graphics, live value badges, and stream-colored piping for instant situational awareness.',
     color: '#0E9BC4',
-    img: '/enview-mimic-view.png',
+    img: '/enview-mimic-view.webp',
   },
   {
     Icon: Boxes,
@@ -80,7 +82,7 @@ const views = [
     subtitle: 'Management',
     desc: 'RealityKit spatial rendering, orbit-camera navigation, and physical asset location mapping.',
     color: '#10B981',
-    img: '/enview-plant-view.png',
+    img: '/enview-plant-view.webp',
   },
 ];
 
@@ -123,13 +125,14 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
 
   const rowRefs = useRef<(HTMLTableRowElement | null)[]>([]);
   useLayoutEffect(() => {
+    if (prefersReducedMotion()) return;
     rowRefs.current.forEach((row) => {
       if (!row) return;
       gsap.set(row, { opacity: 0, x: -80, filter: 'blur(6px)' });
     });
   }, []);
   useEffect(() => {
-    if (!matrixInView) return;
+    if (!matrixInView || prefersReducedMotion()) return;
     rowRefs.current.forEach((row, i) => {
       if (!row) return;
       gsap.to(row, {
@@ -140,10 +143,12 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
   }, [matrixInView]);
 
   const [activeCell, setActiveCell] = useState(-1);
+  // Light the first cell as soon as the matrix scrolls into view —
+  // render-phase adjustment instead of setState inside the effect
+  if (matrixInView && activeCell === -1) setActiveCell(0);
   useEffect(() => {
     if (!matrixInView) return;
     const totalCells = matrix.rows.length * matrix.cols.length;
-    setActiveCell(0);
     let cell = 0;
     const id = setInterval(() => {
       cell = (cell + 1) % totalCells;
@@ -158,6 +163,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
   const toRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
   useLayoutEffect(() => {
+    if (prefersReducedMotion()) return;
     const ctx = gsap.context(() => {
       transform.forEach((_, i) => {
         const card = transformCardRefs.current[i];
@@ -177,7 +183,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
           .to(arrowRefs.current[i], { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(2)' }, '+=0.05')
           .to(toRefs.current[i], { opacity: 1, x: 0, duration: 0.35, ease: 'power2.out' }, '-=0.1')
           .call(() => {
-            gsap.timeline({ repeat: -1, yoyo: true })
+            gsap.timeline({ repeat: 5, yoyo: true })
               .to(arrowRefs.current[i], { scale: 1.15, duration: 0.75, ease: 'sine.inOut' });
           });
       });
@@ -201,27 +207,8 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         @keyframes bannerFade   { from { opacity:0; transform:scale(0.98); } to { opacity:1; transform:scale(1); } }
       `}</style>
 
-      {/* ── HERO (fixed parallax background) ── */}
-      <div style={{
-        position: 'relative',
-        backgroundImage: 'url(/enview-hero.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center 30%',
-        backgroundAttachment: 'fixed',
-        minHeight: 'clamp(600px, 95vh, 960px)',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-      }}>
-        {/* dark gradient — lighter at top so image shows, darker at bottom for text */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: 'linear-gradient(to bottom, rgba(4,6,18,0.20) 0%, rgba(4,6,18,0.60) 55%, rgba(4,6,18,0.94) 100%)',
-          pointerEvents: 'none',
-        }} />
-
-        {/* hero text — pushed to bottom of the image */}
-        <section className="engram-hero engram-container" style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(110px, 16vh, 160px)', paddingBottom: 72 }}>
+      {/* ── HERO (pinned parallax background — iOS-safe, see HeroShell) ── */}
+      <HeroShell image="/enview-hero.webp" contentClassName="engram-hero engram-container">
           <div className="engram-hero-badge">
             <span style={{ color: '#93c5fd', fontSize: 10, fontWeight: 700, letterSpacing: 1 }}>MODERN SCADA</span>
           </div>
@@ -251,8 +238,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
               Request a Demo
             </button>
           </div>
-        </section>
-      </div>
+      </HeroShell>
 
 
       {/* ── CHALLENGE ── */}
@@ -267,7 +253,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         <ScrollStagger className="engram-quad" step={70}>
           {challenges.map((c, i) => (
             <div key={c.title} className="engram-card">
-              <div style={{ color: ACCENT, marginBottom: 12, lineHeight: 1, animation: challengeInView ? `iconFlash 2.4s ease-in-out ${i * 0.6}s infinite` : 'none' }}><TriangleAlert size={22} strokeWidth={1.75} /></div>
+              <div style={{ color: ACCENT, marginBottom: 12, lineHeight: 1, animation: challengeInView ? `iconFlash 2.4s ease-in-out ${i * 0.6}s 3` : 'none' }}><TriangleAlert size={22} strokeWidth={1.75} /></div>
               <h3 className="engram-card-title" style={{ fontSize: 14, marginBottom: 8 }}>{c.title}</h3>
               <p style={{ fontSize: 12, color: 'var(--t4)', lineHeight: 1.65 }}>{c.desc}</p>
             </div>

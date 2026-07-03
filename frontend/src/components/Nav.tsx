@@ -7,6 +7,7 @@ import { getLenis } from '../hooks/useLenis';
 
 interface NavProps {
   onOpenMobile: () => void;
+  mobileOpen: boolean;
   onOpenContact: (source?: string) => void;
 }
 
@@ -19,7 +20,7 @@ const PRODUCTS = [
   { id: 'entie',    name: 'enTIE',    cat: 'Connected Intelligence' },
 ];
 
-const Nav: React.FC<NavProps> = ({ onOpenMobile, onOpenContact }) => {
+const Nav: React.FC<NavProps> = ({ onOpenMobile, mobileOpen, onOpenContact }) => {
   const { scrolled, activeSection } = useNavScroll();
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
   const navigate = useNavigate();
@@ -76,21 +77,29 @@ const Nav: React.FC<NavProps> = ({ onOpenMobile, onOpenContact }) => {
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginLeft: 'auto', marginRight: '7%' }}>
         <ul role="list" className="nav-links">
-          {/* Products with controlled dropdown — closes on click */}
+          {/* Products with controlled dropdown — opens on hover or keyboard
+              focus, closes on click, blur-out, or Escape */}
           <li
             className={`nav-dropdown-wrap${dropdownOpen ? ' open' : ''}`}
             onMouseEnter={() => setDropdownOpen(true)}
             onMouseLeave={closeDropdown}
+            onFocus={() => setDropdownOpen(true)}
+            onBlur={(e) => {
+              if (!e.currentTarget.contains(e.relatedTarget as Node)) closeDropdown();
+            }}
+            onKeyDown={(e) => { if (e.key === 'Escape') closeDropdown(); }}
           >
-            <a
-              href="#capabilities"
+            <Link
+              to="/#capabilities"
               className={activeSection === 'capabilities' ? 'nav-active' : ''}
+              aria-haspopup="true"
+              aria-expanded={dropdownOpen}
               onClick={closeDropdown}
               onMouseEnter={setUnderlineOrigin}
               onMouseLeave={setUnderlineOrigin}
             >
               Products
-            </a>
+            </Link>
             <div className="nav-dropdown">
               <div className="nav-dropdown-inner">
                 {PRODUCTS.map((p) => (
@@ -145,7 +154,7 @@ const Nav: React.FC<NavProps> = ({ onOpenMobile, onOpenContact }) => {
           id="hamburger"
           onClick={onOpenMobile}
           aria-label="Open navigation menu"
-          aria-expanded="false"
+          aria-expanded={mobileOpen}
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>

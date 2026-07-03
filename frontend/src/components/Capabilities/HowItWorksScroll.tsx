@@ -22,6 +22,8 @@ interface HowItWorksScrollProps {
   accentRgb: string;
   impact?: { label: string; before: string; after: string };
   video?: string;
+  /** Static preview image shown before play — avoids fetching video data for the thumbnail */
+  videoPoster?: string;
 }
 
 // ── Connector SVG line — same drawn-arrow animation as enVIEW's version ──────
@@ -112,8 +114,8 @@ const Card: React.FC<{ step: HowItWorksStep; index: number; inView: boolean; acc
 };
 
 // ── Click-to-play demo video — same pattern as enVIEW's How It Works ─────────
-const PromoVideo: React.FC<{ src: string; inView: boolean; delay: number; accent: string; accentRgb: string }> = ({
-  src, inView, delay, accent, accentRgb,
+const PromoVideo: React.FC<{ src: string; poster?: string; inView: boolean; delay: number; accent: string; accentRgb: string }> = ({
+  src, poster, inView, delay, accent, accentRgb,
 }) => {
   const [playing, setPlaying] = useState(false);
 
@@ -126,14 +128,18 @@ const PromoVideo: React.FC<{ src: string; inView: boolean; delay: number; accent
       style={{ marginTop: 48, padding: 0, overflow: 'hidden', position: 'relative' }}
     >
       {playing ? (
-        <video src={src} controls autoPlay style={{ width: '100%', height: 480, objectFit: 'cover', display: 'block', borderRadius: 16 }} />
+        <video src={src} poster={poster} controls autoPlay style={{ width: '100%', height: 480, objectFit: 'cover', display: 'block', borderRadius: 16 }} />
       ) : (
         <button
           onClick={() => setPlaying(true)}
           aria-label="Play demo video"
           style={{ all: 'unset', display: 'block', position: 'relative', width: '100%', cursor: 'pointer' }}
         >
-          <video src={src} muted preload="metadata" style={{ width: '100%', height: 480, objectFit: 'cover', display: 'block', borderRadius: 16 }} />
+          {poster ? (
+            <img src={poster} alt="Demo video preview" loading="lazy" style={{ width: '100%', height: 480, objectFit: 'cover', display: 'block', borderRadius: 16 }} />
+          ) : (
+            <video src={src} muted preload="metadata" style={{ width: '100%', height: 480, objectFit: 'cover', display: 'block', borderRadius: 16 }} />
+          )}
           <div
             style={{
               position: 'absolute', inset: 0,
@@ -159,7 +165,7 @@ const PromoVideo: React.FC<{ src: string; inView: boolean; delay: number; accent
 
 // ── Main section — same scroll-into-view, staggered card + drawn-connector
 // animation used by enVIEW's "How It Works", generalized for any product page ──
-const HowItWorksScroll: React.FC<HowItWorksScrollProps> = ({ eyebrow, title, steps, accent, accentRgb, impact, video }) => {
+const HowItWorksScroll: React.FC<HowItWorksScrollProps> = ({ eyebrow, title, steps, accent, accentRgb, impact, video, videoPoster }) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const inView = useInView(sectionRef, { once: true, margin: '-80px' });
 
@@ -192,6 +198,7 @@ const HowItWorksScroll: React.FC<HowItWorksScrollProps> = ({ eyebrow, title, ste
       {video && (
         <PromoVideo
           src={video}
+          poster={videoPoster}
           inView={inView}
           delay={(steps.length - 1) * STEP_DELAY + CARD_DUR + 0.25}
           accent={accent}

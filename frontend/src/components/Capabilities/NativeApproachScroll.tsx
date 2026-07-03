@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { LucideIcon } from 'lucide-react';
 import { LineReveal } from '../ScrollAnimation';
+import { prefersReducedMotion } from '../../utils/motion';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,7 +22,7 @@ interface Props {
   title?: string;
 }
 
-const STAGGER = 0.5; // seconds between each card's reveal
+const STAGGER = 0.32; // seconds between each card's reveal
 
 const NativeApproachScroll: React.FC<Props> = ({
   items,
@@ -37,11 +38,12 @@ const NativeApproachScroll: React.FC<Props> = ({
   const bulletRefs = useRef<(HTMLLIElement | null)[][]>([]);
 
   useLayoutEffect(() => {
+    if (prefersReducedMotion()) return;
     const ctx = gsap.context(() => {
       // idle icon pulse — independent loop, every ~3s, once revealed
       iconCircleRefs.current.forEach((circle, i) => {
         if (!circle) return;
-        gsap.timeline({ repeat: -1, delay: 1 + i * 0.15 })
+        gsap.timeline({ repeat: 3, delay: 1 + i * 0.15 })
           .to(circle, { scale: 1.08, duration: 0.4, ease: 'sine.inOut' })
           .to(circle, { scale: 1, duration: 0.4, ease: 'sine.inOut' })
           .to({}, { duration: 2.2 });

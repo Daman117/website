@@ -90,7 +90,7 @@ export const ScrollStagger: React.FC<ScrollStaggerProps> = ({
   children,
   className = '',
   style,
-  baseDelay = 450,            // let the section header (ScrollAnimation, ~700ms) settle first
+  baseDelay = 280,            // brief beat after the section header starts revealing
   step = 55,                  // gentle stagger when multiple cards enter together
   direction = 'up',
   duration = 750,

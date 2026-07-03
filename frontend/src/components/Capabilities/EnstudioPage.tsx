@@ -3,8 +3,10 @@ import { PencilRuler, Boxes, MessageSquare, Workflow, BadgeCheck, SlidersHorizon
 import { useInView } from 'react-intersection-observer';
 import gsap from 'gsap';
 import { ScrollStagger, LineReveal } from '../ScrollAnimation';
+import { prefersReducedMotion } from '../../utils/motion';
 import HowItWorksScroll from './HowItWorksScroll';
 import NativeApproachScroll from './NativeApproachScroll';
+import HeroShell from '../HeroShell';
 
 interface EnstudioPageProps {
   onOpenContact: (source?: string) => void;
@@ -53,7 +55,7 @@ const inputModes = [
     subtitle: 'Author from scratch',
     desc: 'Drag ISA-5.1 symbols onto the canvas, draw connections, and fill parameter forms. Every action writes straight to the internal model.',
     color: '#A78BFA',
-    img: '/enstudio-draw.png',
+    img: '/enstudio-draw.webp',
     features: [
       'ISA-5.1 symbol palette',
       'Direct topology editing',
@@ -67,7 +69,7 @@ const inputModes = [
     subtitle: 'Upload any drawing',
     desc: 'Drop a P&ID PDF, scanned sheet, equipment CSV, datasheet, or YMPL file. AI reads it and renders equipment and connections on the canvas.',
     color: '#60A5FA',
-    img: '/enstudio-import.png',
+    img: '/enstudio-import.webp',
     features: [
       'Vector & scanned P&ID PDFs',
       'Multi-page sheets in parallel',
@@ -81,7 +83,7 @@ const inputModes = [
     subtitle: 'Plain-language topology',
     desc: 'Type or talk through a process unit. The same parser used by enableSim extracts equipment, instruments, and connections into the model.',
     color: '#34D399',
-    img: '/enstudio-describe.png',
+    img: '/enstudio-describe.webp',
     features: [
       'Natural-language extraction',
       'Conversational model building',
@@ -222,13 +224,14 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
 
   const rowRefs = useRef<(HTMLTableRowElement | null)[]>([]);
   useLayoutEffect(() => {
+    if (prefersReducedMotion()) return;
     rowRefs.current.forEach((row) => {
       if (!row) return;
       gsap.set(row, { opacity: 0, x: -80, filter: 'blur(6px)' });
     });
   }, []);
   useEffect(() => {
-    if (!matrixInView) return;
+    if (!matrixInView || prefersReducedMotion()) return;
     rowRefs.current.forEach((row, i) => {
       if (!row) return;
       gsap.to(row, {
@@ -244,27 +247,8 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
         @keyframes iconFlash { 0%,100% { color:inherit; } 40% { color:#f97316; filter:drop-shadow(0 0 6px #f97316); } }
       `}</style>
 
-      {/* ── HERO (fixed parallax background) ── */}
-      <div style={{
-        position: 'relative',
-        backgroundImage: 'url(/enstudio-hero.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center 30%',
-        backgroundAttachment: 'fixed',
-        minHeight: 'clamp(600px, 95vh, 960px)',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-      }}>
-        {/* dark gradient — lighter at top so image shows, darker at bottom for text */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: 'linear-gradient(to bottom, rgba(4,6,18,0.20) 0%, rgba(4,6,18,0.60) 55%, rgba(4,6,18,0.94) 100%)',
-          pointerEvents: 'none',
-        }} />
-
-        {/* hero text — pushed to bottom of the image */}
-        <section className="engram-hero engram-container" style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(110px, 16vh, 160px)', paddingBottom: 72 }}>
+      {/* ── HERO (pinned parallax background — iOS-safe, see HeroShell) ── */}
+      <HeroShell image="/enstudio-hero.webp" contentClassName="engram-hero engram-container">
           <div className="engram-hero-badge">
             <span style={{ color: '#c4b5fd', fontSize: 10, fontWeight: 700, letterSpacing: 1 }}>DRAWING INTELLIGENCE</span>
           </div>
@@ -294,8 +278,7 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
               Request a Demo
             </button>
           </div>
-        </section>
-      </div>
+      </HeroShell>
 
       {/* ── CHALLENGE ── */}
       <section ref={challengeRef} className="engram-section engram-container">
@@ -309,7 +292,7 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
         <ScrollStagger className="engram-three-col" step={70}>
           {challenges.map((c, i) => (
             <div key={i} className="engram-card">
-              <div style={{ color: ACCENT, marginBottom: 12, lineHeight: 1, animation: challengeInView ? `iconFlash 2.4s ease-in-out ${i * 0.6}s infinite` : 'none' }}><TriangleAlert size={22} strokeWidth={1.75} /></div>
+              <div style={{ color: ACCENT, marginBottom: 12, lineHeight: 1, animation: challengeInView ? `iconFlash 2.4s ease-in-out ${i * 0.6}s 3` : 'none' }}><TriangleAlert size={22} strokeWidth={1.75} /></div>
               <span style={{ fontSize: 13, color: 'var(--t3)', lineHeight: 1.7 }}>{c}</span>
             </div>
           ))}
@@ -360,6 +343,7 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
         accent={ACCENT}
         accentRgb="167,139,250"
         video="/enstudio-demo.mp4"
+        videoPoster="/enstudio-demo-poster.webp"
       />
 
       {/* ── SAFETY + LOCAL + BROWNFIELD ── */}

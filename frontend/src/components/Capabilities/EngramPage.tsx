@@ -3,8 +3,10 @@ import { Workflow, FileText, Network, Upload, ScanSearch, MessageCircle, Sparkle
 import { useInView } from 'react-intersection-observer';
 import gsap from 'gsap';
 import { ScrollStagger, LineReveal } from '../ScrollAnimation';
+import { prefersReducedMotion } from '../../utils/motion';
 import HowItWorksScroll from './HowItWorksScroll';
 import NativeApproachScroll from './NativeApproachScroll';
+import HeroShell from '../HeroShell';
 
 interface EngramPageProps {
   onOpenContact: (source?: string) => void;
@@ -81,7 +83,7 @@ const diagramViews = [
     subtitle: 'The Review & Correction View',
     desc: 'A triage-first correction workspace — confidence-ranked detections you accept, edit, or reject. Edits stage until Save All, then write a full audit trail and auto-rebuild the PFD Canvas and Operator views.',
     color: '#FDB022',
-    img: '/engram-static-svg.png',
+    img: '/engram-static-svg.webp',
   },
   {
     Icon: MonitorPlay,
@@ -89,7 +91,7 @@ const diagramViews = [
     subtitle: 'The Operator View',
     desc: 'An HMI-style live process screen, rebuilt purely from connectivity semantics — never the original drawing geometry. Click any tag for a live faceplate.',
     color: '#60A5FA',
-    img: '/engram-operator-graphics.png',
+    img: '/engram-operator-graphics.webp',
   },
   {
     Icon: ImageIcon,
@@ -97,7 +99,7 @@ const diagramViews = [
     subtitle: 'The Engineering View',
     desc: 'A full interactive PFD editor rendered from the digitized P&ID — auto-placed equipment, routed process streams, and DXF, SVG, and PDF export.',
     color: '#34D399',
-    img: '/engram-pfd-canvas.png',
+    img: '/engram-pfd-canvas.webp',
   },
 ];
 
@@ -151,13 +153,14 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
 
   const rowRefs = useRef<(HTMLTableRowElement | null)[]>([]);
   useLayoutEffect(() => {
+    if (prefersReducedMotion()) return;
     rowRefs.current.forEach((row) => {
       if (!row) return;
       gsap.set(row, { opacity: 0, x: -80, filter: 'blur(6px)' });
     });
   }, []);
   useEffect(() => {
-    if (!matrixInView) return;
+    if (!matrixInView || prefersReducedMotion()) return;
     rowRefs.current.forEach((row, i) => {
       if (!row) return;
       gsap.to(row, {
@@ -173,27 +176,8 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
         @keyframes iconFlash { 0%,100% { color:inherit; } 40% { color:#f97316; filter:drop-shadow(0 0 6px #f97316); } }
       `}</style>
 
-      {/* ── HERO (fixed parallax background) ── */}
-      <div style={{
-        position: 'relative',
-        backgroundImage: 'url(/engram-hero.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center 30%',
-        backgroundAttachment: 'fixed',
-        minHeight: 'clamp(600px, 95vh, 960px)',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-      }}>
-        {/* dark gradient — lighter at top so image shows, darker at bottom for text */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: 'linear-gradient(to bottom, rgba(4,6,18,0.20) 0%, rgba(4,6,18,0.60) 55%, rgba(4,6,18,0.94) 100%)',
-          pointerEvents: 'none',
-        }} />
-
-        {/* hero text — pushed to bottom of the image */}
-        <section className="engram-hero engram-container" style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(110px, 16vh, 160px)', paddingBottom: 72 }}>
+      {/* ── HERO (pinned parallax background — iOS-safe, see HeroShell) ── */}
+      <HeroShell image="/engram-hero.webp" contentClassName="engram-hero engram-container">
           <div className="engram-hero-badge">
             <span style={{ color: '#fde68a', fontSize: 10, fontWeight: 700, letterSpacing: 1 }}>PLANT KNOWLEDGE</span>
           </div>
@@ -223,8 +207,7 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
               Request a Demo
             </button>
           </div>
-        </section>
-      </div>
+      </HeroShell>
 
       {/* ── CHALLENGE ── */}
       <section ref={challengeRef} className="engram-section engram-container">
@@ -239,7 +222,7 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
         <ScrollStagger className="engram-quad" step={400} duration={600}>
           {challenges.map((c, i) => (
             <div key={i} className="engram-card">
-              <div style={{ color: '#FDB022', marginBottom: 12, lineHeight: 1, animation: challengeInView ? `iconFlash 2.4s ease-in-out ${i * 0.6}s infinite` : 'none' }}><TriangleAlert size={22} strokeWidth={1.75} /></div>
+              <div style={{ color: '#FDB022', marginBottom: 12, lineHeight: 1, animation: challengeInView ? `iconFlash 2.4s ease-in-out ${i * 0.6}s 3` : 'none' }}><TriangleAlert size={22} strokeWidth={1.75} /></div>
               <h3 className="engram-card-title" style={{ fontSize: 14, marginBottom: 8 }}>{c.title}</h3>
               <p style={{ fontSize: 12, color: 'var(--t4)', lineHeight: 1.65 }}>{c.desc}</p>
             </div>
@@ -297,6 +280,7 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
         accent="#FDB022"
         accentRgb="253,176,34"
         video="/engram-demo.mp4"
+        videoPoster="/engram-demo-poster.webp"
       />
 
       {/* ── VALIDATION + COMPLIANCE + SECURITY ── */}

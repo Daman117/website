@@ -10,23 +10,6 @@ interface ContactModalProps {
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
-const inputStyle: React.CSSProperties = {
-  width: '100%',
-  padding: '12px 15px',
-  background: 'rgba(255,255,255,0.45)',
-  backdropFilter: 'blur(16px) saturate(160%)',
-  WebkitBackdropFilter: 'blur(16px) saturate(160%)',
-  border: '1px solid rgba(255,255,255,0.7)',
-  borderRadius: '12px',
-  color: 'var(--t1)',
-  fontFamily: 'inherit',
-  fontSize: '14px',
-  transition: 'border-color .35s cubic-bezier(0.22,1,0.36,1), box-shadow .35s cubic-bezier(0.22,1,0.36,1)',
-  outline: 'none',
-  boxSizing: 'border-box',
-  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.65), 0 2px 10px rgba(11,37,69,0.05)',
-};
-
 const INTEREST_OPTIONS = [
   { value: 'demo', label: 'Request Demo' },
   { value: 'pilot', label: '90-Day Pilot Program' },
@@ -67,9 +50,9 @@ const CustomSelect: React.FC<{
     <div ref={ref} style={{ position: 'relative' }}>
       <button
         type="button"
-        className="cm-select-trigger"
+        className="cm-input cm-select-trigger"
         onClick={() => setOpen((o) => !o)}
-        style={{ ...inputStyle, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px' }}
+        style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px' }}
         aria-haspopup="listbox"
         aria-expanded={open}
       >
@@ -103,7 +86,11 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, source, onClose }) =>
   const [interest, setInterest] = useState('');
   const [interestError, setInterestError] = useState(false);
 
-  useEffect(() => {
+  // Reset the form each time the modal opens — render-phase adjustment
+  // instead of an effect (react.dev: "You might not need an Effect")
+  const [prevOpen, setPrevOpen] = useState(open);
+  if (open !== prevOpen) {
+    setPrevOpen(open);
     if (open) {
       setSubmitted(false);
       setError(false);
@@ -113,7 +100,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, source, onClose }) =>
       else if (source === 'Waitlist') setInterest('enable');
       else setInterest('');
     }
-  }, [open, source]);
+  }
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -146,6 +133,8 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, source, onClose }) =>
       company: String(data.get('company') || ''),
       interest: String(data.get('interest') || ''),
       message: String(data.get('message') || ''),
+      // Honeypot — hidden from humans; bots that fill it are silently dropped
+      website: String(data.get('website') || ''),
     };
 
     try {
@@ -240,32 +229,26 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, source, onClose }) =>
                 </p>
 
                 <form onSubmit={handleSubmit}>
-                  <div style={{ marginBottom: '18px' }}>
-                    <label style={{ display: 'block', fontSize: '12px', color: 'var(--t2)', marginBottom: '8px', fontWeight: 600, letterSpacing: '.3px' }}>Name *</label>
-                    <input type="text" name="name" required style={inputStyle} placeholder="Your name"
-                      onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(37,99,235,0.14), 0 4px 16px rgba(11,37,69,0.08)'; }}
-                      onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.7)'; e.target.style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,0.65), 0 2px 10px rgba(11,37,69,0.05)'; }}
-                    />
+                  {/* Honeypot — invisible to humans, bots fill it and get dropped server-side */}
+                  <input type="text" name="website" className="cm-hp" tabIndex={-1} autoComplete="off" aria-hidden="true" />
+
+                  <div className="cm-field">
+                    <label className="cm-label">Name *</label>
+                    <input type="text" name="name" required className="cm-input" placeholder="Your name" />
                   </div>
 
-                  <div style={{ marginBottom: '18px' }}>
-                    <label style={{ display: 'block', fontSize: '12px', color: 'var(--t2)', marginBottom: '8px', fontWeight: 600, letterSpacing: '.3px' }}>Email *</label>
-                    <input type="email" name="email" required style={inputStyle} placeholder="your@company.com"
-                      onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(37,99,235,0.14), 0 4px 16px rgba(11,37,69,0.08)'; }}
-                      onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.7)'; e.target.style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,0.65), 0 2px 10px rgba(11,37,69,0.05)'; }}
-                    />
+                  <div className="cm-field">
+                    <label className="cm-label">Email *</label>
+                    <input type="email" name="email" required className="cm-input" placeholder="your@company.com" />
                   </div>
 
-                  <div style={{ marginBottom: '18px' }}>
-                    <label style={{ display: 'block', fontSize: '12px', color: 'var(--t2)', marginBottom: '8px', fontWeight: 600, letterSpacing: '.3px' }}>Company *</label>
-                    <input type="text" name="company" required style={inputStyle} placeholder="Your company name"
-                      onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(37,99,235,0.14), 0 4px 16px rgba(11,37,69,0.08)'; }}
-                      onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.7)'; e.target.style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,0.65), 0 2px 10px rgba(11,37,69,0.05)'; }}
-                    />
+                  <div className="cm-field">
+                    <label className="cm-label">Company *</label>
+                    <input type="text" name="company" required className="cm-input" placeholder="Your company name" />
                   </div>
 
-                  <div style={{ marginBottom: '18px' }}>
-                    <label style={{ display: 'block', fontSize: '12px', color: 'var(--t2)', marginBottom: '8px', fontWeight: 600, letterSpacing: '.3px' }}>Interest *</label>
+                  <div className="cm-field">
+                    <label className="cm-label">Interest *</label>
                     <input type="hidden" name="interest" value={interest} />
                     <CustomSelect
                       value={interest}
@@ -277,16 +260,15 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, source, onClose }) =>
                     )}
                   </div>
 
-                  <div style={{ marginBottom: '24px' }}>
-                    <label style={{ display: 'block', fontSize: '12px', color: 'var(--t2)', marginBottom: '8px', fontWeight: 600, letterSpacing: '.3px' }}>Message *</label>
+                  <div className="cm-field" style={{ marginBottom: '24px' }}>
+                    <label className="cm-label">Message *</label>
                     <textarea
                       name="message"
                       required
                       rows={4}
-                      style={{ ...inputStyle, resize: 'vertical' }}
+                      className="cm-input"
+                      style={{ resize: 'vertical' }}
                       placeholder="Tell us about your plant and what you're looking for..."
-                      onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(37,99,235,0.14), 0 4px 16px rgba(11,37,69,0.08)'; }}
-                      onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.7)'; e.target.style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,0.65), 0 2px 10px rgba(11,37,69,0.05)'; }}
                     />
                   </div>
 
@@ -311,7 +293,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, source, onClose }) =>
                   )}
 
                   <p style={{ fontSize: '11px', color: 'var(--t5)', marginTop: '12px', textAlign: 'center' }}>
-                    By submitting you agree to our Privacy Policy. We never share your data.
+                    Your details are only used to respond to your inquiry. We never share your data.
                   </p>
                 </form>
               </>

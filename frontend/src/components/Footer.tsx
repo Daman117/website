@@ -23,13 +23,13 @@ const products = [
   { id: 'entie', name: 'enTIE' },
 ];
 
+// Hash links go through the router (/#section) so they work from any page —
+// PageScrollManager scrolls to the section once home has rendered.
 const companyLinks = [
-  { label: 'About Us', href: '/about' },
-  { label: 'Platform', href: '#platform' },
-  { label: 'Principles', href: '#principles' },
+  { label: 'About Us', to: '/about' },
+  { label: 'Platform', to: '/#platform' },
+  { label: 'Principles', to: '/#principles' },
 ];
-
-const resourceLinks = ['Documentation', 'Support', 'Privacy Policy', 'Terms of Service'];
 
 const Footer: React.FC<FooterProps> = ({ onOpenContact }) => (
   <footer id="footer">
@@ -64,7 +64,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenContact }) => (
         <LineReveal as="p" className="foot-title" text="Company" />
         <ScrollStagger step={60} duration={550}>
           {companyLinks.map((l) => (
-            <a key={l.label} className="foot-link" href={l.href}>{l.label}</a>
+            <Link key={l.label} className="foot-link" to={l.to}>{l.label}</Link>
           ))}
           <button className="foot-link" onClick={() => onOpenContact('Footer')}>Contact Us</button>
         </ScrollStagger>
@@ -74,9 +74,9 @@ const Footer: React.FC<FooterProps> = ({ onOpenContact }) => (
       <div>
         <LineReveal as="p" className="foot-title" text="Resources" />
         <ScrollStagger step={60} duration={550}>
-          {resourceLinks.map((r) => (
-            <a key={r} className="foot-link" href="#" onClick={(e) => e.preventDefault()}>{r}</a>
-          ))}
+          <Link className="foot-link" to="/#resources">Resource Center</Link>
+          <button className="foot-link" onClick={() => onOpenContact('Documentation')}>Documentation</button>
+          <button className="foot-link" onClick={() => onOpenContact('Support')}>Support</button>
         </ScrollStagger>
       </div>
     </div>

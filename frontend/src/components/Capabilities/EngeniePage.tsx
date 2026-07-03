@@ -3,8 +3,10 @@ import { Workflow, Search, MessageSquare, Building2, Scale, CircleCheck, ShieldC
 import { useInView } from 'react-intersection-observer';
 import gsap from 'gsap';
 import { ScrollStagger, LineReveal } from '../ScrollAnimation';
+import { prefersReducedMotion } from '../../utils/motion';
 import HowItWorksScroll from './HowItWorksScroll';
 import NativeApproachScroll from './NativeApproachScroll';
+import HeroShell from '../HeroShell';
 
 interface EngeniePageProps {
   onOpenContact: (source?: string) => void;
@@ -129,13 +131,14 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
 
   const rowRefs = useRef<(HTMLTableRowElement | null)[]>([]);
   useLayoutEffect(() => {
+    if (prefersReducedMotion()) return;
     rowRefs.current.forEach((row) => {
       if (!row) return;
       gsap.set(row, { opacity: 0, x: -80, filter: 'blur(6px)' });
     });
   }, []);
   useEffect(() => {
-    if (!matrixInView) return;
+    if (!matrixInView || prefersReducedMotion()) return;
     rowRefs.current.forEach((row, i) => {
       if (!row) return;
       gsap.to(row, {
@@ -148,27 +151,8 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
   return (
     <main className="engram-page" style={{ '--accent': ACCENT, '--accent-rgb': ACCENT_RGB } as React.CSSProperties}>
 
-      {/* ── HERO (fixed parallax background) ── */}
-      <div style={{
-        position: 'relative',
-        backgroundImage: 'url(/engenie-hero.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center 30%',
-        backgroundAttachment: 'fixed',
-        minHeight: 'clamp(600px, 95vh, 960px)',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-      }}>
-        {/* dark gradient — lighter at top so image shows, darker at bottom for text */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: 'linear-gradient(to bottom, rgba(4,6,18,0.20) 0%, rgba(4,6,18,0.60) 55%, rgba(4,6,18,0.94) 100%)',
-          pointerEvents: 'none',
-        }} />
-
-        {/* hero text — pushed to bottom of the image */}
-        <section className="engram-hero engram-container" style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(110px, 16vh, 160px)', paddingBottom: 72 }}>
+      {/* ── HERO (pinned parallax background — iOS-safe, see HeroShell) ── */}
+      <HeroShell image="/engenie-hero.webp" contentClassName="engram-hero engram-container">
           <div className="engram-hero-badge">
             <span style={{ color: '#93c5fd', fontSize: 10, fontWeight: 700, letterSpacing: 1 }}>AI-POWERED PROCUREMENT INTELLIGENCE</span>
           </div>
@@ -198,8 +182,7 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
               Request a Demo
             </button>
           </div>
-        </section>
-      </div>
+      </HeroShell>
 
 
       {/* ── AI FEATURES ── */}
