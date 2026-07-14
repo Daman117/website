@@ -512,7 +512,9 @@ const Industries: React.FC = () => (
       <ScrollStagger className="ind-grid" step={70}>
         {industries.map((ind) => (
           <div key={ind.id} className="ind-card hover-scale-sm">
-            <div className="ind-icon"><Icon name={ind.icon} size={22} strokeWidth={1.7} /></div>
+            <div className="ind-img">
+              <img src={ind.img} alt={ind.name} loading="lazy" />
+            </div>
             <h3 className="ind-name">{ind.name}</h3>
             <p className="ind-desc">{ind.desc}</p>
             <div className="ind-caps">
@@ -726,9 +728,13 @@ const Security: React.FC = () => (
       <ScrollStagger className="sec-grid" step={90}>
         {securityPrinciples.map((p) => (
           <div key={p.title} className="sec-card hover-lift">
-            <div className="sec-icon"><Icon name={p.icon} size={20} strokeWidth={1.7} /></div>
-            <h3 className="sec-title">{p.title}</h3>
-            <p className="sec-desc">{p.desc}</p>
+            <img className="sec-img" src={p.img} alt={p.title} loading="lazy" />
+            <div className="sec-overlay" />
+            <div className="sec-icon"><Icon name={p.icon} size={20} strokeWidth={1.8} /></div>
+            <div className="sec-body">
+              <h3 className="sec-title">{p.title}</h3>
+              <p className="sec-desc">{p.desc}</p>
+            </div>
           </div>
         ))}
       </ScrollStagger>
@@ -812,11 +818,16 @@ const Resources: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpen
             className="res-card hover-lift"
             onClick={() => onOpenContact(`Resource: ${r.title}`)}
           >
-            <div className="res-icon"><Icon name={r.icon} size={18} strokeWidth={1.8} /></div>
-            <span className="res-type">{r.type}</span>
-            <h3 className="res-title">{r.title}</h3>
-            <p className="res-desc">{r.desc}</p>
-            <span className="res-link">Request →</span>
+            <div className="res-img-wrap">
+              <img className="res-img" src={r.img} alt={r.title} loading="lazy" />
+              <span className="res-type">{r.type}</span>
+            </div>
+            <div className="res-body">
+              <div className="res-icon"><Icon name={r.icon} size={16} strokeWidth={1.8} /></div>
+              <h3 className="res-title">{r.title}</h3>
+              <p className="res-desc">{r.desc}</p>
+              <span className="res-link">Request →</span>
+            </div>
           </button>
         ))}
       </ScrollStagger>

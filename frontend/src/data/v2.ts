@@ -122,19 +122,20 @@ export interface Industry {
   id: string;
   name: string;
   icon: string; // lucide icon name
+  img: string; // public/ image path
   desc: string;
   caps: string[];
 }
 
 export const industries: Industry[] = [
-  { id: 'oilgas', name: 'Oil & Gas', icon: 'Fuel', desc: 'Upstream, midstream and downstream asset intelligence from legacy P&IDs to live SCADA.', caps: ['enSTUDIO', 'enVIEW', 'enGRAM'] },
-  { id: 'chemical', name: 'Chemical Processing', icon: 'FlaskConical', desc: 'Reaction units, control loops and HAZOP support grounded in your own documents.', caps: ['enGRAM', 'enABLE', 'enGENIE'] },
-  { id: 'petro', name: 'Petrochemical', icon: 'Atom', desc: 'Large tag counts and complex topology structured and made searchable fast.', caps: ['enSTUDIO', 'enGRAM', 'enVIEW'] },
-  { id: 'pharma', name: 'Pharmaceutical', icon: 'Pill', desc: 'Procedure-grade traceability with every answer cited to a controlled document.', caps: ['enGRAM', 'enGENIE'] },
-  { id: 'power', name: 'Power Generation', icon: 'Zap', desc: 'Real-time process visibility and alarm management built for plant operations.', caps: ['enVIEW', 'enABLE'] },
-  { id: 'water', name: 'Water Treatment', icon: 'Droplets', desc: 'Local-first SCADA and instrument engineering for distributed assets.', caps: ['enVIEW', 'enGENIE'] },
-  { id: 'mfg', name: 'Manufacturing', icon: 'Factory', desc: 'Connect existing DCS, MES and ERP without ripping out what already works.', caps: ['enTIE', 'enVIEW'] },
-  { id: 'mining', name: 'Mining & Metals', icon: 'Mountain', desc: 'Air-gapped deployment for remote sites with no reliable cloud connectivity.', caps: ['enSTUDIO', 'enGRAM', 'enVIEW'] },
+  { id: 'oilgas', name: 'Oil & Gas', icon: 'Fuel', img: '/Oli & Gas.png', desc: 'Upstream, midstream and downstream asset intelligence from legacy P&IDs to live SCADA.', caps: ['enSTUDIO', 'enVIEW', 'enGRAM'] },
+  { id: 'chemical', name: 'Chemical Processing', icon: 'FlaskConical', img: '/Chemical Processing.png', desc: 'Reaction units, control loops and HAZOP support grounded in your own documents.', caps: ['enGRAM', 'enABLE', 'enGENIE'] },
+  { id: 'petro', name: 'Petrochemical', icon: 'Atom', img: '/Petrochemical.png', desc: 'Large tag counts and complex topology structured and made searchable fast.', caps: ['enSTUDIO', 'enGRAM', 'enVIEW'] },
+  { id: 'pharma', name: 'Pharmaceutical', icon: 'Pill', img: '/Pharmaceutical.png', desc: 'Procedure-grade traceability with every answer cited to a controlled document.', caps: ['enGRAM', 'enGENIE'] },
+  { id: 'power', name: 'Power Generation', icon: 'Zap', img: '/Power Generation.png', desc: 'Real-time process visibility and alarm management built for plant operations.', caps: ['enVIEW', 'enABLE'] },
+  { id: 'water', name: 'Water Treatment', icon: 'Droplets', img: '/Water Treatment.png', desc: 'Local-first SCADA and instrument engineering for distributed assets.', caps: ['enVIEW', 'enGENIE'] },
+  { id: 'mfg', name: 'Manufacturing', icon: 'Factory', img: '/Manufacturing.png', desc: 'Connect existing DCS, MES and ERP without ripping out what already works.', caps: ['enTIE', 'enVIEW'] },
+  { id: 'mining', name: 'Mining & Metals', icon: 'Mountain', img: '/Mining & Metals.png', desc: 'Air-gapped deployment for remote sites with no reliable cloud connectivity.', caps: ['enSTUDIO', 'enGRAM', 'enVIEW'] },
 ];
 
 /* §5 — "One Platform. Multiple Sources." architecture */
@@ -203,13 +204,13 @@ export const techStack: { name: string; icon: string }[] = [
 ];
 
 /* §11 — "Security by Design" */
-export const securityPrinciples: { title: string; desc: string; icon: string }[] = [
-  { title: 'Air-gapped deployment', desc: 'Runs with no internet connection at all. Built for sites where the network never leaves the fence line.', icon: 'WifiOff' },
-  { title: 'Local LLMs only', desc: 'Every model runs inside your network via Ollama. No prompts, documents or tags ever sent to a third party.', icon: 'Cpu' },
-  { title: 'No external API dependency', desc: 'No cloud service to call, expire, rate-limit or breach. Your plant keeps working regardless of the outside world.', icon: 'Server' },
-  { title: 'No cloud requirement', desc: 'There is no enX cloud. Nothing to opt out of, because nothing leaves the building by default.', icon: 'Lock' },
-  { title: 'Full customer ownership', desc: 'Your data stays yours, in open formats you can read without our software. No lock-in on either side.', icon: 'ShieldCheck' },
-  { title: 'On-premises operation', desc: 'Deploys to a single VM or Mac inside your perimeter. No vendor inside your security boundary.', icon: 'HardDrive' },
+export const securityPrinciples: { title: string; desc: string; icon: string; img: string }[] = [
+  { title: 'Air-gapped deployment', desc: 'Runs with no internet connection at all. Built for sites where the network never leaves the fence line.', icon: 'WifiOff', img: '/Air-gapped deployment.png' },
+  { title: 'Local LLMs only', desc: 'Every model runs inside your network via Ollama. No prompts, documents or tags ever sent to a third party.', icon: 'Cpu', img: '/Local LLMs only.png' },
+  { title: 'No external API dependency', desc: 'No cloud service to call, expire, rate-limit or breach. Your plant keeps working regardless of the outside world.', icon: 'Server', img: '/No external API dependency.png' },
+  { title: 'No cloud requirement', desc: 'There is no enX cloud. Nothing to opt out of, because nothing leaves the building by default.', icon: 'Lock', img: '/No cloud requirement.png' },
+  { title: 'Full customer ownership', desc: 'Your data stays yours, in open formats you can read without our software. No lock-in on either side.', icon: 'ShieldCheck', img: '/Full customer ownership.png' },
+  { title: 'On-premises operation', desc: 'Deploys to a single VM or Mac inside your perimeter. No vendor inside your security boundary.', icon: 'HardDrive', img: '/On-premises operation.png' },
 ];
 
 /* §10 — Case studies / use-case scenarios */
@@ -253,15 +254,16 @@ export interface Resource {
   title: string;
   desc: string;
   icon: string;
+  img: string;
 }
 
 export const resources: Resource[] = [
-  { type: 'Whitepaper', title: 'Local-First Industrial Intelligence', desc: 'Why plant AI belongs inside your network — and the architecture that makes it possible.', icon: 'FileText' },
-  { type: 'Technical Note', title: 'P&ID Extraction Methodology', desc: 'How enSTUDIO reaches 99.3% page accuracy across legacy and vector drawings.', icon: 'FileCode' },
-  { type: 'Product Brief', title: 'enVIEW SCADA Overview', desc: 'Three synchronized views, ISA-18.2 alarms and a 5-year historian with no database server.', icon: 'MonitorPlay' },
-  { type: 'Architecture Guide', title: 'One Platform, Multiple Sources', desc: 'How enSTUDIO, enGRAM, enGENIE, enVIEW, enABLE and enTIE connect end to end.', icon: 'Workflow' },
-  { type: 'Deployment Guide', title: 'Air-Gapped Installation', desc: 'Standing up enX on a single on-premises VM with local LLMs and zero cloud calls.', icon: 'Server' },
-  { type: 'Product Brief', title: 'enGENIE Engineering Vault', desc: 'Cited instrument selection grounded in Lipták, ISA, ISO and ASME.', icon: 'BookOpen' },
+  { type: 'Whitepaper', title: 'Local-First Industrial Intelligence', desc: 'Why plant AI belongs inside your network — and the architecture that makes it possible.', icon: 'FileText', img: '/local first industrial.png' },
+  { type: 'Technical Note', title: 'P&ID Extraction Methodology', desc: 'How enSTUDIO reaches 99.3% page accuracy across legacy and vector drawings.', icon: 'FileCode', img: '/P&ID extraction.png' },
+  { type: 'Product Brief', title: 'enVIEW SCADA Overview', desc: 'Three synchronized views, ISA-18.2 alarms and a 5-year historian with no database server.', icon: 'MonitorPlay', img: '/enview scada overview.png' },
+  { type: 'Architecture Guide', title: 'One Platform, Multiple Sources', desc: 'How enSTUDIO, enGRAM, enGENIE, enVIEW, enABLE and enTIE connect end to end.', icon: 'Workflow', img: '/One Platform,multiple sources.png' },
+  { type: 'Deployment Guide', title: 'Air-Gapped Installation', desc: 'Standing up enX on a single on-premises VM with local LLMs and zero cloud calls.', icon: 'Server', img: '/air.png' },
+  { type: 'Product Brief', title: 'enGENIE Engineering Vault', desc: 'Cited instrument selection grounded in Lipták, ISA, ISO and ASME.', icon: 'BookOpen', img: '/engenie walt.png' },
 ];
 
 /* §12 — generic product-page enhancements (Inputs → Processing → Outputs,
