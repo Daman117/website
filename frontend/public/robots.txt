@@ -1,4 +1,4 @@
-# robots.txt for enX Website
+# robots.txt for enxnod Website
 
 User-agent: *
 Allow: /

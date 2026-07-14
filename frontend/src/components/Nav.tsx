@@ -71,7 +71,7 @@ const Nav: React.FC<NavProps> = ({ onOpenMobile, mobileOpen, onOpenContact }) =>
           <Logo />
         </div>
         <div className="nav-word">
-          <span>en</span><span>X</span>
+          <span>en</span><span>xnod</span>
         </div>
       </button>
 

@@ -28,6 +28,6 @@ export const principles: Principle[] = [
   {
     n: '04',
     h: 'Built by engineers.',
-    p: 'enX was designed by a practicing I&C engineer, grounded in the real-world constraints of plant work — not in technology demos or market research.',
+    p: 'enxnod was designed by a practicing I&C engineer, grounded in the real-world constraints of plant work — not in technology demos or market research.',
   },
 ];
