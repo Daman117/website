@@ -233,6 +233,7 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
         steps={steps}
         accent={ACCENT}
         accentRgb="16,185,129"
+        video="/enable-demo.mp4"
       />
 
       {/* ── VALIDATION + HONESTY + SECURITY ── */}
