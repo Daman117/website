@@ -526,29 +526,14 @@ img {
   gap: 11px;
 }
 .nav-mark {
-  width: 34px;
-  height: 34px;
-  border-radius: 9px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  background: linear-gradient(
-    150deg,
-    var(--navy) 0%,
-    #13315c 60%,
-    var(--primary) 130%
-  );
-  box-shadow:
-    0 2px 6px rgba(11, 37, 69, 0.25),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .nav-mark:hover {
   transform: translateY(-1px);
-  box-shadow:
-    0 6px 16px rgba(31, 95, 224, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 .nav-mark svg {
   width: 20px;
@@ -948,13 +933,13 @@ img {
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
-  padding: clamp(64px, 8vw, 120px) var(--gutter);
+  padding: clamp(40px, 5vw, 76px) var(--gutter);
 }
 .section-sm {
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
-  padding: clamp(40px, 5vw, 64px) var(--gutter);
+  padding: clamp(28px, 3.5vw, 44px) var(--gutter);
 }
 hr.rule {
   border: none;
@@ -1547,7 +1532,7 @@ hr.rule {
 
 /* ── CAPABILITIES ────────────────────────────────────────────────── */
 #capabilities {
-  padding: clamp(32px, 4vw, 48px) 0;
+  padding: clamp(16px, 2vw, 28px) 0;
   position: relative;
   isolation: isolate;
 }
@@ -1606,7 +1591,7 @@ hr.rule {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  padding: 0 var(--gutter) 56px;
+  padding: 0 var(--gutter) 8px;
   align-items: stretch;
 }
 @media (max-width: 968px) {

@@ -909,7 +909,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onOpenContact }) => (
       <HowItWorks />
       <CapGrid />
       <Industries />
-      <Platform />
       <BusinessImpact />
       <Security />
       <CaseStudies />
