@@ -1,4 +1,4 @@
-# robots.txt for enxnod Website
+# robots.txt for enxplant Website
 
 User-agent: *
 Allow: /

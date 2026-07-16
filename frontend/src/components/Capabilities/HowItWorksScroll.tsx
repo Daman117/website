@@ -3,6 +3,7 @@ import { motion, useInView } from 'framer-motion';
 import { Play } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { LineReveal } from '../ScrollAnimation';
+import DemoVideoPlayer from './DemoVideoPlayer';
 
 const CARD_DUR   = 0.55;
 const STEP_DELAY = 0.9; // seconds between each card — same pacing as enVIEW's version
@@ -121,14 +122,14 @@ const PromoVideo: React.FC<{ src: string; poster?: string; inView: boolean; dela
 
   return (
     <motion.div
-      className="engram-card"
+      className={`engram-card${playing ? ' engram-card-video-playing' : ''}`}
       initial={{ opacity: 0, y: 18 }}
       animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
       transition={{ duration: 0.55, delay, ease: [0.16, 1, 0.3, 1] }}
       style={{ marginTop: 48, padding: 0, overflow: 'hidden', position: 'relative' }}
     >
       {playing ? (
-        <video src={src} poster={poster} controls autoPlay style={{ width: '100%', height: 480, objectFit: 'cover', display: 'block', borderRadius: 16 }} />
+        <DemoVideoPlayer src={src} poster={poster} accent={accent} accentRgb={accentRgb} />
       ) : (
         <button
           onClick={() => setPlaying(true)}

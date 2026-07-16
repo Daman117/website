@@ -498,7 +498,7 @@ img {
 /* ── NAV ─────────────────────────────────────────────────────────── */
 #nav {
   position: fixed;
-  top: 20px;
+  top: 12px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 999;
@@ -3039,6 +3039,12 @@ button.foot-link {
   transform: translateY(-4px);
   box-shadow: var(--card-shadow-hover);
   border-color: rgba(37, 99, 235, 0.3);
+}
+/* Playing video must not lift on hover — the shift moves the video out from
+   under the cursor mid-transition, which makes the browser think the mouse
+   left the video and auto-hides its controls right as you reach for them. */
+.engram-card-video-playing:hover {
+  transform: none;
 }
 .engram-card-title {
   font-family: "Space Grotesk", sans-serif;

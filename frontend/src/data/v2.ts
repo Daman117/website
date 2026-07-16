@@ -12,7 +12,7 @@ export const heroChips: string[] = [
   'On-Premises',
 ];
 
-/* §2 — "See enxnod in Action" product demonstrations */
+/* §2 — "See enxplant in Action" product demonstrations */
 export interface DemoCard {
   id: string;
   product: string;
@@ -177,7 +177,7 @@ export const founder = {
   name: 'Dr. Jagan Mohan Reddy Yeturu',
   role: 'Founder, enSAR Solutions Inc.',
   background: 'Practicing Instrumentation & Control engineer',
-  bio: 'enxnod was designed by a practicing I&C engineer — grounded in how plant engineers actually think, how engineering documents are actually structured, and what an engineer needs when something goes wrong at 2AM. Not technology demos. Not market research. Real plant work.',
+  bio: 'enxplant was designed by a practicing I&C engineer — grounded in how plant engineers actually think, how engineering documents are actually structured, and what an engineer needs when something goes wrong at 2AM. Not technology demos. Not market research. Real plant work.',
   facts: [
     { k: 'Discipline', v: 'Instrumentation & Control' },
     { k: 'Focus', v: 'Industrial intelligence' },
@@ -208,7 +208,7 @@ export const securityPrinciples: { title: string; desc: string; icon: string; im
   { title: 'Air-gapped deployment', desc: 'Runs with no internet connection at all. Built for sites where the network never leaves the fence line.', icon: 'WifiOff', img: '/Air-gapped deployment.png' },
   { title: 'Local LLMs only', desc: 'Every model runs inside your network via Ollama. No prompts, documents or tags ever sent to a third party.', icon: 'Cpu', img: '/Local LLMs only.png' },
   { title: 'No external API dependency', desc: 'No cloud service to call, expire, rate-limit or breach. Your plant keeps working regardless of the outside world.', icon: 'Server', img: '/No external API dependency.png' },
-  { title: 'No cloud requirement', desc: 'There is no enxnod cloud. Nothing to opt out of, because nothing leaves the building by default.', icon: 'Lock', img: '/No cloud requirement.png' },
+  { title: 'No cloud requirement', desc: 'There is no enxplant cloud. Nothing to opt out of, because nothing leaves the building by default.', icon: 'Lock', img: '/No cloud requirement.png' },
   { title: 'Full customer ownership', desc: 'Your data stays yours, in open formats you can read without our software. No lock-in on either side.', icon: 'ShieldCheck', img: '/Full customer ownership.png' },
   { title: 'On-premises operation', desc: 'Deploys to a single VM or Mac inside your perimeter. No vendor inside your security boundary.', icon: 'HardDrive', img: '/On-premises operation.png' },
 ];
@@ -262,7 +262,7 @@ export const resources: Resource[] = [
   { type: 'Technical Note', title: 'P&ID Extraction Methodology', desc: 'How enSTUDIO reaches 99.3% page accuracy across legacy and vector drawings.', icon: 'FileCode', img: '/P&ID extraction.png' },
   { type: 'Product Brief', title: 'enVIEW SCADA Overview', desc: 'Three synchronized views, ISA-18.2 alarms and a 5-year historian with no database server.', icon: 'MonitorPlay', img: '/enview scada overview.png' },
   { type: 'Architecture Guide', title: 'One Platform, Multiple Sources', desc: 'How enSTUDIO, enGRAM, enGENIE, enVIEW, enABLE and enTIE connect end to end.', icon: 'Workflow', img: '/One Platform,multiple sources.png' },
-  { type: 'Deployment Guide', title: 'Air-Gapped Installation', desc: 'Standing up enxnod on a single on-premises VM with local LLMs and zero cloud calls.', icon: 'Server', img: '/air.png' },
+  { type: 'Deployment Guide', title: 'Air-Gapped Installation', desc: 'Standing up enxplant on a single on-premises VM with local LLMs and zero cloud calls.', icon: 'Server', img: '/air.png' },
   { type: 'Product Brief', title: 'enGENIE Engineering Vault', desc: 'Cited instrument selection grounded in Lipták, ISA, ISO and ASME.', icon: 'BookOpen', img: '/engenie walt.png' },
 ];
 
@@ -299,14 +299,14 @@ export const productExtras: Record<string, ProductExtra> = {
     flow: {
       inputs: ['DCS', 'Historian', 'MES', 'ERP'],
       processing: ['Open protocol adapters', 'MCP server exposure', 'Bi-directional mapping'],
-      outputs: ['enxnod ↔ existing systems', 'Plant data to Claude Desktop & AI tools', 'No proprietary lock-in'],
+      outputs: ['enxplant ↔ existing systems', 'Plant data to Claude Desktop & AI tools', 'No proprietary lock-in'],
     },
     useCases: [
-      { role: 'Engineering', text: 'Reuse enxnod intelligence inside the systems you already run.' },
-      { role: 'Operations', text: 'Surface enxnod answers without leaving the control room HMI.' },
-      { role: 'Maintenance', text: 'Connect work-order and asset data from MES/ERP into enxnod context.' },
+      { role: 'Engineering', text: 'Reuse enxplant intelligence inside the systems you already run.' },
+      { role: 'Operations', text: 'Surface enxplant answers without leaving the control room HMI.' },
+      { role: 'Maintenance', text: 'Connect work-order and asset data from MES/ERP into enxplant context.' },
       { role: 'Management', text: 'Adopt incrementally across a mixed installed base — no rip-and-replace.' },
     ],
-    outcomes: ['Intelligence built in enxnod does not stay trapped in enxnod', 'AI tools query live plant data via MCP', 'No lock-in on either side'],
+    outcomes: ['Intelligence built in enxplant does not stay trapped in enxplant', 'AI tools query live plant data via MCP', 'No lock-in on either side'],
   },
 };

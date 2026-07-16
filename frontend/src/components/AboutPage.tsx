@@ -21,7 +21,7 @@ const AboutPage: React.FC = () => {
       {/* ── HERO ── */}
       <section className="engram-hero engram-container">
         <div className="engram-hero-badge">
-          <span style={{ color: 'var(--primary)', fontSize: 10, fontWeight: 700, letterSpacing: 1 }}>ABOUT ENSAR SOLUTIONS · ENXNOD DIVISION</span>
+          <span style={{ color: 'var(--primary)', fontSize: 10, fontWeight: 700, letterSpacing: 1 }}>ABOUT ENSAR SOLUTIONS · ENXPLANT DIVISION</span>
         </div>
         <h1 className="engram-hero-h1">
           <span className="hero-line-mask">
@@ -32,7 +32,7 @@ const AboutPage: React.FC = () => {
           </span>
         </h1>
         <p className="engram-hero-sub hero-fade-up" style={{ animationDelay: '900ms' }}>
-          enxnod is a division of enSAR Solutions Inc. The industrial intelligence work grew from a real frustration: a practicing I&C engineer who couldn't find the answer he needed fast enough when it mattered.
+          enxplant is a division of enSAR Solutions Inc. The industrial intelligence work grew from a real frustration: a practicing I&C engineer who couldn't find the answer he needed fast enough when it mattered.
         </p>
         <p className="engram-hero-body hero-fade-up" style={{ animationDelay: '1100ms' }}>
           The existing tools required data migration, cloud connectivity, vendor relationships, and IT projects. They produced dashboards nobody used and answers engineers didn't trust. So the software was built from scratch — grounded in how plant engineers actually think, how engineering documents are actually structured, and what an engineer needs when something goes wrong at 2AM.
@@ -42,7 +42,7 @@ const AboutPage: React.FC = () => {
       {/* ── FOUNDER ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">Founder</span>
-        <LineReveal as="h2" className="engram-section-h2" text="The Engineer Behind enxnod" />
+        <LineReveal as="h2" className="engram-section-h2" text="The Engineer Behind enxplant" />
 
         <div className="engram-two-col" style={{ alignItems: 'start' }}>
           {/* Left — founder card */}

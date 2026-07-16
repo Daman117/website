@@ -292,7 +292,7 @@ const Hero: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenConta
         ))}
       </div>
       <div className="hero-fade-up" style={{ display: 'flex', gap: 12, flexWrap: 'wrap', animationDelay: '1500ms' }}>
-        <button className="btn-primary" onClick={() => onOpenContact('Explore enxnod')}>Explore enxnod →</button>
+        <button className="btn-primary" onClick={() => onOpenContact('Explore enxplant')}>Explore enxplant →</button>
         <button className="btn-outline" onClick={() => onOpenContact('Request a Pilot')}>Request a Pilot</button>
       </div>
   </HeroShell>
@@ -322,7 +322,7 @@ const ProductDemo: React.FC = () => {
           <ScrollAnimation>
             <span className="eyebrow">Product output, not slideware</span>
           </ScrollAnimation>
-          <RevealLines as="h2" className="display demo-sticky-h2" lines={['See enxnod', 'in Action']} />
+          <RevealLines as="h2" className="display demo-sticky-h2" lines={['See enxplant', 'in Action']} />
 
           <ScrollStagger className="demo-step-list" step={70}>
             {demos.map((d, i) => (
@@ -506,7 +506,7 @@ const Industries: React.FC = () => (
       <LineReveal
         as="p"
         className="section-lead"
-        text="enxnod works wherever the plant floor lives in drawings, documents and live process data. Find your industry."
+        text="enxplant works wherever the plant floor lives in drawings, documents and live process data. Find your industry."
       />
 
       <ScrollStagger className="ind-grid" step={70}>
@@ -690,7 +690,7 @@ const BusinessImpact: React.FC = () => (
       <LineReveal
         as="p"
         className="section-lead"
-        text="Industrial buyers purchase outcomes. enxnod shortens the path from a question to a defensible answer — and keeps engineering knowledge in the business."
+        text="Industrial buyers purchase outcomes. enxplant shortens the path from a question to a defensible answer — and keeps engineering knowledge in the business."
       />
 
       <ScrollStagger className="impact-grid" step={80}>
@@ -722,7 +722,7 @@ const Security: React.FC = () => (
       <LineReveal
         as="p"
         className="section-lead"
-        text="enxnod is built to run where the network never leaves the fence line. No cloud, no external calls, no vendor inside your perimeter."
+        text="enxplant is built to run where the network never leaves the fence line. No cloud, no external calls, no vendor inside your perimeter."
       />
 
       <ScrollStagger className="sec-grid" step={90}>

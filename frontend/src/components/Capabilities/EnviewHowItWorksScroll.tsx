@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Plug, FolderInput, Layers, Zap, Play } from 'lucide-react';
 import { LineReveal } from '../ScrollAnimation';
+import DemoVideoPlayer from './DemoVideoPlayer';
 
 const ACCENT     = '#2563EB';
 const ACCENT_RGB = '37,99,235';
@@ -106,20 +107,14 @@ const PromoVideo: React.FC<{ inView: boolean; delay: number }> = ({ inView, dela
 
   return (
     <motion.div
-      className="engram-card"
+      className={`engram-card${playing ? ' engram-card-video-playing' : ''}`}
       initial={{ opacity: 0, y: 18 }}
       animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
       transition={{ duration: 0.55, delay, ease: [0.16, 1, 0.3, 1] }}
       style={{ marginTop: 48, padding: 0, overflow: 'hidden', position: 'relative' }}
     >
       {playing ? (
-        <video
-          src="/enview-promo.mp4"
-          poster="/enview-promo-poster.webp"
-          controls
-          autoPlay
-          style={{ width: '100%', height: 480, objectFit: 'cover', display: 'block', borderRadius: 16 }}
-        />
+        <DemoVideoPlayer src="/enview-promo.mp4" poster="/enview-promo-poster.webp" accent={ACCENT} accentRgb={ACCENT_RGB} />
       ) : (
         <button
           onClick={() => setPlaying(true)}

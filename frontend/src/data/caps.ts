@@ -287,9 +287,9 @@ export const CAPS: Cap[] = [
   right:'specs',
 },{
   id:'entie',name:'enTIE',cat:'Connected Intelligence',
-  tag:'The layer that makes enxnod and your existing systems one.',color:'#60A5FA',
+  tag:'The layer that makes enxplant and your existing systems one.',color:'#60A5FA',
   status:'Roadmap',statusBg:'#1C1030',statusBorder:'#2C1C48',statusText:'#A78BFA',
-  body:`enTIE connects enxnod capabilities to the plant systems you already run — DCS, historian, MES, ERP. It also exposes plant data via MCP server for Claude Desktop and other AI tools. The intelligence you build in enxnod doesn't stay in enxnod.`,
+  body:`enTIE connects enxplant capabilities to the plant systems you already run — DCS, historian, MES, ERP. It also exposes plant data via MCP server for Claude Desktop and other AI tools. The intelligence you build in enxplant doesn't stay in enxplant.`,
   specs:[
     {l:'Protocol',v:'Open'},{l:'MCP',v:'Yes'},
     {l:'Lock-in',v:'None'},{l:'Status',v:'Roadmap'},
