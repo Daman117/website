@@ -65,7 +65,6 @@ const Nav: React.FC<NavProps> = ({ onOpenMobile, mobileOpen, onOpenContact }) =>
         className="nav-logo"
         onClick={handleLogoClick}
         aria-label="Go to home"
-        style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
       >
         <div className="nav-mark">
           <Logo />
@@ -75,7 +74,7 @@ const Nav: React.FC<NavProps> = ({ onOpenMobile, mobileOpen, onOpenContact }) =>
         </div>
       </button>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginLeft: 'auto', marginRight: '7%' }}>
+      <div className="nav-actions u-flex u-items-center u-gap-10">
         <ul role="list" className="nav-links">
           {/* Products with controlled dropdown — opens on hover or keyboard
               focus, closes on click, blur-out, or Escape */}

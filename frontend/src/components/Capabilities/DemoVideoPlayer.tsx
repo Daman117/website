@@ -66,7 +66,7 @@ const DemoVideoPlayer: React.FC<DemoVideoPlayerProps> = ({ src, poster, accent, 
   const pct = duration ? (current / duration) * 100 : 0;
 
   return (
-    <div ref={wrapRef} style={{ position: 'relative', width: '100%', height: 480, borderRadius: 16, overflow: 'hidden', background: '#000' }}>
+    <div ref={wrapRef} className="video-wrapper">
       <video
         ref={videoRef}
         src={src}
@@ -78,47 +78,40 @@ const DemoVideoPlayer: React.FC<DemoVideoPlayerProps> = ({ src, poster, accent, 
         onPause={() => setPlaying(false)}
         onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
         onTimeUpdate={(e) => { if (!dragging) setCurrent(e.currentTarget.currentTime); }}
-        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', cursor: 'pointer' }}
+        className="video-player u-w-full u-h-full u-block"
       />
 
       {/* Always-visible control bar */}
-      <div
-        style={{
-          position: 'absolute', left: 0, right: 0, bottom: 0,
-          background: 'linear-gradient(180deg, transparent 0%, rgba(4,6,18,0.82) 60%, rgba(4,6,18,0.92) 100%)',
-          padding: '20px 16px 12px',
-          display: 'flex', flexDirection: 'column', gap: 8,
-        }}
-      >
+      <div className="video-overlay u-flex-column u-gap-8">
         {/* Progress bar — large hit area, click or drag anywhere to seek */}
         <div
           ref={barRef}
           onMouseDown={(e) => { setDragging(true); seekToClientX(e.clientX); }}
-          style={{ position: 'relative', width: '100%', height: 14, display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+          className="video-progress u-w-full u-flex u-items-center"
         >
-          <div style={{ position: 'absolute', left: 0, right: 0, height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.25)' }} />
-          <div style={{ position: 'absolute', left: 0, width: `${pct}%`, height: 4, borderRadius: 2, background: accent }} />
+          <div className="video-progress-track" />
+          <div className="video-progress-fill" style={{ width: `${pct}%`, background: accent }} />
           <div
+            className="video-progress-thumb"
             style={{
-              position: 'absolute', left: `${pct}%`, transform: 'translateX(-50%)',
-              width: 13, height: 13, borderRadius: '50%', background: accent,
+              left: `${pct}%`, background: accent,
               boxShadow: `0 0 0 3px rgba(${accentRgb},0.25)`,
             }}
           />
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-          <button onClick={togglePlay} aria-label={playing ? 'Pause' : 'Play'} style={{ all: 'unset', cursor: 'pointer', display: 'flex' }}>
+        <div className="video-controls u-flex u-items-center">
+          <button onClick={togglePlay} aria-label={playing ? 'Pause' : 'Play'} className="video-button u-flex">
             {playing ? <Pause size={18} color="#fff" fill="#fff" /> : <Play size={18} color="#fff" fill="#fff" />}
           </button>
-          <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.85)', fontVariantNumeric: 'tabular-nums' }}>
+          <span className="video-time u-text-sm">
             {fmt(current)} / {fmt(duration)}
           </span>
-          <div style={{ flex: 1 }} />
+          <div className="video-spacer" />
           <button
             onClick={() => { const v = videoRef.current; if (v) { v.muted = !v.muted; setMuted(v.muted); } }}
             aria-label={muted ? 'Unmute' : 'Mute'}
-            style={{ all: 'unset', cursor: 'pointer', display: 'flex' }}
+            className="video-button u-flex"
           >
             {muted ? <VolumeX size={17} color="#fff" /> : <Volume2 size={17} color="#fff" />}
           </button>
@@ -128,7 +121,7 @@ const DemoVideoPlayer: React.FC<DemoVideoPlayerProps> = ({ src, poster, accent, 
               else document.exitFullscreen();
             }}
             aria-label={fullscreen ? 'Exit fullscreen' : 'Fullscreen'}
-            style={{ all: 'unset', cursor: 'pointer', display: 'flex' }}
+            className="video-button u-flex"
           >
             {fullscreen ? <Minimize size={17} color="#fff" /> : <Maximize size={17} color="#fff" />}
           </button>

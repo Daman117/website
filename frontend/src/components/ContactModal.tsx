@@ -47,17 +47,16 @@ const CustomSelect: React.FC<{
   }, [open]);
 
   return (
-    <div ref={ref} style={{ position: 'relative' }}>
+    <div ref={ref} className="cm-select-wrap">
       <button
         type="button"
-        className="cm-input cm-select-trigger"
+        className="cm-input cm-select-trigger cm-select-trigger-flex"
         onClick={() => setOpen((o) => !o)}
-        style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px' }}
         aria-haspopup="listbox"
         aria-expanded={open}
       >
-        <span style={{ color: selected ? 'var(--t1)' : 'var(--t4)' }}>{selected ? selected.label : placeholder}</span>
-        <ChevronDown size={16} style={{ color: 'var(--t4)', marginRight: '2px', flexShrink: 0, transition: 'transform .2s', transform: open ? 'rotate(180deg)' : 'none' }} />
+        <span className={selected ? 'cm-select-value active' : 'cm-select-value'}>{selected ? selected.label : placeholder}</span>
+        <ChevronDown size={16} className={open ? 'cm-select-icon open' : 'cm-select-icon'} />
       </button>
       {open && (
         <div className="cm-select-menu" role="listbox">
@@ -161,70 +160,38 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, source, onClose }) =>
     /* Overlay — handles backdrop + click-outside. No flex here so overflow-y scroll works */
     <div
       id="contact-modal"
-      style={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 9999,
-        overflowY: 'auto',
-        background: 'rgba(3,7,18,0.72)',
-        backdropFilter: 'blur(14px)',
-        WebkitBackdropFilter: 'blur(14px)',
-      }}
+      className="contact-modal-overlay"
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
       {/* Full-width centering wrapper — block element so it naturally fills width */}
       <div
-        style={{
-          minHeight: '100%',
-          display: 'flex',
-          alignItems: 'flex-start',
-          justifyContent: 'center',
-          padding: '40px 20px',
-        }}
+        className="contact-modal-wrapper"
         onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
       >
-        <div style={{
-          margin: 'auto',
-          background: 'linear-gradient(165deg,#FCFDFF 0%,#E9EFF7 100%)',
-          border: '1px solid rgba(15,23,42,0.07)',
-          borderRadius: '24px',
-          maxWidth: '520px',
-          width: '100%',
-          position: 'relative',
-          overflow: 'hidden',
-          boxShadow: '0 40px 100px rgba(11,37,69,0.30), 0 12px 36px rgba(11,37,69,0.14)',
-        }}>
+        <div className="contact-modal-dialog">
           <button
             onClick={onClose}
-            style={{
-              position: 'absolute', top: '18px', right: '18px',
-              background: 'rgba(15,23,42,0.04)', border: '1px solid var(--border)',
-              borderRadius: '50%', color: 'var(--t3)', cursor: 'pointer',
-              width: '34px', height: '34px', display: 'flex', alignItems: 'center',
-              justifyContent: 'center', lineHeight: '1', transition: 'all .2s',
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(15,23,42,0.09)'; e.currentTarget.style.color = 'var(--t1)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(15,23,42,0.04)'; e.currentTarget.style.color = 'var(--t3)'; }}
+            className="contact-modal-close"
             aria-label="Close"
           >
             <X size={17} strokeWidth={2} />
           </button>
 
-          <div style={{ padding: '40px' }}>
+          <div className="contact-modal-body">
             {submitted ? (
-              <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '18px', color: 'var(--primary)' }}>
+              <div className="contact-modal-success">
+                <div className="contact-modal-success-icon">
                   <CircleCheck size={52} strokeWidth={1.6} />
                 </div>
-                <h4 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: '22px', color: 'var(--t1)', marginBottom: '8px', fontWeight: 700 }}>Message Sent!</h4>
-                <p style={{ fontSize: '14px', color: 'var(--t3)' }}>We'll be in touch within 24 hours.</p>
+                <h4 className="contact-modal-success-title">Message Sent!</h4>
+                <p className="contact-modal-success-text">We'll be in touch within 24 hours.</p>
               </div>
             ) : (
               <>
-                <h3 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: '30px', fontWeight: 700, color: 'var(--t1)', marginBottom: '10px', letterSpacing: '-1px' }}>
+                <h3 className="contact-modal-title">
                   Get in Touch
                 </h3>
-                <p style={{ fontSize: '14px', color: 'var(--t3)', marginBottom: '32px', lineHeight: '1.6' }}>
+                <p className="contact-modal-desc">
                   Request a demo, pilot program, or speak with our team about your plant intelligence needs.
                 </p>
 
@@ -256,43 +223,41 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, source, onClose }) =>
                       onChange={(v) => { setInterest(v); setInterestError(false); }}
                     />
                     {interestError && (
-                      <p style={{ fontSize: '12px', color: 'var(--red)', marginTop: '6px' }}>Please select an option.</p>
+                      <p className="contact-modal-error-msg">Please select an option.</p>
                     )}
                   </div>
 
-                  <div className="cm-field" style={{ marginBottom: '24px' }}>
+                  <div className="cm-field contact-field-last">
                     <label className="cm-label">Message *</label>
                     <textarea
                       name="message"
                       required
                       rows={4}
-                      className="cm-input"
-                      style={{ resize: 'vertical' }}
+                      className="cm-input contact-textarea"
                       placeholder="Tell us about your plant and what you're looking for..."
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="btn-primary"
+                    className="btn-primary contact-submit"
                     disabled={loading}
-                    style={{ width: '100%', padding: '14px 24px', fontSize: '14px' }}
                   >
                     {loading ? 'Sending…' : 'Send Message'}
                   </button>
 
-                  <p style={{ fontSize: '11px', color: 'var(--t5)', marginTop: '14px', textAlign: 'center' }}>
+                  <p className="contact-footer-note">
                     We typically respond within 24 hours
                   </p>
 
                   {error && (
-                    <div id="form-error" style={{ display: 'block', fontSize: '12px', color: 'var(--red)', marginTop: '8px', textAlign: 'center' }}>
+                    <div id="form-error" className="contact-error-box">
                       Unable to send — please email us at{' '}
-                      <a href="mailto:contact@ensarsolutions.com" style={{ color: 'var(--primary)' }}>contact@ensarsolutions.com</a>
+                      <a href="mailto:contact@ensarsolutions.com" className="contact-email-link">contact@ensarsolutions.com</a>
                     </div>
                   )}
 
-                  <p style={{ fontSize: '11px', color: 'var(--t5)', marginTop: '12px', textAlign: 'center' }}>
+                  <p className="contact-privacy-note">
                     Your details are only used to respond to your inquiry. We never share your data.
                   </p>
                 </form>

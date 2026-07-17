@@ -1,3 +1,5 @@
+@import "./styles/index.css";
+
 /* ── RESET & BASE ─────────────────────────────────────────────── */
 *,
 *::before,
@@ -47,55 +49,6 @@ html {
 }
 
 /* ── ROOT — Light Theme ────────────────────────────────────────── */
-:root {
-  --gutter: clamp(20px, 5vw, 80px);
-  /* light theme defaults */
-  --bg: #edf1f7;
-  --bg2: #f4f7fc;
-  --bg3: #ffffff;
-  --border: #dce3ee;
-  --border2: #c7d2e2;
-  --t1: #0a1a30;
-  --t2: #1e293b;
-  --t3: #475569;
-  --t4: #64748b;
-  --t5: #5f6b7b;
-  --navy: #0b2545;
-  --primary: #1f5fe0;
-  --primary-hover: #1747b5;
-  --teal: #0e9bc4;
-  --emerald: #059669;
-  --green: #059669;
-  --red: #dc2626;
-  --warn: #b45309;
-  --orange: #c2630e;
-  --blue: #60a5fa;
-  --purple: #6d45c9;
-  --surface: rgba(255, 255, 255, 0.7);
-  --surface-strong: rgba(255, 255, 255, 0.86);
-  --glass-border: rgba(11, 37, 69, 0.1);
-  --glass-border-2: rgba(11, 37, 69, 0.06);
-  --elev-1: 0 1px 2px rgba(11, 37, 69, 0.04), 0 2px 8px rgba(11, 37, 69, 0.05);
-  --elev-2: 0 2px 4px rgba(11, 37, 69, 0.04), 0 8px 24px rgba(11, 37, 69, 0.07);
-  --elev-3: 0 4px 8px rgba(11, 37, 69, 0.05), 0 18px 48px rgba(11, 37, 69, 0.1);
-  --elev-hover:
-    0 6px 12px rgba(11, 37, 69, 0.06), 0 24px 60px rgba(11, 37, 69, 0.13);
-  --ring: 0 0 0 1px rgba(31, 95, 224, 0.14);
-  --glow-blue: rgba(37, 99, 235, 0.08);
-  --glow-teal: rgba(14, 155, 196, 0.06);
-  --body-bg: #eef3f9;
-  --nav-bg: rgba(255, 255, 255, 0.72);
-  --nav-word-first: var(--navy);
-  --stat-bg: rgba(255, 255, 255, 0.4);
-  --footer-bg: rgba(241, 245, 249, 0.5);
-  /* modal vars for light */
-  --modal-overlay-bg: rgba(15, 23, 42, 0.45);
-  --modal-panel-bg: rgba(255, 255, 255, 0.8);
-  --modal-panel-border: rgba(15, 23, 42, 0.08);
-  --modal-input-bg: rgba(241, 245, 249, 0.6);
-  --modal-input-border: rgba(15, 23, 42, 0.07);
-}
-
 
 /* ── BODY ───────────────────────────────────────────────────────── */
 body {
@@ -138,25 +91,6 @@ img {
 
 /* ── SHARED GLASS CARD TOKEN ─────────────────────────────────── */
 /* Light */
-:root {
-  --card-bg: rgba(255, 255, 255, 0.45);
-  --card-border: rgba(255, 255, 255, 0.78);
-  --card-shadow:
-    0 2px 6px rgba(15, 23, 42, 0.05), 0 8px 28px rgba(15, 23, 42, 0.08),
-    inset 0 2px 0 rgba(255, 255, 255, 0.92),
-    inset 0 -1px 0 rgba(15, 23, 42, 0.03);
-  --card-shadow-hover:
-    0 4px 12px rgba(15, 23, 42, 0.07), 0 20px 52px rgba(15, 23, 42, 0.12),
-    0 0 0 1.5px rgba(31, 95, 224, 0.22), inset 0 2px 0 rgba(255, 255, 255, 0.95);
-  /* v2: reduced blur for a more professional, less frosted look */
-  --card-blur: blur(14px) saturate(150%);
-  --card-shimmer: radial-gradient(
-    ellipse 90% 60% at 45% -8%,
-    rgba(255, 255, 255, 0.7) 0%,
-    rgba(255, 255, 255, 0.18) 48%,
-    transparent 75%
-  );
-}
 
 /* ── GLASSMORPHISM SYSTEM ─────────────────────────────────────── */
 .glass {
@@ -343,6 +277,12 @@ img {
 @keyframes heroFadeUp {
   to { opacity: 1; transform: translateY(0); }
 }
+.hero-delay-150 { animation-delay: 150ms; }
+.hero-delay-500 { animation-delay: 500ms; }
+.hero-delay-900 { animation-delay: 900ms; }
+.hero-delay-1100 { animation-delay: 1100ms; }
+.hero-delay-1300 { animation-delay: 1300ms; }
+.hero-delay-1500 { animation-delay: 1500ms; }
 @media (prefers-reduced-motion: reduce) {
   .hero-line-inner, .hero-fade-up { animation: none !important; opacity: 1 !important; transform: none !important; }
 }
@@ -1606,6 +1546,7 @@ hr.rule {
 }
 .cap-card {
   height: 100%;
+  min-height: 200px;
   background: var(--card-bg);
   -webkit-backdrop-filter: var(--card-blur);
   backdrop-filter: var(--card-blur);
@@ -2932,12 +2873,12 @@ button.foot-link {
   font-weight: 700;
   letter-spacing: -2px;
   line-height: 1.08;
-  color: var(--t1);
+  color: #ffffff;
   margin-bottom: 20px;
 }
 .engram-hero-sub {
   font-size: 17px;
-  color: var(--t2);
+  color: rgba(255, 255, 255, 0.96);
   line-height: 1.7;
   max-width: 640px;
   margin-bottom: 16px;
@@ -2945,7 +2886,7 @@ button.foot-link {
 }
 .engram-hero-body {
   font-size: 14px;
-  color: var(--t4);
+  color: rgba(255, 255, 255, 0.82);
   line-height: 1.8;
   max-width: 620px;
   margin-bottom: 32px;
@@ -3409,6 +3350,7 @@ button.foot-link {
   cursor: pointer; text-align: left; transition: background 0.25s, border-color 0.25s;
 }
 .demo-step-item.active { background: var(--bg2); border-color: var(--step-color, var(--border)); }
+.demo-step-item:hover:not(.active) { background: var(--bg2); border-color: var(--border2); }
 .demo-step-dot {
   width: 8px; height: 8px; border-radius: 50%; background: var(--border2);
   flex-shrink: 0; transition: background 0.25s, transform 0.25s;

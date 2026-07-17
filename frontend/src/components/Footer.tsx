@@ -83,7 +83,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenContact }) => (
 
     {/* Bottom bar */}
     <div className="foot-bottom">
-      <span className="foot-copy" style={{ margin: 0 }}>© 2026 enSAR Solutions Inc. All rights reserved.</span>
+      <span className="foot-copy">© 2026 enSAR Solutions Inc. All rights reserved.</span>
       <div className="foot-social">
         <a href="https://linkedin.com/in/jagan-ensar" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
           <LinkedInIcon />

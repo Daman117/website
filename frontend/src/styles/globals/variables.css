@@ -1,0 +1,71 @@
+:root {
+
+  /* Colors */
+  --bg: #edf1f7;
+  --bg2: #f4f7fc;
+  --bg3: #ffffff;
+  --t1: #0a1a30;
+  --t2: #1e293b;
+  --t3: #475569;
+  --t4: #64748b;
+  --t5: #5f6b7b;
+  --navy: #0b2545;
+  --primary: #1f5fe0;
+  --primary-hover: #1747b5;
+  --teal: #0e9bc4;
+  --green: #059669;
+  --red: #dc2626;
+  --warn: #b45309;
+  --orange: #c2630e;
+  --glow-blue: rgba(37, 99, 235, 0.08);
+  --glow-teal: rgba(14, 155, 196, 0.06);
+  --body-bg: #eef3f9;
+  --card-bg: rgba(255, 255, 255, 0.45);
+
+  /* Shadows */
+  --elev-1: 0 1px 2px rgba(11, 37, 69, 0.04), 0 2px 8px rgba(11, 37, 69, 0.05);
+  --elev-2: 0 2px 4px rgba(11, 37, 69, 0.04), 0 8px 24px rgba(11, 37, 69, 0.07);
+  --elev-3: 0 4px 8px rgba(11, 37, 69, 0.05), 0 18px 48px rgba(11, 37, 69, 0.1);
+  --elev-hover:
+    0 6px 12px rgba(11, 37, 69, 0.06), 0 24px 60px rgba(11, 37, 69, 0.13);
+  --ring: 0 0 0 1px rgba(31, 95, 224, 0.14);
+  --card-shadow:
+    0 2px 6px rgba(15, 23, 42, 0.05), 0 8px 28px rgba(15, 23, 42, 0.08),
+    inset 0 2px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -1px 0 rgba(15, 23, 42, 0.03);
+  --card-shadow-hover:
+    0 4px 12px rgba(15, 23, 42, 0.07), 0 20px 52px rgba(15, 23, 42, 0.12),
+    0 0 0 1.5px rgba(31, 95, 224, 0.22), inset 0 2px 0 rgba(255, 255, 255, 0.95);
+  --card-shimmer: radial-gradient(
+    ellipse 90% 60% at 45% -8%,
+    rgba(255, 255, 255, 0.7) 0%,
+    rgba(255, 255, 255, 0.18) 48%,
+    transparent 75%
+  );
+
+  /* Spacing */
+  --gutter: clamp(20px, 5vw, 80px);
+  --space-2: 8px;
+  --space-4: 16px;
+
+  /* Borders */
+  --border: #dce3ee;
+  --border2: #c7d2e2;
+  --glass-border: rgba(11, 37, 69, 0.1);
+  --glass-border-2: rgba(11, 37, 69, 0.06);
+  --card-border: rgba(255, 255, 255, 0.78);
+
+  /* Typography */
+  --font-size-sm: 12px;
+  --font-size-md: 14px;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Others */
+  --surface: rgba(255, 255, 255, 0.7);
+  --surface-strong: rgba(255, 255, 255, 0.86);
+  --nav-word-first: var(--navy);
+  --card-blur: blur(14px) saturate(150%);
+
+}

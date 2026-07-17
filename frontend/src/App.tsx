@@ -114,13 +114,13 @@ function AnimatedRoutes({
         animate="animate"
         exit="exit"
         transition={reduce ? { duration: 0 } : pageTransition}
-        style={{ width: '100%' }}
+        className="u-w-full"
       >
         <PageScrollManager />
         {/* min-height reserves the page's space while its chunk downloads,
             so Footer (mounted outside this boundary) can't jump up to sit
             right under Nav during the fetch — see App.tsx Footer placement. */}
-        <Suspense fallback={<div style={{ minHeight: '100vh' }} />}>
+        <Suspense fallback={<div className="app-suspense" />}>
           <Routes location={location}>
             <Route
               path="/"

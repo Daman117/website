@@ -83,33 +83,11 @@ const NativeApproachScroll: React.FC<Props> = ({
 
   return (
     <section className="engram-section engram-container">
-      <style>{`
-        .approach-grid {
-          display: grid;
-          grid-template-columns: repeat(${items.length}, 1fr);
-          gap: 18px;
-        }
-        @media (max-width: 1024px) { .approach-grid { grid-template-columns: 1fr 1fr; } }
-        @media (max-width: 560px)  { .approach-grid { grid-template-columns: 1fr; } }
-
-        .approach-card { will-change: transform, opacity, filter; }
-        .approach-icon-wrap { will-change: transform, opacity; margin-bottom: 14px; }
-        .approach-icon-circle {
-          width: 48px; height: 48px; border-radius: 12px;
-          display: flex; align-items: center; justify-content: center;
-          background: rgba(var(--cap-color-rgb, 37,99,235), 0.1);
-          border: 1px solid rgba(var(--cap-color-rgb, 37,99,235), 0.25);
-          will-change: transform;
-        }
-        .approach-card-title, .approach-card-desc, .approach-card-bullets li {
-          will-change: transform, opacity;
-        }
-      `}</style>
 
       <span className="eyebrow">{eyebrow}</span>
       <LineReveal as="h2" className="engram-section-h2" text={title} />
 
-      <div ref={rowRef} className="approach-grid">
+      <div ref={rowRef} className={`approach-grid approach-grid-cols-${items.length}`}>
         {items.map((item, i) => (
           <div
             key={item.title}
@@ -126,7 +104,7 @@ const NativeApproachScroll: React.FC<Props> = ({
                 <item.Icon size={22} color={item.color} strokeWidth={1.75} />
               </div>
             </div>
-            <h3 ref={(el) => { titleRefs.current[i] = el; }} className="engram-cap-title approach-card-title" style={{ color: item.color, fontSize: 15 }}>
+            <h3 ref={(el) => { titleRefs.current[i] = el; }} className="engram-cap-title approach-card-title approach-title-text" style={{ color: item.color }}>
               {item.title}
             </h3>
             <p className="engram-cap-sub">{item.subtitle}</p>
@@ -137,7 +115,7 @@ const NativeApproachScroll: React.FC<Props> = ({
                   if (!bulletRefs.current[i]) bulletRefs.current[i] = [];
                   bulletRefs.current[i][fi] = el;
                 }}>
-                  <span style={{ color: item.color, marginRight: 6 }}>—</span>
+                  <span className="approach-bullet-dash" style={{ color: item.color }}>—</span>
                   <span>{f}</span>
                 </li>
               ))}

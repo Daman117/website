@@ -101,7 +101,7 @@ const PerfRight: React.FC<{ cap: Cap }> = () => (
         <div className="price-feats">Multi-project · Priority support</div>
       </div>
     </div>
-    <p style={{ fontSize: '10px', color: 'var(--t5)', lineHeight: '1.6' }}>
+    <p className="product-sm-text">
       Unlimited screens · unlimited operator clients · no per-seat fees · no annual maintenance.
     </p>
   </div>
@@ -140,9 +140,9 @@ const ProductPage: React.FC<ProductPageProps> = ({ onOpenContact }) => {
 
   if (!cap) {
     return (
-      <div style={{ padding: '120px 40px', textAlign: 'center', color: 'var(--t2)' }}>
+      <div className="product-page-body">
         <p>Product not found.</p>
-        <button className="btn-primary" onClick={() => navigate('/')} style={{ marginTop: '16px' }}>
+        <button className="btn-primary product-btn" onClick={() => navigate('/')}>
           Back to Home
         </button>
       </div>
@@ -156,7 +156,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ onOpenContact }) => {
           {/* Header */}
           <div className="product-page-header">
             <div className="product-page-title-row">
-              <div className="cap-card-dot" style={{ background: cap.color, width: 14, height: 14 }} />
+              <div className="cap-card-dot" style={{ background: cap.color }} />
               <LineReveal as="h1" className="product-page-name" text={cap.name} />
             </div>
             <div className="product-page-cat">{cap.cat}</div>
@@ -180,9 +180,9 @@ const ProductPage: React.FC<ProductPageProps> = ({ onOpenContact }) => {
           )}
           {cap.patent && (
             <div className="zerod-strip">
-              <div className="zerod-item"><div className="zerod-dot" style={{ background: '#A5B4FC' }} /><span className="zerod-text">Patent-pending matrix M methodology</span></div>
-              <div className="zerod-item"><div className="zerod-dot" style={{ background: '#A5B4FC' }} /><span className="zerod-text">Analytical verdict + live closed-loop simulation</span></div>
-              <div className="zerod-item"><div className="zerod-dot" style={{ background: '#A5B4FC' }} /><span className="zerod-text">Eigenvalue-based · computed live on every build</span></div>
+              <div className="zerod-item"><div className="zerod-dot product-dot-badge" /><span className="zerod-text">Patent-pending matrix M methodology</span></div>
+              <div className="zerod-item"><div className="zerod-dot product-dot-badge" /><span className="zerod-text">Analytical verdict + live closed-loop simulation</span></div>
+              <div className="zerod-item"><div className="zerod-dot product-dot-badge" /><span className="zerod-text">Eigenvalue-based — computed live on every build</span></div>
             </div>
           )}
 
@@ -191,19 +191,19 @@ const ProductPage: React.FC<ProductPageProps> = ({ onOpenContact }) => {
             <div className="product-page-left">
               <LineReveal
                 as="p"
-                style={{ fontSize: '15px', color: 'var(--t3)', lineHeight: '1.85', marginBottom: cap.body2 ? '16px' : '28px' }}
+                className={cap.body2 ? 'product-card-desc has-body2' : 'product-card-desc'}
                 text={cap.body}
               />
               {cap.body2 && (
                 <LineReveal
                   as="p"
-                  style={{ fontSize: '14px', color: 'var(--t4)', lineHeight: '1.8', marginBottom: '28px' }}
+                  className="product-card-note"
                   text={cap.body2}
                 />
               )}
 
               {/* Tabs */}
-              <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '12px' }}>
+              <div className="product-spec-row">
                 {cap.tabs.map((tab, i) => (
                   <button
                     key={i}
@@ -220,7 +220,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ onOpenContact }) => {
                 ))}
               </div>
               <div
-                style={{ background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: '8px', padding: '18px 20px', minHeight: '200px' }}
+                className="product-card-box"
                 dangerouslySetInnerHTML={{ __html: cap.tabs[activeTab].content }}
               />
             </div>

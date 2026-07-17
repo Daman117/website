@@ -12,7 +12,7 @@ const AboutPage: React.FC = () => {
     <main className="engram-page">
 
       {/* ── BACK ── */}
-      <div style={{ paddingTop: 100, paddingLeft: 'var(--gutter)', paddingRight: 'var(--gutter)' }}>
+      <div className="about-page-header">
         <button className="product-back-btn" onClick={() => navigate('/')}>
           ← Back
         </button>
@@ -21,20 +21,20 @@ const AboutPage: React.FC = () => {
       {/* ── HERO ── */}
       <section className="engram-hero engram-container">
         <div className="engram-hero-badge">
-          <span style={{ color: 'var(--primary)', fontSize: 10, fontWeight: 700, letterSpacing: 1 }}>ABOUT ENSAR SOLUTIONS · ENXPLANT DIVISION</span>
+          <span className="about-hero-badge-text">ABOUT ENSAR SOLUTIONS · ENXPLANT DIVISION</span>
         </div>
         <h1 className="engram-hero-h1">
           <span className="hero-line-mask">
-            <span className="hero-line-inner" style={{ animationDelay: '150ms' }}>Built because it</span>
+            <span className="hero-line-inner hero-delay-150">Built because it</span>
           </span>
           <span className="hero-line-mask">
-            <span className="hero-line-inner" style={{ animationDelay: '500ms', color: 'var(--primary)' }}>needed to exist.</span>
+            <span className="hero-line-inner about-hero-h1-accent hero-delay-500">needed to exist.</span>
           </span>
         </h1>
-        <p className="engram-hero-sub hero-fade-up" style={{ animationDelay: '900ms' }}>
+        <p className="engram-hero-sub hero-fade-up hero-delay-900">
           enxplant is a division of enSAR Solutions Inc. The industrial intelligence work grew from a real frustration: a practicing I&C engineer who couldn't find the answer he needed fast enough when it mattered.
         </p>
-        <p className="engram-hero-body hero-fade-up" style={{ animationDelay: '1100ms' }}>
+        <p className="engram-hero-body hero-fade-up hero-delay-1100">
           The existing tools required data migration, cloud connectivity, vendor relationships, and IT projects. They produced dashboards nobody used and answers engineers didn't trust. So the software was built from scratch — grounded in how plant engineers actually think, how engineering documents are actually structured, and what an engineer needs when something goes wrong at 2AM.
         </p>
       </section>
@@ -44,9 +44,9 @@ const AboutPage: React.FC = () => {
         <span className="eyebrow">Founder</span>
         <LineReveal as="h2" className="engram-section-h2" text="The Engineer Behind enxplant" />
 
-        <div className="engram-two-col" style={{ alignItems: 'start' }}>
+        <div className="engram-two-col about-two-col">
           {/* Left — founder card */}
-          <div className="engram-card" style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+          <div className="engram-card about-founder-card">
             <div className="trust-founder-head">
               <div className="trust-avatar" aria-hidden="true">JY</div>
               <div>
@@ -56,10 +56,10 @@ const AboutPage: React.FC = () => {
               </div>
             </div>
             <blockquote className="trust-quote">{founder.bio}</blockquote>
-            <blockquote className="quote" style={{ fontSize: 14, marginTop: 0 }}>
+            <blockquote className="quote about-quote">
               "Grounded in how plant engineers actually think, how engineering documents are actually structured, and what an engineer needs when something goes wrong at 2AM."
             </blockquote>
-            <p className="attr" style={{ marginTop: 0 }}>Dr. Jagan Mohan Reddy Yeturu · Founder, enSAR Solutions Inc.</p>
+            <p className="attr about-attr">Dr. Jagan Mohan Reddy Yeturu · Founder, enSAR Solutions Inc.</p>
             <div className="trust-facts">
               {founder.facts.map((f) => (
                 <div key={f.k} className="trust-fact">
@@ -71,25 +71,25 @@ const AboutPage: React.FC = () => {
           </div>
 
           {/* Right — company facts */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div className="about-facts-wrapper">
             {facts.map((f) => (
               <div key={f.k} className="fact-row">
                 <span className="fact-key">{f.k}</span>
                 <span className="fact-val">{f.v}</span>
               </div>
             ))}
-            <div style={{ marginTop: 8, padding: '18px 20px', background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 10 }}>
-              <p style={{ fontSize: 10, color: 'var(--t5)', letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: 10 }}>
+            <div className="about-fact-box">
+              <p className="about-fact-box-title eyebrow">
                 enSAR Solutions also serves
               </p>
-              <p style={{ fontSize: 13, color: 'var(--t4)', lineHeight: 1.8 }}>
+              <p className="about-fact-box-desc text-muted">
                 Digital transformation · Cloud native solutions · Software engineering · Cybersecurity · Business applications
               </p>
               <a
                 href="https://ensarsolutions.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ marginTop: 10, fontSize: 12, color: 'var(--primary)', display: 'inline-block' }}
+                className="about-fact-box-link text-body-sm"
               >
                 ensarsolutions.com ↗
               </a>
@@ -100,12 +100,12 @@ const AboutPage: React.FC = () => {
 
       {/* ── STANDARDS + TECH ── */}
       <section className="engram-section engram-container">
-        <div className="engram-two-col" style={{ alignItems: 'start' }}>
+        <div className="engram-two-col about-two-col">
 
           {/* Standards */}
           <div className="engram-card">
-            <span className="eyebrow" style={{ marginBottom: 14, display: 'block' }}>Engineering Standards</span>
-            <LineReveal as="h3" className="engram-card-title" style={{ marginBottom: 18 }} text="Built on Industrial Standards" />
+            <span className="eyebrow about-eyebrow">Engineering Standards</span>
+            <LineReveal as="h3" className="engram-card-title about-card-title" text="Built on Industrial Standards" />
             <div className="trust-std-list">
               {standards.map((s) => (
                 <div key={s.code} className="trust-std">
@@ -118,8 +118,8 @@ const AboutPage: React.FC = () => {
 
           {/* Tech */}
           <div className="engram-card">
-            <span className="eyebrow" style={{ marginBottom: 14, display: 'block' }}>Technology Stack</span>
-            <LineReveal as="h3" className="engram-card-title" style={{ marginBottom: 18 }} text="Built for the Security Perimeter" />
+            <span className="eyebrow about-eyebrow">Technology Stack</span>
+            <LineReveal as="h3" className="engram-card-title about-card-title" text="Built for the Security Perimeter" />
             <div className="trust-tech-row">
               {techStack.map((t) => (
                 <span key={t.name} className="trust-tech">
@@ -127,8 +127,8 @@ const AboutPage: React.FC = () => {
                 </span>
               ))}
             </div>
-            <div style={{ marginTop: 24, padding: '16px 18px', background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 10 }}>
-              <p style={{ fontSize: 12, color: 'var(--t4)', lineHeight: 1.7 }}>
+            <div className="about-tech-box">
+              <p className="about-tech-box-desc card-desc">
                 Every capability runs inside your network. No cloud dependency, no data egress, no vendor inside your security perimeter. Air-gap ready where required.
               </p>
             </div>

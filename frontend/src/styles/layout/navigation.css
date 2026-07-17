@@ -1,0 +1,12 @@
+/* Navigation */
+.nav-logo {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.nav-actions {
+  margin-left: auto;
+  margin-right: 7%;
+}

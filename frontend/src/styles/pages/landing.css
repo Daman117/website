@@ -1,0 +1,64 @@
+/* Landing Page */
+.landing-hero-h1-text {
+  color: #ffffff;
+}
+
+.landing-hero-h1-accent {
+  color: #60a5fa;
+}
+
+.landing-hero-sub-text {
+  color: rgba(255, 255, 255, 0.96);
+}
+
+.landing-hero-body-text {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.landing-hero-chips {
+  max-width: 640px;
+  margin-bottom: 28px;
+}
+
+.landing-hero-chip {
+  color: #93c5fd;
+  background: rgba(37, 99, 235, 0.22);
+  border-color: rgba(96, 165, 250, 0.4);
+}
+
+.landing-hero-actions {
+  gap: 12px;
+}
+
+.landing-demo-section {
+  position: relative;
+}
+
+.landing-section-h2 {
+  font-size: clamp(32px, 3.5vw, 44px);
+  font-weight: 700;
+  letter-spacing: -1.5px;
+}
+
+.landing-platform-title {
+  margin-bottom: 52px;
+}
+
+.landing-principles-section {
+  padding-bottom: 8px;
+}
+
+.landing-principles-title {
+  margin-bottom: 0;
+}
+
+.landing-pipe-node-static {
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  transform-origin: left center;
+}
+
+.landing-pipe-connector-static {
+  transform-origin: left center;
+}

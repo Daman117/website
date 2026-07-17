@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
-import { Cpu, Gauge, Layers, Zap, Workflow, MonitorPlay, Boxes, MessageSquare, BrainCircuit, Network, TriangleAlert } from 'lucide-react';
+import { Cpu, Gauge, Layers, Zap, Workflow, MonitorPlay, Boxes, MessageSquare, BrainCircuit, Network, TriangleAlert, Plug, FolderInput } from 'lucide-react';
 import { ScrollStagger, LineReveal } from '../ScrollAnimation';
 import { prefersReducedMotion } from '../../utils/motion';
 import { useInView } from 'react-intersection-observer';
 import gsap from 'gsap';
-import EnviewHowItWorksScroll from './EnviewHowItWorksScroll';
+import HowItWorksScroll from './HowItWorksScroll';
 import NativeApproachScroll from './NativeApproachScroll';
 import HeroShell from '../HeroShell';
 
@@ -16,6 +16,13 @@ const ACCENT = '#2563EB';
 const ACCENT_RGB = '37,99,235';
 
 const heroChips = ['Native macOS', 'Apple Silicon', 'AI-Ready', 'ISA Compliant'];
+
+const howItWorksSteps = [
+  { icon: Plug,        color: '#2563EB', title: 'Connect', desc: 'OPC-UA / Modbus TCP / MQTT native connections established instantly via the command line.' },
+  { icon: FolderInput, color: '#0E9BC4', title: 'Import',  desc: 'AI-native ingest of P&IDs, files, and drawings — auto-generating tags and topology.' },
+  { icon: Layers,      color: '#10B981', title: 'Design',  desc: 'Engineering Studio with a visual importer and 331 pre-built industrial symbols.' },
+  { icon: Zap,         color: '#F59E0B', title: 'Run',     desc: 'The system switches seamlessly from Edit to Run mode and live data flows.' },
+];
 
 const challenges = [
   { title: 'Crippling Startup Times', desc: 'JVM-based platforms take 30–60 seconds to load. Operators wait blindly during critical plant upsets.' },
@@ -210,30 +217,30 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
       {/* ── HERO (pinned parallax background — iOS-safe, see HeroShell) ── */}
       <HeroShell image="/enview-hero.webp" contentClassName="engram-hero engram-container">
           <div className="engram-hero-badge">
-            <span style={{ color: '#93c5fd', fontSize: 10, fontWeight: 700, letterSpacing: 1 }}>MODERN SCADA</span>
+            <span className="enview-hero-badge-text">MODERN SCADA</span>
           </div>
-          <h1 className="engram-hero-h1" style={{ color: '#ffffff' }}>
+          <h1 className="engram-hero-h1 enview-hero-h1-text">
             <span className="hero-line-mask">
-              <span className="hero-line-inner" style={{ animationDelay: '150ms' }}>Modern SCADA for</span>
+              <span className="hero-line-inner hero-delay-150">Modern SCADA for</span>
             </span>
             <span className="hero-line-mask">
-              <span className="hero-line-inner" style={{ animationDelay: '500ms', color: '#60a5fa' }}>Industrial &amp; Manufacturing</span>
+              <span className="hero-line-inner enview-hero-h1-accent hero-delay-500">Industrial &amp; Manufacturing</span>
             </span>
           </h1>
-          <p className="engram-hero-sub hero-fade-up" style={{ color: 'rgba(255,255,255,0.96)', animationDelay: '900ms' }}>
+          <p className="engram-hero-sub hero-fade-up enview-hero-sub-text hero-delay-900">
             enVIEW is a ground-up, native control platform — built in Swift for Apple Silicon. Instant startup, sub-100ms latency, and three synchronized views from a single data model.
           </p>
-          <p className="engram-hero-body hero-fade-up" style={{ color: 'rgba(255,255,255,0.82)', animationDelay: '1100ms' }}>
+          <p className="engram-hero-body hero-fade-up enview-hero-body-text hero-delay-1100">
             Legacy SCADA freezes when it matters most — a 20-year-old single-threaded architecture buckling under alarm floods. enVIEW decouples data from rendering so operators never lose visibility, and turns the P&ID into the live operational source of truth.
           </p>
-          <div className="hero-fade-up" style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 28, animationDelay: '1300ms' }}>
+          <div className="hero-fade-up enview-hero-chips u-flex u-gap-10 u-flex-wrap hero-delay-1300">
             {heroChips.map((c) => (
-              <span key={c} className="badge hero-chip-badge" style={{ color: '#93c5fd', background: 'rgba(37,99,235,0.22)', borderColor: 'rgba(96,165,250,0.4)' }}>
+              <span key={c} className="badge hero-chip-badge enview-hero-chip">
                 {c}
               </span>
             ))}
           </div>
-          <div className="hero-fade-up" style={{ display: 'flex', gap: 12, flexWrap: 'wrap', animationDelay: '1500ms' }}>
+          <div className="hero-fade-up u-flex u-gap-12 u-flex-wrap hero-delay-1500">
             <button className="btn-primary" onClick={() => onOpenContact('Request a Demo')}>
               Request a Demo
             </button>
@@ -247,15 +254,15 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         <LineReveal as="h2" className="engram-section-h2" text="The Hidden Cost of Legacy SCADA" />
         <LineReveal
           as="p"
-          style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 32, maxWidth: 760 }}
+          className="enview-section-lead-max"
           text="The problem is not the plant. The problem is a 20-year-old software architecture built on single-threaded paradigms — one processing thread shared between data acquisition and UI rendering. When alarm floods hit, the screen freezes at the worst possible moment."
         />
         <ScrollStagger className="engram-quad" step={70}>
           {challenges.map((c, i) => (
             <div key={c.title} className="engram-card">
-              <div style={{ color: ACCENT, marginBottom: 12, lineHeight: 1, animation: challengeInView ? `iconFlash 2.4s ease-in-out ${i * 0.6}s 3` : 'none' }}><TriangleAlert size={22} strokeWidth={1.75} /></div>
-              <h3 className="engram-card-title" style={{ fontSize: 14, marginBottom: 8 }}>{c.title}</h3>
-              <p style={{ fontSize: 12, color: 'var(--t4)', lineHeight: 1.65 }}>{c.desc}</p>
+              <div className="enview-challenge-icon" style={{ animation: challengeInView ? `iconFlash 2.4s ease-in-out ${i * 0.6}s 3` : 'none' }}><TriangleAlert size={22} strokeWidth={1.75} /></div>
+              <h3 className="engram-card-title enview-card-h3">{c.title}</h3>
+              <p className="enview-card-desc">{c.desc}</p>
             </div>
           ))}
         </ScrollStagger>
@@ -270,7 +277,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         <LineReveal as="h2" className="engram-section-h2" text="The Unified Visual Paradigm" />
         <LineReveal
           as="p"
-          style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 28, maxWidth: 720 }}
+          className="enview-section-lead"
           text="enVIEW treats the P&ID as the master blueprint. No rebuilding, no version drift — what the engineer designs is exactly what the operator sees."
         />
         <ScrollStagger className="engram-caps-grid" step={80}>
@@ -283,12 +290,12 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
               {/* Title — always visible at top */}
               <div className="enview-view-card-header">
                 <div style={{ color: v.color }}><v.Icon size={18} strokeWidth={1.75} /></div>
-                <h3 style={{ fontSize: 15, fontWeight: 700, color: '#fff', margin: 0 }}>{v.title}</h3>
+                <h3 className="enview-view-title">{v.title}</h3>
               </div>
               {/* Subtitle + desc — slides up on hover */}
               <div className="enview-view-card-text">
-                <p style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.7)', marginBottom: 6 }}>{v.subtitle}</p>
-                <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.9)', lineHeight: 1.65, margin: 0 }}>{v.desc}</p>
+                <p className="enview-view-subtitle">{v.subtitle}</p>
+                <p className="enview-view-desc">{v.desc}</p>
               </div>
             </div>
           ))}
@@ -296,7 +303,20 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
       </section>
 
       {/* ── HOW IT WORKS — scroll-driven horizontal timeline ── */}
-      <EnviewHowItWorksScroll />
+      <HowItWorksScroll
+        eyebrow="How It Works"
+        title="From Controller to Operations in Minutes"
+        steps={howItWorksSteps}
+        accent={ACCENT}
+        accentRgb={ACCENT_RGB}
+        impact={{ label: 'Impact', before: '40 engineer-hours', after: 'under 2 hours' }}
+        video="/enview-promo.mp4"
+        videoPoster="/enview-promo-poster.webp"
+        rowClassName="enview-steps-row"
+        connWrapClassName="enview-conn-wrap"
+        connWidth={80}
+        videoAriaLabel="Play enVIEW promo video"
+      />
 
       {/* ── SAFETY ── */}
       <section ref={safetyRef} className="engram-section engram-container">
@@ -304,15 +324,15 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         <LineReveal as="h2" className="engram-section-h2" text="Silent Safety Systems in the Background" />
         <LineReveal
           as="p"
-          style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 28, maxWidth: 720 }}
+          className="enview-section-lead"
           text="By decoupling data ingestion from visual rendering, enVIEW guarantees operators never lose visibility during an alarm flood — the “flood vs. flow” architecture."
         />
         <ScrollStagger className="engram-quad" step={70}>
           {safety.map((s) => (
             <div key={s.title} className="engram-card">
-              <div style={{ width: 8, height: 8, borderRadius: '50%', background: ACCENT, marginBottom: 12, animation: safetyInView ? 'dotGlow 2s ease-in-out infinite' : 'none' }} />
-              <h3 className="engram-card-title" style={{ fontSize: 14, marginBottom: 8 }}>{s.title}</h3>
-              <p style={{ fontSize: 12, color: 'var(--t4)', lineHeight: 1.65 }}>{s.desc}</p>
+              <div className="enview-safety-dot" style={{ animation: safetyInView ? 'dotGlow 2s ease-in-out infinite' : 'none' }} />
+              <h3 className="engram-card-title enview-card-h3">{s.title}</h3>
+              <p className="enview-card-desc">{s.desc}</p>
             </div>
           ))}
         </ScrollStagger>
@@ -322,13 +342,13 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
       <section className="engram-section engram-container">
         <span className="eyebrow">The Difference</span>
         <LineReveal as="h2" className="engram-section-h2" text="The Modern SCADA Evaluation Matrix" />
-        <div ref={matrixRef} className="engram-card" style={{ padding: '10px 18px', overflowX: 'auto' }}>
+        <div ref={matrixRef} className="engram-card enview-comparison-card">
           <table className="engram-table">
             <thead>
               <tr>
-                <th style={{ color: 'var(--t1)' }}>Criteria</th>
+                <th className="enview-table-th-first">Criteria</th>
                 {matrix.cols.map((c, i) => (
-                  <th key={c} style={i === 0 ? { color: ACCENT } : { color: 'var(--t2)' }}>{c}</th>
+                  <th key={c} className={i === 0 ? 'enview-table-th-accent' : 'enview-table-th-default'}>{c}</th>
                 ))}
               </tr>
             </thead>
@@ -339,7 +359,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
                 const isActiveRow = idx === activeRow;
                 return (
                   <tr key={row.c} ref={(el) => { rowRefs.current[idx] = el; }}>
-                    <td style={{ fontWeight: 700, color: 'var(--t1)', whiteSpace: 'nowrap' }}>{row.c}</td>
+                    <td className="enview-table-phase">{row.c}</td>
                     {row.v.map((val, i) => {
                       const isEnview = i === 0 && isActiveRow;
                       const isCompare = isActiveRow && i === activeCol && activeCol > 0;
@@ -382,9 +402,9 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         <ScrollStagger className="engram-caps-grid" step={80}>
           {aiFeatures.map((f) => (
             <div key={f.title} className="engram-cap-card" style={{ '--cap-color': ACCENT } as React.CSSProperties}>
-              <div className="engram-cap-icon" style={{ color: ACCENT }}><f.Icon size={26} strokeWidth={1.75} /></div>
-              <h3 className="engram-cap-title" style={{ color: ACCENT, fontSize: 15 }}>{f.title}</h3>
-              <p className="engram-cap-desc" style={{ marginBottom: 0 }}>{f.desc}</p>
+              <div className="enview-ai-icon"><f.Icon size={26} strokeWidth={1.75} /></div>
+              <h3 className="engram-cap-title enview-ai-title">{f.title}</h3>
+              <p className="engram-cap-desc enview-ai-desc">{f.desc}</p>
             </div>
           ))}
         </ScrollStagger>
@@ -397,27 +417,27 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         <ScrollStagger className="engram-three-col" step={90}>
           {transform.map((t, i) => (
             <div key={t.to} ref={(el) => { transformCardRefs.current[i] = el; }} className="engram-card">
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10, fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: 15 }}>
-                <span style={{ position: 'relative', display: 'inline-block', color: 'var(--t4)' }}>
+              <div className="u-flex u-items-center u-gap-8 enview-transform-header">
+                <span className="enview-transform-from">
                   {t.from}
                   <span
                     ref={(el) => { strikeRefs.current[i] = el; }}
-                    style={{ position: 'absolute', left: 0, right: 0, top: '52%', height: 2, background: 'var(--t4)', willChange: 'transform' }}
+                    className="enview-transform-strike"
                   />
                 </span>
-                <span ref={(el) => { arrowRefs.current[i] = el; }} style={{ color: ACCENT, display: 'inline-block', willChange: 'transform, opacity' }}>→</span>
-                <span ref={(el) => { toRefs.current[i] = el; }} style={{ color: ACCENT, fontWeight: 800, display: 'inline-block', willChange: 'transform, opacity' }}>{t.to}</span>
+                <span ref={(el) => { arrowRefs.current[i] = el; }} className="enview-transform-arrow">→</span>
+                <span ref={(el) => { toRefs.current[i] = el; }} className="enview-transform-to">{t.to}</span>
               </div>
-              <p style={{ fontSize: 13, color: 'var(--t4)', lineHeight: 1.7 }}>{t.desc}</p>
+              <p className="enview-transform-desc">{t.desc}</p>
             </div>
           ))}
         </ScrollStagger>
         <LineReveal
           as="p"
-          style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85, maxWidth: 720, marginTop: 28 }}
+          className="enview-outcomes-lead"
           text="enVIEW is not just a SCADA system. It is the operational intelligence platform that connects your physical plant to your digital future."
         />
-        <div style={{ marginTop: 36, display: 'flex', justifyContent: 'flex-end' }}>
+        <div className="enview-cta-wrap u-flex u-justify-end">
           <button className="btn-primary" onClick={() => onOpenContact('Request a Demo')}>
             Request a Demo →
           </button>

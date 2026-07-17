@@ -24,7 +24,7 @@ const HeroShell: React.FC<HeroShellProps> = ({ image, id, contentClassName, chil
     <div className="hero-shell-bg" style={{ backgroundImage: `url(${image})` }} />
     {/* dark gradient — lighter at top so the photo shows, darker at bottom for text */}
     <div className="hero-shell-grad" />
-    <div className={contentClassName} style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(110px, 16vh, 160px)', paddingBottom: 72 }}>
+    <div className={`hero-content-wrapper ${contentClassName || ''}`.trim()}>
       {children}
     </div>
     {after}

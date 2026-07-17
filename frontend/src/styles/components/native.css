@@ -1,0 +1,32 @@
+/* Native Approach Scroll */
+.approach-grid {
+  display: grid;
+  gap: 18px;
+}
+.approach-grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+.approach-grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+.approach-grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+.approach-grid-cols-5 { grid-template-columns: repeat(5, 1fr); }
+@media (max-width: 1024px) { .approach-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px)  { .approach-grid { grid-template-columns: 1fr; } }
+
+.approach-card { will-change: transform, opacity, filter; }
+.approach-icon-wrap { will-change: transform, opacity; margin-bottom: 14px; }
+.approach-icon-circle {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(var(--cap-color-rgb, 37,99,235), 0.1);
+  border: 1px solid rgba(var(--cap-color-rgb, 37,99,235), 0.25);
+  will-change: transform;
+}
+.approach-card-title, .approach-card-desc, .approach-card-bullets li {
+  will-change: transform, opacity;
+}
+
+.approach-title-text {
+  font-size: 15px;
+}
+
+.approach-bullet-dash {
+  margin-right: 6px;
+}

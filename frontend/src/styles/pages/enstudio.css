@@ -1,0 +1,223 @@
+/* Enstudio */
+
+/* enSTUDIO Page */
+.enstudio-hero-badge-text {
+  color: #c4b5fd;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.enstudio-hero-h1-text {
+  color: #ffffff;
+}
+
+.enstudio-hero-h1-accent {
+  color: #A78BFA;
+}
+
+.enstudio-hero-sub-text {
+  color: rgba(255, 255, 255, 0.96);
+}
+
+.enstudio-hero-body-text {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.enstudio-hero-chips {
+  margin-bottom: 28px;
+}
+
+.enstudio-hero-chip {
+  color: #c4b5fd;
+  background: rgba(167, 139, 250, 0.22);
+  border-color: rgba(196, 181, 253, 0.4);
+}
+
+.enstudio-section-lead {
+  font-size: 14px;
+  color: var(--t4);
+  margin-bottom: 32px;
+}
+
+.enstudio-section-lead-max {
+  font-size: 14px;
+  color: var(--t4);
+  margin-bottom: 32px;
+  max-width: 720px;
+}
+
+.enstudio-challenge-icon {
+  color: var(--accent);
+  margin-bottom: 12px;
+  line-height: 1;
+}
+
+.enstudio-card-text {
+  font-size: 13px;
+  color: var(--t3);
+  line-height: 1.7;
+}
+
+.enstudio-card-note {
+  font-size: 12px;
+  color: var(--t5);
+  margin-top: 20px;
+  font-style: italic;
+}
+
+.enstudio-card-h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+
+.enstudio-card-subtitle {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 6px;
+}
+
+.enstudio-card-desc {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.65;
+  margin: 0;
+}
+
+.enstudio-trust-eyebrow {
+  margin-bottom: 8px;
+  display: block;
+}
+
+.enstudio-trust-card {
+  border-color: rgba(167, 139, 250, 0.25);
+}
+
+.enstudio-adapter-row {
+  margin-bottom: 6px;
+}
+
+.enstudio-trust-desc {
+  font-size: 12px;
+  color: var(--t4);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.enstudio-trust-list-item {
+  margin-bottom: 8px;
+}
+
+.enstudio-trust-bullet {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+
+.enstudio-trust-bullet-blue {
+  background: #60A5FA;
+}
+
+.enstudio-trust-bullet-green {
+  background: #34D399;
+}
+
+.enstudio-trust-bullet-accent {
+  background: var(--accent);
+}
+
+.enstudio-trust-text {
+  font-size: 12px;
+  color: var(--t3);
+  line-height: 1.6;
+}
+
+.enstudio-comparison-card {
+  padding: 10px 18px;
+  overflow-x: auto;
+}
+
+.enstudio-table-phase {
+  font-weight: 600;
+  color: var(--t2);
+  white-space: nowrap;
+}
+
+.enstudio-table-limitation {
+  color: var(--t4);
+}
+
+.enstudio-table-fix {
+  color: var(--t3);
+}
+
+.enstudio-table-summary {
+  font-size: 13px;
+  color: var(--accent);
+  margin-top: 16px;
+  font-weight: 500;
+}
+
+.enstudio-adapter-tag {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.enstudio-adapter-bullet {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.enstudio-adapter-title {
+  margin-bottom: 8px;
+}
+
+.enstudio-adapter-desc {
+  font-size: 12px;
+  color: var(--t4);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.enstudio-adapter-point-bullet {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+
+.enstudio-adapter-point-text {
+  font-size: 12px;
+  color: var(--t3);
+  line-height: 1.6;
+}
+
+.enstudio-outcomes-lead {
+  font-size: 15px;
+  color: var(--t3);
+  line-height: 1.85;
+  max-width: 680px;
+  margin-bottom: 32px;
+}
+
+.enstudio-outcome-bullet {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.enstudio-cta-wrap {
+  margin-top: 40px;
+}

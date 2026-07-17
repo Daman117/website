@@ -1,0 +1,7 @@
+/* Hero */
+.hero-content-wrapper {
+  position: relative;
+  z-index: 1;
+  padding-top: clamp(110px, 16vh, 160px);
+  padding-bottom: 72px;
+}

@@ -1,0 +1,94 @@
+/* ABOUT Page */
+.about-page-header {
+  padding-top: 100px;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+.about-hero-badge-text {
+  color: var(--primary);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.about-hero-h1-accent {
+  color: var(--primary);
+}
+
+.about-two-col {
+  align-items: flex-start;
+}
+
+.about-founder-card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.about-quote {
+  font-size: 14px;
+  margin-top: 0;
+}
+
+.about-attr {
+  margin-top: 0;
+}
+
+.about-facts-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.about-fact-box {
+  margin-top: 8px;
+  padding: 18px 20px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.about-fact-box-title {
+  font-size: 10px;
+  color: var(--t5);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.about-fact-box-desc {
+  font-size: 13px;
+  color: var(--t4);
+  line-height: 1.8;
+}
+
+.about-fact-box-link {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--primary);
+  display: inline-block;
+}
+
+.about-eyebrow {
+  margin-bottom: 14px;
+  display: block;
+}
+
+.about-card-title {
+  margin-bottom: 18px;
+}
+
+.about-tech-box {
+  margin-top: 24px;
+  padding: 16px 18px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.about-tech-box-desc {
+  font-size: 12px;
+  color: var(--t4);
+  line-height: 1.7;
+}

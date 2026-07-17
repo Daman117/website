@@ -179,30 +179,30 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
       {/* ── HERO (pinned parallax background — iOS-safe, see HeroShell) ── */}
       <HeroShell image="/engram-hero.webp" contentClassName="engram-hero engram-container">
           <div className="engram-hero-badge">
-            <span style={{ color: '#fde68a', fontSize: 10, fontWeight: 700, letterSpacing: 1 }}>PLANT KNOWLEDGE</span>
+            <span className="engram-hero-badge-text">PLANT KNOWLEDGE</span>
           </div>
-          <h1 className="engram-hero-h1" style={{ color: '#ffffff' }}>
+          <h1 className="engram-hero-h1 engram-hero-h1-text">
             <span className="hero-line-mask">
-              <span className="hero-line-inner" style={{ animationDelay: '150ms' }}>Turn Engineering Records Into</span>
+              <span className="hero-line-inner hero-delay-150">Turn Engineering Records Into</span>
             </span>
             <span className="hero-line-mask">
-              <span className="hero-line-inner" style={{ animationDelay: '500ms', color: '#FDB022' }}>Plant Knowledge</span>
+              <span className="hero-line-inner engram-hero-h1-accent hero-delay-500">Plant Knowledge</span>
             </span>
           </h1>
-          <p className="engram-hero-sub hero-fade-up" style={{ color: 'rgba(255,255,255,0.96)', animationDelay: '900ms' }}>
+          <p className="engram-hero-sub hero-fade-up engram-hero-sub-text hero-delay-900">
             enGRAM transforms static engineering documents, drawings, and records into a living, searchable knowledge system built specifically for industrial plants.
           </p>
-          <p className="engram-hero-body hero-fade-up" style={{ color: 'rgba(255,255,255,0.82)', animationDelay: '1100ms' }}>
+          <p className="engram-hero-body hero-fade-up engram-hero-body-text hero-delay-1100">
             Engineering information is often trapped inside PDFs, scanned drawings, spreadsheets, manuals, and disconnected repositories. enGRAM extracts, connects, and structures that information into a plant-wide intelligence layer that engineers can query, validate, and trust.
           </p>
-          <div className="hero-fade-up" style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 28, animationDelay: '1300ms' }}>
+          <div className="hero-fade-up engram-hero-chips u-flex u-gap-10 u-flex-wrap hero-delay-1300">
             {heroChips.map((c) => (
-              <span key={c} className="badge hero-chip-badge" style={{ color: '#fde68a', background: 'rgba(253,176,34,0.22)', borderColor: 'rgba(253,224,138,0.4)' }}>
+              <span key={c} className="badge hero-chip-badge engram-hero-chip">
                 {c}
               </span>
             ))}
           </div>
-          <div className="hero-fade-up" style={{ display: 'flex', gap: 12, flexWrap: 'wrap', animationDelay: '1500ms' }}>
+          <div className="hero-fade-up u-flex u-gap-12 u-flex-wrap hero-delay-1500">
             <button className="btn-primary" onClick={() => onOpenContact('Request a Pilot')}>
               Request a Demo
             </button>
@@ -215,20 +215,20 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
         <LineReveal as="h2" className="engram-section-h2" text="The Hidden Cost of Industrial Knowledge" />
         <LineReveal
           as="p"
-          style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 32 }}
+          className="engram-section-lead"
           text="Industrial facilities generate enormous amounts of engineering data, but critical knowledge remains difficult to access."
         />
 
         <ScrollStagger className="engram-quad" step={400} duration={600}>
           {challenges.map((c, i) => (
             <div key={i} className="engram-card">
-              <div style={{ color: '#FDB022', marginBottom: 12, lineHeight: 1, animation: challengeInView ? `iconFlash 2.4s ease-in-out ${i * 0.6}s 3` : 'none' }}><TriangleAlert size={22} strokeWidth={1.75} /></div>
-              <h3 className="engram-card-title" style={{ fontSize: 14, marginBottom: 8 }}>{c.title}</h3>
-              <p style={{ fontSize: 12, color: 'var(--t4)', lineHeight: 1.65 }}>{c.desc}</p>
+              <div className="engram-challenge-icon" style={{ animation: challengeInView ? `iconFlash 2.4s ease-in-out ${i * 0.6}s 3` : 'none' }}><TriangleAlert size={22} strokeWidth={1.75} /></div>
+              <h3 className="engram-card-title engram-card-h3">{c.title}</h3>
+              <p className="engram-card-p card-desc">{c.desc}</p>
             </div>
           ))}
         </ScrollStagger>
-        <p style={{ fontSize: 12, color: 'var(--t5)', marginTop: 20, fontStyle: 'italic' }}>
+        <p className="engram-card-note card-note">
           Engineers spend valuable time locating information instead of solving operational problems.
         </p>
       </section>
@@ -246,7 +246,7 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
         <LineReveal as="h2" className="engram-section-h2" text="From Scanned Drawing to Three Live Views" />
         <LineReveal
           as="p"
-          style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 32, maxWidth: 720 }}
+          className="engram-section-lead-max"
           text="A scanned P&ID doesn't stay a picture. enGRAM detects every symbol, tag, and line, then digitizes the drawing into a structured scene — rendered as three synchronized views of the same diagram, not three separate files."
         />
         <ScrollStagger className="engram-caps-grid" step={80}>
@@ -261,11 +261,11 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
               <div className="enview-view-card-overlay" />
               <div className="enview-view-card-header">
                 <div style={{ color: v.color }}><v.Icon size={18} strokeWidth={1.75} /></div>
-                <h3 style={{ fontSize: 15, fontWeight: 700, color: '#fff', margin: 0 }}>{v.title}</h3>
+                <h3 className="engram-diagram-title diagram-title">{v.title}</h3>
               </div>
               <div className="enview-view-card-text">
-                <p style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.7)', marginBottom: 6 }}>{v.subtitle}</p>
-                <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.9)', lineHeight: 1.65, margin: 0 }}>{v.desc}</p>
+                <p className="engram-diagram-subtitle diagram-subtitle">{v.subtitle}</p>
+                <p className="engram-diagram-desc diagram-desc">{v.desc}</p>
               </div>
             </div>
           ))}
@@ -289,55 +289,55 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
         <LineReveal as="h2" className="engram-section-h2" text="Built to Earn Engineering Trust" />
         <LineReveal
           as="p"
-          style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 32 }}
+          className="engram-section-lead"
           text="Human oversight, regulatory alignment, and airtight security — the three things engineers check before they trust a system."
         />
         <ScrollStagger className="engram-three-col" step={90}>
 
           {/* Human in the Loop */}
           <div className="engram-card">
-            <span className="eyebrow" style={{ marginBottom: 8, display: 'block' }}>Human-in-the-Loop</span>
+            <span className="eyebrow engram-trust-eyebrow">Human-in-the-Loop</span>
             <h3 className="engram-card-title">Engineers Stay in Control</h3>
-            <p style={{ fontSize: 12, color: 'var(--t4)', marginBottom: 16, lineHeight: 1.6 }}>
+            <p className="engram-trust-desc trust-desc">
               enGRAM is designed to augment engineering teams — not replace them.
             </p>
             {validationFeatures.map((f, i) => (
-              <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'flex-start', marginBottom: 8 }}>
-                <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#10B981', marginTop: 8, flexShrink: 0 }} />
-                <span style={{ fontSize: 12, color: 'var(--t3)', lineHeight: 1.6 }}>{f}</span>
+              <div key={i} className="engram-trust-list-item u-flex u-gap-8 u-items-start">
+                <div className="engram-trust-bullet engram-trust-bullet-green" />
+                <span className="engram-trust-text trust-text">{f}</span>
               </div>
             ))}
-            <p style={{ fontSize: 12, color: 'var(--t5)', marginTop: 14, fontStyle: 'italic' }}>
+            <p className="engram-trust-note trust-note">
               Every critical decision remains under human oversight.
             </p>
           </div>
 
           {/* Compliance */}
           <div className="engram-card">
-            <span className="eyebrow" style={{ marginBottom: 8, display: 'block' }}>Compliance</span>
+            <span className="eyebrow engram-trust-eyebrow">Compliance</span>
             <h3 className="engram-card-title">Built for Regulated Environments</h3>
-            <p style={{ fontSize: 12, color: 'var(--t4)', marginBottom: 16, lineHeight: 1.6 }}>
+            <p className="engram-trust-desc trust-desc">
               enGRAM supports engineering governance, standards compliance, and operational assurance.
             </p>
             {complianceFeatures.map((f, i) => (
-              <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'flex-start', marginBottom: 8 }}>
-                <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#2563EB', marginTop: 8, flexShrink: 0 }} />
-                <span style={{ fontSize: 12, color: 'var(--t3)', lineHeight: 1.6 }}>{f}</span>
+              <div key={i} className="engram-trust-list-item u-flex u-gap-8 u-items-start">
+                <div className="engram-trust-bullet engram-trust-bullet-blue" />
+                <span className="engram-trust-text trust-text">{f}</span>
               </div>
             ))}
           </div>
 
           {/* Security */}
-          <div className="engram-card" style={{ borderColor: 'rgba(253,176,34,0.25)' }}>
-            <span className="eyebrow" style={{ marginBottom: 8, display: 'block', color: '#FDB022' }}>Industrial Security</span>
+          <div className="engram-card engram-trust-card-yellow">
+            <span className="eyebrow engram-trust-eyebrow engram-trust-eyebrow-yellow">Industrial Security</span>
             <h3 className="engram-card-title">Your Data Never Leaves Your Plant</h3>
-            <p style={{ fontSize: 12, color: 'var(--t4)', marginBottom: 16, lineHeight: 1.6 }}>
+            <p className="engram-trust-desc trust-desc">
               Security is a core design principle of enGRAM.
             </p>
             {securityFeatures.map((f, i) => (
-              <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'flex-start', marginBottom: 8 }}>
-                <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#FDB022', marginTop: 8, flexShrink: 0 }} />
-                <span style={{ fontSize: 12, color: 'var(--t3)', lineHeight: 1.6 }}>{f}</span>
+              <div key={i} className="engram-trust-list-item u-flex u-gap-8 u-items-start">
+                <div className="engram-trust-bullet engram-trust-bullet-yellow" />
+                <span className="engram-trust-text trust-text">{f}</span>
               </div>
             ))}
           </div>
@@ -350,33 +350,33 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
         <LineReveal as="h2" className="engram-section-h2" text="Why Existing Solutions Fall Short" />
         <LineReveal
           as="p"
-          style={{ fontSize: 14, color: 'var(--t4)', marginBottom: 32 }}
+          className="engram-section-lead"
           text="Traditional document repositories and generic AI tools are not designed for industrial engineering environments."
         />
 
-        <div ref={matrixRef} className="engram-card" style={{ padding: '10px 18px', overflowX: 'auto' }}>
-          <table className="engram-table" style={{ tableLayout: 'fixed' }}>
+        <div ref={matrixRef} className="engram-card engram-comparison-card">
+          <table className="engram-table engram-comparison-table">
             <colgroup>
-              <col style={{ width: '34%' }} />
+              <col className="engram-table-col-first" />
               {comparisonMatrix.cols.map((c) => <col key={c} style={{ width: `${66 / comparisonMatrix.cols.length}%` }} />)}
             </colgroup>
             <thead>
               <tr>
                 <th></th>
                 {comparisonMatrix.cols.map((c, i) => (
-                  <th key={c} style={i === 0 ? { color: '#FDB022', textAlign: 'center' } : { textAlign: 'center' }}>{c}</th>
+                  <th key={c} className={`engram-table-th ${i === 0 ? 'engram-highlight' : ''}`}>{c}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {comparisonMatrix.rows.map((row, idx) => (
                 <tr key={row.c} ref={(el) => { rowRefs.current[idx] = el; }}>
-                  <td style={{ fontWeight: 600, color: 'var(--t2)' }}>{row.c}</td>
+                  <td className="engram-table-phase">{row.c}</td>
                   {row.v.map((ok, i) => (
-                    <td key={i} style={{ textAlign: 'center' }}>
+                    <td key={i} className="engram-table-cell-center">
                       {ok
-                        ? <Check size={16} color="#10B981" strokeWidth={2.5} style={{ display: 'inline-block' }} />
-                        : <X size={16} color="var(--t5)" strokeWidth={2} style={{ display: 'inline-block' }} />}
+                        ? <Check size={16} color="#10B981" strokeWidth={2.5} className="u-inline-block" />
+                        : <X size={16} color="var(--t5)" strokeWidth={2} className="u-inline-block" />}
                     </td>
                   ))}
                 </tr>
@@ -384,7 +384,7 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
             </tbody>
           </table>
         </div>
-        <p style={{ fontSize: 13, color: 'var(--primary)', marginTop: 16, fontWeight: 500 }}>
+        <p className="engram-table-summary table-summary">
           enGRAM was built specifically for industrial engineering data, diagrams, and workflows.
         </p>
       </section>
@@ -395,18 +395,18 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
         <LineReveal as="h2" className="engram-section-h2" text="From Engineering Records to Plant Memory" />
         <LineReveal
           as="p"
-          style={{ fontSize: 15, color: 'var(--t3)', lineHeight: 1.85, maxWidth: 680, marginBottom: 32 }}
+          className="engram-outcomes-lead"
           text="enGRAM transforms engineering information from static documentation into a continuously evolving intelligence system. As more information is added, the system becomes increasingly valuable — creating a long-term institutional memory for the entire facility."
         />
         <ScrollStagger className="engram-outcomes-grid" step={50}>
           {outcomes.map((o, i) => (
             <div key={i} className="engram-outcome-pill">
-              <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#FDB022', flexShrink: 0 }} />
+              <div className="engram-outcome-bullet" />
               <span>{o}</span>
             </div>
           ))}
         </ScrollStagger>
-        <div style={{ marginTop: 40, display: 'flex', justifyContent: 'flex-end' }}>
+        <div className="engram-cta-wrap u-flex u-justify-end">
           <button className="btn-primary" onClick={() => onOpenContact('Request a Pilot')}>
             Request a Pilot →
           </button>

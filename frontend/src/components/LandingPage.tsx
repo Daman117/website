@@ -268,30 +268,30 @@ const Hero: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenConta
 
   return (
   <HeroShell id="hero" image="/bg-image.webp" contentClassName="section" after={<Ticker visible={introDone} />}>
-      <h1 className="engram-hero-h1" style={{ color: '#ffffff' }}>
+      <h1 className="engram-hero-h1 landing-hero-h1-text">
         <span className="hero-line-mask">
-          <span className="hero-line-inner" style={{ animationDelay: '150ms' }}>Your plant.</span>
+          <span className="hero-line-inner hero-delay-150">Your plant.</span>
         </span>
         <span className="hero-line-mask">
-          <span className="hero-line-inner" style={{ animationDelay: '500ms', color: '#60a5fa' }}>Understood.</span>
+          <span className="hero-line-inner landing-hero-h1-accent hero-delay-500">Understood.</span>
         </span>
       </h1>
-      <p className="engram-hero-sub hero-fade-up" style={{ color: 'rgba(255,255,255,0.96)', animationDelay: '900ms' }}>
+      <p className="engram-hero-sub hero-fade-up landing-hero-sub-text hero-delay-900">
         The local-first industrial intelligence platform that turns drawings, documents, SCADA
         systems and engineering knowledge into structured, searchable plant intelligence.
       </p>
-      <p className="engram-hero-body hero-fade-up" style={{ color: 'rgba(255,255,255,0.82)', animationDelay: '1100ms' }}>
+      <p className="engram-hero-body hero-fade-up landing-hero-body-text hero-delay-1100">
         Each capability is complete on its own and more powerful together — and it all runs
         entirely inside your network.
       </p>
-      <div className="hero-fade-up" style={{ display: 'flex', gap: 10, flexWrap: 'wrap', maxWidth: 640, marginBottom: 28, animationDelay: '1300ms' }} aria-label="Platform capabilities">
+      <div className="hero-fade-up landing-hero-chips u-flex u-flex-wrap u-gap-10 hero-delay-1300" aria-label="Platform capabilities">
         {heroChips.map((c) => (
-          <span key={c} className="badge hero-chip-badge" style={{ color: '#93c5fd', background: 'rgba(37,99,235,0.22)', borderColor: 'rgba(96,165,250,0.4)' }}>
+          <span key={c} className="badge hero-chip-badge landing-hero-chip">
             {c}
           </span>
         ))}
       </div>
-      <div className="hero-fade-up" style={{ display: 'flex', gap: 12, flexWrap: 'wrap', animationDelay: '1500ms' }}>
+      <div className="hero-fade-up landing-hero-actions u-flex u-flex-wrap hero-delay-1500">
         <button className="btn-primary" onClick={() => onOpenContact('Explore enxplant')}>Explore enxplant →</button>
         <button className="btn-outline" onClick={() => onOpenContact('Request a Pilot')}>Request a Pilot</button>
       </div>
@@ -315,7 +315,7 @@ const ProductDemo: React.FC = () => {
   const active = demos[activeIndex];
 
   return (
-    <div ref={containerRef} id="demo" style={{ height: `${N * 100}vh`, position: 'relative' }}>
+    <div ref={containerRef} id="demo" className="landing-demo-section" style={{ height: `${N * 100}vh` }}>
       <div className="demo-sticky">
         {/* Left — heading + progress list */}
         <div className="demo-sticky-left">
@@ -363,6 +363,7 @@ const ProductDemo: React.FC = () => {
               initial={{ opacity: 0, y: 40, scale: 0.96 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -24, scale: 0.97 }}
+              whileHover={{ y: -5 }}
               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             >
               <div className="demo-card-head">
@@ -544,8 +545,7 @@ export const Platform: React.FC = () => {
         </ScrollAnimation>
         <LineReveal
           as="h2"
-          className="display"
-          style={{ fontSize: 'clamp(32px,3.5vw,44px)', fontWeight: 700, letterSpacing: '-1.5px', marginBottom: '52px' }}
+          className="display landing-section-h2 landing-platform-title"
           text="How capabilities connect"
         />
 
@@ -554,13 +554,9 @@ export const Platform: React.FC = () => {
             <React.Fragment key={node.cap}>
               {/* Card grows from its left edge — looks like it slides out from previous card */}
               <div
-                className="pipe-node hover-lift"
+                className="pipe-node hover-lift landing-pipe-node-static"
                 style={{
                   '--accent2': node.color,
-                  background: 'rgba(255,255,255,0.94)',
-                  backdropFilter: 'blur(14px) saturate(150%)',
-                  WebkitBackdropFilter: 'blur(14px) saturate(150%)',
-                  transformOrigin: 'left center',
                   transform: inView ? 'scaleX(1)' : 'scaleX(0)',
                   opacity: inView ? 1 : 0,
                   transition: `transform ${CARD_DUR}ms cubic-bezier(0.4,0,0.2,1), opacity ${CARD_DUR}ms ease`,
@@ -575,11 +571,10 @@ export const Platform: React.FC = () => {
               {/* Connector appears after card i settles, just before card i+1 starts */}
               {i < pipeNodes.length - 1 && (
                 <div
-                  className="pipe-connector"
+                  className="pipe-connector landing-pipe-connector-static"
                   style={{
                     opacity: inView ? 1 : 0,
                     transform: inView ? 'scaleX(1)' : 'scaleX(0)',
-                    transformOrigin: 'left center',
                     transition: `opacity ${CONN_DUR}ms ease, transform ${CONN_DUR}ms ease`,
                     transitionDelay: inView ? `${120 + i * STEP + STEP * 0.75}ms` : '0ms',
                   } as React.CSSProperties}
@@ -840,14 +835,13 @@ const Resources: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpen
 // ─────────────────────────────────────────────────────────────────
 export const Principles: React.FC = () => (
   <section id="principles">
-    <div className="section" style={{ paddingBottom: '8px' }}>
+    <div className="section landing-principles-section">
       <ScrollAnimation>
         <span className="eyebrow">What we believe</span>
       </ScrollAnimation>
       <LineReveal
         as="h2"
-        className="display"
-        style={{ fontSize: 'clamp(32px,3.5vw,44px)', fontWeight: 700, letterSpacing: '-1.5px', marginBottom: 0 }}
+        className="display landing-section-h2 landing-principles-title"
         text="Four commitments we don't negotiate"
       />
     </div>

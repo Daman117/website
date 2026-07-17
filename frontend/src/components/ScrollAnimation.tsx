@@ -61,13 +61,10 @@ const StaggerItem: React.FC<StaggerItemProps> = ({ children, delay, duration, di
   return (
     <div
       ref={ref}
-      className={`sa-base ${directionMap[direction]} ${inView ? 'sa-visible' : ''}`}
+      className={`sa-base scroll-stagger-item ${directionMap[direction]} ${inView ? 'sa-visible' : ''}`}
       style={{
         transitionDuration: `${duration}ms`,
         transitionDelay: inView ? `${delay}ms` : '0ms',
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
       }}
     >
       {children}

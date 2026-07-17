@@ -1,0 +1,205 @@
+/* enGRAM Page */
+.engram-hero-badge-text {
+  color: #fde68a;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.engram-hero-h1-text {
+  color: #ffffff;
+}
+
+.engram-hero-h1-accent {
+  color: #FDB022;
+}
+
+.engram-hero-sub-text {
+  color: rgba(255, 255, 255, 0.96);
+}
+
+.engram-hero-body-text {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.engram-hero-chips {
+  margin-bottom: 28px;
+}
+
+.engram-hero-chip {
+  color: #fde68a;
+  background: rgba(253, 176, 34, 0.22);
+  border-color: rgba(253, 224, 138, 0.4);
+}
+
+.engram-section-lead {
+  font-size: 14px;
+  color: var(--t4);
+  margin-bottom: 32px;
+}
+
+.engram-section-lead-max {
+  font-size: 14px;
+  color: var(--t4);
+  margin-bottom: 32px;
+  max-width: 720px;
+}
+
+.engram-challenge-icon {
+  color: #FDB022;
+  margin-bottom: 12px;
+  line-height: 1;
+}
+
+.engram-card-h3 {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.engram-card-p {
+  font-size: 12px;
+  color: var(--t4);
+  line-height: 1.65;
+}
+
+.engram-card-note {
+  font-size: 12px;
+  color: var(--t5);
+  margin-top: 20px;
+  font-style: italic;
+}
+
+.engram-diagram-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+
+.engram-diagram-subtitle {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 6px;
+}
+
+.engram-diagram-desc {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.65;
+  margin: 0;
+}
+
+.engram-trust-eyebrow {
+  margin-bottom: 8px;
+  display: block;
+}
+
+.engram-trust-desc {
+  font-size: 12px;
+  color: var(--t4);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.engram-trust-list-item {
+  margin-bottom: 8px;
+}
+
+.engram-trust-bullet {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+
+.engram-trust-bullet-green {
+  background: #10B981;
+}
+
+.engram-trust-bullet-blue {
+  background: #2563EB;
+}
+
+.engram-trust-bullet-yellow {
+  background: #FDB022;
+}
+
+.engram-trust-text {
+  font-size: 12px;
+  color: var(--t3);
+  line-height: 1.6;
+}
+
+.engram-trust-note {
+  font-size: 12px;
+  color: var(--t5);
+  margin-top: 14px;
+  font-style: italic;
+}
+
+.engram-trust-card-yellow {
+  border-color: rgba(253, 176, 34, 0.25);
+}
+
+.engram-trust-eyebrow-yellow {
+  color: #FDB022;
+}
+
+.engram-comparison-card {
+  padding: 10px 18px;
+  overflow-x: auto;
+}
+
+.engram-comparison-table {
+  table-layout: fixed;
+}
+
+.engram-table-col-first {
+  width: 34%;
+}
+
+.engram-table-th {
+  text-align: center;
+}
+
+.engram-highlight {
+  color: #FDB022;
+}
+
+.engram-table-phase {
+  font-weight: 600;
+  color: var(--t2);
+}
+
+.engram-table-cell-center {
+  text-align: center;
+}
+
+.engram-table-summary {
+  font-size: 13px;
+  color: var(--primary);
+  margin-top: 16px;
+  font-weight: 500;
+}
+
+.engram-outcomes-lead {
+  font-size: 15px;
+  color: var(--t3);
+  line-height: 1.85;
+  max-width: 680px;
+  margin-bottom: 32px;
+}
+
+.engram-outcome-bullet {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #FDB022;
+  flex-shrink: 0;
+}
+
+.engram-cta-wrap {
+  margin-top: 40px;
+}

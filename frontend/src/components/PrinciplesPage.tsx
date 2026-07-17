@@ -2,7 +2,7 @@ import React from 'react';
 import { Principles } from './LandingPage';
 
 const PrinciplesPage: React.FC = () => (
-  <main style={{ paddingTop: '80px' }}>
+  <main className="u-pt-80">
     <div className="lp-body">
       <Principles />
     </div>
