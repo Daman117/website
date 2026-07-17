@@ -47,8 +47,9 @@ const TickerItems: React.FC = () => {
           type="button"
           className="ticker-item"
           onClick={() => navigate(`/products/${c.id}`)}
+          style={{ '--cap-color': c.color } as React.CSSProperties}
         >
-          <span className="ticker-dot" style={{ background: c.color }} />
+          <span className="ticker-dot" />
           <span className="ticker-name">{c.name}</span>
           <span className="ticker-cat">{c.cat}</span>
         </button>
@@ -128,11 +129,11 @@ const StatCell: React.FC<StatCellProps> = ({
 // DEMO SUB-RENDERERS
 // ─────────────────────────────────────────────────────────────────
 const ColList: React.FC<{ label: string; items: string[]; color?: string }> = ({ label, items, color }) => (
-  <div className="demo-col">
+  <div className="demo-col" style={color ? ({ '--d-color': color } as React.CSSProperties) : undefined}>
     <div className="demo-col-label">{label}</div>
     <ul className="demo-col-list">
       {items.map((it) => (
-        <li key={it}><span style={color ? { color } : undefined}>—</span>{it}</li>
+        <li key={it}><span className={color ? 'demo-col-dash accent' : 'demo-col-dash'}>—</span>{it}</li>
       ))}
     </ul>
   </div>
@@ -150,13 +151,13 @@ const DemoBody: React.FC<{ d: DemoCard }> = ({ d }) => {
   }
   if (d.kind === 'query' && d.query && d.answer) {
     return (
-      <div className="demo-query">
+      <div className="demo-query" style={{ '--d-color': d.color } as React.CSSProperties}>
         <div className="demo-q">
-          <span className="demo-q-icon" style={{ color: d.color }}>?</span>
+          <span className="demo-q-icon">?</span>
           {d.query}
         </div>
         <div className="demo-a">
-          <div className="demo-a-value" style={{ color: d.color }}>{d.answer.value}</div>
+          <div className="demo-a-value">{d.answer.value}</div>
           <div className="demo-a-cite">
             <span>{d.answer.source}</span>
             <span>{d.answer.revision}</span>
@@ -205,7 +206,11 @@ const CapCard: React.FC<{ cap: Cap }> = ({ cap }) => {
   return (
     <div
       className="cap-card"
-      style={{ '--accent': cap.color } as React.CSSProperties}
+      style={{
+        '--accent': cap.color,
+        '--accent-a18': `${cap.color}18`,
+        '--accent-a55': `${cap.color}55`,
+      } as React.CSSProperties}
       onClick={go}
       role="link"
       tabIndex={0}
@@ -218,10 +223,7 @@ const CapCard: React.FC<{ cap: Cap }> = ({ cap }) => {
         <div className="cap-card-name-row">
           <span className="cap-card-name">{cap.name}</span>
         </div>
-        <span
-          className="badge"
-          style={{ color: cap.color, background: `${cap.color}18`, borderColor: `${cap.color}55` }}
-        >
+        <span className="badge cap-card-status-badge">
           {cap.status}
         </span>
       </div>
@@ -230,7 +232,6 @@ const CapCard: React.FC<{ cap: Cap }> = ({ cap }) => {
       <button
         className="cap-card-btn"
         onClick={(e) => { e.stopPropagation(); go(); }}
-        style={{ background: `linear-gradient(135deg,${cap.color} 0%,var(--navy) 130%)` }}
       >
         View Details →
       </button>
@@ -315,7 +316,7 @@ const ProductDemo: React.FC = () => {
   const active = demos[activeIndex];
 
   return (
-    <div ref={containerRef} id="demo" className="landing-demo-section" style={{ height: `${N * 100}vh` }}>
+    <div ref={containerRef} id="demo" className="landing-demo-section" style={{ '--demo-h': `${N * 100}vh` } as React.CSSProperties}>
       <div className="demo-sticky">
         {/* Left — heading + progress list */}
         <div className="demo-sticky-left">
@@ -337,7 +338,7 @@ const ProductDemo: React.FC = () => {
                   window.scrollTo({ top, behavior: 'smooth' });
                 }}
               >
-                <span className="demo-step-product" style={{ color: i === activeIndex ? d.color : undefined }}>
+                <span className="demo-step-product">
                   {d.product}
                 </span>
                 <span className="demo-step-title">{d.title}</span>
@@ -348,7 +349,10 @@ const ProductDemo: React.FC = () => {
           <div className="demo-progress-track">
             <motion.div
               className="demo-progress-fill"
-              style={{ scaleX: useTransform(scrollYProgress, [0, 1], [0, 1]), background: active.color }}
+              style={{
+                scaleX: useTransform(scrollYProgress, [0, 1], [0, 1]),
+                '--accent': active.color,
+              } as React.CSSProperties}
             />
           </div>
         </div>
@@ -367,11 +371,11 @@ const ProductDemo: React.FC = () => {
               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             >
               <div className="demo-card-head">
-                <span className="demo-card-product" style={{ color: active.color }}>{active.product}</span>
+                <span className="demo-card-product">{active.product}</span>
                 <span className="demo-card-title">{active.title}</span>
               </div>
               <DemoBody d={active} />
-              <div className="demo-card-counter" style={{ color: active.color }}>
+              <div className="demo-card-counter">
                 {activeIndex + 1} / {N}
               </div>
             </motion.div>
@@ -382,7 +386,7 @@ const ProductDemo: React.FC = () => {
               <span
                 key={d.id}
                 className={`demo-dot${i === activeIndex ? ' active' : ''}`}
-                style={{ background: i === activeIndex ? d.color : undefined }}
+                style={{ '--dot-color': d.color } as React.CSSProperties}
               />
             ))}
           </div>
@@ -433,6 +437,7 @@ const HowItWorks: React.FC = () => {
               className="how-step hover-lift"
               style={{
                 '--accent': s.color,
+                '--accent-a55': `${s.color}55`,
                 opacity: inView ? 1 : 0.15,
                 filter: inView ? 'none' : 'grayscale(0.8)',
                 transition: `opacity 700ms ease, filter 700ms ease`,
@@ -445,7 +450,7 @@ const HowItWorks: React.FC = () => {
                 </span>
                 <span className="how-connector" aria-hidden="true" />
               </div>
-              <span className="how-actor" style={{ color: s.color }}>{s.actor}</span>
+              <span className="how-actor">{s.actor}</span>
               <h3 className="how-title">{s.title}</h3>
               <div className="how-io">
                 <div className="how-io-label">{s.inLabel}</div>
@@ -454,10 +459,10 @@ const HowItWorks: React.FC = () => {
                 </div>
               </div>
               <div className="how-io">
-                <div className="how-io-label" style={{ color: s.color }}>{s.outLabel}</div>
+                <div className="how-io-label how-io-label-accent">{s.outLabel}</div>
                 <div className="how-tags">
                   {s.outputs.map((t) => (
-                    <span key={t} className="how-tag how-tag-out" style={{ borderColor: `${s.color}55`, color: s.color }}>
+                    <span key={t} className="how-tag how-tag-out">
                       {t}
                     </span>
                   ))}
@@ -564,7 +569,7 @@ export const Platform: React.FC = () => {
                   transitionDelay: inView ? `${120 + i * STEP}ms` : '0ms',
                 } as React.CSSProperties}
               >
-                <div className="pipe-cap" style={{ color: node.color }}>{node.cap}</div>
+                <div className="pipe-cap">{node.cap}</div>
                 <div className="pipe-sub">{node.label}</div>
                 <div className="pipe-desc">{node.sub}</div>
               </div>
@@ -642,9 +647,9 @@ export const Architecture: React.FC = () => (
                 <div
                   key={c.name}
                   className="arch-cap-chip"
-                  style={{ '--accent': c.color, borderBottomColor: c.color } as React.CSSProperties}
+                  style={{ '--accent': c.color } as React.CSSProperties}
                 >
-                  <span className="arch-cap-dot" style={{ background: c.color }} />
+                  <span className="arch-cap-dot" />
                   <span className="arch-cap-name">{c.name}</span>
                 </div>
               ))}
@@ -758,13 +763,14 @@ const CaseStudies: React.FC = () => (
           <div
             key={c.id}
             className="case-card hover-lift"
-            style={{ '--accent': c.color } as React.CSSProperties}
+            style={{
+              '--accent': c.color,
+              '--accent-a14': `${c.color}14`,
+              '--accent-a55': `${c.color}55`,
+            } as React.CSSProperties}
           >
             <div className="case-top">
-              <span
-                className="case-tag"
-                style={{ color: c.color, borderColor: `${c.color}55`, background: `${c.color}14` }}
-              >
+              <span className="case-tag">
                 {c.tag}
               </span>
               <h3 className="case-title">{c.title}</h3>
@@ -775,12 +781,12 @@ const CaseStudies: React.FC = () => (
                 <p className="case-step-text">{c.problem}</p>
               </div>
               <div className="case-step">
-                <span className="case-step-label" style={{ color: c.color }}>Solution</span>
+                <span className="case-step-label case-step-label-accent">Solution</span>
                 <p className="case-step-text">{c.solution}</p>
               </div>
             </div>
             <div className="case-result">
-              <span className="case-step-label" style={{ color: c.color }}>Result</span>
+              <span className="case-step-label case-step-label-accent">Result</span>
               <p className="case-step-text">{c.result}</p>
             </div>
           </div>

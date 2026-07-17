@@ -42,6 +42,8 @@
   left: 0;
   height: 4px;
   border-radius: 2px;
+  width: var(--pct);
+  background: var(--accent);
 }
 
 .video-progress-thumb {
@@ -50,6 +52,9 @@
   width: 13px;
   height: 13px;
   border-radius: 50%;
+  left: var(--pct);
+  background: var(--accent);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.25);
 }
 
 .video-controls {

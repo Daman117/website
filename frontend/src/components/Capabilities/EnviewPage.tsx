@@ -203,7 +203,6 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
     <main className="engram-page" style={{ '--accent': ACCENT, '--accent-rgb': ACCENT_RGB } as React.CSSProperties}>
       <style>{`
         @keyframes flowPulse  { 0%,100% { opacity:0.3; } 50% { opacity:1; } }
-        @keyframes iconFlash  { 0%,100% { color:inherit; } 40% { color:#f97316; filter:drop-shadow(0 0 6px #f97316); } }
         @keyframes dotGlow    { 0%,100% { box-shadow:0 0 0 0 rgba(37,99,235,0); } 50% { box-shadow:0 0 0 6px rgba(37,99,235,0.25); } }
         @keyframes cardGlow   { 0%,100% { box-shadow:var(--card-shadow); } 50% { box-shadow:0 0 0 2px rgba(37,99,235,0.35), 0 8px 32px rgba(37,99,235,0.18); } }
         @keyframes rowSlide   { from { opacity:0; transform:translateX(-12px); } to { opacity:1; transform:translateX(0); } }
@@ -260,7 +259,10 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         <ScrollStagger className="engram-quad" step={70}>
           {challenges.map((c, i) => (
             <div key={c.title} className="engram-card">
-              <div className="enview-challenge-icon" style={{ animation: challengeInView ? `iconFlash 2.4s ease-in-out ${i * 0.6}s 3` : 'none' }}><TriangleAlert size={22} strokeWidth={1.75} /></div>
+              <div
+                className={challengeInView ? 'enview-challenge-icon flash' : 'enview-challenge-icon'}
+                style={{ '--icon-delay': `${i * 0.6}s` } as React.CSSProperties}
+              ><TriangleAlert size={22} strokeWidth={1.75} /></div>
               <h3 className="engram-card-title enview-card-h3">{c.title}</h3>
               <p className="enview-card-desc">{c.desc}</p>
             </div>
@@ -289,7 +291,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
               <div className="enview-view-card-overlay" />
               {/* Title — always visible at top */}
               <div className="enview-view-card-header">
-                <div style={{ color: v.color }}><v.Icon size={18} strokeWidth={1.75} /></div>
+                <div className="enview-view-card-icon"><v.Icon size={18} strokeWidth={1.75} /></div>
                 <h3 className="enview-view-title">{v.title}</h3>
               </div>
               {/* Subtitle + desc — slides up on hover */}
@@ -330,7 +332,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         <ScrollStagger className="engram-quad" step={70}>
           {safety.map((s) => (
             <div key={s.title} className="engram-card">
-              <div className="enview-safety-dot" style={{ animation: safetyInView ? 'dotGlow 2s ease-in-out infinite' : 'none' }} />
+              <div className={safetyInView ? 'enview-safety-dot pulse' : 'enview-safety-dot'} />
               <h3 className="engram-card-title enview-card-h3">{s.title}</h3>
               <p className="enview-card-desc">{s.desc}</p>
             </div>
@@ -366,22 +368,12 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
                       return (
                         <td
                           key={i}
-                          style={{
-                            color: isEnview ? ACCENT : i === 0 ? 'var(--t3)' : 'var(--t4)',
-                            fontWeight: i === 0 ? 600 : undefined,
-                            background: isEnview
-                              ? `rgba(${ACCENT_RGB},0.07)`
-                              : isCompare
-                              ? 'rgba(100,100,120,0.10)'
-                              : undefined,
-                            borderRadius: (isEnview || isCompare) ? 6 : undefined,
-                            transition: 'background 0.35s ease, color 0.35s ease, box-shadow 0.35s ease',
-                            boxShadow: isEnview
-                              ? `inset 0 0 0 1px rgba(${ACCENT_RGB},0.22)`
-                              : isCompare
-                              ? 'inset 0 0 0 1px rgba(120,120,140,0.3)'
-                              : undefined,
-                          }}
+                          className={[
+                            'enview-table-td',
+                            i === 0 && 'first',
+                            isEnview && 'enview-active',
+                            isCompare && 'compare-active',
+                          ].filter(Boolean).join(' ')}
                         >
                           {val}
                         </td>

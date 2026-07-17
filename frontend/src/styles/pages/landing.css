@@ -32,6 +32,7 @@
 
 .landing-demo-section {
   position: relative;
+  height: var(--demo-h);
 }
 
 .landing-section-h2 {

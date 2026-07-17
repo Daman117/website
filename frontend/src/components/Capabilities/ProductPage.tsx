@@ -18,13 +18,13 @@ const ProductExtras: React.FC<{ cap: Cap }> = ({ cap }) => {
             <React.Fragment key={k}>
               <div className="pp-flow-col">
                 <div className="pp-flow-label">{k === 'inputs' ? 'Inputs' : k === 'processing' ? 'Processing' : 'Outputs'}</div>
-                <ul className="pp-flow-list">
+                <ul className={k === 'outputs' ? 'pp-flow-list pp-flow-list-accent' : 'pp-flow-list'}>
                   {extra.flow[k].map((item) => (
-                    <li key={item} style={k === 'outputs' ? { color: cap.color } : undefined}>{item}</li>
+                    <li key={item}>{item}</li>
                   ))}
                 </ul>
               </div>
-              {i < 2 && <div className="pp-flow-arrow" style={{ color: cap.color }} aria-hidden="true">→</div>}
+              {i < 2 && <div className="pp-flow-arrow" aria-hidden="true">→</div>}
             </React.Fragment>
           ))}
         </div>
@@ -36,7 +36,7 @@ const ProductExtras: React.FC<{ cap: Cap }> = ({ cap }) => {
         <div className="pp-uc-grid">
           {extra.useCases.map((u) => (
             <div key={u.role} className="pp-uc">
-              <span className="pp-uc-role" style={{ color: cap.color }}>{u.role}</span>
+              <span className="pp-uc-role">{u.role}</span>
               <p className="pp-uc-text">{u.text}</p>
             </div>
           ))}
@@ -48,7 +48,7 @@ const ProductExtras: React.FC<{ cap: Cap }> = ({ cap }) => {
         <LineReveal as="h2" className="pp-block-title" text="Expected outcomes" />
         <ul className="pp-outcomes">
           {extra.outcomes.map((o) => (
-            <li key={o}><span style={{ color: cap.color }}>✓</span>{o}</li>
+            <li key={o}><span className="pp-outcome-check">✓</span>{o}</li>
           ))}
         </ul>
       </div>
@@ -121,7 +121,7 @@ const SpecsRight: React.FC<{ cap: Cap; onOpenContact: (src?: string) => void }> 
         {specs.map((s) => (
           <div key={s.l} className="spec-cell">
             <div className="spec-label">{s.l}</div>
-            <div className="spec-val" style={{ color: cap.color }}>{s.v}</div>
+            <div className="spec-val">{s.v}</div>
           </div>
         ))}
       </div>
@@ -151,12 +151,12 @@ const ProductPage: React.FC<ProductPageProps> = ({ onOpenContact }) => {
 
   return (
     <>
-      <main className="product-page">
+      <main className="product-page" style={{ '--cap-color': cap.color, '--accent': cap.color } as React.CSSProperties}>
         <div className="product-page-inner">
           {/* Header */}
           <div className="product-page-header">
             <div className="product-page-title-row">
-              <div className="cap-card-dot" style={{ background: cap.color }} />
+              <div className="cap-card-dot" />
               <LineReveal as="h1" className="product-page-name" text={cap.name} />
             </div>
             <div className="product-page-cat">{cap.cat}</div>

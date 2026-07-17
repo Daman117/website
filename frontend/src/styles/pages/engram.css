@@ -45,6 +45,10 @@
   max-width: 720px;
 }
 
+.engram-challenge-icon.flash {
+  animation: iconFlash 2.4s ease-in-out var(--icon-delay, 0s) 3;
+}
+
 .engram-challenge-icon {
   color: #FDB022;
   margin-bottom: 12px;
@@ -158,6 +162,10 @@
 
 .engram-table-col-first {
   width: 34%;
+}
+
+.engram-table-col {
+  width: var(--col-w);
 }
 
 .engram-table-th {

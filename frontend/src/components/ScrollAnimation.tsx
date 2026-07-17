@@ -36,10 +36,10 @@ const ScrollAnimation: React.FC<ScrollAnimationProps> = ({
       ref={ref}
       className={`sa-base ${directionMap[direction]} ${inView ? 'sa-visible' : ''} ${className}`}
       style={{
-        transitionDuration: `${duration}ms`,
-        transitionDelay: inView ? `${delay}ms` : '0ms',
+        '--t-dur': `${duration}ms`,
+        '--t-delay': inView ? `${delay}ms` : '0ms',
         ...style,
-      }}
+      } as React.CSSProperties}
     >
       {children}
     </div>
@@ -63,9 +63,9 @@ const StaggerItem: React.FC<StaggerItemProps> = ({ children, delay, duration, di
       ref={ref}
       className={`sa-base scroll-stagger-item ${directionMap[direction]} ${inView ? 'sa-visible' : ''}`}
       style={{
-        transitionDuration: `${duration}ms`,
-        transitionDelay: inView ? `${delay}ms` : '0ms',
-      }}
+        '--t-dur': `${duration}ms`,
+        '--t-delay': inView ? `${delay}ms` : '0ms',
+      } as React.CSSProperties}
     >
       {children}
     </div>
@@ -146,7 +146,7 @@ export const LineReveal: React.FC<LineRevealProps> = ({
           <span className="lr-mask">
             <span
               className={`lr-inner${inView ? ' lr-in' : ''}`}
-              style={{ transitionDuration: `${duration}ms`, transitionDelay: inView ? `${startDelay + i * wordDelay}ms` : '0ms' }}
+              style={{ '--t-dur': `${duration}ms`, '--t-delay': inView ? `${startDelay + i * wordDelay}ms` : '0ms' } as React.CSSProperties}
             >
               {word}
             </span>
@@ -203,7 +203,7 @@ export const RevealLines: React.FC<RevealLinesProps> = ({
               <span className="lr-mask">
                 <span
                   className={`lr-inner${inView ? ' lr-in' : ''}`}
-                  style={{ transitionDuration: `${duration}ms`, transitionDelay: inView ? `${startDelay + i * wordDelay}ms` : '0ms' }}
+                  style={{ '--t-dur': `${duration}ms`, '--t-delay': inView ? `${startDelay + i * wordDelay}ms` : '0ms' } as React.CSSProperties}
                 >
                   {word}
                 </span>

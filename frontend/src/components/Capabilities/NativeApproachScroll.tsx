@@ -104,7 +104,7 @@ const NativeApproachScroll: React.FC<Props> = ({
                 <item.Icon size={22} color={item.color} strokeWidth={1.75} />
               </div>
             </div>
-            <h3 ref={(el) => { titleRefs.current[i] = el; }} className="engram-cap-title approach-card-title approach-title-text" style={{ color: item.color }}>
+            <h3 ref={(el) => { titleRefs.current[i] = el; }} className="engram-cap-title approach-card-title approach-title-text">
               {item.title}
             </h3>
             <p className="engram-cap-sub">{item.subtitle}</p>
@@ -115,7 +115,7 @@ const NativeApproachScroll: React.FC<Props> = ({
                   if (!bulletRefs.current[i]) bulletRefs.current[i] = [];
                   bulletRefs.current[i][fi] = el;
                 }}>
-                  <span className="approach-bullet-dash" style={{ color: item.color }}>—</span>
+                  <span className="approach-bullet-dash">—</span>
                   <span>{f}</span>
                 </li>
               ))}

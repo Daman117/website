@@ -47,6 +47,10 @@
   max-width: 720px;
 }
 
+.enstudio-challenge-icon.flash {
+  animation: iconFlash 2.4s ease-in-out var(--icon-delay, 0s) 3;
+}
+
 .enstudio-challenge-icon {
   color: var(--accent);
   margin-bottom: 12px;
@@ -90,6 +94,18 @@
 .enstudio-trust-eyebrow {
   margin-bottom: 8px;
   display: block;
+}
+
+.enstudio-trust-eyebrow-accent {
+  color: var(--accent);
+}
+
+.enstudio-trust-eyebrow-green {
+  color: #34D399;
+}
+
+.enstudio-table-th-accent {
+  color: var(--accent);
 }
 
 .enstudio-trust-card {
@@ -163,11 +179,16 @@
   font-weight: 500;
 }
 
+.enstudio-adapter-card {
+  border-color: var(--adapter-color-a40);
+}
+
 .enstudio-adapter-tag {
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
+  color: var(--adapter-color);
 }
 
 .enstudio-adapter-bullet {
@@ -175,6 +196,7 @@
   height: 8px;
   border-radius: 50%;
   flex-shrink: 0;
+  background: var(--adapter-color);
 }
 
 .enstudio-adapter-title {
@@ -194,6 +216,7 @@
   border-radius: 50%;
   margin-top: 8px;
   flex-shrink: 0;
+  background: var(--adapter-color);
 }
 
 .enstudio-adapter-point-text {

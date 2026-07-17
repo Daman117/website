@@ -67,8 +67,8 @@ const Connector: React.FC<{ index: number; inView: boolean; accent: string; wrap
 };
 
 // ── Individual card ──────────────────────────────────────────────────────────
-const Card: React.FC<{ step: HowItWorksStep; index: number; inView: boolean; accent: string; accentRgb: string }> = ({
-  step, index, inView, accent, accentRgb,
+const Card: React.FC<{ step: HowItWorksStep; index: number; inView: boolean; accent: string }> = ({
+  step, index, inView, accent,
 }) => {
   const delay = index * STEP_DELAY;
   const color = step.color || accent;
@@ -86,10 +86,6 @@ const Card: React.FC<{ step: HowItWorksStep; index: number; inView: boolean; acc
         initial={{ scale: 0.6, opacity: 0 }}
         animate={inView ? { scale: 1, opacity: 1 } : { scale: 0.6, opacity: 0 }}
         transition={{ duration: 0.45, delay: delay + 0.2, ease: [0.34, 1.56, 0.64, 1] }}
-        style={{
-          background: `rgba(${accentRgb},0.07)`,
-          border: `1.5px solid rgba(${accentRgb},0.18)`,
-        }}
       >
         <step.icon size={22} color={color} strokeWidth={1.75} />
       </motion.div>
@@ -127,7 +123,7 @@ const PromoVideo: React.FC<{ src: string; poster?: string; inView: boolean; dela
               <video src={src} muted preload="metadata" className="how-video-media" />
             )}
             <div className="how-video-overlay">
-              <div className="how-video-play" style={{ boxShadow: `0 8px 28px rgba(${accentRgb},0.4)` }}>
+              <div className="how-video-play">
                 <Play size={26} color={accent} fill={accent} className="how-video-icon" />
               </div>
             </div>
@@ -148,7 +144,7 @@ const HowItWorksScroll: React.FC<HowItWorksScrollProps> = ({
   const inView = useInView(sectionRef, { once: true, margin: '-80px' });
 
   return (
-    <section className="engram-section engram-container">
+    <section className="engram-section engram-container" style={{ '--accent': accent, '--accent-rgb': accentRgb } as React.CSSProperties}>
       <span className="eyebrow">{eyebrow}</span>
       <LineReveal as="h2" className="engram-section-h2" text={title} />
 
@@ -158,7 +154,7 @@ const HowItWorksScroll: React.FC<HowItWorksScrollProps> = ({
       <div ref={sectionRef} className={rowClassName}>
         {steps.map((step, i) => (
           <React.Fragment key={i}>
-            <Card step={step} index={i} inView={inView} accent={accent} accentRgb={accentRgb} />
+            <Card step={step} index={i} inView={inView} accent={accent} />
             {i < steps.length - 1 && (
               <Connector index={i} inView={inView} accent={accent} wrapClassName={connWrapClassName} width={connWidth} />
             )}
@@ -186,15 +182,10 @@ const HowItWorksScroll: React.FC<HowItWorksScrollProps> = ({
           initial={{ opacity: 0, y: 18 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
           transition={{ duration: 0.55, delay: (steps.length - 1) * STEP_DELAY + CARD_DUR + (video ? 0.65 : 0.25), ease: [0.16, 1, 0.3, 1] }}
-          style={{
-            borderColor: `rgba(${accentRgb},0.35)`,
-            background: `linear-gradient(135deg, rgba(${accentRgb},0.08) 0%, rgba(${accentRgb},0.04) 100%)`,
-            boxShadow: `0 0 0 1px rgba(${accentRgb},0.18), 0 4px 24px rgba(${accentRgb},0.1)`,
-          }}
         >
           <div className="how-impact-label">{impact.label}</div>
           <div className="how-impact-text">
-            Reduce from <strong className="how-impact-strong">{impact.before}</strong> to <strong style={{ color: accent }}>{impact.after}</strong>
+            Reduce from <strong className="how-impact-strong">{impact.before}</strong> to <strong className="how-impact-accent">{impact.after}</strong>
           </div>
         </motion.div>
       )}

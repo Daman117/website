@@ -172,9 +172,6 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
 
   return (
     <main className="engram-page">
-      <style>{`
-        @keyframes iconFlash { 0%,100% { color:inherit; } 40% { color:#f97316; filter:drop-shadow(0 0 6px #f97316); } }
-      `}</style>
 
       {/* ── HERO (pinned parallax background — iOS-safe, see HeroShell) ── */}
       <HeroShell image="/engram-hero.webp" contentClassName="engram-hero engram-container">
@@ -222,7 +219,10 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
         <ScrollStagger className="engram-quad" step={400} duration={600}>
           {challenges.map((c, i) => (
             <div key={i} className="engram-card">
-              <div className="engram-challenge-icon" style={{ animation: challengeInView ? `iconFlash 2.4s ease-in-out ${i * 0.6}s 3` : 'none' }}><TriangleAlert size={22} strokeWidth={1.75} /></div>
+              <div
+                className={challengeInView ? 'engram-challenge-icon flash' : 'engram-challenge-icon'}
+                style={{ '--icon-delay': `${i * 0.6}s` } as React.CSSProperties}
+              ><TriangleAlert size={22} strokeWidth={1.75} /></div>
               <h3 className="engram-card-title engram-card-h3">{c.title}</h3>
               <p className="engram-card-p card-desc">{c.desc}</p>
             </div>
@@ -260,7 +260,7 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
               <div className="enview-view-card-img" />
               <div className="enview-view-card-overlay" />
               <div className="enview-view-card-header">
-                <div style={{ color: v.color }}><v.Icon size={18} strokeWidth={1.75} /></div>
+                <div className="enview-view-card-icon"><v.Icon size={18} strokeWidth={1.75} /></div>
                 <h3 className="engram-diagram-title diagram-title">{v.title}</h3>
               </div>
               <div className="enview-view-card-text">
@@ -358,7 +358,9 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
           <table className="engram-table engram-comparison-table">
             <colgroup>
               <col className="engram-table-col-first" />
-              {comparisonMatrix.cols.map((c) => <col key={c} style={{ width: `${66 / comparisonMatrix.cols.length}%` }} />)}
+              {comparisonMatrix.cols.map((c) => (
+                <col key={c} className="engram-table-col" style={{ '--col-w': `${66 / comparisonMatrix.cols.length}%` } as React.CSSProperties} />
+              ))}
             </colgroup>
             <thead>
               <tr>

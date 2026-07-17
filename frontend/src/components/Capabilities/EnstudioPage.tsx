@@ -243,9 +243,6 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
 
   return (
     <main className="engram-page" style={{ '--accent': ACCENT, '--accent-rgb': '167,139,250' } as React.CSSProperties}>
-      <style>{`
-        @keyframes iconFlash { 0%,100% { color:inherit; } 40% { color:#f97316; filter:drop-shadow(0 0 6px #f97316); } }
-      `}</style>
 
       {/* ── HERO (pinned parallax background — iOS-safe, see HeroShell) ── */}
       <HeroShell image="/enstudio-hero.webp" contentClassName="engram-hero engram-container">
@@ -292,7 +289,10 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
         <ScrollStagger className="engram-three-col" step={70}>
           {challenges.map((c, i) => (
             <div key={i} className="engram-card">
-              <div className="enstudio-challenge-icon" style={{ animation: challengeInView ? `iconFlash 2.4s ease-in-out ${i * 0.6}s 3` : 'none' }}><TriangleAlert size={22} strokeWidth={1.75} /></div>
+              <div
+                className={challengeInView ? 'enstudio-challenge-icon flash' : 'enstudio-challenge-icon'}
+                style={{ '--icon-delay': `${i * 0.6}s` } as React.CSSProperties}
+              ><TriangleAlert size={22} strokeWidth={1.75} /></div>
               <span className="enstudio-card-text">{c}</span>
             </div>
           ))}
@@ -322,7 +322,7 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
               <div className="enview-view-card-overlay" />
               {/* Title — always visible at top */}
               <div className="enview-view-card-header">
-                <div style={{ color: m.color }}><m.Icon size={18} strokeWidth={1.75} /></div>
+                <div className="enview-view-card-icon"><m.Icon size={18} strokeWidth={1.75} /></div>
                 <h3 className="enstudio-card-h3">{m.title}</h3>
               </div>
               {/* Subtitle + desc — slides up on hover */}
@@ -372,7 +372,7 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
           </div>
 
           <div className="engram-card enstudio-trust-card">
-            <span className="eyebrow enstudio-trust-eyebrow" style={{ color: ACCENT }}>Local & Lightweight</span>
+            <span className="eyebrow enstudio-trust-eyebrow enstudio-trust-eyebrow-accent">Local & Lightweight</span>
             <h3 className="engram-card-title">Your Drawings Stay With You</h3>
             <p className="enstudio-trust-desc">
               A simple local tool — no cloud, no heavy install.
@@ -386,7 +386,7 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
           </div>
 
           <div className="engram-card">
-            <span className="eyebrow enstudio-trust-eyebrow" style={{ color: '#34D399' }}>Brownfield Ready</span>
+            <span className="eyebrow enstudio-trust-eyebrow enstudio-trust-eyebrow-green">Brownfield Ready</span>
             <h3 className="engram-card-title">Document What Is Actually Running</h3>
             <p className="enstudio-trust-desc">
               No P&ID? Read the DCS screen that is already live.
@@ -416,7 +416,7 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
               <tr>
                 <th>Approach</th>
                 <th>Limitation</th>
-                <th style={{ color: ACCENT }}>enSTUDIO</th>
+                <th className="enstudio-table-th-accent">enSTUDIO</th>
               </tr>
             </thead>
             <tbody>
@@ -441,16 +441,20 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
         <LineReveal as="h2" className="engram-section-h2" text="One Model, Every Target System" />
         <ScrollStagger className="engram-three-col" step={90}>
           {adapters.map((a) => (
-            <div key={a.label} className="engram-card" style={{ borderColor: `${a.color}40` }}>
+            <div
+              key={a.label}
+              className="engram-card enstudio-adapter-card"
+              style={{ '--adapter-color': a.color, '--adapter-color-a40': `${a.color}40` } as React.CSSProperties}
+            >
               <div className="u-flex u-items-center u-gap-8 enstudio-adapter-row">
-                <div className="enstudio-adapter-bullet" style={{ background: a.color }} />
-                <span className="enstudio-adapter-tag" style={{ color: a.color }}>{a.target}</span>
+                <div className="enstudio-adapter-bullet" />
+                <span className="enstudio-adapter-tag">{a.target}</span>
               </div>
               <h3 className="engram-card-title enstudio-adapter-title">{a.label}</h3>
               <p className="enstudio-adapter-desc">{a.desc}</p>
               {a.points.map((p, i) => (
                 <div key={i} className="u-flex u-items-start u-gap-8 enstudio-trust-list-item">
-                  <div className="enstudio-adapter-point-bullet" style={{ background: a.color }} />
+                  <div className="enstudio-adapter-point-bullet" />
                   <span className="enstudio-adapter-point-text">{p}</span>
                 </div>
               ))}

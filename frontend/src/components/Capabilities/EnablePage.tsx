@@ -160,10 +160,6 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
 
   return (
     <main className="engram-page" style={{ '--accent': ACCENT } as React.CSSProperties}>
-      <style>{`
-        @keyframes iconFlash { 0%,100% { color:inherit; } 40% { color:#f97316; filter:drop-shadow(0 0 6px #f97316); } }
-      `}</style>
-
       {/* ── HERO (pinned parallax background — iOS-safe, see HeroShell) ── */}
       <HeroShell image="/enable-hero.webp" contentClassName="engram-hero engram-container enable-hero-content">
         <div className="engram-hero-badge">
@@ -209,7 +205,10 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
         <ScrollStagger className="engram-quad enable-five-col" step={70}>
           {challenges.map((c, i) => (
             <div key={i} className="engram-card">
-              <div className="enable-challenge-icon" style={{ animation: challengeInView ? `iconFlash 2.4s ease-in-out ${i * 0.6}s 3` : 'none' }}><TriangleAlert size={22} strokeWidth={1.75} /></div>
+              <div
+                className={challengeInView ? 'enable-challenge-icon flash' : 'enable-challenge-icon'}
+                style={{ '--icon-delay': `${i * 0.6}s` } as React.CSSProperties}
+              ><TriangleAlert size={22} strokeWidth={1.75} /></div>
               <span className="enable-card-text">{c}</span>
             </div>
           ))}

@@ -88,16 +88,11 @@ const DemoVideoPlayer: React.FC<DemoVideoPlayerProps> = ({ src, poster, accent, 
           ref={barRef}
           onMouseDown={(e) => { setDragging(true); seekToClientX(e.clientX); }}
           className="video-progress u-w-full u-flex u-items-center"
+          style={{ '--pct': `${pct}%`, '--accent': accent, '--accent-rgb': accentRgb } as React.CSSProperties}
         >
           <div className="video-progress-track" />
-          <div className="video-progress-fill" style={{ width: `${pct}%`, background: accent }} />
-          <div
-            className="video-progress-thumb"
-            style={{
-              left: `${pct}%`, background: accent,
-              boxShadow: `0 0 0 3px rgba(${accentRgb},0.25)`,
-            }}
-          />
+          <div className="video-progress-fill" />
+          <div className="video-progress-thumb" />
         </div>
 
         <div className="video-controls u-flex u-items-center">

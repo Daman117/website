@@ -211,13 +211,17 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
         />
         <ScrollStagger className="engram-two-col" step={120}>
           {audiences.map((a) => (
-            <div key={a.label} className="engram-card" style={{ borderColor: `${a.color}40` }}>
-              <span className="eyebrow engenie-audience-eyebrow" style={{ color: a.color }}>{a.label}</span>
+            <div
+              key={a.label}
+              className="engram-card engenie-audience-card"
+              style={{ '--adapter-color': a.color, '--adapter-color-a40': `${a.color}40` } as React.CSSProperties}
+            >
+              <span className="eyebrow engenie-audience-eyebrow">{a.label}</span>
               <h3 className="engram-card-title engenie-audience-title">{a.tag}</h3>
               <p className="engenie-audience-desc text-body-13 text-muted">{a.desc}</p>
               {a.points.map((p, i) => (
                 <div key={i} className="engenie-audience-list-item u-flex u-gap-8 u-items-start">
-                  <div className="engenie-audience-bullet" style={{ background: a.color }} />
+                  <div className="engenie-audience-bullet" />
                   <span className="engenie-audience-text trust-text">{p}</span>
                 </div>
               ))}
@@ -253,9 +257,13 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
         />
         <ScrollStagger className="engram-three-col" step={90}>
           {orgDna.map((o) => (
-            <div key={o.title} className="engram-card" style={{ borderColor: `${o.color}40` }}>
+            <div
+              key={o.title}
+              className="engram-card engenie-dna-card"
+              style={{ '--adapter-color': o.color, '--adapter-color-a40': `${o.color}40` } as React.CSSProperties}
+            >
               <div className="u-flex u-items-center u-gap-8 engenie-dna-header">
-                <div className="engenie-dna-bullet" style={{ background: o.color }} />
+                <div className="engenie-dna-bullet" />
                 <h3 className="engram-card-title engenie-dna-title">{o.title}</h3>
               </div>
               <p className="engenie-dna-desc text-body-13 text-muted">{o.desc}</p>

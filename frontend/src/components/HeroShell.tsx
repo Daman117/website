@@ -21,7 +21,7 @@ interface HeroShellProps {
 
 const HeroShell: React.FC<HeroShellProps> = ({ image, id, contentClassName, children, after }) => (
   <section id={id} className="hero-shell">
-    <div className="hero-shell-bg" style={{ backgroundImage: `url(${image})` }} />
+    <div className="hero-shell-bg" style={{ '--hero-image': `url(${image})` } as React.CSSProperties} />
     {/* dark gradient — lighter at top so the photo shows, darker at bottom for text */}
     <div className="hero-shell-grad" />
     <div className={`hero-content-wrapper ${contentClassName || ''}`.trim()}>
