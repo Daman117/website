@@ -68,15 +68,13 @@
   flex: 0 0 85%;
 }
 
-/* Accordion — wraps a native <details>/<summary> pair. Desktop can force
-   it open via .accordion-row--force-open (used where the mobile accordion
-   markup is reused as always-expanded desktop content). */
+/* Accordion — wraps a native <details>/<summary> pair. Collapsible on
+   mobile. Marker/cursor reset only — the "always expanded on desktop"
+   override is scoped per-consumer (e.g. .how-io-details, .foot-accordion
+   below) since it has to name the actual child layout class to avoid
+   fighting that child's own display value (flex, grid, ...). */
 .accordion-row > summary {
   cursor: pointer;
   list-style: none;
 }
 .accordion-row > summary::-webkit-details-marker { display: none; }
-.accordion-row--force-open {
-  display: contents;
-}
-.accordion-row--force-open > summary { display: none; }

@@ -46,22 +46,50 @@ const WorkflowSection: React.FC = () => {
               </div>
               <span className="how-actor">{s.actor}</span>
               <h3 className="how-title">{s.title}</h3>
-              <div className="stack how-io">
-                <div className="how-io-label">{s.inLabel}</div>
-                <div className="cluster how-tags">
-                  {s.inputs.map((t) => <span key={t} className="how-tag">{t}</span>)}
+
+              {/* Desktop — always visible, no <details>. A closed <details>'s
+                  content is skipped from paint by the browser even when CSS
+                  forces its display back — not overridable, so desktop gets
+                  its own plain tree instead of trying to force one open. */}
+              <div className="u-hide-mobile">
+                <div className="stack how-io">
+                  <div className="how-io-label">{s.inLabel}</div>
+                  <div className="cluster how-tags">
+                    {s.inputs.map((t) => <span key={t} className="how-tag">{t}</span>)}
+                  </div>
+                </div>
+                <div className="stack how-io">
+                  <div className="how-io-label how-io-label-accent">{s.outLabel}</div>
+                  <div className="cluster how-tags">
+                    {s.outputs.map((t) => (
+                      <span key={t} className="how-tag how-tag-out">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
-              <div className="stack how-io">
-                <div className="how-io-label how-io-label-accent">{s.outLabel}</div>
-                <div className="cluster how-tags">
-                  {s.outputs.map((t) => (
-                    <span key={t} className="how-tag how-tag-out">
-                      {t}
-                    </span>
-                  ))}
+
+              {/* Mobile — real collapsible <details>, first step open */}
+              <details className="accordion-row how-io-details u-hide-desktop" open={i === 0}>
+                <summary className="how-io-summary">Inputs &amp; outputs</summary>
+                <div className="stack how-io">
+                  <div className="how-io-label">{s.inLabel}</div>
+                  <div className="cluster how-tags">
+                    {s.inputs.map((t) => <span key={t} className="how-tag">{t}</span>)}
+                  </div>
                 </div>
-              </div>
+                <div className="stack how-io">
+                  <div className="how-io-label how-io-label-accent">{s.outLabel}</div>
+                  <div className="cluster how-tags">
+                    {s.outputs.map((t) => (
+                      <span key={t} className="how-tag how-tag-out">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </details>
             </div>
           ))}
         </div>

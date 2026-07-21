@@ -2138,6 +2138,21 @@ hr.rule {
   margin-bottom: 18px;
 }
 
+/* Mobile-only accordion (u-hide-desktop on the <details> itself handles
+   ≥768px). Desktop renders a separate plain tree instead — see the
+   FootColumn comment in Footer.tsx for why a forced-open <details> doesn't
+   work here. */
+.foot-accordion-summary {
+  cursor: pointer;
+  margin-bottom: 0;
+  padding: 14px 0;
+  border-top: 1px solid var(--border);
+}
+
+.foot-accordion:last-of-type {
+  border-bottom: 1px solid var(--border);
+}
+
 .foot-link {
   font-size: 13px;
   color: var(--t4);
@@ -3199,6 +3214,19 @@ button.foot-link {
   font-weight: 600;
   border-color: var(--accent-a55);
   color: var(--accent);
+}
+
+/* Mobile-only accordion: inputs/outputs collapse behind a summary row
+   (first step open by default). Desktop renders a separate always-visible
+   tree (see .u-hide-mobile in WorkflowSection.tsx) instead of trying to
+   force this <details> open — see the u-hide-desktop/u-hide-mobile comment
+   in utilities.css for why. */
+.how-io-summary {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  cursor: pointer;
+  padding-top: 4px;
 }
 
 /* ── Industries ────────────────────────────────────────────────── */
