@@ -1,0 +1,47 @@
+/* Layout — centralized, role-based structural primitives.
+   Composed onto existing page classes (e.g. className="grid-3 case-grid"),
+   which stay responsible for color/typography/animation/branding. */
+
+/* Grids */
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xl);
+  align-items: stretch;
+}
+
+.grid-3-compact {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+  align-items: stretch;
+}
+
+/* Stacks */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3xs);
+}
+
+/* Media */
+.media-fill {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Content widths */
+.content-narrow {
+  max-width: var(--content-width-lg);
+}
+
+.content-medium {
+  max-width: 720px;
+}

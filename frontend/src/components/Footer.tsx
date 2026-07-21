@@ -37,14 +37,14 @@ const Footer: React.FC<FooterProps> = ({ onOpenContact }) => (
       {/* Brand */}
       <div>
         <div className="foot-logo">
-          <div className="nav-mark">
+          <div className="u-flex-center nav-mark">
             <Logo />
           </div>
           <div className="nav-word"><span>en</span><span>xplant</span></div>
         </div>
         <LineReveal
           as="p"
-          className="foot-tag"
+          className="body-text foot-tag"
           text="Industrial intelligence capabilities for the plant floor. Built by plant engineers, for plant engineers — local, open, and connected."
         />
       </div>
@@ -54,7 +54,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenContact }) => (
         <LineReveal as="p" className="foot-title" text="Products" />
         <ScrollStagger step={60} duration={550}>
           {products.map((p) => (
-            <Link key={p.id} className="foot-link" to={`/products/${p.id}`}>{p.name}</Link>
+            <Link key={p.id} className="btn-reset foot-link" to={`/products/${p.id}`}>{p.name}</Link>
           ))}
         </ScrollStagger>
       </div>
@@ -64,9 +64,9 @@ const Footer: React.FC<FooterProps> = ({ onOpenContact }) => (
         <LineReveal as="p" className="foot-title" text="Company" />
         <ScrollStagger step={60} duration={550}>
           {companyLinks.map((l) => (
-            <Link key={l.label} className="foot-link" to={l.to}>{l.label}</Link>
+            <Link key={l.label} className="btn-reset foot-link" to={l.to}>{l.label}</Link>
           ))}
-          <button className="foot-link" onClick={() => onOpenContact('Footer')}>Contact Us</button>
+          <button className="btn-reset foot-link" onClick={() => onOpenContact('Footer')}>Contact Us</button>
         </ScrollStagger>
       </div>
 
@@ -74,9 +74,9 @@ const Footer: React.FC<FooterProps> = ({ onOpenContact }) => (
       <div>
         <LineReveal as="p" className="foot-title" text="Resources" />
         <ScrollStagger step={60} duration={550}>
-          <Link className="foot-link" to="/#resources">Resource Center</Link>
-          <button className="foot-link" onClick={() => onOpenContact('Documentation')}>Documentation</button>
-          <button className="foot-link" onClick={() => onOpenContact('Support')}>Support</button>
+          <Link className="btn-reset foot-link" to="/#resources">Resource Center</Link>
+          <button className="btn-reset foot-link" onClick={() => onOpenContact('Documentation')}>Documentation</button>
+          <button className="btn-reset foot-link" onClick={() => onOpenContact('Support')}>Support</button>
         </ScrollStagger>
       </div>
     </div>

@@ -6,7 +6,8 @@ import { ScrollStagger, LineReveal } from '../ScrollAnimation';
 import { prefersReducedMotion } from '../../utils/motion';
 import HowItWorksScroll from './HowItWorksScroll';
 import NativeApproachScroll from './NativeApproachScroll';
-import HeroShell from '../HeroShell';
+import CapabilityHero from '../Capability/Hero';
+import ComparisonTable from '../Capability/ComparisonTable';
 
 interface EngeniePageProps {
   onOpenContact: (source?: string) => void;
@@ -139,50 +140,42 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
   }, []);
   useEffect(() => {
     if (!matrixInView || prefersReducedMotion()) return;
-    rowRefs.current.forEach((row, i) => {
-      if (!row) return;
-      gsap.to(row, {
-        opacity: 1, x: 0, filter: 'blur(0px)', duration: 1.2, delay: i * 0.22, ease: 'power4.out',
-        clearProps: 'transform,filter',
+    const ctx = gsap.context(() => {
+      rowRefs.current.forEach((row, i) => {
+        if (!row) return;
+        gsap.to(row, {
+          opacity: 1, x: 0, filter: 'blur(0px)', duration: 1.2, delay: i * 0.22, ease: 'power4.out',
+          clearProps: 'transform,filter',
+        });
       });
     });
+    return () => ctx.revert();
   }, [matrixInView]);
 
   return (
     <main className="engram-page" style={{ '--accent': ACCENT, '--accent-rgb': ACCENT_RGB } as React.CSSProperties}>
 
       {/* ── HERO (pinned parallax background — iOS-safe, see HeroShell) ── */}
-      <HeroShell image="/engenie-hero.webp" contentClassName="engram-hero engram-container">
-          <div className="engram-hero-badge">
-            <span className="engenie-hero-badge-text">AI-POWERED PROCUREMENT INTELLIGENCE</span>
-          </div>
-          <h1 className="engram-hero-h1 engenie-hero-h1-text">
-            <span className="hero-line-mask">
-              <span className="hero-line-inner hero-delay-150">Industrial Procurement</span>
-            </span>
-            <span className="hero-line-mask">
-              <span className="hero-line-inner engenie-hero-h1-accent hero-delay-500">With Intelligent AI</span>
-            </span>
-          </h1>
-          <p className="engram-hero-sub hero-fade-up engenie-hero-sub-text hero-delay-900">
-            enGENIE revolutionizes how enterprises source and suppliers sell industrial instruments and accessories — AI that understands requirements, organizational standards, and supplier strategies.
-          </p>
-          <p className="engram-hero-body hero-fade-up engenie-hero-body-text hero-delay-1100">
-            General-purpose LLMs guess. enGENIE runs a structured, multi-agent pipeline over your catalogs, datasheets, and standards to deliver precise, compliant, audit-ready procurement recommendations — every accessory accounted for, every choice explained.
-          </p>
-          <div className="hero-fade-up engenie-hero-chips u-flex u-gap-10 u-flex-wrap hero-delay-1300">
-            {heroChips.map((c) => (
-              <span key={c} className="badge hero-chip-badge engenie-hero-chip">
-                {c}
-              </span>
-            ))}
-          </div>
-          <div className="hero-fade-up u-flex u-gap-12 u-flex-wrap hero-delay-1500">
-            <button className="btn-primary" onClick={() => onOpenContact('Request a Demo')}>
-              Request a Demo
-            </button>
-          </div>
-      </HeroShell>
+      <CapabilityHero
+        image="/engenie-hero.webp"
+        badgeText="AI-POWERED PROCUREMENT INTELLIGENCE"
+        titleLine1="Industrial Procurement"
+        titleLine2="With Intelligent AI"
+        subText="enGENIE revolutionizes how enterprises source and suppliers sell industrial instruments and accessories — AI that understands requirements, organizational standards, and supplier strategies."
+        bodyText="General-purpose LLMs guess. enGENIE runs a structured, multi-agent pipeline over your catalogs, datasheets, and standards to deliver precise, compliant, audit-ready procurement recommendations — every accessory accounted for, every choice explained."
+        chips={heroChips}
+        ctaLabel="Request a Demo"
+        onCtaClick={() => onOpenContact('Request a Demo')}
+        classes={{
+          badge: 'badge-text engenie-hero-badge-text',
+          title: 'engenie-hero-h1-text',
+          accent: 'engenie-hero-h1-accent',
+          subtitle: 'engenie-hero-sub-text',
+          body: 'engenie-hero-body-text',
+          chips: 'engenie-hero-chips',
+          chip: 'engenie-hero-chip',
+        }}
+      />
 
 
       {/* ── AI FEATURES ── */}
@@ -191,10 +184,10 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
         <LineReveal as="h2" className="engram-section-h2" text="Precision at Every Step" />
         <ScrollStagger className="engram-quad" step={70}>
           {aiFeatures.map((f) => (
-            <div key={f.title} className="engram-card">
+            <div key={f.title} className="card engram-card">
               <div className="engenie-feature-icon"><f.Icon size={22} strokeWidth={1.75} /></div>
               <h3 className="engram-card-title engenie-card-h3">{f.title}</h3>
-              <p className="engenie-card-p card-desc">{f.desc}</p>
+              <p className="supporting-text-loose engenie-card-p card-desc">{f.desc}</p>
             </div>
           ))}
         </ScrollStagger>
@@ -206,23 +199,23 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
         <LineReveal as="h2" className="engram-section-h2" text="Powering Success for Enterprises & Suppliers" />
         <LineReveal
           as="p"
-          className="engenie-section-lead"
+          className="content-medium engenie-section-lead"
           text="enGENIE creates value across the entire procurement ecosystem — streamlining selection for buyers while accelerating sales for suppliers."
         />
         <ScrollStagger className="engram-two-col" step={120}>
           {audiences.map((a) => (
             <div
               key={a.label}
-              className="engram-card engenie-audience-card"
+              className="card engram-card engenie-audience-card"
               style={{ '--adapter-color': a.color, '--adapter-color-a40': `${a.color}40` } as React.CSSProperties}
             >
               <span className="eyebrow engenie-audience-eyebrow">{a.label}</span>
               <h3 className="engram-card-title engenie-audience-title">{a.tag}</h3>
-              <p className="engenie-audience-desc text-body-13 text-muted">{a.desc}</p>
+              <p className="body-text engenie-audience-desc text-body-13 text-muted">{a.desc}</p>
               {a.points.map((p, i) => (
                 <div key={i} className="engenie-audience-list-item u-flex u-gap-8 u-items-start">
                   <div className="engenie-audience-bullet" />
-                  <span className="engenie-audience-text trust-text">{p}</span>
+                  <span className="supporting-text engenie-audience-text trust-text">{p}</span>
                 </div>
               ))}
             </div>
@@ -252,21 +245,21 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
         <LineReveal as="h2" className="engram-section-h2" text="Built for Enterprise Procurement Excellence" />
         <LineReveal
           as="p"
-          className="engenie-section-lead"
+          className="content-medium engenie-section-lead"
           text="enGENIE doesn't just search — it thinks. Every recommendation considers your complete procurement ecosystem, ensuring alignment with strategic objectives and operational requirements."
         />
-        <ScrollStagger className="engram-three-col" step={90}>
+        <ScrollStagger className="grid-3 engram-three-col" step={90}>
           {orgDna.map((o) => (
             <div
               key={o.title}
-              className="engram-card engenie-dna-card"
+              className="card engram-card engenie-dna-card"
               style={{ '--adapter-color': o.color, '--adapter-color-a40': `${o.color}40` } as React.CSSProperties}
             >
               <div className="u-flex u-items-center u-gap-8 engenie-dna-header">
                 <div className="engenie-dna-bullet" />
                 <h3 className="engram-card-title engenie-dna-title">{o.title}</h3>
               </div>
-              <p className="engenie-dna-desc text-body-13 text-muted">{o.desc}</p>
+              <p className="body-text engenie-dna-desc text-body-13 text-muted">{o.desc}</p>
             </div>
           ))}
         </ScrollStagger>
@@ -278,29 +271,18 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
         <LineReveal as="h2" className="engram-section-h2" text="Why a General LLM Isn't Enough" />
         <LineReveal
           as="p"
-          className="engenie-section-lead-sm"
+          className="content-medium engenie-section-lead-sm"
           text="ChatGPT, Gemini, and Claude reason well in the open, but fall short on complex industrial procurement. enGENIE structures the workflow into auditable, deterministic agent steps."
         />
-        <div ref={matrixRef} className="engram-card engenie-comparison-card">
-          <table className="engram-table">
-            <thead>
-              <tr>
-                <th>Phase</th>
-                <th>General-Purpose LLM</th>
-                <th className="engenie-highlight">enGENIE</th>
-              </tr>
-            </thead>
-            <tbody>
-              {differentiators.map((d, i) => (
-                <tr key={i} ref={(el) => { rowRefs.current[i] = el; }}>
-                  <td className="engenie-table-phase">{d.phase}</td>
-                  <td className="engenie-table-llm">{d.llm}</td>
-                  <td className="engenie-table-engenie">{d.engenie}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <ComparisonTable
+          ref={matrixRef}
+          wrapClassName="engenie-comparison-card"
+          headers={['Phase', 'General-Purpose LLM', 'enGENIE']}
+          accentHeaderClassName="engenie-highlight"
+          rows={differentiators.map((d): [string, string, string] => [d.phase, d.llm, d.engenie])}
+          cellClassNames={['engenie-table-phase', 'engenie-table-llm', 'engenie-table-engenie']}
+          getRowRef={(i) => (el) => { rowRefs.current[i] = el; }}
+        />
       </section>
 
       {/* ── OUTCOMES ── */}
@@ -309,19 +291,19 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
         <LineReveal as="h2" className="engram-section-h2" text="Procure With Confidence" />
         <LineReveal
           as="p"
-          className="engenie-outcomes-lead"
+          className="content-narrow lead-text engenie-outcomes-lead"
           text="enGENIE standardizes selection, reduces specification time, and turns procurement into a fast, compliant, explainable workflow — for both the enterprises that source and the suppliers that sell."
         />
-        <ScrollStagger className="engram-outcomes-grid" step={50}>
+        <ScrollStagger className="u-flex u-flex-wrap u-gap-10 engram-outcomes-grid" step={50}>
           {outcomes.map((o, i) => (
-            <div key={i} className="engram-outcome-pill">
+            <div key={i} className="card label-text engram-outcome-pill">
               <div className="engenie-outcome-bullet" />
               <span>{o}</span>
             </div>
           ))}
         </ScrollStagger>
         <div className="engenie-cta-wrap u-flex u-justify-end">
-          <button className="btn-primary" onClick={() => onOpenContact('Request a Demo')}>
+          <button className="cta-solid button-text btn-primary" onClick={() => onOpenContact('Request a Demo')}>
             Request a Demo →
           </button>
         </div>

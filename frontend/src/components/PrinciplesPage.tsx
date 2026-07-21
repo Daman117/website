@@ -1,5 +1,5 @@
 import React from 'react';
-import { Principles } from './LandingPage';
+import { Principles } from './Landing';
 
 const PrinciplesPage: React.FC = () => (
   <main className="u-pt-80">

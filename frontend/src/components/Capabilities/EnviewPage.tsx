@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
-import { Cpu, Gauge, Layers, Zap, Workflow, MonitorPlay, Boxes, MessageSquare, BrainCircuit, Network, TriangleAlert, Plug, FolderInput } from 'lucide-react';
+import { Cpu, Gauge, Layers, Zap, Workflow, MonitorPlay, Boxes, MessageSquare, BrainCircuit, Network, Plug, FolderInput } from 'lucide-react';
 import { ScrollStagger, LineReveal } from '../ScrollAnimation';
 import { prefersReducedMotion } from '../../utils/motion';
 import { useInView } from 'react-intersection-observer';
 import gsap from 'gsap';
 import HowItWorksScroll from './HowItWorksScroll';
 import NativeApproachScroll from './NativeApproachScroll';
-import HeroShell from '../HeroShell';
+import CapabilityHero from '../Capability/Hero';
+import FlashIcon from '../Capability/FlashIcon';
+import FeatureCard from '../Capability/FeatureCard';
 
 interface EnviewPageProps {
   onOpenContact: (source?: string) => void;
@@ -214,37 +216,26 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
       `}</style>
 
       {/* ── HERO (pinned parallax background — iOS-safe, see HeroShell) ── */}
-      <HeroShell image="/enview-hero.webp" contentClassName="engram-hero engram-container">
-          <div className="engram-hero-badge">
-            <span className="enview-hero-badge-text">MODERN SCADA</span>
-          </div>
-          <h1 className="engram-hero-h1 enview-hero-h1-text">
-            <span className="hero-line-mask">
-              <span className="hero-line-inner hero-delay-150">Modern SCADA for</span>
-            </span>
-            <span className="hero-line-mask">
-              <span className="hero-line-inner enview-hero-h1-accent hero-delay-500">Industrial &amp; Manufacturing</span>
-            </span>
-          </h1>
-          <p className="engram-hero-sub hero-fade-up enview-hero-sub-text hero-delay-900">
-            enVIEW is a ground-up, native control platform — built in Swift for Apple Silicon. Instant startup, sub-100ms latency, and three synchronized views from a single data model.
-          </p>
-          <p className="engram-hero-body hero-fade-up enview-hero-body-text hero-delay-1100">
-            Legacy SCADA freezes when it matters most — a 20-year-old single-threaded architecture buckling under alarm floods. enVIEW decouples data from rendering so operators never lose visibility, and turns the P&ID into the live operational source of truth.
-          </p>
-          <div className="hero-fade-up enview-hero-chips u-flex u-gap-10 u-flex-wrap hero-delay-1300">
-            {heroChips.map((c) => (
-              <span key={c} className="badge hero-chip-badge enview-hero-chip">
-                {c}
-              </span>
-            ))}
-          </div>
-          <div className="hero-fade-up u-flex u-gap-12 u-flex-wrap hero-delay-1500">
-            <button className="btn-primary" onClick={() => onOpenContact('Request a Demo')}>
-              Request a Demo
-            </button>
-          </div>
-      </HeroShell>
+      <CapabilityHero
+        image="/enview-hero.webp"
+        badgeText="MODERN SCADA"
+        titleLine1="Modern SCADA for"
+        titleLine2="Industrial & Manufacturing"
+        subText="enVIEW is a ground-up, native control platform — built in Swift for Apple Silicon. Instant startup, sub-100ms latency, and three synchronized views from a single data model."
+        bodyText="Legacy SCADA freezes when it matters most — a 20-year-old single-threaded architecture buckling under alarm floods. enVIEW decouples data from rendering so operators never lose visibility, and turns the P&ID into the live operational source of truth."
+        chips={heroChips}
+        ctaLabel="Request a Demo"
+        onCtaClick={() => onOpenContact('Request a Demo')}
+        classes={{
+          badge: 'badge-text enview-hero-badge-text',
+          title: 'enview-hero-h1-text',
+          accent: 'enview-hero-h1-accent',
+          subtitle: 'enview-hero-sub-text',
+          body: 'enview-hero-body-text',
+          chips: 'enview-hero-chips',
+          chip: 'enview-hero-chip',
+        }}
+      />
 
 
       {/* ── CHALLENGE ── */}
@@ -258,13 +249,10 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         />
         <ScrollStagger className="engram-quad" step={70}>
           {challenges.map((c, i) => (
-            <div key={c.title} className="engram-card">
-              <div
-                className={challengeInView ? 'enview-challenge-icon flash' : 'enview-challenge-icon'}
-                style={{ '--icon-delay': `${i * 0.6}s` } as React.CSSProperties}
-              ><TriangleAlert size={22} strokeWidth={1.75} /></div>
+            <div key={c.title} className="card engram-card">
+              <FlashIcon inView={challengeInView} index={i} className="enview-challenge-icon" />
               <h3 className="engram-card-title enview-card-h3">{c.title}</h3>
-              <p className="enview-card-desc">{c.desc}</p>
+              <p className="supporting-text-loose enview-card-desc">{c.desc}</p>
             </div>
           ))}
         </ScrollStagger>
@@ -279,27 +267,23 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         <LineReveal as="h2" className="engram-section-h2" text="The Unified Visual Paradigm" />
         <LineReveal
           as="p"
-          className="enview-section-lead"
+          className="content-medium enview-section-lead"
           text="enVIEW treats the P&ID as the master blueprint. No rebuilding, no version drift — what the engineer designs is exactly what the operator sees."
         />
         <ScrollStagger className="engram-caps-grid" step={80}>
           {views.map((v) => (
-            <div key={v.title} className="engram-cap-card enview-view-card" style={{ '--cap-color': v.color, ...(v.img ? { '--card-bg': `url(${v.img})` } : {}) } as React.CSSProperties}>
-              {/* Background image — zooms on hover via CSS */}
-              <div className="enview-view-card-img" />
-              {/* Dark gradient overlay */}
-              <div className="enview-view-card-overlay" />
-              {/* Title — always visible at top */}
-              <div className="enview-view-card-header">
-                <div className="enview-view-card-icon"><v.Icon size={18} strokeWidth={1.75} /></div>
-                <h3 className="enview-view-title">{v.title}</h3>
-              </div>
-              {/* Subtitle + desc — slides up on hover */}
-              <div className="enview-view-card-text">
-                <p className="enview-view-subtitle">{v.subtitle}</p>
-                <p className="enview-view-desc">{v.desc}</p>
-              </div>
-            </div>
+            <FeatureCard
+              key={v.title}
+              Icon={v.Icon}
+              title={v.title}
+              subtitle={v.subtitle}
+              desc={v.desc}
+              color={v.color}
+              img={v.img}
+              titleClassName="card-heading enview-view-title"
+              subtitleClassName="card-subtitle enview-view-subtitle"
+              descClassName="supporting-text-loose enview-view-desc"
+            />
           ))}
         </ScrollStagger>
       </section>
@@ -326,15 +310,15 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         <LineReveal as="h2" className="engram-section-h2" text="Silent Safety Systems in the Background" />
         <LineReveal
           as="p"
-          className="enview-section-lead"
+          className="content-medium enview-section-lead"
           text="By decoupling data ingestion from visual rendering, enVIEW guarantees operators never lose visibility during an alarm flood — the “flood vs. flow” architecture."
         />
         <ScrollStagger className="engram-quad" step={70}>
           {safety.map((s) => (
-            <div key={s.title} className="engram-card">
+            <div key={s.title} className="card engram-card">
               <div className={safetyInView ? 'enview-safety-dot pulse' : 'enview-safety-dot'} />
               <h3 className="engram-card-title enview-card-h3">{s.title}</h3>
-              <p className="enview-card-desc">{s.desc}</p>
+              <p className="supporting-text-loose enview-card-desc">{s.desc}</p>
             </div>
           ))}
         </ScrollStagger>
@@ -344,13 +328,13 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
       <section className="engram-section engram-container">
         <span className="eyebrow">The Difference</span>
         <LineReveal as="h2" className="engram-section-h2" text="The Modern SCADA Evaluation Matrix" />
-        <div ref={matrixRef} className="engram-card enview-comparison-card">
+        <div ref={matrixRef} className="card engram-card enview-comparison-card">
           <table className="engram-table">
             <thead>
               <tr>
-                <th className="enview-table-th-first">Criteria</th>
+                <th className="tag-text enview-table-th-first">Criteria</th>
                 {matrix.cols.map((c, i) => (
-                  <th key={c} className={i === 0 ? 'enview-table-th-accent' : 'enview-table-th-default'}>{c}</th>
+                  <th key={c} className={`tag-text ${i === 0 ? 'enview-table-th-accent' : 'enview-table-th-default'}`}>{c}</th>
                 ))}
               </tr>
             </thead>
@@ -393,10 +377,10 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         <LineReveal as="h2" className="engram-section-h2" text="Industrial Intelligence, Built In" />
         <ScrollStagger className="engram-caps-grid" step={80}>
           {aiFeatures.map((f) => (
-            <div key={f.title} className="engram-cap-card" style={{ '--cap-color': ACCENT } as React.CSSProperties}>
+            <div key={f.title} className="card engram-cap-card" style={{ '--cap-color': ACCENT } as React.CSSProperties}>
               <div className="enview-ai-icon"><f.Icon size={26} strokeWidth={1.75} /></div>
               <h3 className="engram-cap-title enview-ai-title">{f.title}</h3>
-              <p className="engram-cap-desc enview-ai-desc">{f.desc}</p>
+              <p className="body-text engram-cap-desc enview-ai-desc">{f.desc}</p>
             </div>
           ))}
         </ScrollStagger>
@@ -406,9 +390,9 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
       <section className="engram-section engram-container">
         <span className="eyebrow">The Future</span>
         <LineReveal as="h2" className="engram-section-h2" text="Transforming Industrial Operations" />
-        <ScrollStagger className="engram-three-col" step={90}>
+        <ScrollStagger className="grid-3 engram-three-col" step={90}>
           {transform.map((t, i) => (
-            <div key={t.to} ref={(el) => { transformCardRefs.current[i] = el; }} className="engram-card">
+            <div key={t.to} ref={(el) => { transformCardRefs.current[i] = el; }} className="card engram-card">
               <div className="u-flex u-items-center u-gap-8 enview-transform-header">
                 <span className="enview-transform-from">
                   {t.from}
@@ -420,17 +404,17 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
                 <span ref={(el) => { arrowRefs.current[i] = el; }} className="enview-transform-arrow">→</span>
                 <span ref={(el) => { toRefs.current[i] = el; }} className="enview-transform-to">{t.to}</span>
               </div>
-              <p className="enview-transform-desc">{t.desc}</p>
+              <p className="body-text enview-transform-desc">{t.desc}</p>
             </div>
           ))}
         </ScrollStagger>
         <LineReveal
           as="p"
-          className="enview-outcomes-lead"
+          className="content-medium lead-text enview-outcomes-lead"
           text="enVIEW is not just a SCADA system. It is the operational intelligence platform that connects your physical plant to your digital future."
         />
         <div className="enview-cta-wrap u-flex u-justify-end">
-          <button className="btn-primary" onClick={() => onOpenContact('Request a Demo')}>
+          <button className="cta-solid button-text btn-primary" onClick={() => onOpenContact('Request a Demo')}>
             Request a Demo →
           </button>
         </div>

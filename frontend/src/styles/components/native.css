@@ -1,7 +1,7 @@
 /* Native Approach Scroll */
 .approach-grid {
   display: grid;
-  gap: 18px;
+  gap: var(--space-lg);
 }
 .approach-grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
 .approach-grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
@@ -13,7 +13,7 @@
 .approach-card { will-change: transform, opacity, filter; }
 .approach-icon-wrap { will-change: transform, opacity; margin-bottom: 14px; }
 .approach-icon-circle {
-  width: 48px; height: 48px; border-radius: 12px;
+  width: 48px; height: 48px; border-radius: var(--radius-xl);
   display: flex; align-items: center; justify-content: center;
   background: rgba(var(--cap-color-rgb, 37,99,235), 0.1);
   border: 1px solid rgba(var(--cap-color-rgb, 37,99,235), 0.25);

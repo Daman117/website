@@ -16,7 +16,7 @@
 }
 
 .landing-hero-chips {
-  max-width: 640px;
+  max-width: var(--content-width-md);
   margin-bottom: 28px;
 }
 
@@ -27,7 +27,7 @@
 }
 
 .landing-hero-actions {
-  gap: 12px;
+  gap: var(--space-sm);
 }
 
 .landing-demo-section {

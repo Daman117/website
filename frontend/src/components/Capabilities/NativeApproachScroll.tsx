@@ -92,7 +92,7 @@ const NativeApproachScroll: React.FC<Props> = ({
           <div
             key={item.title}
             ref={(el) => { cardRefs.current[i] = el; }}
-            className="engram-cap-card approach-card"
+            className="card engram-cap-card approach-card"
             style={{ '--cap-color': item.color } as React.CSSProperties}
           >
             <div ref={(el) => { iconWrapRefs.current[i] = el; }} className="approach-icon-wrap">
@@ -108,8 +108,8 @@ const NativeApproachScroll: React.FC<Props> = ({
               {item.title}
             </h3>
             <p className="engram-cap-sub">{item.subtitle}</p>
-            <p ref={(el) => { descRefs.current[i] = el; }} className="engram-cap-desc approach-card-desc">{item.desc}</p>
-            <ul className="engram-cap-list approach-card-bullets">
+            <p ref={(el) => { descRefs.current[i] = el; }} className="body-text engram-cap-desc approach-card-desc">{item.desc}</p>
+            <ul className="stack engram-cap-list approach-card-bullets">
               {item.features.map((f, fi) => (
                 <li key={fi} ref={(el) => {
                   if (!bulletRefs.current[i]) bulletRefs.current[i] = [];

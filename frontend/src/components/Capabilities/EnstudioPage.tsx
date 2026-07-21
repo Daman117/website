@@ -1,12 +1,15 @@
 import React, { useEffect, useLayoutEffect, useRef } from 'react';
-import { PencilRuler, Boxes, MessageSquare, Workflow, BadgeCheck, SlidersHorizontal, Upload, ScanSearch, FileOutput, TriangleAlert } from 'lucide-react';
+import { PencilRuler, Boxes, MessageSquare, Workflow, BadgeCheck, SlidersHorizontal, Upload, ScanSearch, FileOutput } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
 import gsap from 'gsap';
 import { ScrollStagger, LineReveal } from '../ScrollAnimation';
 import { prefersReducedMotion } from '../../utils/motion';
 import HowItWorksScroll from './HowItWorksScroll';
 import NativeApproachScroll from './NativeApproachScroll';
-import HeroShell from '../HeroShell';
+import CapabilityHero from '../Capability/Hero';
+import FlashIcon from '../Capability/FlashIcon';
+import FeatureCard from '../Capability/FeatureCard';
+import ComparisonTable from '../Capability/ComparisonTable';
 
 interface EnstudioPageProps {
   onOpenContact: (source?: string) => void;
@@ -232,50 +235,42 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
   }, []);
   useEffect(() => {
     if (!matrixInView || prefersReducedMotion()) return;
-    rowRefs.current.forEach((row, i) => {
-      if (!row) return;
-      gsap.to(row, {
-        opacity: 1, x: 0, filter: 'blur(0px)', duration: 1.2, delay: i * 0.22, ease: 'power4.out',
-        clearProps: 'transform,filter',
+    const ctx = gsap.context(() => {
+      rowRefs.current.forEach((row, i) => {
+        if (!row) return;
+        gsap.to(row, {
+          opacity: 1, x: 0, filter: 'blur(0px)', duration: 1.2, delay: i * 0.22, ease: 'power4.out',
+          clearProps: 'transform,filter',
+        });
       });
     });
+    return () => ctx.revert();
   }, [matrixInView]);
 
   return (
     <main className="engram-page" style={{ '--accent': ACCENT, '--accent-rgb': '167,139,250' } as React.CSSProperties}>
 
       {/* ── HERO (pinned parallax background — iOS-safe, see HeroShell) ── */}
-      <HeroShell image="/enstudio-hero.webp" contentClassName="engram-hero engram-container">
-          <div className="engram-hero-badge">
-            <span className="enstudio-hero-badge-text">DRAWING INTELLIGENCE</span>
-          </div>
-          <h1 className="engram-hero-h1 enstudio-hero-h1-text">
-            <span className="hero-line-mask">
-              <span className="hero-line-inner hero-delay-150">Turn Engineering Drawings Into</span>
-            </span>
-            <span className="hero-line-mask">
-              <span className="hero-line-inner enstudio-hero-h1-accent hero-delay-500">Plant Configuration</span>
-            </span>
-          </h1>
-          <p className="engram-hero-sub hero-fade-up enstudio-hero-sub-text hero-delay-900">
-            enSTUDIO is the intelligent middle layer between your drawings and your systems. Upload it, draw it, or describe it — it becomes structured, validated, downstream-ready configuration.
-          </p>
-          <p className="engram-hero-body hero-fade-up enstudio-hero-body-text hero-delay-1100">
-            Engineering drawings sit in scanned PDFs, legacy CAD files, and decades-old archives. enSTUDIO reads them with local AI, builds one normalized project model, and exports VIDS for enVIEW and YMPL for enableSim — without re-keying a single tag.
-          </p>
-          <div className="hero-fade-up enstudio-hero-chips u-flex u-gap-10 u-flex-wrap hero-delay-1300">
-            {heroChips.map((c) => (
-              <span key={c} className="badge hero-chip-badge enstudio-hero-chip">
-                {c}
-              </span>
-            ))}
-          </div>
-          <div className="hero-fade-up u-flex u-gap-12 u-flex-wrap hero-delay-1500">
-            <button className="btn-primary" onClick={() => onOpenContact('Request a Demo')}>
-              Request a Demo
-            </button>
-          </div>
-      </HeroShell>
+      <CapabilityHero
+        image="/enstudio-hero.webp"
+        badgeText="DRAWING INTELLIGENCE"
+        titleLine1="Turn Engineering Drawings Into"
+        titleLine2="Plant Configuration"
+        subText="enSTUDIO is the intelligent middle layer between your drawings and your systems. Upload it, draw it, or describe it — it becomes structured, validated, downstream-ready configuration."
+        bodyText="Engineering drawings sit in scanned PDFs, legacy CAD files, and decades-old archives. enSTUDIO reads them with local AI, builds one normalized project model, and exports VIDS for enVIEW and YMPL for enableSim — without re-keying a single tag."
+        chips={heroChips}
+        ctaLabel="Request a Demo"
+        onCtaClick={() => onOpenContact('Request a Demo')}
+        classes={{
+          badge: 'badge-text enstudio-hero-badge-text',
+          title: 'enstudio-hero-h1-text',
+          accent: 'enstudio-hero-h1-accent',
+          subtitle: 'enstudio-hero-sub-text',
+          body: 'enstudio-hero-body-text',
+          chips: 'enstudio-hero-chips',
+          chip: 'enstudio-hero-chip',
+        }}
+      />
 
       {/* ── CHALLENGE ── */}
       <section ref={challengeRef} className="engram-section engram-container">
@@ -286,18 +281,15 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
           className="enstudio-section-lead"
           text="Standing up a plant configuration means reading drawings and re-typing them into every system — by hand, again and again."
         />
-        <ScrollStagger className="engram-three-col" step={70}>
+        <ScrollStagger className="grid-3 engram-three-col" step={70}>
           {challenges.map((c, i) => (
-            <div key={i} className="engram-card">
-              <div
-                className={challengeInView ? 'enstudio-challenge-icon flash' : 'enstudio-challenge-icon'}
-                style={{ '--icon-delay': `${i * 0.6}s` } as React.CSSProperties}
-              ><TriangleAlert size={22} strokeWidth={1.75} /></div>
-              <span className="enstudio-card-text">{c}</span>
+            <div key={i} className="card engram-card">
+              <FlashIcon inView={challengeInView} index={i} className="enstudio-challenge-icon" />
+              <span className="body-text enstudio-card-text">{c}</span>
             </div>
           ))}
         </ScrollStagger>
-        <p className="enstudio-card-note">
+        <p className="note-text enstudio-card-note">
           The target: 40 engineer-hours per sheet reduced to under two.
         </p>
       </section>
@@ -315,22 +307,18 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
         <LineReveal as="h2" className="engram-section-h2" text="Meet Engineers Where They Are" />
         <ScrollStagger className="engram-caps-grid" step={80}>
           {inputModes.map((m) => (
-            <div key={m.title} className="engram-cap-card enview-view-card" style={{ '--cap-color': m.color, '--card-bg': `url(${m.img})` } as React.CSSProperties}>
-              {/* Background image — zooms on hover via CSS */}
-              <div className="enview-view-card-img" />
-              {/* Dark gradient overlay */}
-              <div className="enview-view-card-overlay" />
-              {/* Title — always visible at top */}
-              <div className="enview-view-card-header">
-                <div className="enview-view-card-icon"><m.Icon size={18} strokeWidth={1.75} /></div>
-                <h3 className="enstudio-card-h3">{m.title}</h3>
-              </div>
-              {/* Subtitle + desc — slides up on hover */}
-              <div className="enview-view-card-text">
-                <p className="enstudio-card-subtitle">{m.subtitle}</p>
-                <p className="enstudio-card-desc">{m.desc}</p>
-              </div>
-            </div>
+            <FeatureCard
+              key={m.title}
+              Icon={m.Icon}
+              title={m.title}
+              subtitle={m.subtitle}
+              desc={m.desc}
+              color={m.color}
+              img={m.img}
+              titleClassName="card-heading enstudio-card-h3"
+              subtitleClassName="card-subtitle enstudio-card-subtitle"
+              descClassName="supporting-text-loose enstudio-card-desc"
+            />
           ))}
         </ScrollStagger>
       </section>
@@ -355,46 +343,46 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
           className="enstudio-section-lead"
           text="Human oversight, local-only deployment, and brownfield readiness — the three things engineers check before they trust a system."
         />
-        <ScrollStagger className="engram-three-col" step={90}>
+        <ScrollStagger className="grid-3 engram-three-col" step={90}>
 
-          <div className="engram-card">
+          <div className="card engram-card">
             <span className="eyebrow enstudio-trust-eyebrow">Human-in-the-Loop</span>
             <h3 className="engram-card-title">Nothing Ships Unreviewed</h3>
-            <p className="enstudio-trust-desc">
+            <p className="supporting-text enstudio-trust-desc">
               Every extraction is verified before it reaches a live system.
             </p>
             {safetyFeatures.map((f, i) => (
               <div key={i} className="enstudio-trust-list-item u-flex u-gap-8 u-items-start">
                 <div className="enstudio-trust-bullet enstudio-trust-bullet-blue" />
-                <span className="enstudio-trust-text">{f}</span>
+                <span className="supporting-text enstudio-trust-text">{f}</span>
               </div>
             ))}
           </div>
 
-          <div className="engram-card enstudio-trust-card">
+          <div className="card engram-card enstudio-trust-card">
             <span className="eyebrow enstudio-trust-eyebrow enstudio-trust-eyebrow-accent">Local & Lightweight</span>
             <h3 className="engram-card-title">Your Drawings Stay With You</h3>
-            <p className="enstudio-trust-desc">
+            <p className="supporting-text enstudio-trust-desc">
               A simple local tool — no cloud, no heavy install.
             </p>
             {localFeatures.map((f, i) => (
               <div key={i} className="enstudio-trust-list-item u-flex u-gap-8 u-items-start">
                 <div className="enstudio-trust-bullet enstudio-trust-bullet-accent" />
-                <span className="enstudio-trust-text">{f}</span>
+                <span className="supporting-text enstudio-trust-text">{f}</span>
               </div>
             ))}
           </div>
 
-          <div className="engram-card">
+          <div className="card engram-card">
             <span className="eyebrow enstudio-trust-eyebrow enstudio-trust-eyebrow-green">Brownfield Ready</span>
             <h3 className="engram-card-title">Document What Is Actually Running</h3>
-            <p className="enstudio-trust-desc">
+            <p className="supporting-text enstudio-trust-desc">
               No P&ID? Read the DCS screen that is already live.
             </p>
             {brownfieldFeatures.map((f, i) => (
               <div key={i} className="enstudio-trust-list-item u-flex u-gap-8 u-items-start">
                 <div className="enstudio-trust-bullet enstudio-trust-bullet-green" />
-                <span className="enstudio-trust-text">{f}</span>
+                <span className="supporting-text enstudio-trust-text">{f}</span>
               </div>
             ))}
           </div>
@@ -410,27 +398,16 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
           className="enstudio-section-lead"
           text="Every existing approach solves one piece of the problem — typing, OCR, one vendor's format, or clean vector drawings only. enSTUDIO is the only one that handles the whole chain."
         />
-        <div ref={matrixRef} className="engram-card enstudio-comparison-card">
-          <table className="engram-table">
-            <thead>
-              <tr>
-                <th>Approach</th>
-                <th>Limitation</th>
-                <th className="enstudio-table-th-accent">enSTUDIO</th>
-              </tr>
-            </thead>
-            <tbody>
-              {existingSolutions.map((row, i) => (
-                <tr key={i} ref={(el) => { rowRefs.current[i] = el; }}>
-                  <td className="enstudio-table-phase">{row.solution}</td>
-                  <td className="enstudio-table-limitation">{row.limitation}</td>
-                  <td className="enstudio-table-fix">{row.fix}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <p className="enstudio-table-summary">
+        <ComparisonTable
+          ref={matrixRef}
+          wrapClassName="enstudio-comparison-card"
+          headers={['Approach', 'Limitation', 'enSTUDIO']}
+          accentHeaderClassName="enstudio-table-th-accent"
+          rows={existingSolutions.map((row): [string, string, string] => [row.solution, row.limitation, row.fix])}
+          cellClassNames={['enstudio-table-phase', 'enstudio-table-limitation', 'enstudio-table-fix']}
+          getRowRef={(i) => (el) => { rowRefs.current[i] = el; }}
+        />
+        <p className="label-text enstudio-table-summary">
           enSTUDIO reads the drawing, understands the topology, and exports to every target.
         </p>
       </section>
@@ -439,11 +416,11 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
       <section className="engram-section engram-container">
         <span className="eyebrow">Output Adapters</span>
         <LineReveal as="h2" className="engram-section-h2" text="One Model, Every Target System" />
-        <ScrollStagger className="engram-three-col" step={90}>
+        <ScrollStagger className="grid-3 engram-three-col" step={90}>
           {adapters.map((a) => (
             <div
               key={a.label}
-              className="engram-card enstudio-adapter-card"
+              className="card engram-card enstudio-adapter-card"
               style={{ '--adapter-color': a.color, '--adapter-color-a40': `${a.color}40` } as React.CSSProperties}
             >
               <div className="u-flex u-items-center u-gap-8 enstudio-adapter-row">
@@ -451,11 +428,11 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
                 <span className="enstudio-adapter-tag">{a.target}</span>
               </div>
               <h3 className="engram-card-title enstudio-adapter-title">{a.label}</h3>
-              <p className="enstudio-adapter-desc">{a.desc}</p>
+              <p className="supporting-text enstudio-adapter-desc">{a.desc}</p>
               {a.points.map((p, i) => (
                 <div key={i} className="u-flex u-items-start u-gap-8 enstudio-trust-list-item">
                   <div className="enstudio-adapter-point-bullet" />
-                  <span className="enstudio-adapter-point-text">{p}</span>
+                  <span className="supporting-text enstudio-adapter-point-text">{p}</span>
                 </div>
               ))}
             </div>
@@ -469,19 +446,19 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
         <LineReveal as="h2" className="engram-section-h2" text="Drawings Become Living Configuration" />
         <LineReveal
           as="p"
-          className="enstudio-outcomes-lead"
+          className="content-narrow lead-text enstudio-outcomes-lead"
           text="enSTUDIO collapses the configuration bottleneck. The same project model feeds operator displays and physics simulation, stays in sync through surgical patches, and turns static drawings into a single source of truth for the entire plant lifecycle."
         />
-        <ScrollStagger className="engram-outcomes-grid" step={50}>
+        <ScrollStagger className="u-flex u-flex-wrap u-gap-10 engram-outcomes-grid" step={50}>
           {outcomes.map((o, i) => (
-            <div key={i} className="engram-outcome-pill">
+            <div key={i} className="card label-text engram-outcome-pill">
               <div className="enstudio-outcome-bullet" />
               <span>{o}</span>
             </div>
           ))}
         </ScrollStagger>
         <div className="enstudio-cta-wrap u-flex u-justify-end">
-          <button className="btn-primary" onClick={() => onOpenContact('Request a Demo')}>
+          <button className="cta-solid button-text btn-primary" onClick={() => onOpenContact('Request a Demo')}>
             Request a Demo →
           </button>
         </div>

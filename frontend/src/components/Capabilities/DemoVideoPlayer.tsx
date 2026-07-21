@@ -45,12 +45,31 @@ const DemoVideoPlayer: React.FC<DemoVideoPlayerProps> = ({ src, poster, accent, 
     setCurrent(ratio * v.duration);
   }, []);
 
+  const seekBy = useCallback((deltaSeconds: number) => {
+    const v = videoRef.current;
+    if (!v || !v.duration) return;
+    const next = Math.min(v.duration, Math.max(0, v.currentTime + deltaSeconds));
+    v.currentTime = next;
+    setCurrent(next);
+  }, []);
+
+  const onProgressKeyDown = (e: React.KeyboardEvent) => {
+    const v = videoRef.current;
+    if (!v || !v.duration) return;
+    switch (e.key) {
+      case 'ArrowLeft': e.preventDefault(); seekBy(-5); break;
+      case 'ArrowRight': e.preventDefault(); seekBy(5); break;
+      case 'Home': e.preventDefault(); v.currentTime = 0; setCurrent(0); break;
+      case 'End': e.preventDefault(); v.currentTime = v.duration; setCurrent(v.duration); break;
+    }
+  };
+
   useEffect(() => {
     if (!dragging) return;
     const onMove = (e: MouseEvent) => seekToClientX(e.clientX);
     const onUp = () => setDragging(false);
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('mouseup', onUp);
+    window.addEventListener('mousemove', onMove, { passive: true });
+    window.addEventListener('mouseup', onUp, { passive: true });
     return () => {
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseup', onUp);
@@ -87,6 +106,14 @@ const DemoVideoPlayer: React.FC<DemoVideoPlayerProps> = ({ src, poster, accent, 
         <div
           ref={barRef}
           onMouseDown={(e) => { setDragging(true); seekToClientX(e.clientX); }}
+          onKeyDown={onProgressKeyDown}
+          tabIndex={0}
+          role="slider"
+          aria-label="Seek"
+          aria-valuemin={0}
+          aria-valuemax={duration}
+          aria-valuenow={current}
+          aria-valuetext={`${fmt(current)} of ${fmt(duration)}`}
           className="video-progress u-w-full u-flex u-items-center"
           style={{ '--pct': `${pct}%`, '--accent': accent, '--accent-rgb': accentRgb } as React.CSSProperties}
         >

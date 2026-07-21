@@ -62,11 +62,11 @@ const Nav: React.FC<NavProps> = ({ onOpenMobile, mobileOpen, onOpenContact }) =>
       transition={{ type: 'tween', duration: 0.4, delay: 0.05 }}
     >
       <button
-        className="nav-logo"
+        className="btn-reset nav-logo"
         onClick={handleLogoClick}
         aria-label="Go to home"
       >
-        <div className="nav-mark">
+        <div className="u-flex-center nav-mark">
           <Logo />
         </div>
         <div className="nav-word">
@@ -79,7 +79,7 @@ const Nav: React.FC<NavProps> = ({ onOpenMobile, mobileOpen, onOpenContact }) =>
           {/* Products with controlled dropdown — opens on hover or keyboard
               focus, closes on click, blur-out, or Escape */}
           <li
-            className={`nav-dropdown-wrap${dropdownOpen ? ' open' : ''}`}
+            className={`u-flex u-items-center nav-dropdown-wrap${dropdownOpen ? ' open' : ''}`}
             onMouseEnter={() => setDropdownOpen(true)}
             onMouseLeave={closeDropdown}
             onFocus={() => setDropdownOpen(true)}

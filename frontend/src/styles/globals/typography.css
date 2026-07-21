@@ -1,1 +1,78 @@
-/* Typography */
+/* Typography — centralized, role-based type styles.
+   Composed onto existing page classes (e.g. className="label-text trust-fact-v"),
+   which stay responsible for color/spacing/layout/branding. */
+
+.badge-text {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.tag-text {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.micro-label {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.card-heading-sm {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.card-heading {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.card-subtitle {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.lead-text {
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+.body-text {
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.body-text-compact {
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.supporting-text {
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.supporting-text-loose {
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.label-text {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.note-text {
+  font-size: 12px;
+  font-style: italic;
+}
+
+.button-text {
+  font-size: 13.5px;
+  font-weight: 600;
+}

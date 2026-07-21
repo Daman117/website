@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { setLenisModalOpen } from '../hooks/useLenis';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 
 interface MobileNavProps {
   open: boolean;
@@ -19,6 +20,8 @@ const PRODUCTS = [
 
 const MobileNav: React.FC<MobileNavProps> = ({ open, onClose, onOpenContact }) => {
   const closeRef = useRef<HTMLButtonElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(overlayRef, open);
 
   useEffect(() => {
     if (!open) return;
@@ -35,7 +38,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ open, onClose, onOpenContact }) =
   }, [open, onClose]);
 
   return (
-    <div id="mobile-overlay" className={open ? 'open' : ''} role="dialog" aria-modal="true" aria-label="Navigation menu">
+    <div ref={overlayRef} id="mobile-overlay" className={open ? 'open' : ''} role="dialog" aria-modal="true" aria-label="Navigation menu">
       <button ref={closeRef} className="mobile-nav-close" onClick={onClose} aria-label="Close menu">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
@@ -54,7 +57,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ open, onClose, onOpenContact }) =
       <Link to="/platform" className="mobile-nav-link" onClick={onClose}>Platform</Link>
       <Link to="/about" className="mobile-nav-link" onClick={onClose}>About Us</Link>
 
-      <button className="btn-primary mobile-cta" onClick={() => { onClose(); onOpenContact('Mobile Nav'); }}>
+      <button className="cta-solid button-text btn-primary mobile-cta" onClick={() => { onClose(); onOpenContact('Mobile Nav'); }}>
         Request Demo
       </button>
     </div>

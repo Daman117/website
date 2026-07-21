@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { Play } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { LineReveal } from '../ScrollAnimation';
@@ -33,13 +33,13 @@ interface HowItWorksScrollProps {
 }
 
 // ── Connector SVG line — same drawn-arrow animation as enVIEW's version ──────
-const Connector: React.FC<{ index: number; inView: boolean; accent: string; wrapClassName: string; width: number }> = ({
-  index, inView, accent, wrapClassName, width,
+const Connector: React.FC<{ index: number; inView: boolean; accent: string; wrapClassName: string; width: number; reduceMotion: boolean }> = ({
+  index, inView, accent, wrapClassName, width, reduceMotion,
 }) => {
-  const delay = index * STEP_DELAY + CARD_DUR + 0.1;
+  const delay = reduceMotion ? 0 : index * STEP_DELAY + CARD_DUR + 0.1;
 
   return (
-    <div className={wrapClassName}>
+    <div className={`u-flex-center ${wrapClassName}`}>
       <svg width={width} height="10" viewBox={`0 0 ${width} 10`} className="how-conn-svg">
         <motion.path
           d={`M 0,5 L ${width},5`}
@@ -48,7 +48,7 @@ const Connector: React.FC<{ index: number; inView: boolean; accent: string; wrap
           fill="none"
           initial={{ pathLength: 0, opacity: 0 }}
           animate={inView ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
-          transition={{ pathLength: { duration: 0.5, delay, ease: 'easeInOut' }, opacity: { duration: 0.1, delay } }}
+          transition={reduceMotion ? { duration: 0 } : { pathLength: { duration: 0.5, delay, ease: 'easeInOut' }, opacity: { duration: 0.1, delay } }}
         />
         <motion.path
           d={`M ${width - 8},1 L ${width},5 L ${width - 8},9`}
@@ -59,7 +59,7 @@ const Connector: React.FC<{ index: number; inView: boolean; accent: string; wrap
           strokeLinejoin="round"
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.25, delay: delay + 0.45 }}
+          transition={reduceMotion ? { duration: 0 } : { duration: 0.25, delay: delay + 0.45 }}
         />
       </svg>
     </div>
@@ -67,25 +67,25 @@ const Connector: React.FC<{ index: number; inView: boolean; accent: string; wrap
 };
 
 // ── Individual card ──────────────────────────────────────────────────────────
-const Card: React.FC<{ step: HowItWorksStep; index: number; inView: boolean; accent: string }> = ({
-  step, index, inView, accent,
+const Card: React.FC<{ step: HowItWorksStep; index: number; inView: boolean; accent: string; reduceMotion: boolean }> = ({
+  step, index, inView, accent, reduceMotion,
 }) => {
-  const delay = index * STEP_DELAY;
+  const delay = reduceMotion ? 0 : index * STEP_DELAY;
   const color = step.color || accent;
 
   return (
     <motion.div
-      className="engram-card how-card"
+      className="card engram-card how-card"
       initial={{ opacity: 0, x: -60, scale: 0.93 }}
       animate={inView ? { opacity: 1, x: 0, scale: 1 } : { opacity: 0, x: -60, scale: 0.93 }}
-      transition={{ duration: CARD_DUR, delay, ease: [0.16, 1, 0.3, 1] }}
+      transition={reduceMotion ? { duration: 0 } : { duration: CARD_DUR, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {/* Icon */}
       <motion.div
         className="how-icon-wrap"
         initial={{ scale: 0.6, opacity: 0 }}
         animate={inView ? { scale: 1, opacity: 1 } : { scale: 0.6, opacity: 0 }}
-        transition={{ duration: 0.45, delay: delay + 0.2, ease: [0.34, 1.56, 0.64, 1] }}
+        transition={reduceMotion ? { duration: 0 } : { duration: 0.45, delay: delay + 0.2, ease: [0.34, 1.56, 0.64, 1] }}
       >
         <step.icon size={22} color={color} strokeWidth={1.75} />
       </motion.div>
@@ -93,7 +93,7 @@ const Card: React.FC<{ step: HowItWorksStep; index: number; inView: boolean; acc
       <h4 className="engram-card-title how-card-title">
         {step.title}
       </h4>
-      <p className="how-desc">
+      <p className="supporting-text-loose how-desc">
         {step.desc}
       </p>
     </motion.div>
@@ -101,28 +101,28 @@ const Card: React.FC<{ step: HowItWorksStep; index: number; inView: boolean; acc
 };
 
 // ── Click-to-play demo video — same pattern as enVIEW's How It Works ─────────
-const PromoVideo: React.FC<{ src: string; poster?: string; inView: boolean; delay: number; accent: string; accentRgb: string; ariaLabel: string }> = ({
-  src, poster, inView, delay, accent, accentRgb, ariaLabel,
+const PromoVideo: React.FC<{ src: string; poster?: string; inView: boolean; delay: number; accent: string; accentRgb: string; ariaLabel: string; reduceMotion: boolean }> = ({
+  src, poster, inView, delay, accent, accentRgb, ariaLabel, reduceMotion,
 }) => {
   const [playing, setPlaying] = useState(false);
 
   return (
     <motion.div
-      className={`engram-card how-video-wrap${playing ? ' engram-card-video-playing' : ''}`}
+      className={`card engram-card how-video-wrap${playing ? ' engram-card-video-playing' : ''}`}
       initial={{ opacity: 0, y: 18 }}
       animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
-      transition={{ duration: 0.55, delay, ease: [0.16, 1, 0.3, 1] }}
+      transition={reduceMotion ? { duration: 0 } : { duration: 0.55, delay, ease: [0.16, 1, 0.3, 1] }}
     >
         {playing ? (
           <DemoVideoPlayer src={src} poster={poster} accent={accent} accentRgb={accentRgb} />
         ) : (
           <button className="how-video-btn" onClick={() => setPlaying(true)} aria-label={ariaLabel}>
             {poster ? (
-              <img src={poster} alt="Demo video preview" loading="lazy" className="how-video-media" />
+              <img src={poster} alt="Demo video preview" loading="lazy" decoding="async" className="how-video-media" />
             ) : (
               <video src={src} muted preload="metadata" className="how-video-media" />
             )}
-            <div className="how-video-overlay">
+            <div className="u-flex-center how-video-overlay">
               <div className="how-video-play">
                 <Play size={26} color={accent} fill={accent} className="how-video-icon" />
               </div>
@@ -142,6 +142,7 @@ const HowItWorksScroll: React.FC<HowItWorksScrollProps> = ({
 }) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const inView = useInView(sectionRef, { once: true, margin: '-80px' });
+  const reduceMotion = useReducedMotion() ?? false;
 
   return (
     <section className="engram-section engram-container" style={{ '--accent': accent, '--accent-rgb': accentRgb } as React.CSSProperties}>
@@ -154,9 +155,9 @@ const HowItWorksScroll: React.FC<HowItWorksScrollProps> = ({
       <div ref={sectionRef} className={rowClassName}>
         {steps.map((step, i) => (
           <React.Fragment key={i}>
-            <Card step={step} index={i} inView={inView} accent={accent} />
+            <Card step={step} index={i} inView={inView} accent={accent} reduceMotion={reduceMotion} />
             {i < steps.length - 1 && (
-              <Connector index={i} inView={inView} accent={accent} wrapClassName={connWrapClassName} width={connWidth} />
+              <Connector index={i} inView={inView} accent={accent} wrapClassName={connWrapClassName} width={connWidth} reduceMotion={reduceMotion} />
             )}
           </React.Fragment>
         ))}
@@ -168,20 +169,21 @@ const HowItWorksScroll: React.FC<HowItWorksScrollProps> = ({
           src={video}
           poster={videoPoster}
           inView={inView}
-          delay={(steps.length - 1) * STEP_DELAY + CARD_DUR + 0.25}
+          delay={reduceMotion ? 0 : (steps.length - 1) * STEP_DELAY + CARD_DUR + 0.25}
           accent={accent}
           accentRgb={accentRgb}
           ariaLabel={videoAriaLabel}
+          reduceMotion={reduceMotion}
         />
       )}
 
       {/* Impact banner — appears after all cards */}
       {impact && (
         <motion.div
-          className="engram-card how-impact-card"
+          className="card engram-card how-impact-card"
           initial={{ opacity: 0, y: 18 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
-          transition={{ duration: 0.55, delay: (steps.length - 1) * STEP_DELAY + CARD_DUR + (video ? 0.65 : 0.25), ease: [0.16, 1, 0.3, 1] }}
+          transition={reduceMotion ? { duration: 0 } : { duration: 0.55, delay: (steps.length - 1) * STEP_DELAY + CARD_DUR + (video ? 0.65 : 0.25), ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="how-impact-label">{impact.label}</div>
           <div className="how-impact-text">

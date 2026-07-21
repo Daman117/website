@@ -4,7 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useLenis, getLenis } from './hooks/useLenis';
 import Nav from './components/Nav';
 import MobileNav from './components/MobileNav';
-import LandingPage from './components/LandingPage';
+import LandingPage from './components/Landing';
 import Footer from './components/Footer';
 import ContactModal from './components/ContactModal';
 

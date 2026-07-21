@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, Architecture } from './LandingPage';
+import { Platform, Architecture } from './Landing';
 
 const PlatformPage: React.FC = () => (
   <main className="u-pt-80">

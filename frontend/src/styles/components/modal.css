@@ -16,7 +16,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding: 40px 20px;
+  padding: var(--modal-padding);
 }
 
 .contact-modal-dialog {
@@ -24,7 +24,7 @@
   background: linear-gradient(165deg, #fcfdff 0%, #e9eff7 100%);
   border: 1px solid rgba(15, 23, 42, 0.07);
   border-radius: 24px;
-  max-width: 520px;
+  max-width: var(--content-width-sm);
   width: 100%;
   position: relative;
   overflow: hidden;
@@ -37,16 +37,21 @@
   right: 18px;
   background: rgba(15, 23, 42, 0.04);
   border: 1px solid var(--border);
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   color: var(--t3);
   cursor: pointer;
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   line-height: 1;
   transition: all .2s;
+}
+
+.contact-modal-close:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: var(--focus-ring-offset);
 }
 
 .contact-modal-close:hover {
@@ -60,7 +65,7 @@
 
 .contact-modal-success {
   text-align: center;
-  padding: 40px 20px;
+  padding: var(--modal-padding);
 }
 
 .contact-modal-success-icon {
@@ -173,5 +178,5 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: var(--space-xs);
 }

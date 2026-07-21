@@ -3,6 +3,8 @@
 @import "./globals/typography.css";
 @import "./globals/utilities.css";
 @import "./globals/animations.css";
+@import "./globals/layout.css";
+@import "./globals/surfaces.css";
 
 @import "./layout/navigation.css";
 @import "./layout/footer.css";

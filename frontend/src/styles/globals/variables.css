@@ -26,9 +26,6 @@
   --elev-1: 0 1px 2px rgba(11, 37, 69, 0.04), 0 2px 8px rgba(11, 37, 69, 0.05);
   --elev-2: 0 2px 4px rgba(11, 37, 69, 0.04), 0 8px 24px rgba(11, 37, 69, 0.07);
   --elev-3: 0 4px 8px rgba(11, 37, 69, 0.05), 0 18px 48px rgba(11, 37, 69, 0.1);
-  --elev-hover:
-    0 6px 12px rgba(11, 37, 69, 0.06), 0 24px 60px rgba(11, 37, 69, 0.13);
-  --ring: 0 0 0 1px rgba(31, 95, 224, 0.14);
   --card-shadow:
     0 2px 6px rgba(15, 23, 42, 0.05), 0 8px 28px rgba(15, 23, 42, 0.08),
     inset 0 2px 0 rgba(255, 255, 255, 0.92),
@@ -45,27 +42,83 @@
 
   /* Spacing */
   --gutter: clamp(20px, 5vw, 80px);
+  --space-3xs: 6px;
   --space-2: 8px;
+  --space-xs: 10px;
+  --space-sm: 12px;
+  --space-md: 14px;
   --space-4: 16px;
+  --space-lg: 18px;
+  --space-xl: 20px;
+  --space-2xl: 24px;
+  --space-3xl: 32px;
 
   /* Borders */
   --border: #dce3ee;
   --border2: #c7d2e2;
   --glass-border: rgba(11, 37, 69, 0.1);
-  --glass-border-2: rgba(11, 37, 69, 0.06);
   --card-border: rgba(255, 255, 255, 0.78);
 
   /* Typography */
   --font-size-sm: 12px;
-  --font-size-md: 14px;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700;
 
   /* Others */
   --surface: rgba(255, 255, 255, 0.7);
   --surface-strong: rgba(255, 255, 255, 0.86);
   --nav-word-first: var(--navy);
   --card-blur: blur(14px) saturate(150%);
+
+  /* Radius */
+  --radius-full: 50%;
+  --radius-2xs: 2px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 20px;
+
+  /* Decorative */
+  --dot-sm: 5px;
+  --dot-md: 6px;
+  --dot-lg: 8px;
+  --icon-circle-md: 42px;
+
+  /* Transitions */
+  --transition-fast: all 0.2s;
+  --transition-color: color 0.2s;
+  --transition-chip: transform 0.25s ease, box-shadow 0.25s ease;
+
+  /* Blur */
+  --blur-strong: blur(16px) saturate(160%);
+
+  /* Z-index */
+  --z-raised: 1;
+  --z-lifted: 2;
+
+  /* Focus */
+  --focus-ring-offset: 3px;
+
+  /* Padding combinations */
+  --chip-padding: 10px 18px;
+  --tag-padding: 3px 8px;
+  --panel-padding: 16px 18px;
+  --button-padding: 13px 28px;
+  --pill-padding: 5px 14px;
+  --modal-padding: 40px 20px;
+  --box-padding: 18px 20px;
+
+  /* Sizing */
+  --line-thickness: 2px;
+
+  /* Container widths */
+  --content-width-sm: 520px;
+  --content-width-md: 640px;
+  --content-width-lg: 680px;
+  --content-width-xl: 760px;
+
+  /* Min-height */
+  --min-height-viewport: 100vh;
+  --min-height-card: 200px;
 
 }

@@ -1,12 +1,14 @@
 import React, { useEffect, useLayoutEffect, useRef } from 'react';
-import { Boxes, Gauge, MonitorPlay, PenTool, LayoutGrid, Cpu, FileCheck, Play, FileOutput, TriangleAlert } from 'lucide-react';
+import { Boxes, Gauge, MonitorPlay, PenTool, LayoutGrid, Cpu, FileCheck, Play, FileOutput } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
 import gsap from 'gsap';
 import { ScrollStagger, LineReveal } from '../ScrollAnimation';
 import { prefersReducedMotion } from '../../utils/motion';
 import HowItWorksScroll from './HowItWorksScroll';
 import NativeApproachScroll from './NativeApproachScroll';
-import HeroShell from '../HeroShell';
+import CapabilityHero from '../Capability/Hero';
+import FlashIcon from '../Capability/FlashIcon';
+import ComparisonTable from '../Capability/ComparisonTable';
 
 interface EnablePageProps {
   onOpenContact: (source?: string) => void;
@@ -19,7 +21,6 @@ const challenges = [
   'Stability, controllability and operability discovered late — at dynamic studies or, worse, at commissioning',
   'HAZOP, alarm rationalisation and control-structure decisions slow, manual and uneven in quality',
   'Plant changes hard to evaluate before they are built',
-  'Existing models locked inside commercial simulators',
 ];
 
 const existingSolutions = [
@@ -149,49 +150,42 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
   }, []);
   useEffect(() => {
     if (!matrixInView || prefersReducedMotion()) return;
-    rowRefs.current.forEach((row, i) => {
-      if (!row) return;
-      gsap.to(row, {
-        opacity: 1, x: 0, filter: 'blur(0px)', duration: 1.2, delay: i * 0.22, ease: 'power4.out',
-        clearProps: 'transform,filter',
+    const ctx = gsap.context(() => {
+      rowRefs.current.forEach((row, i) => {
+        if (!row) return;
+        gsap.to(row, {
+          opacity: 1, x: 0, filter: 'blur(0px)', duration: 1.2, delay: i * 0.22, ease: 'power4.out',
+          clearProps: 'transform,filter',
+        });
       });
     });
+    return () => ctx.revert();
   }, [matrixInView]);
 
   return (
     <main className="engram-page" style={{ '--accent': ACCENT } as React.CSSProperties}>
       {/* ── HERO (pinned parallax background — iOS-safe, see HeroShell) ── */}
-      <HeroShell image="/enable-hero.webp" contentClassName="engram-hero engram-container enable-hero-content">
-        <div className="engram-hero-badge">
-          <span className="enable-hero-badge-text">PROCESS INTELLIGENCE FOR DESIGN &amp; CONTROL</span>
-        </div>
-        <h1 className="engram-hero-h1 enable-hero-h1-text">
-          <span className="hero-line-mask">
-            <span className="hero-line-inner hero-delay-150">Turn Your Plant Into a</span>
-          </span>
-          <span className="hero-line-mask">
-            <span className="hero-line-inner enable-hero-h1-accent hero-delay-500">Matrix</span>
-          </span>
-        </h1>
-        <p className="engram-hero-sub hero-fade-up enable-hero-sub-text hero-delay-900">
-          enABLE is a desktop engineering application for process and control engineers. Draw your plant as a flowsheet and it becomes a block-matrix model — dx/dt = M·x + B·u — that yields eigenvalue-based engineering judgment at design time.
-        </p>
-        <p className="engram-hero-body hero-fade-up enable-hero-body-text hero-delay-1100">
-          From that one matrix, enABLE computes stability, controllability, loop pairing, recommended changes, alarm bounds and a HAZOP pre-fill — then runs the same plant as a live closed-loop dynamic simulation.
-        </p>
-        <div className="hero-fade-up enable-hero-chips u-flex u-gap-10 u-flex-wrap hero-delay-1300">
-          {heroChips.map((c) => (
-            <span key={c} className="badge hero-chip-badge enable-hero-chip">
-              {c}
-            </span>
-          ))}
-        </div>
-        <div className="hero-fade-up u-flex u-gap-12 u-flex-wrap hero-delay-1500">
-          <button className="btn-primary" onClick={() => onOpenContact('Waitlist')}>
-            Join the Waitlist
-          </button>
-        </div>
-      </HeroShell>
+      <CapabilityHero
+        image="/enable-hero.webp"
+        badgeText="PROCESS INTELLIGENCE FOR DESIGN & CONTROL"
+        titleLine1="Turn Your Plant Into a"
+        titleLine2="Matrix"
+        subText="enABLE is a desktop engineering application for process and control engineers. Draw your plant as a flowsheet and it becomes a block-matrix model — dx/dt = M·x + B·u — that yields eigenvalue-based engineering judgment at design time."
+        bodyText="From that one matrix, enABLE computes stability, controllability, loop pairing, recommended changes, alarm bounds and a HAZOP pre-fill — then runs the same plant as a live closed-loop dynamic simulation."
+        chips={heroChips}
+        ctaLabel="Join the Waitlist"
+        onCtaClick={() => onOpenContact('Waitlist')}
+        classes={{
+          content: 'enable-hero-content',
+          badge: 'badge-text enable-hero-badge-text',
+          title: 'enable-hero-h1-text',
+          accent: 'enable-hero-h1-accent',
+          subtitle: 'enable-hero-sub-text',
+          body: 'enable-hero-body-text',
+          chips: 'enable-hero-chips',
+          chip: 'enable-hero-chip',
+        }}
+      />
 
       {/* ── CHALLENGE ── */}
       <section ref={challengeRef} className="engram-section engram-container">
@@ -204,16 +198,13 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
         />
         <ScrollStagger className="engram-quad enable-five-col" step={70}>
           {challenges.map((c, i) => (
-            <div key={i} className="engram-card">
-              <div
-                className={challengeInView ? 'enable-challenge-icon flash' : 'enable-challenge-icon'}
-                style={{ '--icon-delay': `${i * 0.6}s` } as React.CSSProperties}
-              ><TriangleAlert size={22} strokeWidth={1.75} /></div>
-              <span className="enable-card-text">{c}</span>
+            <div key={i} className="card engram-card">
+              <FlashIcon inView={challengeInView} index={i} className="enable-challenge-icon" />
+              <span className="body-text enable-card-text">{c}</span>
             </div>
           ))}
         </ScrollStagger>
-        <p className="enable-challenge-note">
+        <p className="note-text enable-challenge-note">
           The knowledge cliff is real: a generation of experienced engineers is retiring with their plant models held only in their heads.
         </p>
       </section>
@@ -244,52 +235,52 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
           className="enable-section-lead"
           text="Every output is validated, labelled by how much to trust it, and computed entirely inside your own perimeter — the three things engineers check before they rely on a verdict."
         />
-        <ScrollStagger className="engram-three-col" step={90}>
+        <ScrollStagger className="grid-3 engram-three-col" step={90}>
 
           {/* Validation */}
-          <div className="engram-card">
+          <div className="card engram-card">
             <span className="eyebrow enable-trust-eyebrow">Validation</span>
             <h3 className="engram-card-title">Correctness Enforced by Tests</h3>
-            <p className="enable-trust-desc">
+            <p className="supporting-text enable-trust-desc">
               These are assertions in the test suite, not marketing numbers.
             </p>
             {validationFeatures.map((f, i) => (
               <div key={i} className="enable-trust-list-item u-flex u-gap-8 u-items-start">
                 <div className="enable-trust-bullet enable-trust-bullet-accent" />
-                <span className="enable-trust-text">{f}</span>
+                <span className="supporting-text enable-trust-text">{f}</span>
               </div>
             ))}
-            <p className="enable-trust-note">
+            <p className="note-text enable-trust-note">
               Results hold on the benchmark set — not a claim of accuracy on every plant.
             </p>
           </div>
 
           {/* Honesty model */}
-          <div className="engram-card">
+          <div className="card engram-card">
             <span className="eyebrow enable-trust-eyebrow">The Honesty Model</span>
             <h3 className="engram-card-title">Every Output Is Labelled</h3>
-            <p className="enable-trust-desc">
+            <p className="supporting-text enable-trust-desc">
               enABLE deliberately labels how much to trust each result.
             </p>
             {honestyFeatures.map((f, i) => (
               <div key={i} className="enable-trust-list-item u-flex u-gap-8 u-items-start">
                 <div className="enable-trust-bullet enable-trust-bullet-blue" />
-                <span className="enable-trust-text">{f}</span>
+                <span className="supporting-text enable-trust-text">{f}</span>
               </div>
             ))}
           </div>
 
           {/* Security */}
-          <div className="engram-card enable-trust-card">
+          <div className="card engram-card enable-trust-card">
             <span className="eyebrow enable-trust-eyebrow-accent">Industrial Security</span>
             <h3 className="engram-card-title">Runs Inside Your Perimeter</h3>
-            <p className="enable-trust-desc">
+            <p className="supporting-text enable-trust-desc">
               No vendor inside your security boundary.
             </p>
             {securityFeatures.map((f, i) => (
               <div key={i} className="enable-trust-list-item u-flex u-gap-8 u-items-start">
                 <div className="enable-trust-bullet enable-trust-bullet-accent" />
-                <span className="enable-trust-text">{f}</span>
+                <span className="supporting-text enable-trust-text">{f}</span>
               </div>
             ))}
           </div>
@@ -305,27 +296,16 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
           className="enable-section-lead"
           text="The control-theory techniques are decades old and uncontroversial — but delivering them as automatic, live, design-time outputs from a single matrix is uncommon."
         />
-        <div ref={matrixRef} className="engram-card enable-comparison-card">
-          <table className="engram-table">
-            <thead>
-              <tr>
-                <th>Approach</th>
-                <th>Limitation</th>
-                <th className="enable-table-th-accent">enABLE</th>
-              </tr>
-            </thead>
-            <tbody>
-              {existingSolutions.map((row, i) => (
-                <tr key={i} ref={(el) => { rowRefs.current[i] = el; }}>
-                  <td className="enable-table-phase">{row.solution}</td>
-                  <td className="enable-table-limitation">{row.limitation}</td>
-                  <td className="enable-table-fix">{row.fix}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <p className="enable-table-summary">
+        <ComparisonTable
+          ref={matrixRef}
+          wrapClassName="enable-comparison-card"
+          headers={['Approach', 'Limitation', 'enABLE']}
+          accentHeaderClassName="enable-table-th-accent"
+          rows={existingSolutions.map((row): [string, string, string] => [row.solution, row.limitation, row.fix])}
+          cellClassNames={['enable-table-phase', 'enable-table-limitation', 'enable-table-fix']}
+          getRowRef={(i) => (el) => { rowRefs.current[i] = el; }}
+        />
+        <p className="label-text enable-table-summary">
           enABLE computes eigenvalue stability, RGA pairing, condition number and zoning automatically, at design time, from one block matrix.
         </p>
       </section>
@@ -336,19 +316,19 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
         <LineReveal as="h2" className="engram-section-h2" text="From Tribal Knowledge to a Shared Engineering Language" />
         <LineReveal
           as="p"
-          className="enable-outcomes-lead"
+          className="content-narrow lead-text enable-outcomes-lead"
           text="Instead of plant wisdom living as informal stories, it can live as structure in the matrix that a junior engineer, a senior engineer, and a piece of software can all read. The matrix becomes the common ground for design review, for safety analysis, and for passing knowledge from one generation of engineers to the next."
         />
-        <ScrollStagger className="engram-outcomes-grid" step={50}>
+        <ScrollStagger className="u-flex u-flex-wrap u-gap-10 engram-outcomes-grid" step={50}>
           {outcomes.map((o, i) => (
-            <div key={i} className="engram-outcome-pill">
+            <div key={i} className="card label-text engram-outcome-pill">
               <div className="enable-outcome-bullet" />
               <span>{o}</span>
             </div>
           ))}
         </ScrollStagger>
         <div className="enable-cta-wrap u-flex u-justify-end">
-          <button className="btn-primary" onClick={() => onOpenContact('Waitlist')}>
+          <button className="cta-solid button-text btn-primary" onClick={() => onOpenContact('Waitlist')}>
             Join the Waitlist →
           </button>
         </div>

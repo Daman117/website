@@ -5,12 +5,7 @@
   padding-right: var(--gutter);
 }
 
-.about-hero-badge-text {
-  color: var(--primary);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1px;
-}
+.about-hero-badge-text { color: var(--primary); }
 
 .about-hero-h1-accent {
   color: var(--primary);
@@ -23,7 +18,7 @@
 .about-founder-card {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--space-xl);
 }
 
 .about-quote {
@@ -38,15 +33,15 @@
 .about-facts-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-4);
 }
 
 .about-fact-box {
   margin-top: 8px;
-  padding: 18px 20px;
+  padding: var(--box-padding);
   background: var(--bg2);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--radius-lg);
 }
 
 .about-fact-box-title {
@@ -81,10 +76,10 @@
 
 .about-tech-box {
   margin-top: 24px;
-  padding: 16px 18px;
+  padding: var(--panel-padding);
   background: var(--bg2);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--radius-lg);
 }
 
 .about-tech-box-desc {

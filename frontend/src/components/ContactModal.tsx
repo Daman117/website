@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { CircleCheck, X, ChevronDown } from 'lucide-react';
 import { setLenisModalOpen } from '../hooks/useLenis';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 
 interface ContactModalProps {
   open: boolean;
@@ -24,10 +25,13 @@ const INTEREST_OPTIONS = [
 
 /** Custom dropdown styled to match the app (native <select> option lists can't be themed) */
 const CustomSelect: React.FC<{
+  id?: string;
   value: string;
   onChange: (v: string) => void;
   placeholder: string;
-}> = ({ value, onChange, placeholder }) => {
+  ariaInvalid?: boolean;
+  ariaDescribedBy?: string;
+}> = ({ id, value, onChange, placeholder, ariaInvalid, ariaDescribedBy }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const selected = INTEREST_OPTIONS.find((o) => o.value === value);
@@ -49,11 +53,14 @@ const CustomSelect: React.FC<{
   return (
     <div ref={ref} className="cm-select-wrap">
       <button
+        id={id}
         type="button"
         className="cm-input cm-select-trigger cm-select-trigger-flex"
         onClick={() => setOpen((o) => !o)}
         aria-haspopup="listbox"
         aria-expanded={open}
+        aria-invalid={ariaInvalid}
+        aria-describedby={ariaDescribedBy}
       >
         <span className={selected ? 'cm-select-value active' : 'cm-select-value'}>{selected ? selected.label : placeholder}</span>
         <ChevronDown size={16} className={open ? 'cm-select-icon open' : 'cm-select-icon'} />
@@ -84,6 +91,8 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, source, onClose }) =>
   const [loading, setLoading] = useState(false);
   const [interest, setInterest] = useState('');
   const [interestError, setInterestError] = useState(false);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(dialogRef, open);
 
   // Reset the form each time the modal opens — render-phase adjustment
   // instead of an effect (react.dev: "You might not need an Effect")
@@ -168,7 +177,13 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, source, onClose }) =>
         className="contact-modal-wrapper"
         onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
       >
-        <div className="contact-modal-dialog">
+        <div
+          ref={dialogRef}
+          className="contact-modal-dialog"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="contact-modal-title"
+        >
           <button
             onClick={onClose}
             className="contact-modal-close"
@@ -188,48 +203,52 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, source, onClose }) =>
               </div>
             ) : (
               <>
-                <h3 className="contact-modal-title">
+                <h3 id="contact-modal-title" className="contact-modal-title">
                   Get in Touch
                 </h3>
                 <p className="contact-modal-desc">
                   Request a demo, pilot program, or speak with our team about your plant intelligence needs.
                 </p>
 
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} aria-describedby={error ? 'form-error' : undefined}>
                   {/* Honeypot — invisible to humans, bots fill it and get dropped server-side */}
                   <input type="text" name="website" className="cm-hp" tabIndex={-1} autoComplete="off" aria-hidden="true" />
 
                   <div className="cm-field">
-                    <label className="cm-label">Name *</label>
-                    <input type="text" name="name" required className="cm-input" placeholder="Your name" />
+                    <label className="cm-label" htmlFor="cm-name">Name *</label>
+                    <input id="cm-name" type="text" name="name" required className="cm-input" placeholder="Your name" />
                   </div>
 
                   <div className="cm-field">
-                    <label className="cm-label">Email *</label>
-                    <input type="email" name="email" required className="cm-input" placeholder="your@company.com" />
+                    <label className="cm-label" htmlFor="cm-email">Email *</label>
+                    <input id="cm-email" type="email" name="email" required className="cm-input" placeholder="your@company.com" />
                   </div>
 
                   <div className="cm-field">
-                    <label className="cm-label">Company *</label>
-                    <input type="text" name="company" required className="cm-input" placeholder="Your company name" />
+                    <label className="cm-label" htmlFor="cm-company">Company *</label>
+                    <input id="cm-company" type="text" name="company" required className="cm-input" placeholder="Your company name" />
                   </div>
 
                   <div className="cm-field">
-                    <label className="cm-label">Interest *</label>
+                    <label className="cm-label" htmlFor="cm-interest">Interest *</label>
                     <input type="hidden" name="interest" value={interest} />
                     <CustomSelect
+                      id="cm-interest"
                       value={interest}
                       placeholder="Select one..."
                       onChange={(v) => { setInterest(v); setInterestError(false); }}
+                      ariaInvalid={interestError}
+                      ariaDescribedBy={interestError ? 'cm-interest-error' : undefined}
                     />
                     {interestError && (
-                      <p className="contact-modal-error-msg">Please select an option.</p>
+                      <p id="cm-interest-error" className="contact-modal-error-msg">Please select an option.</p>
                     )}
                   </div>
 
                   <div className="cm-field contact-field-last">
-                    <label className="cm-label">Message *</label>
+                    <label className="cm-label" htmlFor="cm-message">Message *</label>
                     <textarea
+                      id="cm-message"
                       name="message"
                       required
                       rows={4}
@@ -240,7 +259,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, source, onClose }) =>
 
                   <button
                     type="submit"
-                    className="btn-primary contact-submit"
+                    className="cta-solid button-text btn-primary contact-submit"
                     disabled={loading}
                   >
                     {loading ? 'Sending…' : 'Send Message'}

@@ -16,15 +16,15 @@ const ProductExtras: React.FC<{ cap: Cap }> = ({ cap }) => {
         <div className="pp-flow">
           {(['inputs', 'processing', 'outputs'] as const).map((k, i) => (
             <React.Fragment key={k}>
-              <div className="pp-flow-col">
+              <div className="card pp-flow-col">
                 <div className="pp-flow-label">{k === 'inputs' ? 'Inputs' : k === 'processing' ? 'Processing' : 'Outputs'}</div>
-                <ul className={k === 'outputs' ? 'pp-flow-list pp-flow-list-accent' : 'pp-flow-list'}>
+                <ul className={k === 'outputs' ? 'u-flex-column u-gap-8 pp-flow-list pp-flow-list-accent' : 'u-flex-column u-gap-8 pp-flow-list'}>
                   {extra.flow[k].map((item) => (
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
               </div>
-              {i < 2 && <div className="pp-flow-arrow" aria-hidden="true">→</div>}
+              {i < 2 && <div className="u-flex u-items-center pp-flow-arrow" aria-hidden="true">→</div>}
             </React.Fragment>
           ))}
         </div>
@@ -37,7 +37,7 @@ const ProductExtras: React.FC<{ cap: Cap }> = ({ cap }) => {
           {extra.useCases.map((u) => (
             <div key={u.role} className="pp-uc">
               <span className="pp-uc-role">{u.role}</span>
-              <p className="pp-uc-text">{u.text}</p>
+              <p className="body-text-compact pp-uc-text">{u.text}</p>
             </div>
           ))}
         </div>
@@ -46,7 +46,7 @@ const ProductExtras: React.FC<{ cap: Cap }> = ({ cap }) => {
       {/* Expected outcomes */}
       <div className="pp-block">
         <LineReveal as="h2" className="pp-block-title" text="Expected outcomes" />
-        <ul className="pp-outcomes">
+        <ul className="u-flex-column u-gap-10 pp-outcomes">
           {extra.outcomes.map((o) => (
             <li key={o}><span className="pp-outcome-check">✓</span>{o}</li>
           ))}
@@ -66,35 +66,35 @@ const PerfRight: React.FC<{ cap: Cap }> = () => (
     <table className="perf-table">
       <thead>
         <tr>
-          <th>Metric</th>
-          <th className="ours">enVIEW</th>
-          <th>Incumbent</th>
+          <th className="surface-glass micro-label">Metric</th>
+          <th className="surface-glass micro-label ours">enVIEW</th>
+          <th className="surface-glass micro-label">Incumbent</th>
         </tr>
       </thead>
       <tbody>
-        <tr><td>Startup time</td><td className="ours">&lt;2s</td><td className="theirs">30–60s</td></tr>
-        <tr><td>Memory (700 tags)</td><td className="ours">&lt;500MB</td><td className="theirs">2–4GB+</td></tr>
-        <tr><td>CPU (M2, 1Hz scan)</td><td className="ours">&lt;15%</td><td className="theirs">30–50%+</td></tr>
-        <tr><td>Tag latency</td><td className="ours">&lt;100ms</td><td className="theirs">200–500ms</td></tr>
-        <tr><td>Installer size</td><td className="ours">~50MB</td><td className="theirs">GB-scale</td></tr>
-        <tr><td>Licensing</td><td className="ours">from $2,500</td><td className="theirs">$100K+</td></tr>
+        <tr><td className="surface-glass">Startup time</td><td className="surface-glass ours">&lt;2s</td><td className="surface-glass theirs">30–60s</td></tr>
+        <tr><td className="surface-glass">Memory (700 tags)</td><td className="surface-glass ours">&lt;500MB</td><td className="surface-glass theirs">2–4GB+</td></tr>
+        <tr><td className="surface-glass">CPU (M2, 1Hz scan)</td><td className="surface-glass ours">&lt;15%</td><td className="surface-glass theirs">30–50%+</td></tr>
+        <tr><td className="surface-glass">Tag latency</td><td className="surface-glass ours">&lt;100ms</td><td className="surface-glass theirs">200–500ms</td></tr>
+        <tr><td className="surface-glass">Installer size</td><td className="surface-glass ours">~50MB</td><td className="surface-glass theirs">GB-scale</td></tr>
+        <tr><td className="surface-glass">Licensing</td><td className="surface-glass ours">from $2,500</td><td className="surface-glass theirs">$100K+</td></tr>
       </tbody>
     </table>
     </div>
     <div className="price-grid">
-      <div className="price-card">
+      <div className="surface-glass price-card">
         <div className="price-tier">Starter</div>
         <div className="price-amt">$2,500</div>
         <div className="price-tags">Up to 100 tags</div>
         <div className="price-feats">P&amp;ID + DCS · Alarms · Historian · CLI</div>
       </div>
-      <div className="price-card featured">
+      <div className="surface-glass price-card featured">
         <div className="price-tier ours">Professional</div>
         <div className="price-amt">$5,000</div>
         <div className="price-tags">Up to 500 tags</div>
         <div className="price-feats">All views + 3D · Batch · AI assistant</div>
       </div>
-      <div className="price-card">
+      <div className="surface-glass price-card">
         <div className="price-tier">Enterprise</div>
         <div className="price-amt">$10,000</div>
         <div className="price-tags">Up to 2,000 tags</div>
@@ -119,13 +119,13 @@ const SpecsRight: React.FC<{ cap: Cap; onOpenContact: (src?: string) => void }> 
     <div>
       <div className="spec-grid">
         {specs.map((s) => (
-          <div key={s.l} className="spec-cell">
-            <div className="spec-label">{s.l}</div>
+          <div key={s.l} className="surface-glass spec-cell">
+            <div className="micro-label spec-label">{s.l}</div>
             <div className="spec-val">{s.v}</div>
           </div>
         ))}
       </div>
-      <button className="acc-action-btn" onClick={() => onOpenContact(src)}>
+      <button className="cta-solid acc-action-btn" onClick={() => onOpenContact(src)}>
         {label}
       </button>
     </div>
@@ -142,7 +142,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ onOpenContact }) => {
     return (
       <div className="product-page-body">
         <p>Product not found.</p>
-        <button className="btn-primary product-btn" onClick={() => navigate('/')}>
+        <button className="cta-solid button-text btn-primary product-btn" onClick={() => navigate('/')}>
           Back to Home
         </button>
       </div>
@@ -155,7 +155,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ onOpenContact }) => {
         <div className="product-page-inner">
           {/* Header */}
           <div className="product-page-header">
-            <div className="product-page-title-row">
+            <div className="u-flex u-items-center u-gap-12 product-page-title-row">
               <div className="cap-card-dot" />
               <LineReveal as="h1" className="product-page-name" text={cap.name} />
             </div>
@@ -166,23 +166,23 @@ const ProductPage: React.FC<ProductPageProps> = ({ onOpenContact }) => {
           {/* Feature strips */}
           {cap.zerod && (
             <div className="zerod-strip">
-              <div className="zerod-item"><div className="zerod-dot" /><span className="zerod-text">Zero-day OPC-UA connectivity</span></div>
-              <div className="zerod-item"><div className="zerod-dot" /><span className="zerod-text">Native Apple Silicon</span></div>
-              <div className="zerod-item"><div className="zerod-dot" /><span className="zerod-text">No cloud dependency</span></div>
+              <div className="u-flex u-items-center u-gap-8 zerod-item"><div className="zerod-dot" /><span className="zerod-text">Zero-day OPC-UA connectivity</span></div>
+              <div className="u-flex u-items-center u-gap-8 zerod-item"><div className="zerod-dot" /><span className="zerod-text">Native Apple Silicon</span></div>
+              <div className="u-flex u-items-center u-gap-8 zerod-item"><div className="zerod-dot" /><span className="zerod-text">No cloud dependency</span></div>
             </div>
           )}
           {cap.airgap && (
             <div className="airgap-strip">
-              <div className="zerod-item"><div className="zerod-dot" /><span className="zerod-text">Air-gap ready</span></div>
-              <div className="zerod-item"><div className="zerod-dot" /><span className="zerod-text">Local AI only — no internet</span></div>
-              <div className="zerod-item"><div className="zerod-dot" /><span className="zerod-text">Three input channels, one output format</span></div>
+              <div className="u-flex u-items-center u-gap-8 zerod-item"><div className="zerod-dot" /><span className="zerod-text">Air-gap ready</span></div>
+              <div className="u-flex u-items-center u-gap-8 zerod-item"><div className="zerod-dot" /><span className="zerod-text">Local AI only — no internet</span></div>
+              <div className="u-flex u-items-center u-gap-8 zerod-item"><div className="zerod-dot" /><span className="zerod-text">Three input channels, one output format</span></div>
             </div>
           )}
           {cap.patent && (
             <div className="zerod-strip">
-              <div className="zerod-item"><div className="zerod-dot product-dot-badge" /><span className="zerod-text">Patent-pending matrix M methodology</span></div>
-              <div className="zerod-item"><div className="zerod-dot product-dot-badge" /><span className="zerod-text">Analytical verdict + live closed-loop simulation</span></div>
-              <div className="zerod-item"><div className="zerod-dot product-dot-badge" /><span className="zerod-text">Eigenvalue-based — computed live on every build</span></div>
+              <div className="u-flex u-items-center u-gap-8 zerod-item"><div className="zerod-dot product-dot-badge" /><span className="zerod-text">Patent-pending matrix M methodology</span></div>
+              <div className="u-flex u-items-center u-gap-8 zerod-item"><div className="zerod-dot product-dot-badge" /><span className="zerod-text">Analytical verdict + live closed-loop simulation</span></div>
+              <div className="u-flex u-items-center u-gap-8 zerod-item"><div className="zerod-dot product-dot-badge" /><span className="zerod-text">Eigenvalue-based — computed live on every build</span></div>
             </div>
           )}
 
@@ -191,7 +191,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ onOpenContact }) => {
             <div className="product-page-left">
               <LineReveal
                 as="p"
-                className={cap.body2 ? 'product-card-desc has-body2' : 'product-card-desc'}
+                className={cap.body2 ? 'lead-text product-card-desc has-body2' : 'lead-text product-card-desc'}
                 text={cap.body}
               />
               {cap.body2 && (
@@ -203,10 +203,14 @@ const ProductPage: React.FC<ProductPageProps> = ({ onOpenContact }) => {
               )}
 
               {/* Tabs */}
-              <div className="product-spec-row">
+              <div className="cluster product-spec-row" role="tablist">
                 {cap.tabs.map((tab, i) => (
                   <button
                     key={i}
+                    id={`product-tab-${i}`}
+                    role="tab"
+                    aria-selected={activeTab === i}
+                    aria-controls="product-tab-panel"
                     className={`acc-tab-btn${activeTab === i ? ' active' : ''}`}
                     style={activeTab === i ? {
                       '--tab-color': cap.color,
@@ -220,6 +224,9 @@ const ProductPage: React.FC<ProductPageProps> = ({ onOpenContact }) => {
                 ))}
               </div>
               <div
+                id="product-tab-panel"
+                role="tabpanel"
+                aria-labelledby={`product-tab-${activeTab}`}
                 className="product-card-box"
                 dangerouslySetInnerHTML={{ __html: cap.tabs[activeTab].content }}
               />

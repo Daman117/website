@@ -3,12 +3,7 @@
   margin-bottom: 8px;
 }
 
-.how-desc {
-  font-size: 12px;
-  color: var(--t4);
-  line-height: 1.65;
-  margin: 0;
-}
+.how-desc { color: var(--t4); margin: 0; }
 
 .engram-card.how-video-wrap {
   margin-top: 48px;
@@ -18,11 +13,22 @@
 }
 
 .how-video-btn {
-  all: unset;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
   display: block;
   position: relative;
   width: 100%;
   cursor: pointer;
+}
+
+.how-video-btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: var(--focus-ring-offset);
 }
 
 .how-video-media {
@@ -30,7 +36,7 @@
   height: 480px;
   object-fit: cover;
   display: block;
-  border-radius: 16px;
+  border-radius: var(--radius-2xl);
 }
 
 .how-video-icon {
@@ -53,12 +59,7 @@
   color: var(--t1);
 }
 
-.how-conn-wrap {
-  flex: 0 0 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+.how-conn-wrap { flex: 0 0 50px; }
 
 .how-conn-svg {
   overflow: visible;
@@ -80,7 +81,7 @@
 .how-icon-wrap {
   width: 52px;
   height: 52px;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -89,20 +90,12 @@
   border: 1.5px solid rgba(var(--accent-rgb), 0.18);
 }
 
-.how-video-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(4,6,18,0.30);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.25s ease;
-}
+.how-video-overlay { position: absolute; inset: 0; background: rgba(4,6,18,0.30); transition: background 0.25s ease; }
 
 .how-video-play {
   width: 68px;
   height: 68px;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   background: rgba(255,255,255,0.95);
   display: flex;
   align-items: center;

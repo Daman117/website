@@ -13,7 +13,7 @@ const AboutPage: React.FC = () => {
 
       {/* ── BACK ── */}
       <div className="about-page-header">
-        <button className="product-back-btn" onClick={() => navigate('/')}>
+        <button className="btn-reset label-text product-back-btn" onClick={() => navigate('/')}>
           ← Back
         </button>
       </div>
@@ -21,7 +21,7 @@ const AboutPage: React.FC = () => {
       {/* ── HERO ── */}
       <section className="engram-hero engram-container">
         <div className="engram-hero-badge">
-          <span className="about-hero-badge-text">ABOUT ENSAR SOLUTIONS · ENXPLANT DIVISION</span>
+          <span className="badge-text about-hero-badge-text">ABOUT ENSAR SOLUTIONS · ENXPLANT DIVISION</span>
         </div>
         <h1 className="engram-hero-h1">
           <span className="hero-line-mask">
@@ -46,7 +46,7 @@ const AboutPage: React.FC = () => {
 
         <div className="engram-two-col about-two-col">
           {/* Left — founder card */}
-          <div className="engram-card about-founder-card">
+          <div className="card engram-card about-founder-card">
             <div className="trust-founder-head">
               <div className="trust-avatar" aria-hidden="true">JY</div>
               <div>
@@ -56,7 +56,7 @@ const AboutPage: React.FC = () => {
               </div>
             </div>
             <blockquote className="trust-quote">{founder.bio}</blockquote>
-            <blockquote className="quote about-quote">
+            <blockquote className="surface-glass quote about-quote">
               "Grounded in how plant engineers actually think, how engineering documents are actually structured, and what an engineer needs when something goes wrong at 2AM."
             </blockquote>
             <p className="attr about-attr">Dr. Jagan Mohan Reddy Yeturu · Founder, enSAR Solutions Inc.</p>
@@ -64,7 +64,7 @@ const AboutPage: React.FC = () => {
               {founder.facts.map((f) => (
                 <div key={f.k} className="trust-fact">
                   <span className="trust-fact-k">{f.k}</span>
-                  <span className="trust-fact-v">{f.v}</span>
+                  <span className="label-text trust-fact-v">{f.v}</span>
                 </div>
               ))}
             </div>
@@ -103,10 +103,10 @@ const AboutPage: React.FC = () => {
         <div className="engram-two-col about-two-col">
 
           {/* Standards */}
-          <div className="engram-card">
+          <div className="card engram-card">
             <span className="eyebrow about-eyebrow">Engineering Standards</span>
             <LineReveal as="h3" className="engram-card-title about-card-title" text="Built on Industrial Standards" />
-            <div className="trust-std-list">
+            <div className="u-flex-column u-gap-8 trust-std-list">
               {standards.map((s) => (
                 <div key={s.code} className="trust-std">
                   <span className="trust-std-code mono">{s.code}</span>
@@ -117,10 +117,10 @@ const AboutPage: React.FC = () => {
           </div>
 
           {/* Tech */}
-          <div className="engram-card">
+          <div className="card engram-card">
             <span className="eyebrow about-eyebrow">Technology Stack</span>
             <LineReveal as="h3" className="engram-card-title about-card-title" text="Built for the Security Perimeter" />
-            <div className="trust-tech-row">
+            <div className="u-flex u-flex-wrap u-gap-8 trust-tech-row">
               {techStack.map((t) => (
                 <span key={t.name} className="trust-tech">
                   <Icon name={t.icon} size={15} strokeWidth={1.8} />{t.name}
