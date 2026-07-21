@@ -11,7 +11,9 @@ interface NavProps {
   onOpenContact: (source?: string) => void;
 }
 
-const PRODUCTS = [
+// Shared with MobileNav — one product list for both the desktop dropdown
+// and the mobile drawer's tile grid.
+export const PRODUCTS = [
   { id: 'enview',   name: 'enVIEW',   cat: 'SCADA / Live Process Intelligence' },
   { id: 'engram',   name: 'enGRAM',   cat: 'Plant Knowledge' },
   { id: 'enstudio', name: 'enSTUDIO', cat: 'Drawing Intelligence' },
@@ -23,6 +25,7 @@ const PRODUCTS = [
 const Nav: React.FC<NavProps> = ({ onOpenMobile, mobileOpen, onOpenContact }) => {
   const { scrolled, activeSection } = useNavScroll();
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
+  const closeTimer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -42,7 +45,16 @@ const Nav: React.FC<NavProps> = ({ onOpenMobile, mobileOpen, onOpenContact }) =>
     }
   };
 
+  const openDropdown = () => {
+    clearTimeout(closeTimer.current);
+    setDropdownOpen(true);
+  };
   const closeDropdown = () => setDropdownOpen(false);
+  // Small delay tolerates the cursor briefly leaving the link/panel gap
+  // while moving slowly, instead of closing on the first pixel out.
+  const scheduleClose = () => {
+    closeTimer.current = setTimeout(closeDropdown, 200);
+  };
 
   // Direction-aware underline: grow from / retract toward the edge the cursor crosses
   const setUnderlineOrigin = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -80,9 +92,9 @@ const Nav: React.FC<NavProps> = ({ onOpenMobile, mobileOpen, onOpenContact }) =>
               focus, closes on click, blur-out, or Escape */}
           <li
             className={`u-flex u-items-center nav-dropdown-wrap${dropdownOpen ? ' open' : ''}`}
-            onMouseEnter={() => setDropdownOpen(true)}
-            onMouseLeave={closeDropdown}
-            onFocus={() => setDropdownOpen(true)}
+            onMouseEnter={openDropdown}
+            onMouseLeave={scheduleClose}
+            onFocus={openDropdown}
             onBlur={(e) => {
               if (!e.currentTarget.contains(e.relatedTarget as Node)) closeDropdown();
             }}

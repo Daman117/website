@@ -197,6 +197,20 @@ img {
   }
 }
 
+/* Motion system — mobile tier: shorter travel distance, capped duration.
+   Every section using ScrollAnimation/ScrollStagger gets this for free —
+   no section file needs to know its viewport to animate lighter on mobile. */
+@media (max-width: 767px) {
+  .sa-base {
+    transition-duration: min(var(--t-dur, 700ms), 420ms);
+  }
+
+  .sa-hidden-up { transform: translateY(14px); }
+  .sa-hidden-down { transform: translateY(-14px); }
+  .sa-hidden-left { transform: translateX(14px); }
+  .sa-hidden-right { transform: translateX(-14px); }
+}
+
 /* LineReveal — word-by-word masked reveal, same look as the hero headline,
    but scroll-triggered. Used for section headings and lead paragraphs. */
 .lr-mask {
@@ -288,6 +302,14 @@ img {
 .hero-delay-1500 {
   animation-delay: 1500ms;
 }
+
+.hero-mobile-line { display: inline-block; }
+
+/* Mobile hero — single-stage fade, settles in ~600ms instead of 1500ms */
+.hero-delay-mobile-1 { animation-delay: 100ms; }
+.hero-delay-mobile-2 { animation-delay: 250ms; }
+.hero-delay-mobile-3 { animation-delay: 400ms; }
+.hero-delay-mobile-4 { animation-delay: 550ms; }
 
 @media (prefers-reduced-motion: reduce) {
 
@@ -500,7 +522,7 @@ img {
   top: 100%;
   left: 50%;
   /* padding-top bridges the gap so hover stays active while crossing */
-  padding-top: 22px;
+  padding-top: 10px;
   transform: translateX(-50%) translateY(-4px);
   opacity: 0;
   pointer-events: none;
@@ -674,8 +696,8 @@ img {
 /* ── HAMBURGER / MOBILE NAV ─────────────────────────────────────── */
 .nav-hamburger {
   display: none;
-  min-width: 40px;
-  min-height: 40px;
+  min-width: 44px;
+  min-height: 44px;
   background: var(--surface);
   border: 1px solid var(--border2);
   border-radius: var(--radius-md);
@@ -750,8 +772,8 @@ img {
   background: var(--surface);
   border: 1px solid var(--border2);
   border-radius: var(--radius-md);
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -767,6 +789,9 @@ img {
 }
 
 .mobile-nav-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   font-family: "Space Grotesk", sans-serif;
   font-size: 32px;
   font-weight: 600;
@@ -795,21 +820,44 @@ img {
 .mobile-nav-products {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px 40px;
+  gap: 10px;
   margin-bottom: 10px;
+  width: min(92vw, 460px);
 }
 
-.mobile-nav-sub {
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 19px;
-  font-weight: 600;
-  color: var(--t2);
-  letter-spacing: -0.4px;
+/* Tile — mirrors the desktop dropdown's name + category density, at a
+   touch-safe size (44px+ tall including padding). */
+.mobile-nav-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 12px 14px;
+  min-height: 44px;
+  background: var(--card-bg, rgba(255, 255, 255, 0.6));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
   text-decoration: none;
+  transition: var(--transition-fast);
 }
 
-.mobile-nav-sub:hover {
-  color: var(--primary);
+.mobile-nav-tile:hover,
+.mobile-nav-tile:active {
+  border-color: var(--primary);
+  background: rgba(31, 95, 224, 0.06);
+}
+
+.mobile-nav-tile-name {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--t1);
+  letter-spacing: -0.3px;
+}
+
+.mobile-nav-tile-cat {
+  font-size: 10.5px;
+  color: var(--t4);
+  line-height: 1.35;
 }
 
 /* ── SECTIONS ──────────────────────────────────────────────────── */

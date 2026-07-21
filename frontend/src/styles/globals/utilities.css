@@ -33,3 +33,50 @@
 
 .u-pt-80 { padding-top: 80px; }
 .u-justify-end { justify-content: flex-end; }
+
+/* Responsive visibility — pairs two always-mounted trees, CSS picks which
+   renders. Used by the three sections with genuine desktop/mobile content
+   forks (Hero, Demo, ComparisonTable); see docs/component-inventory.md. */
+.u-hide-mobile { }
+.u-hide-desktop { display: none; }
+@media (max-width: 767px) {
+  .u-hide-mobile { display: none; }
+  .u-hide-desktop { display: block; }
+}
+
+/* ── Layout primitives ────────────────────────────────────────────
+   Named per the component inventory (see docs/component-inventory.md).
+   Container → .section / --gutter (layout/layout.css). Stack → .u-flex-column.
+   Grid → the .grid-3 / .grid-3-compact family (globals). Carousel and
+   Accordion below are new — added in Foundation so Phases 5/6/14 (Capability
+   Grid, Industries, Workflow, Footer) consume one shared pattern instead of
+   each inventing its own. */
+
+/* Carousel — horizontal snap-scroll row. One card ~85% width so the next
+   peeks at the edge, signaling swipeability. Scrollbar hidden; native touch
+   scroll physics, no JS. */
+.carousel-row {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.carousel-row::-webkit-scrollbar { display: none; }
+.carousel-row > * {
+  scroll-snap-align: start;
+  flex: 0 0 85%;
+}
+
+/* Accordion — wraps a native <details>/<summary> pair. Desktop can force
+   it open via .accordion-row--force-open (used where the mobile accordion
+   markup is reused as always-expanded desktop content). */
+.accordion-row > summary {
+  cursor: pointer;
+  list-style: none;
+}
+.accordion-row > summary::-webkit-details-marker { display: none; }
+.accordion-row--force-open {
+  display: contents;
+}
+.accordion-row--force-open > summary { display: none; }

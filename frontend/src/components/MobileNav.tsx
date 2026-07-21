@@ -2,21 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { setLenisModalOpen } from '../hooks/useLenis';
 import { useFocusTrap } from '../hooks/useFocusTrap';
+import { PRODUCTS } from './Nav';
 
 interface MobileNavProps {
   open: boolean;
   onClose: () => void;
   onOpenContact: (source?: string) => void;
 }
-
-const PRODUCTS = [
-  { id: 'enview',   name: 'enVIEW' },
-  { id: 'engram',   name: 'enGRAM' },
-  { id: 'enstudio', name: 'enSTUDIO' },
-  { id: 'enable',   name: 'enABLE' },
-  { id: 'engenie',  name: 'enGENIE' },
-  { id: 'entie',    name: 'enTIE' },
-];
 
 const MobileNav: React.FC<MobileNavProps> = ({ open, onClose, onOpenContact }) => {
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -48,8 +40,9 @@ const MobileNav: React.FC<MobileNavProps> = ({ open, onClose, onOpenContact }) =
       <span className="mobile-nav-heading">Products</span>
       <div className="mobile-nav-products">
         {PRODUCTS.map((p) => (
-          <Link key={p.id} to={`/products/${p.id}`} className="mobile-nav-sub" onClick={onClose}>
-            {p.name}
+          <Link key={p.id} to={`/products/${p.id}`} className="mobile-nav-tile" onClick={onClose}>
+            <span className="mobile-nav-tile-name">{p.name}</span>
+            <span className="mobile-nav-tile-cat">{p.cat}</span>
           </Link>
         ))}
       </div>

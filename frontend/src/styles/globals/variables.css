@@ -117,6 +117,13 @@
   --content-width-lg: 680px;
   --content-width-xl: 760px;
 
+  /* Breakpoints — reference values only (CSS can't read custom properties
+     inside @media conditions). Mirror these in hooks/useMediaQuery.ts if
+     they ever change, and in the plan's tier table. */
+  --bp-mobile-max: 767px;
+  --bp-tablet-max: 1023px;
+  --bp-desktop-min: 1280px;
+
   /* Min-height */
   --min-height-viewport: 100vh;
   --min-height-card: 200px;

@@ -33,32 +33,65 @@ const Hero: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenConta
 
   return (
   <HeroShell id="hero" image="/bg-image.webp" contentClassName="section" after={<Ticker visible={introDone} />}>
-      <h1 className="engram-hero-h1 landing-hero-h1-text">
-        <span className="hero-line-mask">
-          <span className="hero-line-inner hero-delay-150">Your plant.</span>
-        </span>
-        <span className="hero-line-mask">
-          <span className="hero-line-inner landing-hero-h1-accent hero-delay-500">Understood.</span>
-        </span>
-      </h1>
-      <p className="engram-hero-sub hero-fade-up landing-hero-sub-text hero-delay-900">
-        The local-first industrial intelligence platform that turns drawings, documents, SCADA
-        systems and engineering knowledge into structured, searchable plant intelligence.
-      </p>
-      <p className="engram-hero-body hero-fade-up landing-hero-body-text hero-delay-1100">
-        Each capability is complete on its own and more powerful together — and it all runs
-        entirely inside your network.
-      </p>
-      <div className="hero-fade-up landing-hero-chips u-flex u-flex-wrap u-gap-10 hero-delay-1300" aria-label="Platform capabilities">
-        {heroChips.map((c) => (
-          <span key={c} className="badge hero-chip-badge landing-hero-chip">
-            {c}
+      {/* Desktop — full staged reveal, both trees always render; a media
+          query decides which is visible (no JS branch, no first-paint flash). */}
+      <div className="u-hide-mobile">
+        <h1 className="engram-hero-h1 landing-hero-h1-text">
+          <span className="hero-line-mask">
+            <span className="hero-line-inner hero-delay-150">Your plant.</span>
           </span>
-        ))}
+          <span className="hero-line-mask">
+            <span className="hero-line-inner landing-hero-h1-accent hero-delay-500">Understood.</span>
+          </span>
+        </h1>
+        <p className="engram-hero-sub hero-fade-up landing-hero-sub-text hero-delay-900">
+          The local-first industrial intelligence platform that turns drawings, documents, SCADA
+          systems and engineering knowledge into structured, searchable plant intelligence.
+        </p>
+        <p className="engram-hero-body hero-fade-up landing-hero-body-text hero-delay-1100">
+          Each capability is complete on its own and more powerful together — and it all runs
+          entirely inside your network.
+        </p>
+        <div className="hero-fade-up landing-hero-chips u-flex u-flex-wrap u-gap-10 hero-delay-1300" aria-label="Platform capabilities">
+          {heroChips.map((c) => (
+            <span key={c} className="badge hero-chip-badge landing-hero-chip">
+              {c}
+            </span>
+          ))}
+        </div>
+        <div className="hero-fade-up landing-hero-actions u-flex u-flex-wrap hero-delay-1500">
+          <button className="cta-solid button-text btn-primary" onClick={() => onOpenContact('Explore enxplant')}>Explore enxplant →</button>
+          <button className="button-text btn-outline" onClick={() => onOpenContact('Request a Pilot')}>Request a Pilot</button>
+        </div>
       </div>
-      <div className="hero-fade-up landing-hero-actions u-flex u-flex-wrap hero-delay-1500">
-        <button className="cta-solid button-text btn-primary" onClick={() => onOpenContact('Explore enxplant')}>Explore enxplant →</button>
-        <button className="button-text btn-outline" onClick={() => onOpenContact('Request a Pilot')}>Request a Pilot</button>
+
+      {/* Mobile — CTA promoted directly under the headline instead of after
+          two paragraphs and a chip row; same content, reordered, faster
+          single-stage fade instead of 5 staggered delays. */}
+      <div className="u-hide-desktop">
+        <h1 className="engram-hero-h1 landing-hero-h1-text">
+          <span className="hero-fade-up hero-mobile-line hero-delay-mobile-1">Your plant.</span>{' '}
+          <span className="hero-fade-up hero-mobile-line landing-hero-h1-accent hero-delay-mobile-2">Understood.</span>
+        </h1>
+        <p className="engram-hero-sub hero-fade-up landing-hero-sub-text hero-delay-mobile-2">
+          The local-first industrial intelligence platform that turns drawings, documents, SCADA
+          systems and engineering knowledge into structured, searchable plant intelligence.
+        </p>
+        <div className="hero-fade-up landing-hero-actions u-flex u-flex-wrap hero-delay-mobile-3">
+          <button className="cta-solid button-text btn-primary" onClick={() => onOpenContact('Explore enxplant')}>Explore enxplant →</button>
+          <button className="button-text btn-outline" onClick={() => onOpenContact('Request a Pilot')}>Request a Pilot</button>
+        </div>
+        <p className="engram-hero-body hero-fade-up landing-hero-body-text hero-delay-mobile-4">
+          Each capability is complete on its own and more powerful together — and it all runs
+          entirely inside your network.
+        </p>
+        <div className="hero-fade-up landing-hero-chips u-flex u-flex-wrap u-gap-10 hero-delay-mobile-4" aria-label="Platform capabilities">
+          {heroChips.map((c) => (
+            <span key={c} className="badge hero-chip-badge landing-hero-chip">
+              {c}
+            </span>
+          ))}
+        </div>
       </div>
   </HeroShell>
   );
