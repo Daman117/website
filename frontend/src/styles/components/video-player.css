@@ -1,15 +1,22 @@
 /* Video Player */
 .video-wrapper {
   position: relative;
+  /* Let the video define its own height naturally — no forced aspect-ratio
+     that causes either cropping (cover) or black bars (contain). */
   width: 100%;
-  height: 480px;
+  max-width: 854px;
+  margin: 0 auto;
   border-radius: var(--radius-xl, 16px);
   overflow: hidden;
   background: #000;
 }
 
 .video-player {
-  object-fit: cover;
+  /* width:100% + height:auto = video sizes to its real dimensions.
+     No object-fit means no cropping and no black bars ever. */
+  width: 100%;
+  height: auto;
+  display: block;
   cursor: pointer;
 }
 
