@@ -1,5 +1,12 @@
 @import "./styles/index.css";
 
+/* Tailwind — utilities come last so a migrated component's classes win over
+   any leftover hand-written CSS during the transition. Preflight is disabled
+   in tailwind.config.ts (see note there). */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* ── RESET & BASE ─────────────────────────────────────────────── */
 *,
 *::before,
@@ -743,6 +750,18 @@ img {
   #nav {
     justify-content: space-between;
     flex-wrap: nowrap;
+    /* less right padding than desktop's 28px so the hamburger sits closer
+       to the pill's right edge instead of floating with a big gap */
+    padding-right: 14px;
+  }
+
+  /* navigation.css's .nav-actions has an unconditional margin-right: 7% —
+     meant to give the desktop link row breathing room before the pill edge.
+     On mobile that same 7% was eating into the gap this rule is trying to
+     close, so the hamburger sat much further from the edge than the
+     padding-right above implies. Zeroed out here, mobile only. */
+  .nav-actions {
+    margin-right: 0;
   }
 }
 
@@ -1217,6 +1236,8 @@ hr.rule {
 }
 
 @media (max-width: 640px) {
+  /* Single-column stack — all 6 product cards visible at once, matching the
+     desktop's "everything on screen" feel (no swipe carousel). */
   .cap-grid {
     grid-template-columns: 1fr;
   }
@@ -1721,12 +1742,22 @@ hr.rule {
       transparent 80%);
 }
 
-/* platform flex — cards + connectors in sequence */
-.platform-flex {
+/* platform flex — cards + connectors in sequence.
+   .platform-flex.u-hide-mobile deliberately outranks the plain
+   .u-hide-mobile rule (equal specificity otherwise, so this would
+   silently lose depending on stylesheet source order — see the same
+   issue/fix on .engram-table-cards above). */
+.platform-flex.u-hide-mobile {
   display: flex;
   align-items: stretch;
   position: relative;
   width: 100%;
+}
+
+@media (max-width: 767px) {
+  .platform-flex.u-hide-mobile {
+    display: none;
+  }
 }
 
 .pipe-connector {
@@ -1766,6 +1797,34 @@ hr.rule {
   .pipe-node {
     flex: 1 1 100%;
   }
+}
+
+/* Mobile — vertical flow, replaces the horizontal .platform-flex entirely
+   below 768px (see u-hide-mobile/u-hide-desktop in PlatformSection.tsx).
+   Same 2-class-specificity fix as .platform-flex.u-hide-mobile above. */
+.platform-flex-vertical.u-hide-desktop {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .platform-flex-vertical.u-hide-desktop {
+    display: none;
+  }
+}
+
+.platform-flex-vertical .pipe-node {
+  flex: none;
+  width: 100%;
+}
+
+.pipe-connector-vertical {
+  align-self: center;
+  width: var(--line-thickness);
+  height: 22px;
+  background: var(--border2);
 }
 
 .pipe-node {
@@ -2138,21 +2197,6 @@ hr.rule {
   margin-bottom: 18px;
 }
 
-/* Mobile-only accordion (u-hide-desktop on the <details> itself handles
-   ≥768px). Desktop renders a separate plain tree instead — see the
-   FootColumn comment in Footer.tsx for why a forced-open <details> doesn't
-   work here. */
-.foot-accordion-summary {
-  cursor: pointer;
-  margin-bottom: 0;
-  padding: 14px 0;
-  border-top: 1px solid var(--border);
-}
-
-.foot-accordion:last-of-type {
-  border-bottom: 1px solid var(--border);
-}
-
 .foot-link {
   font-size: 13px;
   color: var(--t4);
@@ -2359,7 +2403,14 @@ button.foot-link {
 }
 
 .engram-hero {
-  padding: 40px 0 64px;
+  /* padding-top left to .hero-content-wrapper (clamp) so the badge clears
+     the fixed nav. Horizontal stays 0 on desktop (original look — content
+     spans the centered 1080px container); the gutter is added back only
+     ≤1023px (see the shared media query below) so it doesn't narrow the
+     wide-desktop view. */
+  padding-bottom: 64px;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .engram-hero-badge {
@@ -2400,7 +2451,23 @@ button.foot-link {
 }
 
 .engram-section {
+  /* Original desktop look: 0 horizontal padding (content spans the centered
+     1080px container). The gutter is added back only ≤1023px via the shared
+     media query below, so the wide-desktop view is unchanged while mobile /
+     tablet get edge spacing instead of running edge-to-edge. */
   padding: 56px 0 0;
+}
+
+/* Mobile + tablet only — restore the container gutter that .engram-hero and
+   .engram-section zero out. Below 1024px the 1080px container is full-width
+   with no centering margin, so without this the content would touch the
+   screen edges. Desktop (≥1024px) keeps its original full-width layout. */
+@media (max-width: 1023px) {
+  .engram-hero,
+  .engram-section {
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
+  }
 }
 
 .engram-section-h2 {
@@ -2444,6 +2511,19 @@ button.foot-link {
 @media (max-width: 640px) {
   .engram-three-col {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Challenge section only — two cards per row down through mobile. Scoped to
+   .engram-challenge-grid (added on each page's challenge grid), and written
+   as a 2-class selector so it outranks the single-column mobile rules of
+   whichever base grid the challenge uses (engram-three-col / engram-quad /
+   enable-five-col), regardless of source order. Other sections keep their
+   one-per-row mobile layout. */
+@media (max-width: 640px) {
+  .engram-challenge-grid.engram-three-col,
+  .engram-challenge-grid.engram-quad {
+    grid-template-columns: 1fr 1fr;
   }
 }
 
@@ -2501,6 +2581,64 @@ button.foot-link {
 
 .engram-table tr:hover td {
   background: rgba(37, 99, 235, 0.04);
+}
+
+/* Mobile card-list variant of ComparisonTable — one card per row instead
+   of a 3-column table crushed to fit. See ComparisonTable.tsx. The 2-class
+   selector deliberately outranks .u-hide-desktop's single-class display:none
+   on wider viewports regardless of stylesheet source order. */
+.engram-table-cards {
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.engram-table-cards.u-hide-desktop {
+  display: flex;
+}
+
+@media (min-width: 768px) {
+  .engram-table-cards.u-hide-desktop {
+    display: none;
+  }
+}
+
+.engram-table-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.engram-table-card-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.engram-table-card-label {
+  font-size: 10px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--t5);
+}
+
+/* Two bespoke wide interactive matrices (EnviewPage, EngramPage) keep
+   their own dynamic-column <table> markup — a card-list conversion would
+   need to redesign their hover row/col highlighting, out of scope here.
+   Minimum: horizontal scroll instead of illegibly crushed columns. */
+@media (max-width: 767px) {
+  .enview-comparison-card,
+  .engram-comparison-card {
+    overflow-x: auto;
+  }
+  .enview-comparison-card .engram-table,
+  .engram-comparison-card .engram-table {
+    min-width: 560px;
+  }
 }
 
 /* capabilities 3-card grid */
@@ -3048,6 +3186,27 @@ button.foot-link {
   }
 }
 
+/* Mobile timeline — replaces the sticky scroll-jack entirely below 768px
+   (see DemoSection.tsx DemoMobile). Plain vertical scroll, one card per
+   demo, revealed with the standard ScrollStagger fade-up. */
+.demo-timeline-section {
+  /* Same rhythm as every other section (.section) rather than a one-off clamp */
+  padding: clamp(40px, 5vw, 76px) var(--gutter);
+}
+
+.demo-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  margin-top: 28px;
+}
+
+.demo-timeline-card {
+  width: 100%;
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius-xl);
+}
+
 /* ── enVIEW Three Views hover cards ───────────────────────────── */
 .enview-view-card {
   position: relative;
@@ -3216,19 +3375,6 @@ button.foot-link {
   color: var(--accent);
 }
 
-/* Mobile-only accordion: inputs/outputs collapse behind a summary row
-   (first step open by default). Desktop renders a separate always-visible
-   tree (see .u-hide-mobile in WorkflowSection.tsx) instead of trying to
-   force this <details> open — see the u-hide-desktop/u-hide-mobile comment
-   in utilities.css for why. */
-.how-io-summary {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--accent);
-  cursor: pointer;
-  padding-top: 4px;
-}
-
 /* ── Industries ────────────────────────────────────────────────── */
 .ind-grid {
   display: grid;
@@ -3244,6 +3390,8 @@ button.foot-link {
 }
 
 @media (max-width: 520px) {
+  /* Single-column stack — every industry card visible at once (no carousel),
+     same "everything on screen" feel as desktop. */
   .ind-grid {
     grid-template-columns: 1fr;
   }

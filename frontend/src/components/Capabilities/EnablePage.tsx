@@ -196,7 +196,7 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
           className="enable-section-lead"
           text="Whether a plant will be stable, controllable and operable is often only discovered late — when changes are expensive — and the experience needed to judge it is walking out the door."
         />
-        <ScrollStagger className="engram-quad enable-five-col" step={70}>
+        <ScrollStagger className="engram-quad enable-five-col engram-challenge-grid" step={70}>
           {challenges.map((c, i) => (
             <div key={i} className="card engram-card">
               <FlashIcon inView={challengeInView} index={i} className="enable-challenge-icon" />

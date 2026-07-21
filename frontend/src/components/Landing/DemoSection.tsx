@@ -3,6 +3,7 @@ import { useScroll, useTransform, motion, AnimatePresence } from 'framer-motion'
 import { demos } from '../../data/v2';
 import ScrollAnimation, { ScrollStagger, RevealLines } from '../ScrollAnimation';
 import DemoBody from './shared/DemoBody';
+import { useMediaQuery, MOBILE_QUERY } from '../../hooks/useMediaQuery';
 
 // ─────────────────────────────────────────────────────────────────
 // ── SECTION 2: PRODUCT DEMO
@@ -33,7 +34,10 @@ const DemoDot = React.memo(function DemoDot({ color, active }: { color: string; 
   );
 });
 
-const DemoSection: React.FC = () => {
+// Desktop — sticky scroll-jack. Only mounted ≥768px: the useScroll
+// subscription (a per-frame scroll listener over an N*100vh container) is
+// real runtime cost that must not exist on mobile, not just stay hidden.
+const DemoDesktop: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end end'] });
   const rawIndex = useTransform(scrollYProgress, [0, 1], [0, N - 0.001]);
@@ -118,6 +122,38 @@ const DemoSection: React.FC = () => {
       </div>
     </div>
   );
+};
+
+// Mobile — vertical timeline, one card per demo, plain scroll (no
+// scroll-jack, no useScroll/tall-container machinery).
+const DemoMobile: React.FC = () => (
+  <div id="demo" className="landing-demo-section demo-timeline-section">
+    <ScrollAnimation>
+      <span className="eyebrow">Product output, not slideware</span>
+    </ScrollAnimation>
+    <RevealLines as="h2" className="display demo-sticky-h2" lines={['See enxplant', 'in Action']} />
+
+    <ScrollStagger className="demo-timeline" step={90}>
+      {demos.map((d) => (
+        <div
+          key={d.id}
+          className="card demo-card demo-timeline-card"
+          style={{ '--accent': d.color } as React.CSSProperties}
+        >
+          <div className="demo-card-head">
+            <span className="demo-card-product">{d.product}</span>
+            <span className="demo-card-title">{d.title}</span>
+          </div>
+          <DemoBody d={d} />
+        </div>
+      ))}
+    </ScrollStagger>
+  </div>
+);
+
+const DemoSection: React.FC = () => {
+  const isMobile = useMediaQuery(MOBILE_QUERY);
+  return isMobile ? <DemoMobile /> : <DemoDesktop />;
 };
 
 export default DemoSection;

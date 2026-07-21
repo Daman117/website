@@ -1,7 +1,10 @@
 /* enABLE Page */
-.engram-hero.enable-hero-content {
-  padding-top: 72px;
-}
+/* padding-top intentionally not set here — this class used to hardcode it
+   to 72px, overriding .hero-content-wrapper's clamp(110px,16vh,160px) nav
+   clearance (2-class selector beats the 1-class clamp rule regardless of
+   source order). On short/tall content combinations that pushed the hero
+   badge up behind the fixed nav. Every other product page relies on the
+   clamp value with no override; enABLE now matches them. */
 
 .enable-hero-badge-text { color: #6ee7b7; }
 

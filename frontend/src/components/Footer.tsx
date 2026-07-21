@@ -31,32 +31,18 @@ const companyLinks = [
   { label: 'Principles', to: '/#principles' },
 ];
 
-// One link list, rendered once per breakpoint tree below — a closed
-// <details> skips paint for its content regardless of CSS overrides (not
-// just an IntersectionObserver issue), so desktop gets a plain, separate,
-// always-visible tree rather than trying to force a <details> open.
+// A footer link column — always fully visible (no mobile accordion). The
+// columns stack to one per row on mobile via .footer-grid, so every link
+// stays on screen like the desktop footer.
 const FootColumn: React.FC<{
   title: string;
-  as: 'div' | 'details';
-  open?: boolean;
-  className: string;
   children: React.ReactNode;
-}> = ({ title, as, open, className, children }) => {
-  if (as === 'details') {
-    return (
-      <details className={`accordion-row ${className}`} open={open}>
-        <summary className="foot-title foot-accordion-summary">{title}</summary>
-        <div className="stack">{children}</div>
-      </details>
-    );
-  }
-  return (
-    <div className={className}>
-      <p className="foot-title">{title}</p>
-      <div className="stack">{children}</div>
-    </div>
-  );
-};
+}> = ({ title, children }) => (
+  <div>
+    <p className="foot-title">{title}</p>
+    <div className="stack">{children}</div>
+  </div>
+);
 
 const Footer: React.FC<FooterProps> = ({ onOpenContact }) => (
   <footer id="footer">
@@ -76,37 +62,18 @@ const Footer: React.FC<FooterProps> = ({ onOpenContact }) => (
         />
       </div>
 
-      {/* Desktop — always visible, no <details> */}
-      <FootColumn title="Products" as="div" className="u-hide-mobile">
+      <FootColumn title="Products">
         {products.map((p) => (
           <Link key={p.id} className="btn-reset foot-link" to={`/products/${p.id}`}>{p.name}</Link>
         ))}
       </FootColumn>
-      <FootColumn title="Company" as="div" className="u-hide-mobile">
+      <FootColumn title="Company">
         {companyLinks.map((l) => (
           <Link key={l.label} className="btn-reset foot-link" to={l.to}>{l.label}</Link>
         ))}
         <button className="btn-reset foot-link" onClick={() => onOpenContact('Footer')}>Contact Us</button>
       </FootColumn>
-      <FootColumn title="Resources" as="div" className="u-hide-mobile">
-        <Link className="btn-reset foot-link" to="/#resources">Resource Center</Link>
-        <button className="btn-reset foot-link" onClick={() => onOpenContact('Documentation')}>Documentation</button>
-        <button className="btn-reset foot-link" onClick={() => onOpenContact('Support')}>Support</button>
-      </FootColumn>
-
-      {/* Mobile — real collapsible <details> */}
-      <FootColumn title="Products" as="details" className="foot-accordion u-hide-desktop">
-        {products.map((p) => (
-          <Link key={p.id} className="btn-reset foot-link" to={`/products/${p.id}`}>{p.name}</Link>
-        ))}
-      </FootColumn>
-      <FootColumn title="Company" as="details" className="foot-accordion u-hide-desktop">
-        {companyLinks.map((l) => (
-          <Link key={l.label} className="btn-reset foot-link" to={l.to}>{l.label}</Link>
-        ))}
-        <button className="btn-reset foot-link" onClick={() => onOpenContact('Footer')}>Contact Us</button>
-      </FootColumn>
-      <FootColumn title="Resources" as="details" className="foot-accordion u-hide-desktop">
+      <FootColumn title="Resources">
         <Link className="btn-reset foot-link" to="/#resources">Resource Center</Link>
         <button className="btn-reset foot-link" onClick={() => onOpenContact('Documentation')}>Documentation</button>
         <button className="btn-reset foot-link" onClick={() => onOpenContact('Support')}>Support</button>

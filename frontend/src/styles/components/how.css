@@ -122,3 +122,55 @@
 .how-impact-accent {
   color: var(--accent);
 }
+
+/* Mobile + tablet — stack the horizontal step flow vertically ("one by one
+   down"). Cards go full-width; the horizontal drawn-SVG arrow is hidden and
+   replaced by a small CSS down-arrow between steps. Desktop (≥1024px) keeps
+   the original horizontal row. Covers both the default row (enGRAM/enSTUDIO/
+   enABLE/enGENIE) and enVIEW's grid variant — they share .how-card cards and
+   the .how-conn-svg connector. */
+@media (max-width: 1023px) {
+  .how-steps-row,
+  .enview-steps-row {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+  }
+
+  .engram-card.how-card {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+
+  /* horizontal connectors become vertical down-arrows */
+  .how-conn-svg {
+    display: none;
+  }
+
+  .how-conn-wrap,
+  .enview-conn-wrap {
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 0;
+    padding: 6px 0;
+  }
+
+  .how-conn-wrap::before,
+  .enview-conn-wrap::before {
+    content: "";
+    width: 2px;
+    height: 14px;
+    background: var(--accent);
+    opacity: 0.55;
+  }
+
+  .how-conn-wrap::after,
+  .enview-conn-wrap::after {
+    content: "";
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid var(--accent);
+    opacity: 0.55;
+  }
+}

@@ -281,7 +281,7 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
           className="enstudio-section-lead"
           text="Standing up a plant configuration means reading drawings and re-typing them into every system — by hand, again and again."
         />
-        <ScrollStagger className="grid-3 engram-three-col" step={70}>
+        <ScrollStagger className="grid-3 engram-three-col engram-challenge-grid" step={70}>
           {challenges.map((c, i) => (
             <div key={i} className="card engram-card">
               <FlashIcon inView={challengeInView} index={i} className="enstudio-challenge-icon" />

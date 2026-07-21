@@ -210,7 +210,7 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
           text="Industrial facilities generate enormous amounts of engineering data, but critical knowledge remains difficult to access."
         />
 
-        <ScrollStagger className="engram-quad" step={400} duration={600}>
+        <ScrollStagger className="engram-quad engram-challenge-grid" step={400} duration={600}>
           {challenges.map((c, i) => (
             <div key={i} className="card engram-card">
               <FlashIcon inView={challengeInView} index={i} className="engram-challenge-icon" />
