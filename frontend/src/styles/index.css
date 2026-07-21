@@ -1,5 +1,4 @@
 @import "./globals/variables.css";
-@import "./globals/reset.css";
 @import "./globals/typography.css";
 @import "./globals/utilities.css";
 @import "./globals/animations.css";
@@ -11,13 +10,9 @@
 @import "./layout/hero.css";
 @import "./layout/layout.css";
 
-@import "./components/buttons.css";
-@import "./components/cards.css";
 @import "./components/modal.css";
 @import "./components/video-player.css";
 @import "./components/scroll.css";
-@import "./components/icons.css";
-@import "./components/forms.css";
 @import "./components/how.css";
 @import "./components/native.css";
 
