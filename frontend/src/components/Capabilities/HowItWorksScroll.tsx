@@ -4,6 +4,12 @@ import { Play } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { LineReveal } from '../ScrollAnimation';
 import DemoVideoPlayer from './DemoVideoPlayer';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
+
+// Matches .how-steps-row's own row→column switch (see how.css) — not the
+// generic MOBILE_QUERY (767px) — so the card entrance direction changes at
+// the exact same width the layout itself goes vertical.
+const STACKED_QUERY = '(max-width: 1023px)';
 
 const CARD_DUR   = 0.55;
 const STEP_DELAY = 0.9; // seconds between each card — same pacing as enVIEW's version
@@ -66,18 +72,60 @@ const Connector: React.FC<{ index: number; inView: boolean; accent: string; wrap
   );
 };
 
+// ── Mobile vertical connector — same drawn-line + arrowhead animation as the
+// desktop Connector, timed to the same per-step delay, just pointing down
+// instead of across. Rendered alongside Connector; CSS (u-hide-mobile /
+// u-hide-desktop) decides which one is actually shown. ──────────────────────
+const VerticalConnector: React.FC<{ index: number; inView: boolean; accent: string; reduceMotion: boolean }> = ({
+  index, inView, accent, reduceMotion,
+}) => {
+  const delay = reduceMotion ? 0 : index * STEP_DELAY + CARD_DUR + 0.1;
+
+  return (
+    <div className="u-flex-center how-conn-wrap-vertical">
+      <svg width="10" height="28" viewBox="0 0 10 28" className="how-conn-svg-vertical">
+        <motion.path
+          d="M 5,0 L 5,28"
+          stroke={accent}
+          strokeWidth={2}
+          fill="none"
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={inView ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
+          transition={reduceMotion ? { duration: 0 } : { pathLength: { duration: 0.5, delay, ease: 'easeInOut' }, opacity: { duration: 0.1, delay } }}
+        />
+        <motion.path
+          d="M 1,20 L 5,28 L 9,20"
+          stroke={accent}
+          strokeWidth={2}
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : { opacity: 0 }}
+          transition={reduceMotion ? { duration: 0 } : { duration: 0.25, delay: delay + 0.45 }}
+        />
+      </svg>
+    </div>
+  );
+};
+
 // ── Individual card ──────────────────────────────────────────────────────────
 const Card: React.FC<{ step: HowItWorksStep; index: number; inView: boolean; accent: string; reduceMotion: boolean }> = ({
   step, index, inView, accent, reduceMotion,
 }) => {
   const delay = reduceMotion ? 0 : index * STEP_DELAY;
   const color = step.color || accent;
+  // Stacked layout reads top-to-bottom, so each card should enter from
+  // above and settle down into place — not slide in from the side, which
+  // read as a leftover desktop motion once the row became a column.
+  const stacked = useMediaQuery(STACKED_QUERY);
+  const hiddenOffset = stacked ? { y: -40, x: 0 } : { x: -60, y: 0 };
 
   return (
     <motion.div
       className="card engram-card how-card"
-      initial={{ opacity: 0, x: -60, scale: 0.93 }}
-      animate={inView ? { opacity: 1, x: 0, scale: 1 } : { opacity: 0, x: -60, scale: 0.93 }}
+      initial={{ opacity: 0, ...hiddenOffset, scale: 0.93 }}
+      animate={inView ? { opacity: 1, x: 0, y: 0, scale: 1 } : { opacity: 0, ...hiddenOffset, scale: 0.93 }}
       transition={reduceMotion ? { duration: 0 } : { duration: CARD_DUR, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {/* Icon */}
@@ -157,7 +205,18 @@ const HowItWorksScroll: React.FC<HowItWorksScrollProps> = ({
           <React.Fragment key={i}>
             <Card step={step} index={i} inView={inView} accent={accent} reduceMotion={reduceMotion} />
             {i < steps.length - 1 && (
-              <Connector index={i} inView={inView} accent={accent} wrapClassName={connWrapClassName} width={connWidth} reduceMotion={reduceMotion} />
+              <>
+                {/* Breakpoint matches .how-steps-row's own row→column switch
+                    (≤1023px) — not the generic u-hide-mobile/desktop (767px)
+                    utility, so the connector orientation never mismatches
+                    the card layout at tablet widths. */}
+                <div className="how-conn-desktop-only">
+                  <Connector index={i} inView={inView} accent={accent} wrapClassName={connWrapClassName} width={connWidth} reduceMotion={reduceMotion} />
+                </div>
+                <div className="how-conn-mobile-only">
+                  <VerticalConnector index={i} inView={inView} accent={accent} reduceMotion={reduceMotion} />
+                </div>
+              </>
             )}
           </React.Fragment>
         ))}
