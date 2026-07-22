@@ -18,7 +18,10 @@
 
 html {
   scroll-behavior: smooth;
-  overflow-x: hidden;
+  /* clip prevents horizontal overflow WITHOUT creating a scroll container.
+     overflow-x: hidden on <html> would transfer scroll ownership from window
+     to the html element, breaking window.scrollY, Lenis, and framer-motion. */
+  overflow-x: clip;
 }
 
 /* ── CUSTOM SCROLLBAR ───────────────────────────────────────────── */
@@ -72,7 +75,7 @@ body {
   font-family: "DM Sans", system-ui, sans-serif;
   font-size: 16px;
   line-height: 1.7;
-  overflow-x: hidden;
+  overflow-x: clip;
   max-width: 100%;
   position: relative;
   transition:

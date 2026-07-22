@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useScroll, useTransform, motion, AnimatePresence } from 'framer-motion';
+import { useMotionValue, useTransform, motion, AnimatePresence } from 'framer-motion';
 import { demos } from '../../data/v2';
 import ScrollAnimation, { ScrollStagger, RevealLines } from '../ScrollAnimation';
 import DemoBody from './shared/DemoBody';
 import { useMediaQuery, MOBILE_QUERY } from '../../hooks/useMediaQuery';
+import { getLenis } from '../../hooks/useLenis';
 
 // ─────────────────────────────────────────────────────────────────
 // ── SECTION 2: PRODUCT DEMO
@@ -34,22 +35,75 @@ const DemoDot = React.memo(function DemoDot({ color, active }: { color: string; 
   );
 });
 
-// Desktop — sticky scroll-jack. Only mounted ≥768px: the useScroll
-// subscription (a per-frame scroll listener over an N*100vh container) is
-// real runtime cost that must not exist on mobile, not just stay hidden.
+// Compute scroll progress [0..1] for the demo container.
+// Works whether window or an element is the scroll container.
+function getProgress(el: HTMLElement): number {
+  const containerH = el.offsetHeight;
+  const viewH = window.innerHeight;
+  const scrollTop = window.scrollY;
+  const elOffsetTop = el.getBoundingClientRect().top + scrollTop;
+  const scrolled = scrollTop - elOffsetTop;
+  const total = containerH - viewH;
+  return total > 0 ? Math.max(0, Math.min(1, scrolled / total)) : 0;
+}
+
+// Desktop — sticky scroll-jack. Only mounted ≥768px.
 const DemoDesktop: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end end'] });
-  const rawIndex = useTransform(scrollYProgress, [0, 1], [0, N - 0.001]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const scrollYProgress = useMotionValue(0);
+  const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
-  useEffect(() => rawIndex.on('change', (v) => setActiveIndex(Math.floor(v))), [rawIndex]);
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const update = () => {
+      if (!containerRef.current) return;
+      const progress = getProgress(containerRef.current);
+      scrollYProgress.set(progress);
+      setActiveIndex(Math.min(N - 1, Math.floor(progress * N)));
+    };
+
+    // Attach to native scroll as the primary listener —
+    // works regardless of overflow-x mode or Lenis config.
+    window.addEventListener('scroll', update, { passive: true });
+
+    // Also attach to Lenis so we stay in sync on its raf ticks.
+    // Poll briefly in case Lenis initialises slightly after this component.
+    let lenis = getLenis();
+    if (lenis) {
+      lenis.on('scroll', update);
+    } else {
+      const t = setTimeout(() => {
+        lenis = getLenis();
+        if (lenis) lenis.on('scroll', update);
+      }, 300);
+      return () => {
+        clearTimeout(t);
+        window.removeEventListener('scroll', update);
+        lenis?.off('scroll', update);
+      };
+    }
+
+    update(); // initialise on mount
+
+    return () => {
+      window.removeEventListener('scroll', update);
+      lenis?.off('scroll', update);
+    };
+  }, [scrollYProgress]);
 
   const handleStepSelect = React.useCallback((i: number) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const top = window.scrollY + rect.top + (i / N) * containerRef.current.offsetHeight;
-    window.scrollTo({ top, behavior: 'smooth' });
+    const el = containerRef.current;
+    if (!el) return;
+    const scrollTop = window.scrollY;
+    const elOffsetTop = el.getBoundingClientRect().top + scrollTop;
+    const total = el.offsetHeight - window.innerHeight;
+    const target = elOffsetTop + (i / N) * total;
+    const lenis = getLenis();
+    if (lenis) lenis.scrollTo(target, { duration: 1.2 });
+    else window.scrollTo({ top: target, behavior: 'smooth' });
   }, []);
 
   const active = demos[activeIndex];
@@ -59,9 +113,7 @@ const DemoDesktop: React.FC = () => {
       <div className="demo-sticky">
         {/* Left — heading + progress list */}
         <div className="demo-sticky-left">
-          <ScrollAnimation>
-            <span className="eyebrow">Product output, not slideware</span>
-          </ScrollAnimation>
+          <span className="eyebrow">Product output, not slideware</span>
           <RevealLines as="h2" className="display demo-sticky-h2" lines={['See enxplant', 'in Action']} />
 
           <ScrollStagger className="demo-step-list" step={70}>
@@ -82,15 +134,15 @@ const DemoDesktop: React.FC = () => {
             <motion.div
               className="demo-progress-fill"
               style={{
-                scaleX: useTransform(scrollYProgress, [0, 1], [0, 1]),
+                scaleX,
                 '--accent': active.color,
               } as React.CSSProperties}
             />
           </div>
         </div>
 
-        {/* Right — animated card. Delayed so it appears after the left column has settled. */}
-        <ScrollAnimation delay={300} className="demo-sticky-right">
+        {/* Right — animated card */}
+        <div className="demo-sticky-right">
           <AnimatePresence mode="wait">
             <motion.div
               key={active.id}
@@ -118,14 +170,13 @@ const DemoDesktop: React.FC = () => {
               <DemoDot key={d.id} color={d.color} active={i === activeIndex} />
             ))}
           </div>
-        </ScrollAnimation>
+        </div>
       </div>
     </div>
   );
 };
 
-// Mobile — vertical timeline, one card per demo, plain scroll (no
-// scroll-jack, no useScroll/tall-container machinery).
+// Mobile — vertical timeline, one card per demo, plain scroll.
 const DemoMobile: React.FC = () => (
   <div id="demo" className="landing-demo-section demo-timeline-section">
     <ScrollAnimation>

@@ -165,7 +165,7 @@ export const CAPS: Cap[] = [
   right:'specs',
 },{
   id:'enable',name:'enABLE',cat:'Process Intelligence for Design & Control',
-  tag:'Turn your plant into a matrix — and get eigenvalue-based engineering judgment at design time.',color:'#10B981',
+  tag:'Turn your plant into a matrix — and get eigenvalue-based engineering judgment.',color:'#10B981',
   status:'In Development',statusBg:'#1E1B4B',statusBorder:'#3730A3',statusText:'#A5B4FC',
   patent:true,
   body:`enABLE is a desktop engineering application for process and control engineers. You draw your plant as a flowsheet — equipment plus stream connections — and enABLE encodes it as a block-matrix model, dx/dt = M·x + B·u. From that one matrix it computes engineering verdicts about the design — stability, controllability, loop pairing, recommended changes, alarm bounds and a HAZOP pre-fill — and then runs the same plant as a live closed-loop dynamic simulation.`,
