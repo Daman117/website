@@ -18,6 +18,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 /* ── CUSTOM SCROLLBAR ───────────────────────────────────────────── */
@@ -72,6 +73,7 @@ body {
   font-size: 16px;
   line-height: 1.7;
   overflow-x: hidden;
+  max-width: 100%;
   position: relative;
   transition:
     background-color 0.3s ease,
@@ -403,8 +405,8 @@ img {
   left: 50%;
   transform: translateX(-50%);
   z-index: 999;
-  max-width: calc(100% - var(--gutter));
-  width: calc(100% - var(--gutter));
+  width: min(calc(100vw - 32px), 1280px);
+  max-width: calc(100vw - 32px);
   height: 66px;
   display: flex;
   align-items: center;
@@ -416,6 +418,7 @@ img {
   border: 1px solid var(--card-border);
   border-radius: 18px;
   box-shadow: var(--card-shadow);
+  box-sizing: border-box;
   transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -595,12 +598,17 @@ img {
 @media (max-width: 968px) {
   #nav {
     top: 12px;
-    width: calc(100% - 24px);
-    padding: 0 20px;
+    left: 12px;
+    right: 12px;
+    width: auto;
+    max-width: none;
+    transform: none;
+    padding: 0 16px;
     height: auto;
     min-height: 60px;
     flex-wrap: wrap;
     justify-content: center;
+    box-sizing: border-box;
   }
 
   .nav-logo {
@@ -748,18 +756,16 @@ img {
   }
 
   #nav {
+    left: 8px;
+    right: 8px;
+    width: auto;
+    max-width: none;
+    transform: none;
     justify-content: space-between;
     flex-wrap: nowrap;
-    /* less right padding than desktop's 28px so the hamburger sits closer
-       to the pill's right edge instead of floating with a big gap */
-    padding-right: 14px;
+    padding: 0 12px;
   }
 
-  /* navigation.css's .nav-actions has an unconditional margin-right: 7% —
-     meant to give the desktop link row breathing room before the pill edge.
-     On mobile that same 7% was eating into the gap this rule is trying to
-     close, so the hamburger sat much further from the edge than the
-     padding-right above implies. Zeroed out here, mobile only. */
   .nav-actions {
     margin-right: 0;
   }
