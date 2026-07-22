@@ -1,16 +1,97 @@
 /* ABOUT Page */
-.about-page-header {
-  padding-top: 100px;
-  padding-left: var(--gutter);
-  padding-right: var(--gutter);
+
+/* ── Hero shell — dark gradient background matching product page style ── */
+.about-hero-shell {
+  position: relative;
+  background: linear-gradient(
+    160deg,
+    #040612 0%,
+    #071028 40%,
+    #0a1640 70%,
+    #061228 100%
+  );
+  overflow: hidden;
+  padding-bottom: 72px;
 }
 
-.about-hero-badge-text { color: var(--primary); }
+/* Subtle radial glow for visual interest */
+.about-hero-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 80% 60% at 60% 30%,
+    rgba(31, 95, 224, 0.18) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
 
+/* Decorative corner accent */
+.about-hero-shell::after {
+  content: '';
+  position: absolute;
+  top: -120px;
+  right: -80px;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(37, 99, 235, 0.12) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+}
+
+.about-hero-grad {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom,
+    rgba(4, 6, 18, 0) 0%,
+    rgba(4, 6, 18, 0.15) 60%,
+    rgba(4, 6, 18, 0.55) 100%
+  );
+  pointer-events: none;
+}
+
+/* ── Hero badge — blue accent tint matching primary brand ── */
+.about-hero-badge-wrap {
+  background: rgba(31, 95, 224, 0.15) !important;
+  border-color: rgba(31, 95, 224, 0.35) !important;
+}
+
+.about-hero-badge-text {
+  color: #93c5fd;
+}
+
+/* ── Hero heading — white text with blue accent line ── */
 .about-hero-h1-accent {
-  color: var(--primary);
+  color: #3b82f6;
 }
 
+/* ── Make engram-hero relative inside the dark shell, padded past the nav ── */
+.about-hero-shell .engram-hero {
+  position: relative;
+  z-index: 2;
+  padding-top: 120px;
+}
+
+/* Override hero text colors for About page (no dark image bg, we have gradient) */
+.about-hero-shell .engram-hero-h1 {
+  color: #ffffff;
+}
+
+.about-hero-shell .engram-hero-sub {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.about-hero-shell .engram-hero-body {
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 0;
+}
+
+/* ── Below-fold layout ── */
 .about-two-col {
   align-items: flex-start;
 }
@@ -86,4 +167,22 @@
   font-size: 12px;
   color: var(--t4);
   line-height: 1.7;
+}
+
+/* ── Responsive: full-width hero text on mobile ── */
+@media (max-width: 1023px) {
+  .about-hero-shell .engram-hero {
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
+  }
+}
+
+@media (max-width: 768px) {
+  .about-page-header {
+    padding-top: 80px;
+  }
+
+  .about-hero-shell {
+    padding-bottom: 48px;
+  }
 }
