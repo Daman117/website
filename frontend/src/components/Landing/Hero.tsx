@@ -65,9 +65,7 @@ const Hero: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenConta
         </div>
       </div>
 
-      {/* Mobile — CTA promoted directly under the headline instead of after
-          two paragraphs and a chip row; same content, reordered, faster
-          single-stage fade instead of 5 staggered delays. */}
+      {/* Mobile — same content order as desktop, single-stage fade */}
       <div className="u-hide-desktop">
         <h1 className="engram-hero-h1 landing-hero-h1-text">
           <span className="hero-fade-up hero-mobile-line hero-delay-mobile-1">Your plant.</span>{' '}
@@ -77,22 +75,23 @@ const Hero: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenConta
           The local-first industrial intelligence platform that turns drawings, documents, SCADA
           systems and engineering knowledge into structured, searchable plant intelligence.
         </p>
-        <div className="hero-fade-up landing-hero-actions u-flex u-flex-wrap hero-delay-mobile-3">
-          <button className="cta-solid button-text btn-primary" onClick={() => onOpenContact('Explore enxplant')}>Explore enxplant →</button>
-          <button className="button-text btn-outline" onClick={() => onOpenContact('Request a Pilot')}>Request a Pilot</button>
-        </div>
-        <p className="engram-hero-body hero-fade-up landing-hero-body-text hero-delay-mobile-4">
+        <p className="engram-hero-body hero-fade-up landing-hero-body-text hero-delay-mobile-3">
           Each capability is complete on its own and more powerful together — and it all runs
           entirely inside your network.
         </p>
-        <div className="hero-fade-up landing-hero-chips u-flex u-flex-wrap u-gap-10 hero-delay-mobile-4" aria-label="Platform capabilities">
+        <div className="hero-fade-up landing-hero-chips u-flex u-flex-wrap u-gap-10 hero-delay-mobile-3" aria-label="Platform capabilities">
           {heroChips.map((c) => (
             <span key={c} className="badge hero-chip-badge landing-hero-chip">
               {c}
             </span>
           ))}
         </div>
+        <div className="hero-fade-up landing-hero-actions u-flex u-flex-wrap hero-delay-mobile-4">
+          <button className="cta-solid button-text btn-primary" onClick={() => onOpenContact('Explore enxplant')}>Explore enxplant →</button>
+          <button className="button-text btn-outline" onClick={() => onOpenContact('Request a Pilot')}>Request a Pilot</button>
+        </div>
       </div>
+
   </HeroShell>
   );
 };

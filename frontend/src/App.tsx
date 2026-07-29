@@ -15,6 +15,7 @@ const EnstudioPage = lazy(() => import('./components/Capabilities/EnstudioPage')
 const EngeniePage = lazy(() => import('./components/Capabilities/EngeniePage'));
 const EnviewPage = lazy(() => import('./components/Capabilities/EnviewPage'));
 const EnablePage = lazy(() => import('./components/Capabilities/EnablePage'));
+const EntiePage = lazy(() => import('./components/Capabilities/EntiePage'));
 const AboutPage = lazy(() => import('./components/AboutPage'));
 const PlatformPage = lazy(() => import('./components/PlatformPage'));
 const PrinciplesPage = lazy(() => import('./components/PrinciplesPage'));
@@ -145,6 +146,10 @@ function AnimatedRoutes({
             <Route
               path="/products/enable"
               element={<EnablePage onOpenContact={onOpenContact} />}
+            />
+            <Route
+              path="/products/entie"
+              element={<EntiePage onOpenContact={onOpenContact} />}
             />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/platform" element={<PlatformPage />} />

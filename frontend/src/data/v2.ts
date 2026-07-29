@@ -298,15 +298,20 @@ export const productExtras: Record<string, ProductExtra> = {
   entie: {
     flow: {
       inputs: ['DCS', 'Historian', 'MES', 'ERP'],
-      processing: ['Open protocol adapters', 'MCP server exposure', 'Bi-directional mapping'],
+      processing: ['Open protocol adapters', 'Encrypted transit', 'MCP server exposure', 'Bi-directional mapping'],
       outputs: ['enxplant ↔ existing systems', 'Plant data to Claude Desktop & AI tools', 'No proprietary lock-in'],
     },
     useCases: [
       { role: 'Engineering', text: 'Reuse enxplant intelligence inside the systems you already run.' },
       { role: 'Operations', text: 'Surface enxplant answers without leaving the control room HMI.' },
       { role: 'Maintenance', text: 'Connect work-order and asset data from MES/ERP into enxplant context.' },
-      { role: 'Management', text: 'Adopt incrementally across a mixed installed base — no rip-and-replace.' },
+      { role: 'Management', text: 'Adopt incrementally across a mixed installed base — lower TCO, faster time to value, no rip-and-replace.' },
     ],
-    outcomes: ['Intelligence built in enxplant does not stay trapped in enxplant', 'AI tools query live plant data via MCP', 'No lock-in on either side'],
+    outcomes: [
+      'Intelligence built in enxplant does not stay trapped in enxplant',
+      'AI tools query live plant data via MCP',
+      'No lock-in on either side',
+      'Standards-compliant adapters — deployed one system at a time',
+    ],
   },
 };

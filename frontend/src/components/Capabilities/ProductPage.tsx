@@ -185,6 +185,13 @@ const ProductPage: React.FC<ProductPageProps> = ({ onOpenContact }) => {
               <div className="u-flex u-items-center u-gap-8 zerod-item"><div className="zerod-dot product-dot-badge" /><span className="zerod-text">Eigenvalue-based — computed live on every build</span></div>
             </div>
           )}
+          {cap.openTie && (
+            <div className="zerod-strip">
+              <div className="u-flex u-items-center u-gap-8 zerod-item"><div className="zerod-dot" /><span className="zerod-text">Open protocol adapters — no proprietary lock-in</span></div>
+              <div className="u-flex u-items-center u-gap-8 zerod-item"><div className="zerod-dot" /><span className="zerod-text">MCP server for Claude Desktop & AI tools</span></div>
+              <div className="u-flex u-items-center u-gap-8 zerod-item"><div className="zerod-dot" /><span className="zerod-text">Encrypted data in transit</span></div>
+            </div>
+          )}
 
           {/* Body + right panel */}
           <div className="product-page-content">

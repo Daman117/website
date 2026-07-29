@@ -287,21 +287,68 @@ export const CAPS: Cap[] = [
   right:'specs',
 },{
   id:'entie',name:'enTIE',cat:'Connected Intelligence',
-  tag:'The layer that makes enxplant and your existing systems one.',color:'#60A5FA',
+  tag:'One connected layer. Zero lock-in. Every system you already run.',color:'#60A5FA',
   status:'Roadmap',statusBg:'#1C1030',statusBorder:'#2C1C48',statusText:'#A78BFA',
+  openTie:true,
   body:`enTIE connects enxplant capabilities to the plant systems you already run — DCS, historian, MES, ERP. It also exposes plant data via MCP server for Claude Desktop and other AI tools. The intelligence you build in enxplant doesn't stay in enxplant.`,
+  body2:`Precision-engineered as an integration layer, not a migration project — open protocol adapters sit alongside your installed base so adoption is incremental, standards-compliant, and reversible at every step.`,
   specs:[
     {l:'Protocol',v:'Open'},{l:'MCP',v:'Yes'},
     {l:'Lock-in',v:'None'},{l:'Status',v:'Roadmap'},
+    {l:'Deployment',v:'Incremental'},{l:'Security',v:'Encrypted transit'},
   ],
   tabs:[
+    {label:'The Layer',content:`
+      <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">One connectivity layer between enxplant and everything you already run.</p>
+      <p style="font-size:12px;color:var(--t4);line-height:1.7;margin-bottom:12px">enTIE sits alongside your installed base — not underneath it. Each connected system gets its own adapter; enTIE doesn't become a new system of record, so nothing you already trust has to be replaced.</p>
+      <div class="matrix-eq">
+        enxplant  ⇄  enTIE  ⇄  DCS · Historian · MES · ERP<br/><br/>
+        Open protocol adapters — no proprietary formats<br/>
+        MCP server exposes the same data to Claude Desktop &amp; AI tools
+      </div>`},
     {label:'Connections',content:`
+      <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">Plugs into the systems already on your floor.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">
+        <div style="padding:8px;background:var(--bg);border:1px solid var(--border);border-radius:4px"><p style="font-size:10px;color:#60A5FA;font-weight:600;margin-bottom:2px">DCS</p><p style="font-size:9px;color:var(--t5)">OPC-UA · Modbus adapters</p></div>
+        <div style="padding:8px;background:var(--bg);border:1px solid var(--border);border-radius:4px"><p style="font-size:10px;color:#60A5FA;font-weight:600;margin-bottom:2px">Historian</p><p style="font-size:9px;color:var(--t5)">Time-series read/write bridge</p></div>
+        <div style="padding:8px;background:var(--bg);border:1px solid var(--border);border-radius:4px"><p style="font-size:10px;color:#60A5FA;font-weight:600;margin-bottom:2px">MES</p><p style="font-size:9px;color:var(--t5)">Work-order &amp; batch context</p></div>
+        <div style="padding:8px;background:var(--bg);border:1px solid var(--border);border-radius:4px"><p style="font-size:10px;color:#60A5FA;font-weight:600;margin-bottom:2px">ERP</p><p style="font-size:9px;color:var(--t5)">Asset &amp; procurement data</p></div>
+        <div style="padding:8px;background:var(--bg);border:1px solid var(--border);border-radius:4px"><p style="font-size:10px;color:#60A5FA;font-weight:600;margin-bottom:2px">Claude Desktop</p><p style="font-size:9px;color:var(--t5)">MCP server — AI tools query live plant data</p></div>
+        <div style="padding:8px;background:var(--bg);border:1px solid var(--border);border-radius:4px"><p style="font-size:10px;color:#60A5FA;font-weight:600;margin-bottom:2px">enxplant</p><p style="font-size:9px;color:var(--t5)">enVIEW · enGENIE · enABLE · enSTUDIO · enGRAM</p></div>
+      </div>`},
+    {label:'Safe · Secure · Scalable',content:`
+      <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">Defense in depth, built in — not bolted on after.</p>
       <ul class="blist">
-        <li><span>—</span><span>Connects to DCS · Historian · MES · ERP</span></li>
-        <li><span>—</span><span>MCP server for Claude Desktop and other AI tools</span></li>
-        <li><span>—</span><span>Open protocol adapters — no proprietary formats</span></li>
-        <li><span>—</span><span>Designed for the mixed installed base reality</span></li>
-        <li><span>—</span><span>No lock-in on either side</span></li>
+        <li><span>—</span><span><b style="color:var(--t2)">Safe</b> — read-scoped adapters; enTIE exposes data, it never overwrites your systems of record.</span></li>
+        <li><span>—</span><span><b style="color:var(--t2)">Secure</b> — encrypted data in transit on every connection, with an auditable log per adapter.</span></li>
+        <li><span>—</span><span><b style="color:var(--t2)">Scalable</b> — add one adapter at a time; the same layer covers a single line or a multi-plant rollout.</span></li>
+      </ul>`},
+    {label:'Deployment',content:`
+      <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">Adopt one connection at a time — never a rip-and-replace.</p>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;gap:10px;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:4px">
+          <span class="mono" style="font-size:10px;color:#60A5FA;flex-shrink:0;margin-top:1px">01</span>
+          <p style="font-size:12px;color:var(--t4);line-height:1.5">Turn on a single adapter — historian is the common starting point.</p>
+        </div>
+        <div style="display:flex;gap:10px;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:4px">
+          <span class="mono" style="font-size:10px;color:#60A5FA;flex-shrink:0;margin-top:1px">02</span>
+          <p style="font-size:12px;color:var(--t4);line-height:1.5">Runs alongside legacy DCS/SCADA during the transition — nothing is switched off.</p>
+        </div>
+        <div style="display:flex;gap:10px;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:4px">
+          <span class="mono" style="font-size:10px;color:#60A5FA;flex-shrink:0;margin-top:1px">03</span>
+          <p style="font-size:12px;color:var(--t4);line-height:1.5">Add MES/ERP adapters as needed — lower TCO than a forklift integration project.</p>
+        </div>
+        <div style="display:flex;gap:10px;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:4px">
+          <span class="mono" style="font-size:10px;color:#60A5FA;flex-shrink:0;margin-top:1px">04</span>
+          <p style="font-size:12px;color:var(--t4);line-height:1.5">Time-to-value in weeks, not a multi-quarter rollout.</p>
+        </div>
+      </div>`},
+    {label:'Status',content:`
+      <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">Where enTIE stands today.</p>
+      <ul class="blist">
+        <li><span>—</span><span><b style="color:var(--t2)">Roadmap</b> — enTIE is not yet generally available; architecture and adapter list above reflect the current design.</span></li>
+        <li><span>—</span><span><b style="color:var(--t2)">Design principle</b> — no proprietary lock-in on either side, honoured from the first adapter shipped.</span></li>
+        <li><span>—</span><span><b style="color:var(--t2)">Get involved</b> — tell us which system (DCS, historian, MES or ERP) you'd connect first.</span></li>
       </ul>`},
   ],
   right:'specs',

@@ -21,6 +21,7 @@ export interface Cap {
   zerod?: boolean;
   airgap?: boolean;
   patent?: boolean;
+  openTie?: boolean;
   body: string;
   body2?: string;
   tabs: TabData[];
