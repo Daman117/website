@@ -110,6 +110,14 @@
   margin-top: 6px;
 }
 
+.cm-spin {
+  animation: cm-spin 0.8s linear infinite;
+}
+
+@keyframes cm-spin {
+  to { transform: translateY(-50%) rotate(360deg); }
+}
+
 .contact-field-last {
   margin-bottom: 24px;
 }

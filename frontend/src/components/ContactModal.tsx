@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { CircleCheck, X, ChevronDown } from 'lucide-react';
+import { CircleCheck, X, ChevronDown, Loader2 } from 'lucide-react';
 import { setLenisModalOpen } from '../hooks/useLenis';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 
@@ -10,6 +10,20 @@ interface ContactModalProps {
 }
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
+const PERSONAL_EMAIL_DOMAINS = new Set([
+  'gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'icloud.com',
+  'aol.com', 'live.com', 'msn.com', 'protonmail.com', 'mail.com',
+  'gmx.com', 'yandex.com', 'zoho.com', 'rediffmail.com', 'me.com',
+]);
+
+const PERSONAL_EMAIL_MESSAGE = 'Please use your company email address, not a personal one.';
+const EMAIL_FORMAT_RE = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+const isPersonalEmail = (email: string) => {
+  const domain = email.split('@')[1]?.toLowerCase();
+  return !!domain && PERSONAL_EMAIL_DOMAINS.has(domain);
+};
 
 const INTEREST_OPTIONS = [
   { value: 'demo', label: 'Request Demo' },
@@ -91,6 +105,10 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, source, onClose }) =>
   const [loading, setLoading] = useState(false);
   const [interest, setInterest] = useState('');
   const [interestError, setInterestError] = useState(false);
+  const [emailError, setEmailError] = useState('');
+  const [emailValidating, setEmailValidating] = useState(false);
+  const [emailValid, setEmailValid] = useState(false);
+  const emailValidationTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   useFocusTrap(dialogRef, open);
 
@@ -104,6 +122,10 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, source, onClose }) =>
       setError(false);
       setLoading(false);
       setInterestError(false);
+      setEmailError('');
+      setEmailValidating(false);
+      setEmailValid(false);
+      if (emailValidationTimer.current) clearTimeout(emailValidationTimer.current);
       if (source === 'Request a Pilot') setInterest('pilot');
       else if (source === 'Waitlist') setInterest('enable');
       else setInterest('');
@@ -129,11 +151,47 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, source, onClose }) =>
     };
   }, [open, onClose]);
 
+  // Server-side check (MX record + domain existence) — debounced 800ms after typing stops
+  const checkEmailOnServer = async (value: string) => {
+    setEmailValidating(true);
+    try {
+      const res = await fetch(`${API_URL}/api/validate-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: value }),
+      });
+      const body = await res.json();
+      if (body.valid) {
+        setEmailError('');
+        setEmailValid(true);
+      } else {
+        setEmailError(body.error || PERSONAL_EMAIL_MESSAGE);
+        setEmailValid(false);
+      }
+    } catch {
+      // Validation service unreachable — don't block the user, final check still runs on submit
+      setEmailValid(true);
+    } finally {
+      setEmailValidating(false);
+    }
+  };
+
+  const handleEmailChange = (value: string) => {
+    setEmailValid(false);
+    if (emailValidationTimer.current) clearTimeout(emailValidationTimer.current);
+
+    // Instant local checks: format + known personal domains
+    if (!value.trim()) { setEmailError(''); return; }
+    if (!EMAIL_FORMAT_RE.test(value)) { setEmailError('Please enter a valid email format.'); return; }
+    if (isPersonalEmail(value)) { setEmailError(PERSONAL_EMAIL_MESSAGE); return; }
+
+    setEmailError('');
+    emailValidationTimer.current = setTimeout(() => checkEmailOnServer(value), 800);
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!interest) { setInterestError(true); return; }
-    setLoading(true);
-    setError(false);
     const data = new FormData(e.currentTarget);
     const payload = {
       name: String(data.get('name') || ''),
@@ -145,6 +203,14 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, source, onClose }) =>
       website: String(data.get('website') || ''),
     };
 
+    if (emailValidating) return; // wait for the in-flight debounced check
+    if (emailError || isPersonalEmail(payload.email)) {
+      setEmailError(emailError || PERSONAL_EMAIL_MESSAGE);
+      return;
+    }
+    setLoading(true);
+    setError(false);
+
     try {
       const res = await fetch(`${API_URL}/api/contact`, {
         method: 'POST',
@@ -153,6 +219,10 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, source, onClose }) =>
       });
       if (res.ok) {
         setSubmitted(true);
+      } else if (res.status === 422) {
+        const body = await res.json().catch(() => null);
+        const rawMsg = body?.detail?.[0]?.msg as string | undefined;
+        setEmailError(rawMsg?.replace(/^Value error,\s*/, '') || PERSONAL_EMAIL_MESSAGE);
       } else {
         setError(true);
       }
@@ -198,8 +268,8 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, source, onClose }) =>
                 <div className="contact-modal-success-icon">
                   <CircleCheck size={52} strokeWidth={1.6} />
                 </div>
-                <h4 className="contact-modal-success-title">Message Sent!</h4>
-                <p className="contact-modal-success-text">We'll be in touch within 24 hours.</p>
+                <h4 className="contact-modal-success-title">Thank You!</h4>
+                <p className="contact-modal-success-text">Check your inbox for a confirmation email. We'll be in touch within 24 hours.</p>
               </div>
             ) : (
               <>
@@ -220,8 +290,37 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, source, onClose }) =>
                   </div>
 
                   <div className="cm-field">
-                    <label className="cm-label" htmlFor="cm-email">Email *</label>
-                    <input id="cm-email" type="email" name="email" required className="cm-input" placeholder="your@company.com" />
+                    <label className="cm-label" htmlFor="cm-email">Work Email *</label>
+                    <div style={{ position: 'relative' }}>
+                      <input
+                        id="cm-email"
+                        type="email"
+                        name="email"
+                        required
+                        className="cm-input"
+                        placeholder="your@company.com"
+                        style={{ paddingRight: 36 }}
+                        aria-invalid={!!emailError}
+                        aria-describedby={emailError ? 'cm-email-error' : undefined}
+                        onChange={(e) => handleEmailChange(e.target.value)}
+                      />
+                      {emailValidating && (
+                        <Loader2
+                          size={16}
+                          className="cm-spin"
+                          style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }}
+                        />
+                      )}
+                      {!emailValidating && emailValid && (
+                        <CircleCheck
+                          size={16}
+                          style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', color: '#10B981' }}
+                        />
+                      )}
+                    </div>
+                    {emailError && (
+                      <p id="cm-email-error" className="contact-modal-error-msg">{emailError}</p>
+                    )}
                   </div>
 
                   <div className="cm-field">
