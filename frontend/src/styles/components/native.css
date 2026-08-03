@@ -7,8 +7,8 @@
 .approach-grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
 .approach-grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
 .approach-grid-cols-5 { grid-template-columns: repeat(5, 1fr); }
-@media (max-width: 1024px) { .approach-grid { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 560px)  { .approach-grid { grid-template-columns: 1fr; } }
+@media (max-width: 1023px) { .approach-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px)  { .approach-grid { grid-template-columns: 1fr; } }
 
 .approach-card { will-change: transform, opacity, filter; }
 .approach-icon-wrap { will-change: transform, opacity; margin-bottom: 14px; }

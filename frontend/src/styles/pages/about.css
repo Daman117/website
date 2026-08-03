@@ -177,7 +177,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .about-page-header {
     padding-top: 80px;
   }

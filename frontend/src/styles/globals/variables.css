@@ -112,6 +112,10 @@
   --line-thickness: 2px;
 
   /* Container widths */
+  /* --page-max caps the outer content column. Without it, sections stretch to
+     the full viewport, so a 1920px laptop renders content ~530px wider than a
+     1366px one — the main cause of "looks different on every laptop". */
+  --page-max: 1280px;
   --content-width-sm: 520px;
   --content-width-md: 640px;
   --content-width-lg: 680px;
@@ -125,7 +129,9 @@
   --bp-desktop-min: 1280px;
 
   /* Min-height */
-  --min-height-viewport: 100vh;
+  /* dvh, not vh: on mobile Safari/Chrome, 100vh includes the space behind the
+     collapsing address bar, so full-height sections jump/clip while scrolling. */
+  --min-height-viewport: 100dvh;
   --min-height-card: 200px;
 
 }

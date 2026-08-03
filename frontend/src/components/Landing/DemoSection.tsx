@@ -3,12 +3,18 @@ import { useMotionValue, useTransform, motion, AnimatePresence } from 'framer-mo
 import { demos } from '../../data/v2';
 import ScrollAnimation, { ScrollStagger, RevealLines } from '../ScrollAnimation';
 import DemoBody from './shared/DemoBody';
-import { useMediaQuery, MOBILE_QUERY } from '../../hooks/useMediaQuery';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { getLenis } from '../../hooks/useLenis';
 
 // ─────────────────────────────────────────────────────────────────
 // ── SECTION 2: PRODUCT DEMO
 // ─────────────────────────────────────────────────────────────────
+
+// Matches .demo-sticky's own un-stick breakpoint in index.css — not the
+// generic MOBILE_QUERY (767px). If these disagree, tablets render the
+// scroll-jacked variant while the CSS has already made the panel static,
+// so the scroll subscription drives an element that no longer sticks.
+const STACKED_QUERY = '(max-width: 1023px)';
 const N = demos.length;
 
 const DemoStepItem = React.memo(function DemoStepItem({
@@ -203,8 +209,8 @@ const DemoMobile: React.FC = () => (
 );
 
 const DemoSection: React.FC = () => {
-  const isMobile = useMediaQuery(MOBILE_QUERY);
-  return isMobile ? <DemoMobile /> : <DemoDesktop />;
+  const stacked = useMediaQuery(STACKED_QUERY);
+  return stacked ? <DemoMobile /> : <DemoDesktop />;
 };
 
 export default DemoSection;
