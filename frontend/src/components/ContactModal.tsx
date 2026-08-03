@@ -138,15 +138,12 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, source, onClose }) =>
     };
     if (open) {
       setLenisModalOpen(true);
-      document.body.style.overflow = 'hidden';
       window.addEventListener('keydown', onKey);
     } else {
       setLenisModalOpen(false);
-      document.body.style.overflow = '';
     }
     return () => {
       setLenisModalOpen(false);
-      document.body.style.overflow = '';
       window.removeEventListener('keydown', onKey);
     };
   }, [open, onClose]);

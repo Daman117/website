@@ -785,7 +785,15 @@ img {
   z-index: 9998;
   flex-direction: column;
   align-items: center;
+  /* `safe center` so that when the menu is taller than a short phone the
+     content overflows downward (scrollable) instead of being clipped off the
+     top, which plain `center` does. Older browsers drop the 2nd declaration
+     and keep plain centering. */
   justify-content: center;
+  justify-content: safe center;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 88px 20px 40px;
   gap: 36px;
   opacity: 0.97;
 }
@@ -795,9 +803,12 @@ img {
 }
 
 .mobile-nav-close {
-  position: absolute;
+  /* fixed, not absolute: the overlay scrolls now, and an absolute button
+     would scroll out of reach on a long menu. */
+  position: fixed;
   top: 24px;
   right: 24px;
+  z-index: 1;
   background: var(--surface);
   border: 1px solid var(--border2);
   border-radius: var(--radius-md);

@@ -4,8 +4,12 @@ import Lenis from 'lenis';
 let lenisInstance: Lenis | null = null;
 let modalOpen = false;
 
+// Locks the page behind a full-screen overlay. Lenis's `prevent` only stops
+// *smooth* scrolling — native scroll keeps working — so the body lock has to
+// happen here too, or the background scrolls behind the overlay.
 export function setLenisModalOpen(open: boolean) {
   modalOpen = open;
+  document.body.style.overflow = open ? 'hidden' : '';
 }
 
 export function useLenis() {
