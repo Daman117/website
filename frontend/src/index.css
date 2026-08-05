@@ -1099,6 +1099,8 @@ hr.rule {
 #stats {
   padding: clamp(20px, 3vw, 40px) clamp(16px, 2.5vw, 40px) clamp(40px, 5vw, 64px);
   background: transparent;
+  max-width: var(--page-max);
+  margin: 0 auto;
 }
 
 .stats-grid {
@@ -1205,7 +1207,7 @@ hr.rule {
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
-  padding: 0 var(--gutter) 56px;
+  padding: 0 0 56px;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -1248,7 +1250,7 @@ hr.rule {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--space-xl);
-  padding: 0 var(--gutter) 8px;
+  padding: 0 0 8px;
   align-items: stretch;
 }
 
@@ -1901,7 +1903,7 @@ hr.rule {
   grid-template-columns: 1fr 1fr;
   gap: var(--space-2xl);
   width: 100%;
-  max-width: 100%;
+  max-width: var(--page-max);
   margin: 0 auto;
   padding: 0 var(--gutter) 88px;
   align-items: stretch;
@@ -3049,51 +3051,38 @@ button.foot-link {
   margin-top: 12px;
 }
 
-.demo-step-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3xs);
-  margin-bottom: 28px;
+.demo-active-container {
+  margin-top: 40px;
+  margin-bottom: 40px;
+  position: relative;
+  min-height: 180px; /* enough space for the sliding title to not overlap progress track */
 }
 
-.demo-step-item {
+.demo-active-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.demo-active-product {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent);
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
-  padding: 10px 14px;
-  border-radius: var(--radius-xl);
-  border: 1px solid transparent;
-  background: transparent;
-  font-family: inherit;
-  cursor: pointer;
-  text-align: left;
-  transition: background 0.25s, border-color 0.25s;
+  gap: 12px;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
 }
 
-.demo-step-item.active {
-  background: var(--bg2);
-  border-color: var(--step-color, var(--border));
-}
-
-.demo-step-item:hover:not(.active) {
-  background: var(--bg2);
-  border-color: var(--border2);
-}
-
-.demo-step-product {
-  color: var(--t4);
-  min-width: 80px;
-  transition: color 0.25s;
-}
-
-.demo-step-item.active .demo-step-product {
-  color: var(--step-color);
-}
-
-.demo-step-title {
-  font-size: 12.5px;
-  color: var(--t4);
-  line-height: 1.4;
+.demo-active-title {
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--t2);
+  line-height: 1.35;
+  letter-spacing: -0.5px;
 }
 
 .demo-progress-track {

@@ -17,20 +17,6 @@ import { getLenis } from '../../hooks/useLenis';
 const STACKED_QUERY = '(max-width: 1023px)';
 const N = demos.length;
 
-const DemoStepItem = React.memo(function DemoStepItem({
-  index, product, title, color, active, onSelect,
-}: { index: number; product: string; title: string; color: string; active: boolean; onSelect: (i: number) => void }) {
-  return (
-    <button
-      className={`demo-step-item${active ? ' active' : ''}`}
-      style={{ '--step-color': color } as React.CSSProperties}
-      onClick={() => onSelect(index)}
-    >
-      <span className="card-heading-sm demo-step-product">{product}</span>
-      <span className="demo-step-title">{title}</span>
-    </button>
-  );
-});
 
 const DemoDot = React.memo(function DemoDot({ color, active }: { color: string; active: boolean }) {
   return (
@@ -100,18 +86,6 @@ const DemoDesktop: React.FC = () => {
     };
   }, [scrollYProgress]);
 
-  const handleStepSelect = React.useCallback((i: number) => {
-    const el = containerRef.current;
-    if (!el) return;
-    const scrollTop = window.scrollY;
-    const elOffsetTop = el.getBoundingClientRect().top + scrollTop;
-    const total = el.offsetHeight - window.innerHeight;
-    const target = elOffsetTop + (i / N) * total;
-    const lenis = getLenis();
-    if (lenis) lenis.scrollTo(target, { duration: 1.2 });
-    else window.scrollTo({ top: target, behavior: 'smooth' });
-  }, []);
-
   const active = demos[activeIndex];
 
   return (
@@ -122,19 +96,24 @@ const DemoDesktop: React.FC = () => {
           <span className="eyebrow">Product output, not slideware</span>
           <RevealLines as="h2" className="display demo-sticky-h2" lines={['See enxplant', 'in Action']} />
 
-          <ScrollStagger className="demo-step-list" step={70}>
-            {demos.map((d, i) => (
-              <DemoStepItem
-                key={d.id}
-                index={i}
-                product={d.product}
-                title={d.title}
-                color={d.color}
-                active={i === activeIndex}
-                onSelect={handleStepSelect}
-              />
-            ))}
-          </ScrollStagger>
+          <div className="demo-active-container">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={active.id}
+                initial={{ opacity: 0, y: 40, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -24, scale: 0.97 }}
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                className="demo-active-content"
+                style={{ '--accent': active.color } as React.CSSProperties}
+              >
+                <div className="demo-active-product">
+                  {active.product}
+                </div>
+                <h3 className="demo-active-title">{active.title}</h3>
+              </motion.div>
+            </AnimatePresence>
+          </div>
 
           <div className="demo-progress-track">
             <motion.div
