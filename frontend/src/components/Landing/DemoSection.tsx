@@ -115,21 +115,6 @@ const DemoDesktop: React.FC = () => {
             </AnimatePresence>
           </div>
 
-          {/* Step list — shows where you are in the 6-step scroll and what
-              is still ahead, which the card counter alone can't convey. */}
-          <ol className="demo-step-list">
-            {demos.map((d, i) => (
-              <li
-                key={d.id}
-                className={`demo-step${i === activeIndex ? ' active' : ''}${i < activeIndex ? ' done' : ''}`}
-                style={{ '--accent': d.color } as React.CSSProperties}
-              >
-                <span className="demo-step-num mono">{String(i + 1).padStart(2, '0')}</span>
-                <span className="demo-step-name">{d.product}</span>
-              </li>
-            ))}
-          </ol>
-
           <div className="demo-progress-track">
             <motion.div
               className="demo-progress-fill"

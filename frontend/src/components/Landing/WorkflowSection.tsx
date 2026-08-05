@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { workSteps } from '../../data/v2';
 import Icon from '../Icon';
@@ -42,7 +43,26 @@ const WorkflowSection: React.FC = () => {
                 <span className="how-num">
                   <Icon name={s.icon} size={22} strokeWidth={1.75} />
                 </span>
-                <span className="how-connector" aria-hidden="true" />
+                {i < workSteps.length - 1 && (
+                  <span className="how-connector" aria-hidden="true">
+                    <svg viewBox="0 0 22 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <motion.path
+                        d="M0 1H22"
+                        stroke={`url(#grad-how-${i})`}
+                        strokeWidth="2"
+                        initial={{ pathLength: 0 }}
+                        animate={inView ? { pathLength: 1 } : { pathLength: 0 }}
+                        transition={{ duration: 0.6, ease: 'easeOut', delay: inView ? (120 + i * STEP) / 1000 + 0.2 : 0 }}
+                      />
+                      <defs>
+                        <linearGradient id={`grad-how-${i}`} x1="0" y1="0" x2="22" y2="0" gradientUnits="userSpaceOnUse">
+                          <stop stopColor={s.color} />
+                          <stop offset="1" stopColor={workSteps[i + 1]?.color || s.color} stopOpacity="0.8" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </span>
+                )}
               </div>
               <span className="how-actor">{s.actor}</span>
               <h3 className="how-title">{s.title}</h3>
