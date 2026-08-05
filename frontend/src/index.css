@@ -104,7 +104,8 @@ img {
 }
 
 #root {
-  min-height: 100vh; /* fallback for browsers without dvh */
+  min-height: 100vh;
+  /* fallback for browsers without dvh */
   min-height: var(--min-height-viewport);
 }
 
@@ -218,10 +219,21 @@ img {
     transition-duration: min(var(--t-dur, 700ms), 420ms);
   }
 
-  .sa-hidden-up { transform: translateY(14px); }
-  .sa-hidden-down { transform: translateY(-14px); }
-  .sa-hidden-left { transform: translateX(14px); }
-  .sa-hidden-right { transform: translateX(-14px); }
+  .sa-hidden-up {
+    transform: translateY(14px);
+  }
+
+  .sa-hidden-down {
+    transform: translateY(-14px);
+  }
+
+  .sa-hidden-left {
+    transform: translateX(14px);
+  }
+
+  .sa-hidden-right {
+    transform: translateX(-14px);
+  }
 }
 
 /* LineReveal — word-by-word masked reveal, same look as the hero headline,
@@ -316,13 +328,26 @@ img {
   animation-delay: 1500ms;
 }
 
-.hero-mobile-line { display: inline-block; }
+.hero-mobile-line {
+  display: inline-block;
+}
 
 /* Mobile hero — single-stage fade, settles in ~600ms instead of 1500ms */
-.hero-delay-mobile-1 { animation-delay: 100ms; }
-.hero-delay-mobile-2 { animation-delay: 250ms; }
-.hero-delay-mobile-3 { animation-delay: 400ms; }
-.hero-delay-mobile-4 { animation-delay: 550ms; }
+.hero-delay-mobile-1 {
+  animation-delay: 100ms;
+}
+
+.hero-delay-mobile-2 {
+  animation-delay: 250ms;
+}
+
+.hero-delay-mobile-3 {
+  animation-delay: 400ms;
+}
+
+.hero-delay-mobile-4 {
+  animation-delay: 550ms;
+}
 
 @media (prefers-reduced-motion: reduce) {
 
@@ -967,11 +992,10 @@ hr.rule {
      is just margin-top, not whatever empty space min-height:100vh leaves */
   position: relative;
   z-index: var(--z-lifted);
-  width: 100%;
-  max-width: var(--page-max);
+  width: 100vw;
   margin-top: -40px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
   /* the whole bar — border lines included — stays invisible until the hero
      intro text finishes; then it appears and the track (below) slides the
      strip in from the right edge so words arrive one by one */
@@ -1100,8 +1124,6 @@ hr.rule {
 #stats {
   padding: clamp(20px, 3vw, 40px) clamp(16px, 2.5vw, 40px) clamp(40px, 5vw, 64px);
   background: transparent;
-  max-width: var(--page-max);
-  margin: 0 auto;
 }
 
 .stats-grid {
@@ -1125,10 +1147,19 @@ hr.rule {
   }
 }
 
-.stat-cell { padding: 44px 28px; text-align: center; border-radius: var(--radius-3xl); height: 100%; box-sizing: border-box; position: relative; overflow: hidden; transition:
+.stat-cell {
+  padding: 44px 28px;
+  text-align: center;
+  border-radius: var(--radius-3xl);
+  height: 100%;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  transition:
     transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.3s ease; }
+    border-color 0.3s ease;
+}
 
 .stat-cell::after {
   content: "";
@@ -1208,7 +1239,7 @@ hr.rule {
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
-  padding: 0 0 56px;
+  padding: 0 var(--gutter) 56px;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -1251,7 +1282,7 @@ hr.rule {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--space-xl);
-  padding: 0 0 8px;
+  padding: 0 var(--gutter) 8px;
   align-items: stretch;
 }
 
@@ -1262,6 +1293,7 @@ hr.rule {
 }
 
 @media (max-width: 640px) {
+
   /* Single-column stack — all 6 product cards visible at once, matching the
      desktop's "everything on screen" feel (no swipe carousel). */
   .cap-grid {
@@ -1269,10 +1301,22 @@ hr.rule {
   }
 }
 
-.cap-card { height: 100%; min-height: var(--min-height-card); border-radius: 18px; padding: 26px; display: flex; flex-direction: column; gap: var(--space-sm); cursor: pointer; position: relative; overflow: hidden; transition:
+.cap-card {
+  height: 100%;
+  min-height: var(--min-height-card);
+  border-radius: 18px;
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition:
     transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.3s ease; }
+    border-color 0.3s ease;
+}
 
 .cap-card::before {
   content: "";
@@ -1544,7 +1588,11 @@ hr.rule {
   margin-bottom: 18px;
 }
 
-.spec-cell { padding: 13px 15px; border-radius: var(--radius-sm); box-shadow: var(--elev-1); }
+.spec-cell {
+  padding: 13px 15px;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--elev-1);
+}
 
 .spec-label {
   color: var(--t5);
@@ -1567,7 +1615,11 @@ hr.rule {
   font-size: 12px;
 }
 
-.perf-table th { padding: 8px 12px; text-align: center; color: var(--t5); }
+.perf-table th {
+  padding: 8px 12px;
+  text-align: center;
+  color: var(--t5);
+}
 
 .perf-table th:first-child {
   text-align: left;
@@ -1578,7 +1630,10 @@ hr.rule {
   font-size: 10px;
 }
 
-.perf-table td { padding: 9px 12px; color: var(--t3); }
+.perf-table td {
+  padding: 9px 12px;
+  color: var(--t3);
+}
 
 .perf-table td:first-child {
   font-size: 11px;
@@ -1607,7 +1662,11 @@ hr.rule {
   margin-bottom: 14px;
 }
 
-.price-card { padding: 14px 13px; border-radius: 7px; box-shadow: var(--elev-1); }
+.price-card {
+  padding: 14px 13px;
+  border-radius: 7px;
+  box-shadow: var(--elev-1);
+}
 
 .price-card.featured {
   border-color: rgba(0, 194, 212, 0.4);
@@ -1904,7 +1963,7 @@ hr.rule {
   grid-template-columns: 1fr 1fr;
   gap: var(--space-2xl);
   width: 100%;
-  max-width: var(--page-max);
+  max-width: 100%;
   margin: 0 auto;
   padding: 0 var(--gutter) 88px;
   align-items: stretch;
@@ -1924,10 +1983,17 @@ hr.rule {
   }
 }
 
-.princ-card { height: 100%; padding: 42px 38px; border-radius: var(--radius-3xl); transition:
+.princ-card {
+  height: 100%;
+  padding: 42px 38px;
+  border-radius: var(--radius-3xl);
+  transition:
     transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 0.45s ease,
-    border-color 0.3s; position: relative; overflow: hidden; }
+    border-color 0.3s;
+  position: relative;
+  overflow: hidden;
+}
 
 /* shimmer layer */
 .princ-card::after {
@@ -2015,7 +2081,17 @@ hr.rule {
   pointer-events: none;
 }
 
-.quote { font-size: 14px; color: var(--t2); line-height: 1.85; font-style: italic; margin: 28px 0 14px; padding: 20px 20px 20px 24px; border-radius: var(--radius-md); border-left: 3px solid rgba(37, 99, 235, 0.5); box-shadow: var(--elev-2); }
+.quote {
+  font-size: 14px;
+  color: var(--t2);
+  line-height: 1.85;
+  font-style: italic;
+  margin: 28px 0 14px;
+  padding: 20px 20px 20px 24px;
+  border-radius: var(--radius-md);
+  border-left: 3px solid rgba(37, 99, 235, 0.5);
+  box-shadow: var(--elev-2);
+}
 
 .attr {
   font-size: 12px;
@@ -2481,6 +2557,7 @@ button.foot-link {
    with no centering margin, so without this the content would touch the
    screen edges. Desktop (≥1024px) keeps its original full-width layout. */
 @media (max-width: 1023px) {
+
   .engram-hero,
   .engram-section {
     padding-left: var(--gutter);
@@ -2535,6 +2612,7 @@ button.foot-link {
    enable-five-col), regardless of source order. Other sections keep their
    one-per-row mobile layout. */
 @media (max-width: 640px) {
+
   .engram-challenge-grid.engram-three-col,
   .engram-challenge-grid.engram-quad {
     grid-template-columns: 1fr 1fr;
@@ -2542,10 +2620,18 @@ button.foot-link {
 }
 
 /* cards */
-.engram-card { border-radius: var(--radius-2xl); padding: 24px 22px; height: 100%; box-sizing: border-box; display: flex; flex-direction: column; transition:
+.engram-card {
+  border-radius: var(--radius-2xl);
+  padding: 24px 22px;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  transition:
     transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 0.35s ease,
-    border-color 0.25s; }
+    border-color 0.25s;
+}
 
 .engram-card:hover {
   transform: translateY(-4px);
@@ -2645,10 +2731,12 @@ button.foot-link {
    need to redesign their hover row/col highlighting, out of scope here.
    Minimum: horizontal scroll instead of illegibly crushed columns. */
 @media (max-width: 767px) {
+
   .enview-comparison-card,
   .engram-comparison-card {
     overflow-x: auto;
   }
+
   .enview-comparison-card .engram-table,
   .engram-comparison-card .engram-table {
     min-width: 560px;
@@ -2674,10 +2762,18 @@ button.foot-link {
   }
 }
 
-.engram-cap-card { border-radius: var(--radius-2xl); padding: 26px 22px; height: 100%; box-sizing: border-box; display: flex; flex-direction: column; transition:
+.engram-cap-card {
+  border-radius: var(--radius-2xl);
+  padding: 26px 22px;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  transition:
     transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 0.35s ease,
-    border-color 0.25s; }
+    border-color 0.25s;
+}
 
 .engram-cap-card:hover {
   transform: translateY(-4px);
@@ -2751,10 +2847,18 @@ button.foot-link {
 /* outcomes */
 .engram-outcomes-grid {}
 
-.engram-outcome-pill { display: flex; align-items: center; gap: var(--space-2); border-radius: var(--radius-3xl); padding: 8px 16px; color: var(--t2); transition:
+.engram-outcome-pill {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  border-radius: var(--radius-3xl);
+  padding: 8px 16px;
+  color: var(--t2);
+  transition:
     transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 0.3s ease,
-    border-color 0.2s; }
+    border-color 0.2s;
+}
 
 .engram-outcome-pill:hover {
   transform: translateY(-3px);
@@ -2789,7 +2893,14 @@ button.foot-link {
 /* ── Product Demo ─────────────────────────────────────────────── */
 
 
-.demo-card { border-radius: 18px; padding: var(--space-2xl); display: flex; flex-direction: column; gap: var(--space-lg); transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease; }
+.demo-card {
+  border-radius: 18px;
+  padding: var(--space-2xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+}
 
 .demo-card:hover {
   transform: translateY(-5px);
@@ -3021,8 +3132,10 @@ button.foot-link {
 .demo-sticky {
   position: sticky;
   top: 0;
-  height: 100vh; /* fallback for browsers without dvh */
-  height: 100dvh; /* dvh: mobile address bar collapse would otherwise clip this */
+  height: 100vh;
+  /* fallback for browsers without dvh */
+  height: 100dvh;
+  /* dvh: mobile address bar collapse would otherwise clip this */
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0;
@@ -3052,38 +3165,51 @@ button.foot-link {
   margin-top: 12px;
 }
 
-.demo-active-container {
-  margin-top: 40px;
-  margin-bottom: 40px;
-  position: relative;
-  min-height: 180px; /* enough space for the sliding title to not overlap progress track */
+.demo-step-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+  margin-bottom: 28px;
 }
 
-.demo-active-content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-}
-
-.demo-active-product {
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--accent);
+.demo-step-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-  letter-spacing: -0.5px;
+  gap: var(--space-sm);
+  padding: 10px 14px;
+  border-radius: var(--radius-xl);
+  border: 1px solid transparent;
+  background: transparent;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.25s, border-color 0.25s;
 }
 
-.demo-active-title {
-  font-size: 28px;
-  font-weight: 400;
-  color: var(--t2);
-  line-height: 1.35;
-  letter-spacing: -0.5px;
+.demo-step-item.active {
+  background: var(--bg2);
+  border-color: var(--step-color, var(--border));
+}
+
+.demo-step-item:hover:not(.active) {
+  background: var(--bg2);
+  border-color: var(--border2);
+}
+
+.demo-step-product {
+  color: var(--t4);
+  min-width: 80px;
+  transition: color 0.25s;
+}
+
+.demo-step-item.active .demo-step-product {
+  color: var(--step-color);
+}
+
+.demo-step-title {
+  font-size: 12.5px;
+  color: var(--t4);
+  line-height: 1.4;
 }
 
 .demo-progress-track {
@@ -3270,7 +3396,16 @@ button.foot-link {
   }
 }
 
-.how-step { height: 100%; border-top: 3px solid var(--accent); border-radius: var(--radius-2xl); padding: 22px 20px; display: flex; flex-direction: column; gap: var(--space-xs); transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease; }
+.how-step {
+  height: 100%;
+  border-top: 3px solid var(--accent);
+  border-radius: var(--radius-2xl);
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease;
+}
 
 .how-step:hover {
   transform: translateY(-7px) scale(1.008);
@@ -3377,6 +3512,7 @@ button.foot-link {
 }
 
 @media (max-width: 640px) {
+
   /* Single-column stack — every industry card visible at once (no carousel),
      same "everything on screen" feel as desktop. */
   .ind-grid {
@@ -3384,7 +3520,15 @@ button.foot-link {
   }
 }
 
-.ind-card { height: 100%; border-radius: var(--radius-2xl); overflow: hidden; display: flex; flex-direction: column; gap: 11px; transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.2s; }
+.ind-card {
+  height: 100%;
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.2s;
+}
 
 .ind-card:hover {
   transform: translateY(-5px) scale(1.008);
@@ -3451,7 +3595,15 @@ button.foot-link {
   margin: 0 auto;
 }
 
-.arch-band { width: 100%; border-radius: var(--radius-3xl); padding: 28px 32px; display: flex; flex-direction: column; align-items: center; gap: var(--space-lg); }
+.arch-band {
+  width: 100%;
+  border-radius: var(--radius-3xl);
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+}
 
 .arch-band-label {}
 
@@ -3681,7 +3833,12 @@ button.foot-link {
   }
 }
 
-.impact-card { height: 100%; border-radius: var(--radius-2xl); padding: var(--space-2xl); transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease; }
+.impact-card {
+  height: 100%;
+  border-radius: var(--radius-2xl);
+  padding: var(--space-2xl);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+}
 
 .impact-card:hover {
   transform: translateY(-5px) scale(1.008);
@@ -3820,7 +3977,17 @@ button.foot-link {
   }
 }
 
-.case-card { min-height: 430px; border-top: 3px solid var(--accent); border-radius: var(--radius-2xl); padding: 22px; display: flex; flex-direction: column; position: relative; overflow: hidden; transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease; }
+.case-card {
+  min-height: 430px;
+  border-top: 3px solid var(--accent);
+  border-radius: var(--radius-2xl);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease;
+}
 
 .case-top {}
 
@@ -3924,7 +4091,17 @@ button.foot-link {
   }
 }
 
-.res-card { height: 100%; text-align: left; font-family: inherit; cursor: pointer; border-radius: var(--radius-2xl); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.2s; }
+.res-card {
+  height: 100%;
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.2s;
+}
 
 .res-card:hover {
   transform: translateY(-5px) scale(1.008);
@@ -4203,7 +4380,10 @@ button.foot-link {
   }
 }
 
-.pp-flow-col { border-radius: 14px; padding: 18px; }
+.pp-flow-col {
+  border-radius: 14px;
+  padding: 18px;
+}
 
 .pp-flow-label {
   font-size: 10px;

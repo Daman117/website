@@ -32,8 +32,8 @@ const companyLinks = [
 ];
 
 // A footer link column — always fully visible (no mobile accordion). The
-// columns stack to one per row on mobile via .footer-grid, so every link
-// stays on screen like the desktop footer.
+// columns reflow to 2-up on mobile via .footer-grid, so every link stays
+// on screen like the desktop footer.
 const FootColumn: React.FC<{
   title: string;
   children: React.ReactNode;
