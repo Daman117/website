@@ -967,10 +967,11 @@ hr.rule {
      is just margin-top, not whatever empty space min-height:100vh leaves */
   position: relative;
   z-index: var(--z-lifted);
-  width: 100vw;
+  width: 100%;
+  max-width: var(--page-max);
   margin-top: -40px;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
+  margin-left: auto;
+  margin-right: auto;
   /* the whole bar — border lines included — stays invisible until the hero
      intro text finishes; then it appears and the track (below) slides the
      strip in from the right edge so words arrive one by one */
