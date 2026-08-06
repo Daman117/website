@@ -27,10 +27,10 @@ const howItWorksSteps = [
 ];
 
 const challenges = [
-  { title: 'Crippling Startup Times', desc: 'JVM-based platforms take 30–60 seconds to load. Operators wait blindly during critical plant upsets.' },
-  { title: 'Monolithic Vulnerability', desc: 'Single-OS Windows dependency creates a common-cause failure. Ransomware takes down primary and backup together.' },
-  { title: 'Engineering Bottlenecks', desc: 'Configuration takes months. Legacy systems require 40+ engineer-hours per screen due to manual layout.' },
-  { title: 'Exorbitant Infrastructure Costs', desc: '$100K+ in licensing fees per server, where IT infrastructure regularly exceeds the actual software value.' },
+  { title: 'Slow Startup', desc: 'Legacy SCADA systems can take 30–60 seconds to start, delaying operator response during critical events.' },
+  { title: 'Single Point of Failure', desc: 'Primary and backup run on the same operating system, so one attack or fault can take both down at once.' },
+  { title: 'Slow Project Delivery', desc: 'Every screen is built by hand. A single site can take months of engineering before operators see anything.' },
+  { title: 'Higher Operating Cost', desc: 'High licensing fees, server infrastructure, and maintenance make legacy SCADA expensive to operate.' },
 ];
 
 const nativeApproach = [
@@ -218,11 +218,11 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
       {/* ── HERO (pinned parallax background — iOS-safe, see HeroShell) ── */}
       <CapabilityHero
         image="/enview-hero.webp"
-        badgeText="MODERN SCADA"
+        badgeText="NATIVE PERFORMANCE. REAL-TIME VISIBILITY. BUILT FOR APPLE SILICON."
         titleLine1="Modern SCADA for"
         titleLine2="Industrial & Manufacturing"
-        subText="enVIEW is a ground-up, native control platform — built in Swift for Apple Silicon. Instant startup, sub-100ms latency, and three synchronized views from a single data model."
-        bodyText="Legacy SCADA freezes when it matters most — a 20-year-old single-threaded architecture buckling under alarm floods. enVIEW decouples data from rendering so operators never lose visibility, and turns the P&ID into the live operational source of truth."
+        subText="enVIEW is a next-generation SCADA platform built in Swift that delivers instant startup, sub-100 ms response times, and synchronized operator views from a single data model."
+        bodyText="Engineered for modern industrial operations, it keeps dashboards, alarms, trends, and P&ID graphics fast, responsive, and always in sync."
         chips={heroChips}
         ctaLabel="Request a Demo"
         onCtaClick={() => onOpenContact('Request a Demo')}

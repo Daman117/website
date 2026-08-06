@@ -1,5 +1,15 @@
 /* Animations */
+/* Staggered alarm blink for challenge-card icons. FlashIcon sets
+   --icon-delay to index * 0.6s, so the lit window below (25%–45% of the
+   2.4s cycle = 0.6s wide) is exactly one stagger step long — each icon
+   goes dark before the next lights up, giving a strict one-after-another
+   sweep instead of the old wide pulse where all four overlapped.
+   --flash-color lets a page pick its own alarm colour (enVIEW uses red). */
 @keyframes iconFlash {
-  0%, 100% { color: inherit; }
-  40% { color: #f97316; filter: drop-shadow(0 0 6px #f97316); }
+  0%, 25% { color: inherit; }
+  35% {
+    color: var(--flash-color, #f97316);
+    filter: drop-shadow(0 0 6px var(--flash-color, #f97316));
+  }
+  45%, 100% { color: inherit; }
 }

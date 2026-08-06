@@ -45,7 +45,16 @@
 }
 
 .enview-challenge-icon.flash {
-  animation: iconFlash 2.4s ease-in-out var(--icon-delay, 0s) 3;
+  --flash-color: #EF4444;
+  animation: iconFlash 2.4s ease-in-out var(--icon-delay, 0s) infinite;
+}
+
+/* An endlessly blinking red icon is exactly the kind of motion this setting
+   exists to stop — hold it on the resting colour instead. */
+@media (prefers-reduced-motion: reduce) {
+  .enview-challenge-icon.flash {
+    animation: none;
+  }
 }
 
 .enview-challenge-icon {
