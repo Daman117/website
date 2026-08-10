@@ -96,24 +96,21 @@ const DemoDesktop: React.FC = () => {
           <span className="eyebrow">Product output, not slideware</span>
           <RevealLines as="h2" className="display demo-sticky-h2" lines={['See enxplant', 'in Action']} />
 
-          <div className="demo-active-container">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={active.id}
-                initial={{ opacity: 0, y: 40, scale: 0.96 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -24, scale: 0.97 }}
-                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="demo-active-content"
-                style={{ '--accent': active.color } as React.CSSProperties}
+          {/* Every step listed with its own headline, so the whole story is
+              readable at a glance; the active row is boxed rather than the
+              others being hidden. */}
+          <ol className="demo-step-list">
+            {demos.map((d, i) => (
+              <li
+                key={d.id}
+                className={`demo-step${i === activeIndex ? ' active' : ''}`}
+                style={{ '--accent': d.color } as React.CSSProperties}
               >
-                <div className="demo-active-product">
-                  {active.product}
-                </div>
-                <h3 className="demo-active-title">{active.title}</h3>
-              </motion.div>
-            </AnimatePresence>
-          </div>
+                <span className="demo-step-name">{d.product}</span>
+                <span className="demo-step-title">{d.title}</span>
+              </li>
+            ))}
+          </ol>
 
           <div className="demo-progress-track">
             <motion.div
