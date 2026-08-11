@@ -17,32 +17,32 @@ interface EntiePageProps {
 const ACCENT = '#60A5FA';
 
 const challenges = [
-  'Plant intelligence stays trapped in one tool while DCS, historian, MES and ERP run in separate silos',
-  'Point-to-point integrations multiply — one custom connector per system pair, each a new failure point',
-  'AI tools have no sanctioned way to reach live plant data without a bespoke export pipeline',
-  'Every integration project looks like a rip-and-replace, so most never start',
+  { title: 'Systems That Do Not Talk', desc: 'Your DCS, historian, MES and ERP each hold part of the picture, and none of them can see the others.' },
+  { title: 'A Connector for Every Pair', desc: 'Joining systems one pair at a time means more custom connectors every year, and every one of them can break.' },
+  { title: 'No Safe Way in for AI Tools', desc: 'Reaching live plant data means building a one-off export first, so most teams never get started.' },
+  { title: 'Every Option Means Ripping It Out', desc: 'If connecting things looks like replacing them, the project gets postponed — usually forever.' },
 ];
 
 const existingSolutions = [
   {
-    solution: 'Point-to-point custom integration',
-    limitation: 'One bespoke connector per system pair — cost and failure points multiply with every new system',
-    fix: 'One open adapter per system, reused across every enxplant product — no N² integration problem',
+    solution: 'Custom connector for each pair',
+    limitation: 'One connector for every pair of systems — cost and things that can break grow with each system added',
+    fix: 'One adapter per system, reused by every enxplant product — the count stops growing',
   },
   {
-    solution: 'Generic iPaaS / middleware',
-    limitation: 'Built for IT SaaS, not DCS/historian protocols — needs heavy customisation for plant-floor systems',
-    fix: 'Open protocol adapters designed for DCS, historian, MES and ERP from the start',
+    solution: 'General-purpose middleware',
+    limitation: 'Built for office software, not DCS and historian protocols — needs heavy rework for plant-floor systems',
+    fix: 'Adapters built for DCS, historian, MES and ERP from the start',
   },
   {
-    solution: 'Manual export / spreadsheet bridges',
-    limitation: 'Stale by the time anyone reads it — no live connection, no audit trail',
-    fix: 'Live, read-scoped connection with an auditable log per adapter',
+    solution: 'Manual exports and spreadsheets',
+    limitation: 'Out of date by the time anyone reads it, with no record of where it came from',
+    fix: 'A live read-only connection, with a log of every request per adapter',
   },
   {
-    solution: 'Forklift SCADA/historian replacement',
-    limitation: 'Rip-and-replace project — expensive, risky, stops production during cutover',
-    fix: 'Runs alongside legacy DCS/SCADA during transition — nothing switched off',
+    solution: 'Replacing SCADA or the historian',
+    limitation: 'Expensive, risky, and production stops while you switch over',
+    fix: 'Runs alongside your existing DCS and SCADA — nothing gets switched off',
   },
 ];
 
@@ -63,14 +63,14 @@ const capabilities = [
   },
   {
     Icon: ShieldCheck,
-    title: 'Safe · Secure · Scalable',
-    subtitle: 'Defense-in-Depth, by Design',
-    desc: 'The same three principles industrial connectivity frameworks are built on, applied to how enTIE reaches your plant systems.',
+    title: 'Safe · Secure · Grows With You',
+    subtitle: 'Built to Plant-Floor Rules',
+    desc: 'The three things that decide whether a connection is allowed near a running plant, applied to how enTIE reaches your systems.',
     features: [
-      'Safe — read-scoped adapters; enTIE exposes data, it never overwrites your systems of record',
-      'Secure — encrypted data in transit on every connection, with an auditable log per adapter',
-      'Scalable — add one adapter at a time; the same layer covers a single line or a multi-plant rollout',
-      'Designed to plant-floor standards, not bolted on after',
+      'Safe — enTIE only reads. It shows your data, it never writes back over your systems',
+      'Secure — every connection is encrypted, and every adapter keeps a log you can audit',
+      'Grows with you — add one adapter at a time, from a single line up to several plants',
+      'Designed to plant-floor rules from the start, not added afterwards',
     ],
     color: '#2563EB',
   },
@@ -78,7 +78,7 @@ const capabilities = [
     Icon: Cpu,
     title: 'AI-Ready via MCP',
     subtitle: 'The Same Data, Now Queryable by AI',
-    desc: 'enTIE exposes connected plant data through an MCP server, so the intelligence built in enxplant doesn’t stay trapped in enxplant.',
+    desc: "enTIE exposes connected plant data through an MCP server, so the intelligence built in enxplant doesn't stay trapped in enxplant.",
     features: [
       'MCP server for Claude Desktop and other AI tools',
       'No separate export pipeline to keep in sync',
@@ -95,7 +95,7 @@ const steps = [
   { icon: ShieldCheck, title: 'Encrypt & Audit', desc: 'Data moves encrypted in transit; every connection is logged per adapter.' },
   { icon: Boxes, title: 'Expose to enxplant', desc: 'Connected data becomes available to enVIEW, enGENIE, enABLE and the rest of enxplant.' },
   { icon: Cpu, title: 'Expose to AI Tools', desc: 'The same data reaches Claude Desktop and other AI tools through the MCP server.' },
-  { icon: FileCheck, title: 'Add the Next Adapter', desc: 'MES and ERP connect the same way, whenever you’re ready — no forced timeline.' },
+  { icon: FileCheck, title: 'Add the Next Adapter', desc: "MES and ERP connect the same way, whenever you're ready — no forced timeline." },
 ];
 
 const standardsFeatures = [
@@ -109,7 +109,7 @@ const statusFeatures = [
   'Roadmap — enTIE is not yet generally available',
   'Architecture above reflects current design intent, not a shipped guarantee',
   'No proprietary lock-in, a principle honoured from the first adapter shipped',
-  'Tell us which system — DCS, historian, MES or ERP — you’d connect first',
+  "Tell us which system — DCS, historian, MES or ERP — you'd connect first",
 ];
 
 const securityFeatures = [
@@ -124,7 +124,7 @@ const outcomes = [
   'AI tools query live plant data via MCP',
   'Adopt one system at a time',
   'No proprietary lock-in on either side',
-  'Intelligence built in enxplant doesn’t stay trapped in enxplant',
+  "Intelligence built in enxplant doesn't stay trapped in enxplant",
   'Lower total cost of ownership than a forklift integration project',
 ];
 
@@ -192,14 +192,15 @@ const EntiePage: React.FC<EntiePageProps> = ({ onOpenContact }) => {
         />
         <ScrollStagger className="engram-quad enable-five-col engram-challenge-grid" step={70}>
           {challenges.map((c, i) => (
-            <div key={i} className="card engram-card">
+            <div key={c.title} className="card engram-card">
               <FlashIcon inView={challengeInView} index={i} className="enable-challenge-icon" />
-              <span className="body-text enable-card-text">{c}</span>
+              <h3 className="engram-card-title engram-card-h3">{c.title}</h3>
+              <p className="supporting-text-loose enable-card-text">{c.desc}</p>
             </div>
           ))}
         </ScrollStagger>
         <p className="note-text enable-challenge-note">
-          Most plants end up with a patchwork of one-off connectors instead of one connectivity layer — because the alternative looks like a rip-and-replace.
+          Most plants end up with a patchwork of one-off connectors instead of one way in — because the alternative looks like tearing everything out.
         </p>
       </section>
 
@@ -248,7 +249,7 @@ const EntiePage: React.FC<EntiePageProps> = ({ onOpenContact }) => {
             <span className="eyebrow enable-trust-eyebrow">Honest Status</span>
             <h3 className="engram-card-title">Where enTIE Stands Today</h3>
             <p className="supporting-text enable-trust-desc">
-              enTIE is labelled by what it is today, not what it will eventually be.
+              enTIE is labeled by what it is today, not what it will eventually be.
             </p>
             {statusFeatures.map((f, i) => (
               <div key={i} className="enable-trust-list-item u-flex u-gap-8 u-items-start">
@@ -293,7 +294,7 @@ const EntiePage: React.FC<EntiePageProps> = ({ onOpenContact }) => {
           getRowRef={(i) => (el) => { rowRefs.current[i] = el; }}
         />
         <p className="label-text enable-table-summary">
-          enTIE reuses one open adapter per system instead of one bespoke connector per system pair — and never becomes a new system of record.
+          enTIE uses one adapter per system instead of a custom connector for every pair — and never becomes another system you have to maintain.
         </p>
       </section>
 

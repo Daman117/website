@@ -30,7 +30,7 @@ const AboutPage: React.FC = () => {
             enxplant is a division of enSAR Solutions Inc. The industrial intelligence work grew from a real frustration: a practicing I&amp;C engineer who couldn't find the answer he needed fast enough when it mattered.
           </p>
           <p className="engram-hero-body hero-fade-up hero-delay-1100">
-            The existing tools required data migration, cloud connectivity, vendor relationships, and IT projects. They produced dashboards nobody used and answers engineers didn't trust. So the software was built from scratch — grounded in how plant engineers actually think, how engineering documents are actually structured, and what an engineer needs when something goes wrong at 2AM.
+            The existing tools required data migration, cloud connectivity, vendor relationships, and IT projects. They produced dashboards nobody used and answers engineers didn't trust. So the software was built from scratch, inside the plant's own network, for the people who actually have to answer the question.
           </p>
         </section>
       </div>
@@ -54,10 +54,10 @@ const AboutPage: React.FC = () => {
                   <p className="trust-founder-bg">{founder.background}</p>
                 </div>
               </div>
-              <blockquote className="trust-quote">{founder.bio}</blockquote>
-              <blockquote className="surface-glass quote about-quote">
-                "Grounded in how plant engineers actually think, how engineering documents are actually structured, and what an engineer needs when something goes wrong at 2AM."
-              </blockquote>
+              {/* One quote only — the hero paragraph above already carries the
+                  "how engineers actually think… 2AM" line; repeating it here
+                  read as a copy-paste, not as emphasis. */}
+              <blockquote className="surface-glass quote about-quote">{founder.bio}</blockquote>
               <p className="attr about-attr">Dr. Jagan Mohan Reddy Yeturu · Founder, enSAR Solutions Inc.</p>
               <div className="trust-facts">
                 {founder.facts.map((f) => (

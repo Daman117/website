@@ -245,7 +245,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         <LineReveal
           as="p"
           className="enview-section-lead-max"
-          text="The problem is not the plant. The problem is a 20-year-old software architecture built on single-threaded paradigms — one processing thread shared between data acquisition and UI rendering. When alarm floods hit, the screen freezes at the worst possible moment."
+          text="The problem is not the plant. It is software designed twenty years ago, where reading the plant and drawing the screen compete for the same resource. When alarms flood in, the screen freezes at the worst possible moment."
         />
         <ScrollStagger className="engram-quad engram-challenge-grid" step={70}>
           {challenges.map((c, i) => (

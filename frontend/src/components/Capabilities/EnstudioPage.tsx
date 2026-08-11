@@ -20,12 +20,12 @@ const ACCENT = '#A78BFA';
 const heroChips = ['Local AI', 'Air-Gapped', 'ISA-5.1 Symbols', 'Any Drawing Format'];
 
 const challenges = [
-  'P&IDs are missing, outdated, or locked in scanned PDFs from decades ago',
-  'Configuring a plant by hand takes 40+ engineer-hours per drawing sheet',
-  'Tag lists, ranges, and alarm setpoints are re-keyed by hand into every system',
-  'Brownfield plants have no clean source-of-truth drawing to start from',
-  'Every downstream tool (SCADA, simulation) wants a different file format',
-  'A single equipment change means re-importing and re-typing the whole drawing',
+  { title: 'Drawings You Cannot Use', desc: 'P&IDs are missing, outdated, or locked inside scanned PDFs from decades ago.' },
+  { title: 'Slow Manual Setup', desc: 'Configuring a plant by hand takes 40+ engineer-hours for every drawing sheet.' },
+  { title: 'The Same Data Typed Again', desc: 'Tag lists, ranges and alarm setpoints are re-keyed by hand into every system that needs them.' },
+  { title: 'No Reliable Starting Point', desc: 'Brownfield plants have no clean source-of-truth drawing to build from.' },
+  { title: 'Every Tool Wants Its Own Format', desc: 'SCADA, simulation and downstream tools each expect a different file, so the work is repeated for each.' },
+  { title: 'One Change Means Redoing It All', desc: 'A single equipment change means re-importing and re-typing the whole drawing.' },
 ];
 
 const existingSolutions = [
@@ -198,7 +198,7 @@ const safetyFeatures = [
 
 const localFeatures = [
   'Runs entirely on localhost — one command, opens in browser',
-  'Drawings never leave the engineer’s network',
+  "Drawings never leave the engineer's network",
   'Local AI models for draw, describe and converse modes',
   'Lightweight Flask tool — runs on macOS, Windows, Linux',
   'Skill plug-ins drop in as folders — no rebuild',
@@ -283,9 +283,10 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
         />
         <ScrollStagger className="grid-3 engram-three-col engram-challenge-grid" step={70}>
           {challenges.map((c, i) => (
-            <div key={i} className="card engram-card">
+            <div key={c.title} className="card engram-card">
               <FlashIcon inView={challengeInView} index={i} className="enstudio-challenge-icon" />
-              <span className="body-text enstudio-card-text">{c}</span>
+              <h3 className="engram-card-title engram-card-h3">{c.title}</h3>
+              <p className="supporting-text-loose enstudio-card-text">{c.desc}</p>
             </div>
           ))}
         </ScrollStagger>

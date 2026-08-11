@@ -3019,6 +3019,11 @@ button.foot-link {
   color: var(--accent);
 }
 
+.impact-source {
+  color: var(--t5);
+  margin-top: 20px;
+}
+
 .demo-step-list {
   list-style: none;
   margin: 0 0 24px;

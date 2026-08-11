@@ -16,7 +16,7 @@ const BusinessImpact: React.FC = () => (
       <LineReveal
         as="p"
         className="section-lead"
-        text="Industrial buyers purchase outcomes. enxplant shortens the path from a question to a defensible answer — and keeps engineering knowledge in the business."
+        text="Less time hunting for answers, and the reasoning behind every answer stays in the business instead of leaving with the people who knew it."
       />
 
       <ScrollStagger className="grid-3-compact impact-grid" step={80}>
@@ -31,6 +31,17 @@ const BusinessImpact: React.FC = () => (
           </div>
         ))}
       </ScrollStagger>
+
+      {/* The case-study section labels its evidence honestly ("Internal
+          pilot", "Scenario"). These figures come from the same pilot, so
+          they carry the same qualifier — unattributed percentages beside
+          attributed case studies read as overclaiming. */}
+      <ScrollAnimation>
+        <p className="label-text impact-source">
+          Measured figures are from our 139-drawing internal pilot. Directional
+          outcomes are qualitative.
+        </p>
+      </ScrollAnimation>
     </div>
   </section>
 );

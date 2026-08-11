@@ -166,7 +166,8 @@ const ProductPage: React.FC<ProductPageProps> = ({ onOpenContact }) => {
           {/* Feature strips */}
           {cap.zerod && (
             <div className="zerod-strip">
-              <div className="u-flex u-items-center u-gap-8 zerod-item"><div className="zerod-dot" /><span className="zerod-text">Zero-day OPC-UA connectivity</span></div>
+              <div className="u-flex u-items-center u-gap-8 zerod-item"><div className="zerod-dot" />{/* Not "zero-day" — to an OT buyer that word means an unpatched exploit. */}
+              <span className="zerod-text">OPC-UA connectivity out of the box</span></div>
               <div className="u-flex u-items-center u-gap-8 zerod-item"><div className="zerod-dot" /><span className="zerod-text">Native Apple Silicon</span></div>
               <div className="u-flex u-items-center u-gap-8 zerod-item"><div className="zerod-dot" /><span className="zerod-text">No cloud dependency</span></div>
             </div>

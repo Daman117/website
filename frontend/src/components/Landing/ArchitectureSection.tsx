@@ -16,7 +16,7 @@ export const ArchitectureSection: React.FC = () => (
       <LineReveal
         as="p"
         className="section-lead"
-        text="Every plant data source flows into one local platform, becomes connected intelligence, and reaches every team that needs it."
+        text="Every source of plant data feeds one platform on your own network — and the answers reach every team that needs them."
       />
 
       <ScrollAnimation delay={150} duration={900} threshold={0.06}>

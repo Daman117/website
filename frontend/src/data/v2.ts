@@ -2,14 +2,16 @@
 //    business impact, trust, security, case studies, resources ──────────
 
 /* §1 — Hero capability keyword chips */
+// 'Local AI', 'Air-Gapped' and 'On-Premises' all made the same point and
+// took three of seven slots; 'Runs Inside Your Network' says it once and
+// leaves room for a capability the platform is not otherwise credited for.
 export const heroChips: string[] = [
   'Industrial AI Platform',
   'P&ID Intelligence',
   'SCADA Intelligence',
   'Engineering Knowledge',
-  'Local AI',
-  'Air-Gapped',
-  'On-Premises',
+  'Instrument Selection',
+  'Runs Inside Your Network',
 ];
 
 /* §2 — "See enxplant in Action" product demonstrations */
@@ -31,7 +33,7 @@ export interface DemoCard {
 export const demos: DemoCard[] = [
   {
     id: 'enstudio', product: 'enSTUDIO', color: '#A78BFA', kind: 'transform',
-    title: 'A P&ID becomes a structured engineering model',
+    title: 'A P&ID becomes searchable engineering data',
     before: { label: 'Input — P&ID drawing', items: ['Scanned / vector PDF', 'Symbols & line work', 'Hand annotations'] },
     after: {
       label: 'Output — structured model',
@@ -56,7 +58,7 @@ export const demos: DemoCard[] = [
   },
   {
     id: 'engenie', product: 'enGENIE', color: '#1B6FD8', kind: 'decision',
-    title: 'A specified, cited instrument recommendation',
+    title: 'The right instrument, with the reason cited',
     steps: [
       { label: 'Recommended', value: 'Coriolis mass flowmeter' },
       { label: 'Fit', value: '94% — service & accuracy match' },
@@ -66,17 +68,20 @@ export const demos: DemoCard[] = [
   },
   {
     id: 'enable', product: 'enABLE', color: '#10B981', kind: 'decision',
-    title: 'Eigenvalue-based stability verdict from one matrix',
+    title: 'Know if the plant will be stable before it is built',
     steps: [
-      { label: 'Verdict', value: 'Stable — all eigenvalues negative' },
-      { label: 'Bottleneck', value: 'HX-301 — slowest mode τ = 4.2 min' },
-      { label: 'RGA pairing', value: 'T→TC-101, F→FC-202 (λ₁₁ = 0.87)' },
+      { label: 'Verdict', value: 'Stable — settles after an upset' },
+      { label: 'Bottleneck', value: 'HX-301 — slowest to recover, 4.2 min' },
+      { label: 'Loop pairing', value: 'Temperature → TC-101, Flow → FC-202' },
     ],
-    refs: ['dx/dt = M·x + B·u', 'λ = −0.24, −1.18, −3.41'],
+    // Landing page: plain-language rows. The eigenvalue/RGA detail behind
+    // these verdicts lives on the enABLE product page, where the reader has
+    // already opted into the maths.
+    refs: ['Computed at design time', 'No step tests on the plant'],
   },
   {
-    id: 'entie', product: 'enTIE', color: '#06B6D4', kind: 'transform',
-    title: 'Disconnected plant systems become one intelligence layer',
+    id: 'entie', product: 'enTIE', color: '#60A5FA', kind: 'transform',
+    title: 'Separate plant systems finally work together',
     before: { label: 'Siloed sources', items: ['DCS live tags', 'CMMS work orders', 'ERP inventory', 'enGRAM knowledge base'] },
     after: { label: 'Connected output', items: ['Unified plant model', 'Cross-system queries', 'Automated workflows', 'Single source of truth'] },
   },
@@ -101,7 +106,7 @@ export const workSteps: WorkStep[] = [
     outLabel: 'Ingested', outputs: ['Inside your network', 'No cloud upload'],
   },
   {
-    icon: 'FileCode', title: 'enSTUDIO structures information', actor: 'enSTUDIO', color: '#A78BFA',
+    icon: 'FileCode', title: 'enSTUDIO reads your drawings', actor: 'enSTUDIO', color: '#A78BFA',
     inLabel: 'Reads', inputs: ['Drawings', 'Documents'],
     outLabel: 'Produces', outputs: ['Tags', 'Equipment', 'Relationships', 'Metadata'],
   },
@@ -111,9 +116,9 @@ export const workSteps: WorkStep[] = [
     outLabel: 'Produces', outputs: ['Searchable intelligence', 'Engineering reasoning', 'Cited decisions'],
   },
   {
-    icon: 'MonitorPlay', title: 'enVIEW & enABLE operationalize it', actor: 'enVIEW · enABLE', color: '#10B981',
+    icon: 'MonitorPlay', title: 'enVIEW & enABLE put it to work', actor: 'enVIEW · enABLE', color: '#10B981',
     inLabel: 'From', inputs: ['Knowledge base', 'Live tags'],
-    outLabel: 'Produces', outputs: ['Live operations', 'Plant understanding', 'System behavior analysis'],
+    outLabel: 'Produces', outputs: ['Live operations', 'Plant understanding', 'How the plant behaves'],
   },
 ];
 
@@ -140,11 +145,15 @@ export const industries: Industry[] = [
 
 /* §5 — "One Platform. Multiple Sources." architecture */
 export const archSources: string[] = ['P&IDs', 'SCADA', 'Historian', 'ERP', 'MES', 'Procedures', 'Datasheets', 'Loop Drawings'];
+// Workflow order — structure, then know, then operate, then connect. Matches
+// `demos` above deliberately: both narrate the platform end to end. The nav,
+// footer and caps.ts use a different (menu) order on purpose; those are
+// navigation, not a story.
 export const archCaps: { name: string; color: string }[] = [
   { name: 'enSTUDIO', color: '#A78BFA' },
   { name: 'enGRAM', color: '#FDB022' },
-  { name: 'enGENIE', color: '#1B6FD8' },
   { name: 'enVIEW', color: '#2563EB' },
+  { name: 'enGENIE', color: '#1B6FD8' },
   { name: 'enABLE', color: '#10B981' },
   { name: 'enTIE', color: '#60A5FA' },
 ];
@@ -167,9 +176,12 @@ export const impacts: Impact[] = [
   { stat: '90%', label: 'Faster document retrieval', detail: 'Answers in seconds, not hours of searching drawing registers.', icon: 'Search' },
   { stat: '99.3%', label: 'Extraction accuracy', detail: 'Page-level accuracy across 139+ digitized drawings.', icon: 'FileSearch' },
   { stat: '<2 min', label: 'Per-drawing turnaround', detail: 'A full P&ID structured in under two minutes.', icon: 'Clock' },
-  { stat: '↓', label: 'Reduced engineering rework', detail: 'Decisions are cited and defensible the first time.', icon: 'TrendingUp' },
-  { stat: '↑', label: 'Faster commissioning prep', detail: 'A structured plant model ready before you walk on site.', icon: 'Gauge' },
-  { stat: '0', label: 'Knowledge walks out the door', detail: 'Senior expertise captured in the system, not in someone’s head.', icon: 'Award' },
+  // These two are directional, not measured — a bare ↓/↑ in a tile beside
+  // 90% and 99.3% read as a number that failed to load. Words make the
+  // qualitative claim on purpose, without inventing a figure we can't defend.
+  { stat: 'Less', label: 'Engineering rework', detail: 'Decisions are cited and defensible the first time.', icon: 'TrendingUp' },
+  { stat: 'Earlier', label: 'Commissioning readiness', detail: 'A structured plant model ready before you walk on site.', icon: 'Gauge' },
+  { stat: '0', label: 'Knowledge walks out the door', detail: "Senior expertise captured in the system, not in someone's head.", icon: 'Award' },
 ];
 
 /* §6 — "Built by Engineers" trust */
@@ -177,7 +189,10 @@ export const founder = {
   name: 'Dr. Jagan Mohan Reddy Yeturu',
   role: 'Founder, enSAR Solutions Inc.',
   background: 'Practicing Instrumentation & Control engineer',
-  bio: 'enxplant was designed by a practicing I&C engineer — grounded in how plant engineers actually think, how engineering documents are actually structured, and what an engineer needs when something goes wrong at 2AM. Not technology demos. Not market research. Real plant work.',
+  // Principle 04 in company.ts already makes the "not demos, not market
+  // research" point, and both render on the landing page. This says the
+  // specific thing that principle cannot: what the product was shaped around.
+  bio: 'Every design decision started from plant floor reality — how engineering documents are actually structured, how engineers actually search them, and what someone needs at 2AM when a unit is upset and the answer is buried in a drawing register.',
   facts: [
     { k: 'Discipline', v: 'Instrumentation & Control' },
     { k: 'Focus', v: 'Industrial intelligence' },
@@ -192,7 +207,7 @@ export const standards: { code: string; desc: string }[] = [
   { code: 'ISA-101', desc: 'Human-machine interface design' },
   { code: 'ISA 75.01', desc: 'Control valve sizing' },
   { code: 'ASME PTC 19.3', desc: 'Thermowell design' },
-  { code: 'Lipták', desc: 'Instrument Engineers’ Handbook' },
+  { code: 'Lipták', desc: "Instrument Engineers' Handbook" },
 ];
 
 export const techStack: { name: string; icon: string }[] = [
@@ -236,7 +251,7 @@ export const caseStudies: CaseStudy[] = [
     id: 'incident', tag: 'Use case · Operations', color: '#FDB022',
     title: 'Answering at 2AM during an upset',
     problem: 'During a process upset an operator needed the isolation procedure and calibrated range for a transmitter — buried across loop drawings and datasheets nobody could find fast.',
-    solution: 'enGRAM returned the exact value with the source document, revision and page, grounded entirely in the plant’s own controlled documents.',
+    solution: "enGRAM returned the exact value with the source document, revision and page, grounded entirely in the plant's own controlled documents.",
     result: 'A query that previously meant a 30-minute drawing hunt now resolves in seconds, with a citation an auditor will accept.',
   },
   {
@@ -263,7 +278,7 @@ export const resources: Resource[] = [
   { type: 'Product Brief', title: 'enVIEW SCADA Overview', desc: 'Three synchronized views, ISA-18.2 alarms and a 5-year historian with no database server.', icon: 'MonitorPlay', img: '/enview-scada-overview.webp' },
   { type: 'Architecture Guide', title: 'One Platform, Multiple Sources', desc: 'How enSTUDIO, enGRAM, enGENIE, enVIEW, enABLE and enTIE connect end to end.', icon: 'Workflow', img: '/one-platform-multiple-sources.webp' },
   { type: 'Deployment Guide', title: 'Air-Gapped Installation', desc: 'Standing up enxplant on a single on-premises VM with local LLMs and zero cloud calls.', icon: 'Server', img: '/air-gapped-installation.webp' },
-  { type: 'Product Brief', title: 'enGENIE Engineering Vault', desc: 'Cited instrument selection grounded in Lipták, ISA, ISO and ASME.', icon: 'BookOpen', img: '/engenie-vault.webp' },
+  { type: 'Product Brief', title: 'enGENIE Instrument Selection', desc: 'Cited instrument selection grounded in Lipták, ISA, ISO and ASME.', icon: 'BookOpen', img: '/engenie-vault.webp' },
 ];
 
 /* §12 — generic product-page enhancements (Inputs → Processing → Outputs,
@@ -286,13 +301,13 @@ export const productExtras: Record<string, ProductExtra> = {
       { role: 'Engineering', text: 'Screen operability at design time — stability, response speed, loop pairing and bottlenecks, straight from the model.' },
       { role: 'Operations', text: 'Run the same model closed-loop for startup, upsets and operator what-ifs against a virtual plant.' },
       { role: 'Safety / HAZOP', text: 'Start HAZOP from eigenvalue-perturbation rows — a qualified team reviews rather than originates.' },
-      { role: 'Management', text: 'Preview a change’s predicted stability impact before it is built (Management of Change).' },
+      { role: 'Management', text: "Preview a change's predicted stability impact before it is built (Management of Change)." },
     ],
     outcomes: [
       'Operability issues caught at design time, not at commissioning',
       'Engineers review informed drafts instead of blank sheets',
       'Plant coupling retained as a durable, comparable matrix',
-      'Every result labelled computed, predicted or draft — no false certainty',
+      'Every result labeled computed, predicted or draft — no false certainty',
     ],
   },
   entie: {
@@ -305,7 +320,7 @@ export const productExtras: Record<string, ProductExtra> = {
       { role: 'Engineering', text: 'Reuse enxplant intelligence inside the systems you already run.' },
       { role: 'Operations', text: 'Surface enxplant answers without leaving the control room HMI.' },
       { role: 'Maintenance', text: 'Connect work-order and asset data from MES/ERP into enxplant context.' },
-      { role: 'Management', text: 'Adopt incrementally across a mixed installed base — lower TCO, faster time to value, no rip-and-replace.' },
+      { role: 'Management', text: 'Connect one system at a time across whatever mix you already run — lower cost, results sooner, nothing torn out.' },
     ],
     outcomes: [
       'Intelligence built in enxplant does not stay trapped in enxplant',

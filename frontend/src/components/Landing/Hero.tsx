@@ -45,12 +45,12 @@ const Hero: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenConta
           </span>
         </h1>
         <p className="engram-hero-sub hero-fade-up landing-hero-sub-text hero-delay-900">
-          The local-first industrial intelligence platform that turns drawings, documents, SCADA
-          systems and engineering knowledge into structured, searchable plant intelligence.
+          Everything your plant knows — P&amp;IDs, datasheets, procedures and live SCADA —
+          made searchable in one place, running entirely on your own network.
         </p>
         <p className="engram-hero-body hero-fade-up landing-hero-body-text hero-delay-1100">
-          Each capability is complete on its own and more powerful together — and it all runs
-          entirely inside your network.
+          Each product works on its own, and works better alongside the others. Nothing
+          you upload ever leaves your building.
         </p>
         <div className="hero-fade-up landing-hero-chips u-flex u-flex-wrap u-gap-10 hero-delay-1300" aria-label="Platform capabilities">
           {heroChips.map((c) => (
@@ -72,12 +72,12 @@ const Hero: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenConta
           <span className="hero-fade-up hero-mobile-line landing-hero-h1-accent hero-delay-mobile-2">Understood.</span>
         </h1>
         <p className="engram-hero-sub hero-fade-up landing-hero-sub-text hero-delay-mobile-2">
-          The local-first industrial intelligence platform that turns drawings, documents, SCADA
-          systems and engineering knowledge into structured, searchable plant intelligence.
+          Everything your plant knows — P&amp;IDs, datasheets, procedures and live SCADA —
+          made searchable in one place, running entirely on your own network.
         </p>
         <p className="engram-hero-body hero-fade-up landing-hero-body-text hero-delay-mobile-3">
-          Each capability is complete on its own and more powerful together — and it all runs
-          entirely inside your network.
+          Each product works on its own, and works better alongside the others. Nothing
+          you upload ever leaves your building.
         </p>
         <div className="hero-fade-up landing-hero-chips u-flex u-flex-wrap u-gap-10 hero-delay-mobile-3" aria-label="Platform capabilities">
           {heroChips.map((c) => (

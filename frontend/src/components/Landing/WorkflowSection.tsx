@@ -22,7 +22,7 @@ const WorkflowSection: React.FC = () => {
         <LineReveal
           as="p"
           className="section-lead"
-          text="Four steps from the documents you already have to live, defensible plant intelligence — all inside your network."
+          text="Four steps, from the documents you already have to answers you can show an auditor — all inside your own network."
         />
 
         <div className="how-grid" ref={ref}>

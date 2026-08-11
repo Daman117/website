@@ -17,17 +17,17 @@ interface EnablePageProps {
 const ACCENT = '#10B981';
 
 const challenges = [
-  'Senior engineers retiring with plant knowledge held only in their heads',
-  'Stability, controllability and operability discovered late — at dynamic studies or, worse, at commissioning',
-  'HAZOP, alarm rationalisation and control-structure decisions slow, manual and uneven in quality',
-  'Plant changes hard to evaluate before they are built',
+  { title: 'Experience Is Retiring', desc: 'Senior engineers leave with the plant model held only in their heads.' },
+  { title: 'Problems Found Too Late', desc: 'Whether a plant is stable and operable surfaces at dynamic studies or, worse, at commissioning — when changes are expensive.' },
+  { title: 'Slow, Uneven Reviews', desc: 'HAZOP, alarm rationalization and control-structure decisions are manual, slow and vary in quality between teams.' },
+  { title: 'No Way to Test Changes First', desc: 'A plant change is hard to evaluate before it has already been built.' },
 ];
 
 const existingSolutions = [
   {
     solution: 'Steady-state simulators',
     limitation: 'Compute a fixed operating point — no transient stability, loop interaction or controllability',
-    fix: 'Derives stability and loop interaction directly from the linearised matrix — no separate dynamic model needed',
+    fix: 'Derives stability and loop interaction directly from the linearized matrix — no separate dynamic model needed',
   },
   {
     solution: 'Dynamic simulators',
@@ -36,8 +36,8 @@ const existingSolutions = [
   },
   {
     solution: 'RGA / eigenvalues in MATLAB',
-    limitation: 'Require exporting a linearised model and a prior dynamic build',
-    fix: 'Assembles the linearised matrix live from the drawing — no export step, no prior build',
+    limitation: 'Require exporting a linearized model and a prior dynamic build',
+    fix: 'Assembles the linearized matrix live from the drawing — no export step, no prior build',
   },
   {
     solution: 'Tribal knowledge',
@@ -55,7 +55,7 @@ const capabilities = [
     features: [
       'Each unit operation contributes a matrix block',
       'Stream connections inject off-diagonal coupling',
-      'Assembled matrix M with input matrix B = the linearised plant',
+      'Assembled matrix M with input matrix B = the linearized plant',
       '37 unit-operation builders with real physics — reactors, separations, heat transfer, rotating equipment, vessels and valves',
       'The same matrix drives both analysis and live simulation',
     ],
@@ -77,7 +77,7 @@ const capabilities = [
   },
   {
     Icon: MonitorPlay,
-    title: 'Analyse → Live Simulation',
+    title: 'Analyze → Live Simulation',
     subtitle: 'From a Fast Verdict to a Full Dynamic Test — One Model',
     desc: 'The same plant runs as a closed-loop dynamic simulation, putting the analysis predictions to the test.',
     features: [
@@ -118,7 +118,7 @@ const honestyFeatures = [
 ];
 
 const securityFeatures = [
-  'Desktop application — runs on the engineer’s own machine',
+  "Desktop application — runs on the engineer's own machine",
   'No cloud dependency',
   'Air-gap compatible',
   'Your plant models stay yours, in an open and comparable matrix form',
@@ -198,9 +198,10 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
         />
         <ScrollStagger className="engram-quad enable-five-col engram-challenge-grid" step={70}>
           {challenges.map((c, i) => (
-            <div key={i} className="card engram-card">
+            <div key={c.title} className="card engram-card">
               <FlashIcon inView={challengeInView} index={i} className="enable-challenge-icon" />
-              <span className="body-text enable-card-text">{c}</span>
+              <h3 className="engram-card-title engram-card-h3">{c.title}</h3>
+              <p className="supporting-text-loose enable-card-text">{c.desc}</p>
             </div>
           ))}
         </ScrollStagger>
@@ -233,7 +234,7 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
         <LineReveal
           as="p"
           className="enable-section-lead"
-          text="Every output is validated, labelled by how much to trust it, and computed entirely inside your own perimeter — the three things engineers check before they rely on a verdict."
+          text="Every output is validated, labeled by how much to trust it, and computed entirely inside your own perimeter — the three things engineers check before they rely on a verdict."
         />
         <ScrollStagger className="grid-3 engram-three-col" step={90}>
 
@@ -258,7 +259,7 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
           {/* Honesty model */}
           <div className="card engram-card">
             <span className="eyebrow enable-trust-eyebrow">The Honesty Model</span>
-            <h3 className="engram-card-title">Every Output Is Labelled</h3>
+            <h3 className="engram-card-title">Every Output Is Labeled</h3>
             <p className="supporting-text enable-trust-desc">
               enABLE deliberately labels how much to trust each result.
             </p>

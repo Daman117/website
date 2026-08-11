@@ -17,10 +17,10 @@ interface EngramPageProps {
 const heroChips = ['Local AI', 'Air-Gapped', 'Cited Answers', 'Any Document Format'];
 
 const challenges = [
-  { title: 'Thousands of isolated files', desc: 'Datasheets, maintenance records, and logs scattered across network drives.' },
-  { title: 'Static, unreadable diagrams', desc: 'P&IDs and PFDs trapped as disconnected PDFs and scanned images.' },
-  { title: 'Evaporating tribal knowledge', desc: 'Critical context walks out the door when senior engineers retire.' },
-  { title: 'Endless search cycles', desc: 'New engineers spend years learning the paperwork rather than the process.' },
+  { title: 'Documents Everywhere', desc: 'Datasheets, maintenance records and logs are scattered across network drives with no single place to look.' },
+  { title: 'Drawings You Cannot Search', desc: 'P&IDs and PFDs sit as scanned images and PDFs, so finding one tag means opening them one by one.' },
+  { title: 'Knowledge Leaves With People', desc: 'When senior engineers retire, the context only they held goes with them.' },
+  { title: 'Slow to Get Up to Speed', desc: 'New engineers spend years learning where the paperwork lives instead of learning the process.' },
 ];
 
 const comparisonMatrix = {
@@ -70,7 +70,7 @@ const capabilities = [
     desc: 'enGRAM structures extracted information into an interconnected engineering knowledge base — the instrument tag is the unified source of truth, not the folder. Ask about FT-1001 and enGRAM connects every datasheet, drawing, manual, and log that touches it, automatically.',
     features: [
       'Link documents, drawings, equipment, and tags',
-      'Eliminate information silos',
+      'One place to look instead of many',
       'Build a searchable digital representation of plant knowledge',
       'Provide context-aware answers across systems and assets',
     ],
@@ -188,7 +188,7 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
         bodyText="Engineering information is often trapped inside PDFs, scanned drawings, spreadsheets, manuals, and disconnected repositories. enGRAM extracts, connects, and structures that information into a plant-wide intelligence layer that engineers can query, validate, and trust."
         chips={heroChips}
         ctaLabel="Request a Demo"
-        onCtaClick={() => onOpenContact('Request a Pilot')}
+        onCtaClick={() => onOpenContact('Request a Demo')}
         classes={{
           badge: 'badge-text engram-hero-badge-text',
           title: 'engram-hero-h1-text',

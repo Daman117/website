@@ -31,8 +31,8 @@ const INTEREST_OPTIONS = [
   { value: 'enview', label: 'enVIEW — SCADA' },
   { value: 'engram', label: 'enGRAM — Plant Knowledge' },
   { value: 'enstudio', label: 'enSTUDIO — Drawing Intelligence' },
-  { value: 'enable', label: 'enABLE — Structural Understanding' },
-  { value: 'engenie', label: 'enGENIE — Instrument Engineering' },
+  { value: 'enable', label: 'enABLE — Process Intelligence' },
+  { value: 'engenie', label: 'enGENIE — Instrument Selection' },
   { value: 'entie', label: 'enTIE — Connected Intelligence' },
   { value: 'other', label: 'General Inquiry' },
 ];

@@ -16,14 +16,14 @@ interface EngeniePageProps {
 const ACCENT = '#1B6FD8';
 const ACCENT_RGB = '27,111,216';
 
-const heroChips = ['Multi-Agent Pipeline', 'Audit-Ready', 'Standards-Compliant', 'Vendor-Aware'];
+const heroChips = ['Cited Recommendations', 'Audit-Ready', 'Meets Your Standards', 'Compares Vendors'];
 
 const modules = [
   {
     Icon: Workflow,
     title: 'Solution Engineering',
-    subtitle: 'Requirements → actionable specifications',
-    desc: 'Transform greenfield or brownfield project requirements into precise, actionable specifications. The AI analyzes your unique needs and proposes the optimal instruments and accessories.',
+    subtitle: 'Requirements → a finished specification',
+    desc: 'Turn project requirements — new build or upgrade — into a specification you can issue. enGENIE reads the service conditions and proposes the instruments and accessories that suit them.',
     features: [
       'Greenfield & brownfield project analysis',
       'Complete bill of materials generation',
@@ -35,8 +35,8 @@ const modules = [
   {
     Icon: Search,
     title: 'Intelligent Search',
-    subtitle: 'Recommendations with reasoning',
-    desc: 'Empower buyers and requisitioners with AI-driven specification assistance. Get intelligent recommendations backed by detailed rationale — not just results, but reasoning.',
+    subtitle: 'Recommendations with the reasoning shown',
+    desc: 'Buyers and requisitioners describe what they need in plain words and get a recommendation with the reasoning written out — not just what to buy, but why.',
     features: [
       'Natural language specification input',
       'AI-powered best-match recommendations',
@@ -48,8 +48,8 @@ const modules = [
   {
     Icon: MessageSquare,
     title: 'Quick Chat Assistant',
-    subtitle: 'Your 24/7 technical consultant',
-    desc: 'Get instant, expert-level answers on instruments, accessories, or general industrial knowledge. Your on-demand technical consultant, available around the clock.',
+    subtitle: 'Ask a question, any time',
+    desc: 'Ask about an instrument, an accessory or how something is normally done, and get an answer straight away — at 2AM on a night shift as easily as at a desk.',
     features: [
       'Instant technical Q&A',
       'Industrial knowledge base access',
@@ -61,17 +61,17 @@ const modules = [
 ];
 
 const aiFeatures = [
-  { Icon: Building2, title: 'Company-Personalized Matching', desc: 'Recommendations aligned to your approved strategy, engineering standards, and inventory availability.' },
-  { Icon: Scale, title: 'Intelligent Vendor Analysis', desc: 'Side-by-side comparison and scoring across technical fit, compliance, and commercial factors.' },
-  { Icon: CircleCheck, title: 'Real-time Validation', desc: 'Instant requirement checks, missing-field prompts, and fast shortlisting.' },
-  { Icon: ShieldCheck, title: 'Secure & Reliable', desc: 'Enterprise-grade security with consistent, explainable outputs you can trust.' },
+  { Icon: Building2, title: 'Matched to Your Company', desc: 'Recommendations follow your approved suppliers, your engineering standards and what is actually in stock.' },
+  { Icon: Scale, title: 'Vendors Compared Side by Side', desc: 'Every option scored on technical fit, compliance and cost, shown next to each other.' },
+  { Icon: CircleCheck, title: 'Checked as You Go', desc: 'Missing information is flagged while you work, so a shortlist is ready sooner.' },
+  { Icon: ShieldCheck, title: 'Runs Inside Your Network', desc: 'Nothing is sent outside, and the same question always returns the same reasoning.' },
 ];
 
 const steps = [
-  { icon: ClipboardList, title: 'Define Requirements',   desc: 'Input project specs naturally — greenfield construction or brownfield upgrades. The AI understands context.' },
-  { icon: BrainCircuit,  title: 'AI Analysis',           desc: 'enGENIE cross-references your needs against supplier strategies, category frameworks, and standards.' },
-  { icon: Sparkles,      title: 'Smart Recommendations', desc: 'Receive curated instrument and accessory recommendations with rationale and compliance verification.' },
-  { icon: PackageCheck,  title: 'Procure with Confidence', desc: 'Move forward with specs aligned to your strategic sourcing objectives and technical standards.' },
+  { icon: ClipboardList, title: 'Describe the Job',      desc: 'Write what the project needs in your own words — a new build or an upgrade to an existing unit.' },
+  { icon: BrainCircuit,  title: 'enGENIE Checks It',     desc: 'Your requirement is checked against approved suppliers, your purchasing rules and the relevant standards.' },
+  { icon: Sparkles,      title: 'You Get a Shortlist',   desc: 'A short list of instruments and accessories, each with the reason it was chosen and the standard it meets.' },
+  { icon: PackageCheck,  title: 'Order With Confidence', desc: 'The specification is ready to issue, already matching your standards and purchasing rules.' },
 ];
 
 const differentiators = [
@@ -87,44 +87,44 @@ const audiences = [
   {
     label: 'For Enterprises',
     tag: 'Procurement teams & buyers',
-    desc: "Transform your procurement operations with AI that understands your organizational DNA — from supplier strategies to category frameworks and compliance requirements.",
+    desc: "Specify instruments the way your company already does it — the suppliers you have agreements with, the purchasing rules you follow, and the standards you have to meet.",
     color: '#1B6FD8',
     points: [
-      'Reduce specification time by up to 85%',
-      'Ensure compliance with organizational standards',
-      'Leverage preferred supplier agreements automatically',
-      'Get AI-powered recommendations with transparent rationale',
-      'Streamline greenfield & brownfield project specifications',
+      'Specifications written in a fraction of the time',
+      'Company standards applied every time',
+      'Preferred supplier agreements used automatically',
+      'Every recommendation shows its reasoning',
+      'Works for new builds and upgrades alike',
     ],
   },
   {
     label: 'For Suppliers',
     tag: 'Manufacturers & distributors',
-    desc: "Get your products in front of the right buyers at the right time. enGENIE's AI ensures your instruments and accessories are recommended when they best match customer requirements.",
+    desc: "Your products get put forward when they genuinely fit the job. enGENIE matches on the service conditions, so you are shortlisted for work your instruments are actually right for.",
     color: '#2563EB',
     points: [
-      'Increase product visibility to qualified buyers',
-      'Get matched to projects based on technical specifications',
-      'Benefit from AI-powered product recommendations',
-      'Strengthen strategic partnerships with enterprise buyers',
-      'Access detailed market insights and demand patterns',
+      'Seen by buyers who are specifying right now',
+      'Matched on real service conditions, not keywords',
+      'Put forward with the reason you fit',
+      'Closer working relationships with regular buyers',
+      'See what the market is asking for',
     ],
   },
 ];
 
 const orgDna = [
-  { title: 'Supplier Strategy Integration', desc: 'Recommendations align with your preferred supplier agreements, volume commitments, and strategic partnerships.', color: '#1B6FD8' },
-  { title: 'Category Framework Compliance', desc: 'Automatic adherence to category strategies, spending policies, and procurement guidelines.', color: '#2563EB' },
-  { title: 'Organizational Standards Built-In', desc: 'Technical specifications automatically verified against your engineering standards and safety requirements.', color: '#60A5FA' },
+  { title: 'Your Suppliers Come First', desc: 'Recommendations respect the supplier agreements and volume commitments you already have in place.', color: '#1B6FD8' },
+  { title: 'Your Purchasing Rules Apply', desc: 'Spending limits and purchasing policies are followed without anyone having to remember them.', color: '#2563EB' },
+  { title: 'Your Standards Are Checked', desc: 'Every specification is verified against your own engineering and safety standards before it reaches you.', color: '#60A5FA' },
 ];
 
 const outcomes = [
-  'Reduce specification time by up to 85%',
-  'Audit-ready, explainable recommendations',
-  'Compliance with organizational standards',
-  'Lower procurement cost and risk',
-  'Faster shortlisting and decisions',
-  'Strategic sourcing alignment built in',
+  'Specifications finished in a fraction of the time',
+  'Every recommendation can be explained to an auditor',
+  'Company standards met without chasing them',
+  'Less money spent, and less risk of the wrong choice',
+  'Shortlists and decisions arrive sooner',
+  'Purchasing rules followed by default',
 ];
 
 const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
@@ -158,11 +158,11 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
       {/* ── HERO (pinned parallax background — iOS-safe, see HeroShell) ── */}
       <CapabilityHero
         image="/engenie-hero.webp"
-        badgeText="AI-POWERED PROCUREMENT INTELLIGENCE"
-        titleLine1="Industrial Procurement"
-        titleLine2="With Intelligent AI"
-        subText="enGENIE revolutionizes how enterprises source and suppliers sell industrial instruments and accessories — AI that understands requirements, organizational standards, and supplier strategies."
-        bodyText="General-purpose LLMs guess. enGENIE runs a structured, multi-agent pipeline over your catalogs, datasheets, and standards to deliver precise, compliant, audit-ready procurement recommendations — every accessory accounted for, every choice explained."
+        badgeText="INSTRUMENT SELECTION & SPECIFICATION"
+        titleLine1="From Process Conditions to"
+        titleLine2="An Issue-Ready Spec"
+        subText="enGENIE takes your service conditions and returns the right instrument — with the standard that justifies it, the reason every alternative was excluded, and a specification ready to issue."
+        bodyText="Selection runs as a structured, repeatable pipeline over your catalogs, datasheets and standards, so every recommendation is cited, compliant and explainable — and already matches your approved suppliers and purchasing rules by the time it reaches you."
         chips={heroChips}
         ctaLabel="Request a Demo"
         onCtaClick={() => onOpenContact('Request a Demo')}
@@ -196,11 +196,11 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
       {/* ── FOR ENTERPRISES / FOR SUPPLIERS ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">Built For You</span>
-        <LineReveal as="h2" className="engram-section-h2" text="Powering Success for Enterprises & Suppliers" />
+        <LineReveal as="h2" className="engram-section-h2" text="Useful on Both Sides of the Spec" />
         <LineReveal
           as="p"
           className="content-medium engenie-section-lead"
-          text="enGENIE creates value across the entire procurement ecosystem — streamlining selection for buyers while accelerating sales for suppliers."
+          text="The same matching works in both directions — engineers get the instrument that fits the service, and suppliers get put forward for the work their instruments are actually right for."
         />
         <ScrollStagger className="engram-two-col" step={120}>
           {audiences.map((a) => (
@@ -242,11 +242,11 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
       {/* ── ORGANIZATIONAL DNA ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">Strategic Intelligence</span>
-        <LineReveal as="h2" className="engram-section-h2" text="Built for Enterprise Procurement Excellence" />
+        <LineReveal as="h2" className="engram-section-h2" text="Selection That Follows Your Rules" />
         <LineReveal
           as="p"
           className="content-medium engenie-section-lead"
-          text="enGENIE doesn't just search — it thinks. Every recommendation considers your complete procurement ecosystem, ensuring alignment with strategic objectives and operational requirements."
+          text="A recommendation is only useful if you are allowed to buy it. Every one enGENIE returns already respects your supplier agreements, your purchasing limits and your engineering standards."
         />
         <ScrollStagger className="grid-3 engram-three-col" step={90}>
           {orgDna.map((o) => (
@@ -272,7 +272,7 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
         <LineReveal
           as="p"
           className="content-medium engenie-section-lead-sm"
-          text="ChatGPT, Gemini, and Claude reason well in the open, but fall short on complex industrial procurement. enGENIE structures the workflow into auditable, deterministic agent steps."
+          text="General-purpose chat assistants reason well in the open, but instrument selection needs the same question to return the same cited answer every time. enGENIE structures the work into auditable, repeatable steps."
         />
         <ComparisonTable
           ref={matrixRef}
@@ -288,11 +288,11 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
       {/* ── OUTCOMES ── */}
       <section className="engram-section engram-container">
         <span className="eyebrow">Outcomes</span>
-        <LineReveal as="h2" className="engram-section-h2" text="Procure With Confidence" />
+        <LineReveal as="h2" className="engram-section-h2" text="Specify With Confidence" />
         <LineReveal
           as="p"
           className="content-narrow lead-text engenie-outcomes-lead"
-          text="enGENIE standardizes selection, reduces specification time, and turns procurement into a fast, compliant, explainable workflow — for both the enterprises that source and the suppliers that sell."
+          text="enGENIE standardizes how instruments are selected and cuts the time it takes to write the spec — turning selection into a fast, compliant, explainable workflow for the engineers who specify and the teams who buy."
         />
         <ScrollStagger className="u-flex u-flex-wrap u-gap-10 engram-outcomes-grid" step={50}>
           {outcomes.map((o, i) => (

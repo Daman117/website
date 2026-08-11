@@ -18,7 +18,7 @@ export const PRODUCTS = [
   { id: 'engram',   name: 'enGRAM',   cat: 'Plant Knowledge' },
   { id: 'enstudio', name: 'enSTUDIO', cat: 'Drawing Intelligence' },
   { id: 'enable',   name: 'enABLE',   cat: 'Process Intelligence for Design & Control' },
-  { id: 'engenie',  name: 'enGENIE',  cat: 'Instrument Engineering Intelligence' },
+  { id: 'engenie',  name: 'enGENIE',  cat: 'Instrument Selection & Specification' },
   { id: 'entie',    name: 'enTIE',    cat: 'Connected Intelligence' },
 ];
 

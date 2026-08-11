@@ -6,19 +6,19 @@ export const CAPS: Cap[] = [
   tag:'See your plant. Live.',color:'#2563EB',
   status:'Available',statusBg:'#0A1E38',statusBorder:'#1E40AF',statusText:'#60A5FA',
   zerod:true,
-  body:`enVIEW is what SCADA looks like when you start from scratch in 2024 — not when you migrate a 1990s Windows system to the cloud. Native Apple Silicon. Three synchronized views of your plant from one data model. An AI operator assistant that understands your process. A CLI that lets you manage everything without touching the GUI.`,
+  body:`enVIEW is what SCADA looks like when you start from scratch today — not when you migrate a 1990s Windows system to the cloud. Native Apple Silicon. Three synchronized views of your plant from one data model. An AI operator assistant that understands your process. A CLI that lets you manage everything without touching the GUI.`,
   body2:`Every incumbent SCADA was built for the world before Apple Silicon, before LLMs, before engineers expected software to respond in milliseconds. enVIEW wasn't constrained by any of that.`,
   tabs:[
     {label:'Three Views',content:`
       <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">One data model. Three ways to see your plant.</p>
-      <p style="font-size:12px;color:var(--t4);line-height:1.7;margin-bottom:12px">No other SCADA product renders three synchronized views from the same live data. What the engineer designs is exactly what the operator sees — no separate configuration.</p>
+      <p style="font-size:12px;color:var(--t4);line-height:1.7;margin-bottom:12px">Three views, one live data model — the engineering schematic, the operator mimic and the 3D plant, always in step. What the engineer designs is exactly what the operator sees — no separate configuration.</p>
       <ul class="blist">
         <li><span>—</span><span><b style="color:var(--t2)">P&ID View</b> — ISA-101 compliant schematics, ISA-5.1 instrument bubbles, 331 SVG symbols. The engineer's view.</span></li>
-        <li><span>—</span><span><b style="color:var(--t2)">DCS Mimic View</b> — Metallic equipment graphics, live value badges, stream-coloured piping. The operator's view.</span></li>
+        <li><span>—</span><span><b style="color:var(--t2)">DCS Mimic View</b> — Metallic equipment graphics, live value badges, stream-colored piping. The operator's view.</span></li>
         <li><span>—</span><span><b style="color:var(--t2)">3D Plant View</b> — RealityKit with PBR materials, orbit camera, equipment labels. Spatial awareness.</span></li>
       </ul>`},
     {label:'AI-Native',content:`
-      <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">The first SCADA with AI built in from day one.</p>
+      <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">AI built in from day one — not added as a module.</p>
       <ul class="blist">
         <li><span>—</span><span><b style="color:var(--t2)">AI Operator Assistant</b> — "Why is the reactor temperature rising?" Gets an answer grounded in live process data.</span></li>
         <li><span>—</span><span><b style="color:var(--t2)">AI Security Analysis</b> — Behavioral baseline monitoring. AI-powered threat explanation, not just alerts.</span></li>
@@ -116,16 +116,24 @@ export const CAPS: Cap[] = [
   right:'specs',
 },{
   id:'enstudio',name:'enSTUDIO',cat:'Drawing Intelligence',
-  tag:'Upload it. Type it. Say it. It becomes structured.',color:'#A78BFA',
+  tag:'Draw it. Import it. Describe it. It becomes structured.',color:'#A78BFA',
   status:'Available',statusBg:'#0A1E38',statusBorder:'#1E40AF',statusText:'#60A5FA',
   airgap:true,
-  body:`enSTUDIO meets engineers where they are. Upload a drawing, type a description, or talk through a process unit — all three produce the same structured, LLM-ready output. All three run on local AI models inside your network. No internet. No cloud.`,
+  body:`enSTUDIO meets engineers where they are. Draw the unit on a canvas, import an existing drawing, or describe it in plain language — every channel produces the same structured, LLM-ready output, and every channel runs on local AI models inside your network. No internet. No cloud.`,
   specs:[
     {l:'Speed',v:'<2 min'},{l:'Accuracy',v:'99.3%'},
     {l:'Drawings',v:'139+'},{l:'Tags',v:'5,945+'},
   ],
   tabs:[
-    {label:'Upload',content:`
+    {label:'Draw',content:`
+      <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">Author the unit from scratch on the canvas.</p>
+      <ul class="blist">
+        <li><span>—</span><span>Drag ISA-5.1 symbols onto the canvas and draw the connections between them</span></li>
+        <li><span>—</span><span>Fill parameter forms as you go — ranges, setpoints, service conditions</span></li>
+        <li><span>—</span><span>Every action writes straight to the same internal model the other channels build</span></li>
+        <li><span>—</span><span>Useful where no drawing exists, or where the drawing no longer matches the plant</span></li>
+      </ul>`},
+    {label:'Import',content:`
       <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">Drop any P&ID. It gets read.</p>
       <ul class="blist">
         <li><span>—</span><span>Scanned drawing from 1987 or a vector export from AutoCAD — it doesn't matter</span></li>
@@ -142,8 +150,8 @@ export const CAPS: Cap[] = [
         <div>tag: FT-3045 | type: flow_transmitter | range: 0–500 kg/h</div>
         <div>alarm_hi: 450 | connected_to: R-201, FCV-201</div>
       </div>
-      <p style="font-size:11px;color:var(--t5)">Same VIDS / YAML / Markdown outputs as the upload channel. No second-class treatment.</p>`},
-    {label:'Converse',content:`
+      <p style="font-size:11px;color:var(--t5)">Same VIDS / YAML / Markdown outputs as the import channel. No second-class treatment.</p>`},
+    {label:'Describe · Spoken',content:`
       <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">Talk through a process unit. It builds the model as you go.</p>
       <div class="cli-block" style="margin-bottom:10px">
         <div><span style="color:#A78BFA">enSTUDIO:</span> <span style="color:var(--t4)">What units are in section 2?</span></div>
@@ -154,7 +162,7 @@ export const CAPS: Cap[] = [
       </div>
       <p style="font-size:11px;color:var(--t5)">Runs entirely on local LLM. The conversation never leaves the network.</p>`},
     {label:'Outputs',content:`
-      <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">Six formats. All downstream-ready.</p>
+      <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">Four formats. All downstream-ready.</p>
       <div style="display:flex;flex-direction:column;gap:5px">
         <div style="display:grid;grid-template-columns:90px 1fr;gap:10px;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:4px"><span class="mono" style="font-size:10px;color:#A78BFA">VIDS</span><span style="font-size:11px;color:var(--t5)">Process simulation — equipment, streams, connections</span></div>
         <div style="display:grid;grid-template-columns:90px 1fr;gap:10px;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:4px"><span class="mono" style="font-size:10px;color:#A78BFA">VPlant YAML</span><span style="font-size:11px;color:var(--t5)">enABLE plant matrix M — topology as structured data</span></div>
@@ -177,7 +185,7 @@ export const CAPS: Cap[] = [
   tabs:[
     {label:'The Matrix',content:`
       <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">Your whole plant, written as one mathematical object.</p>
-      <p style="font-size:12px;color:var(--t4);line-height:1.7;margin-bottom:12px">The engineer draws the plant as a flowsheet. Each unit operation contributes a small matrix block; each stream connection injects off-diagonal coupling. The assembled matrix M — with input matrix B — is the linearised plant. The same matrix drives both the analysis and the live simulation.</p>
+      <p style="font-size:12px;color:var(--t4);line-height:1.7;margin-bottom:12px">The engineer draws the plant as a flowsheet. Each unit operation contributes a small matrix block; each stream connection injects off-diagonal coupling. The assembled matrix M — with input matrix B — is the linearized plant. The same matrix drives both the analysis and the live simulation.</p>
       <div class="matrix-eq">
         dx/dt = M·x + B·u<br/><br/>
         M  = unit-operation blocks + stream coupling<br/>
@@ -193,7 +201,7 @@ export const CAPS: Cap[] = [
         <li><span>—</span><span><b style="color:var(--t2)">Eigenvalue sensitivity</b> — the basis for ranked recommended changes and change-impact previews.</span></li>
         <li><span>—</span><span><b style="color:var(--t2)">Fiedler value</b> — partitions the plant into naturally weakly-coupled control zones.</span></li>
       </ul>`},
-    {label:'Analyse → Simulate',content:`
+    {label:'Analyze → Simulate',content:`
       <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">One model. A fast design verdict, then a live dynamic test.</p>
       <ul class="blist">
         <li><span>—</span><span><b style="color:var(--t2)">Verdict-first analysis</b> — stable / marginal / unstable, with margin, slowest-mode time constant and the bottleneck equipment identified.</span></li>
@@ -220,7 +228,7 @@ export const CAPS: Cap[] = [
       </div>
       <p style="font-size:11px;color:var(--t5)">Results hold on the benchmark set (two-tank, heat exchanger, CSTR stable/unstable, interacting 2×2). They are not a claim of accuracy on every possible plant.</p>`},
     {label:'Honesty Model',content:`
-      <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">Every output is labelled by how much to trust it.</p>
+      <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">Every output is labeled by how much to trust it.</p>
       <ul class="blist">
         <li><span>—</span><span><b style="color:var(--t2)">Computed / exact</b> — eigenvalues, RGA, condition number: exact for the assembled matrix, covered by gate tests.</span></li>
         <li><span>—</span><span><b style="color:var(--t2)">Predicted — confirm in Simulate</b> — recommended changes, change-impact, operating-range sweep.</span></li>
@@ -231,13 +239,13 @@ export const CAPS: Cap[] = [
   ],
   right:'specs',
 },{
-  id:'engenie',name:'enGENIE',cat:'Instrument Engineering Intelligence',
-  tag:'The vault for your instrument engineering knowledge.',color:'#1B6FD8',
-  status:'Phase 0 Live',statusBg:'#0A1E38',statusBorder:'#1E40AF',statusText:'#60A5FA',
-  body:`The vault for your instrument engineering knowledge — every decision cited, locked, and retrievable. From process conditions to a specified, cited, defensible specification. Grounded in Lipták — the authoritative reference every serious I&C engineer already uses.`,
+  id:'engenie',name:'enGENIE',cat:'Instrument Selection & Specification',
+  tag:'From process conditions to a cited, issue-ready specification.',color:'#1B6FD8',
+  status:'Early Access',statusBg:'#0A1E38',statusBorder:'#1E40AF',statusText:'#60A5FA',
+  body:`enGENIE takes your service conditions and returns the right instrument — with the standard that justifies it and the reason every alternative was excluded. The finished specification is ready to issue, already matching your engineering standards, approved suppliers and purchasing rules. Grounded in Lipták — the authoritative reference every serious I&C engineer already uses.`,
   specs:[
     {l:'Disciplines',v:'8'},{l:'Technologies',v:'70'},
-    {l:'Standards',v:'8'},{l:'Phase',v:'0 Live'},
+    {l:'Standards',v:'8'},{l:'Status',v:'Early Access'},
   ],
   tabs:[
     {label:'The Vault',content:`
@@ -291,7 +299,7 @@ export const CAPS: Cap[] = [
   status:'Roadmap',statusBg:'#1C1030',statusBorder:'#2C1C48',statusText:'#A78BFA',
   openTie:true,
   body:`enTIE connects enxplant capabilities to the plant systems you already run — DCS, historian, MES, ERP. It also exposes plant data via MCP server for Claude Desktop and other AI tools. The intelligence you build in enxplant doesn't stay in enxplant.`,
-  body2:`Precision-engineered as an integration layer, not a migration project — open protocol adapters sit alongside your installed base so adoption is incremental, standards-compliant, and reversible at every step.`,
+  body2:`Built as an integration layer, not a migration project — open protocol adapters sit alongside your installed base, so adoption is incremental, standards-compliant, and reversible at every step.`,
   specs:[
     {l:'Protocol',v:'Open'},{l:'MCP',v:'Yes'},
     {l:'Lock-in',v:'None'},{l:'Status',v:'Roadmap'},
@@ -324,7 +332,7 @@ export const CAPS: Cap[] = [
         <li><span>—</span><span><b style="color:var(--t2)">Scalable</b> — add one adapter at a time; the same layer covers a single line or a multi-plant rollout.</span></li>
       </ul>`},
     {label:'Deployment',content:`
-      <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">Adopt one connection at a time — never a rip-and-replace.</p>
+      <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">Connect one system at a time — nothing gets torn out.</p>
       <div style="display:flex;flex-direction:column;gap:6px">
         <div style="display:flex;gap:10px;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:4px">
           <span class="mono" style="font-size:10px;color:#60A5FA;flex-shrink:0;margin-top:1px">01</span>
