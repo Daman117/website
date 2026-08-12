@@ -82,7 +82,7 @@ const Nav: React.FC<NavProps> = ({ onOpenMobile, mobileOpen, onOpenContact }) =>
           <Logo />
         </div>
         <div className="nav-word">
-          <span>en</span><span>xplant</span>
+          <span>en</span><span>xco</span>
         </div>
       </button>
 

@@ -94,7 +94,7 @@ const DemoDesktop: React.FC = () => {
         {/* Left — heading + progress list */}
         <div className="demo-sticky-left">
           <span className="eyebrow">Product output, not slideware</span>
-          <RevealLines as="h2" className="display demo-sticky-h2" lines={['See enxplant', 'in Action']} />
+          <RevealLines as="h2" className="display demo-sticky-h2" lines={['See enxco', 'in Action']} />
 
           {/* Every step listed with its own headline, so the whole story is
               readable at a glance; the active row is boxed rather than the
@@ -164,7 +164,7 @@ const DemoMobile: React.FC = () => (
     <ScrollAnimation>
       <span className="eyebrow">Product output, not slideware</span>
     </ScrollAnimation>
-    <RevealLines as="h2" className="display demo-sticky-h2" lines={['See enxplant', 'in Action']} />
+    <RevealLines as="h2" className="display demo-sticky-h2" lines={['See enxco', 'in Action']} />
 
     <ScrollStagger className="demo-timeline" step={90}>
       {demos.map((d) => (

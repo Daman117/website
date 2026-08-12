@@ -16,7 +16,7 @@ const AboutPage: React.FC = () => {
 
         <section className="engram-hero engram-container">
           <div className="engram-hero-badge about-hero-badge-wrap">
-            <span className="badge-text about-hero-badge-text">ABOUT ENSAR SOLUTIONS · ENXPLANT DIVISION</span>
+            <span className="badge-text about-hero-badge-text">ABOUT ENSAR SOLUTIONS · ENXCO DIVISION</span>
           </div>
           <h1 className="engram-hero-h1">
             <span className="hero-line-mask">
@@ -27,7 +27,7 @@ const AboutPage: React.FC = () => {
             </span>
           </h1>
           <p className="engram-hero-sub hero-fade-up hero-delay-900">
-            enxplant is a division of enSAR Solutions Inc. The industrial intelligence work grew from a real frustration: a practicing I&amp;C engineer who couldn't find the answer he needed fast enough when it mattered.
+            enxco is a division of enSAR Solutions Inc. The industrial intelligence work grew from a real frustration: a practicing I&amp;C engineer who couldn't find the answer he needed fast enough when it mattered.
           </p>
           <p className="engram-hero-body hero-fade-up hero-delay-1100">
             The existing tools required data migration, cloud connectivity, vendor relationships, and IT projects. They produced dashboards nobody used and answers engineers didn't trust. So the software was built from scratch, inside the plant's own network, for the people who actually have to answer the question.
@@ -39,7 +39,7 @@ const AboutPage: React.FC = () => {
       <section className="engram-section engram-container">
         <ScrollAnimation direction="up" delay={0}>
           <span className="eyebrow">Founder</span>
-          <LineReveal as="h2" className="engram-section-h2" text="The Engineer Behind enxplant" />
+          <LineReveal as="h2" className="engram-section-h2" text="The Engineer Behind enxco" />
         </ScrollAnimation>
 
         <div className="engram-two-col about-two-col">

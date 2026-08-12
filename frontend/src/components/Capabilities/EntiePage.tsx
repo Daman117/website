@@ -27,7 +27,7 @@ const existingSolutions = [
   {
     solution: 'Custom connector for each pair',
     limitation: 'One connector for every pair of systems — cost and things that can break grow with each system added',
-    fix: 'One adapter per system, reused by every enxplant product — the count stops growing',
+    fix: 'One adapter per system, reused by every enxco product — the count stops growing',
   },
   {
     solution: 'General-purpose middleware',
@@ -78,12 +78,12 @@ const capabilities = [
     Icon: Cpu,
     title: 'AI-Ready via MCP',
     subtitle: 'The Same Data, Now Queryable by AI',
-    desc: "enTIE exposes connected plant data through an MCP server, so the intelligence built in enxplant doesn't stay trapped in enxplant.",
+    desc: "enTIE exposes connected plant data through an MCP server, so the intelligence built in enxco doesn't stay trapped in enxco.",
     features: [
       'MCP server for Claude Desktop and other AI tools',
       'No separate export pipeline to keep in sync',
       'Read-only exposure protects systems of record',
-      'Same adapters power enxplant and AI tooling',
+      'Same adapters power enxco and AI tooling',
     ],
     color: '#A78BFA',
   },
@@ -93,7 +93,7 @@ const steps = [
   { icon: PlugZap, title: 'Pick a System', desc: 'Start with the system that hurts most — historian is the common starting point.' },
   { icon: Workflow, title: 'Turn On the Adapter', desc: 'An open protocol adapter connects read-only, alongside the DCS/SCADA already running.' },
   { icon: ShieldCheck, title: 'Encrypt & Audit', desc: 'Data moves encrypted in transit; every connection is logged per adapter.' },
-  { icon: Boxes, title: 'Expose to enxplant', desc: 'Connected data becomes available to enVIEW, enGENIE, enABLE and the rest of enxplant.' },
+  { icon: Boxes, title: 'Expose to enxco', desc: 'Connected data becomes available to enVIEW, enGENIE, enABLE and the rest of enxco.' },
   { icon: Cpu, title: 'Expose to AI Tools', desc: 'The same data reaches Claude Desktop and other AI tools through the MCP server.' },
   { icon: FileCheck, title: 'Add the Next Adapter', desc: "MES and ERP connect the same way, whenever you're ready — no forced timeline." },
 ];
@@ -124,7 +124,7 @@ const outcomes = [
   'AI tools query live plant data via MCP',
   'Adopt one system at a time',
   'No proprietary lock-in on either side',
-  "Intelligence built in enxplant doesn't stay trapped in enxplant",
+  "Intelligence built in enxco doesn't stay trapped in enxco",
   'Lower total cost of ownership than a forklift integration project',
 ];
 
@@ -164,7 +164,7 @@ const EntiePage: React.FC<EntiePageProps> = ({ onOpenContact }) => {
         badgeText="CONNECTED INTELLIGENCE"
         titleLine1="One Connected Layer for"
         titleLine2="Every System You Run"
-        subText="enTIE connects enxplant capabilities to the plant systems you already run — DCS, historian, MES, ERP — and exposes the same data to Claude Desktop and other AI tools via an MCP server."
+        subText="enTIE connects enxco capabilities to the plant systems you already run — DCS, historian, MES, ERP — and exposes the same data to Claude Desktop and other AI tools via an MCP server."
         bodyText="Built as an integration layer, not a migration project: open protocol adapters sit alongside your installed base, so adoption is incremental, standards-aligned, and reversible at every step."
         chips={heroChips}
         ctaLabel="Join the Waitlist"

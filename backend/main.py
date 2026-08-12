@@ -1,5 +1,5 @@
 """
-enxplant contact-form backend.
+enxco contact-form backend.
 
 A small FastAPI service that receives contact-form submissions from the
 website and emails them to the team via SMTP.
@@ -47,7 +47,7 @@ CONTACT_TO = os.getenv("CONTACT_TO", "")
 LOGO_PATH = os.path.join(
     os.path.dirname(__file__), "..", "frontend", "public", "logo-mark.png"
 )
-LOGO_CID = "enxplant-logo"
+LOGO_CID = "enxco-logo"
 # Comma-separated list of allowed browser origins (the website URLs):
 CORS_ORIGINS = [
     o.strip()
@@ -76,7 +76,7 @@ INTEREST_LABELS = {
     "other": "General Inquiry",
 }
 
-app = FastAPI(title="enxplant Contact API", version="1.0.0")
+app = FastAPI(title="enxco Contact API", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -187,12 +187,12 @@ def submit_contact(form: ContactForm, request: Request):
     interest_label = INTEREST_LABELS.get(form.interest, form.interest)
 
     msg = EmailMessage()
-    msg["Subject"] = f"enxplant enquiry — {interest_label}"
-    msg["From"] = formataddr(("enxplant Website", SMTP_FROM))
+    msg["Subject"] = f"enxco enquiry — {interest_label}"
+    msg["From"] = formataddr(("enxco Website", SMTP_FROM))
     msg["To"] = CONTACT_TO
     msg["Reply-To"] = form.email
     msg.set_content(
-        "New contact form submission from the enxplant website:\n\n"
+        "New contact form submission from the enxco website:\n\n"
         f"Name:     {form.name}\n"
         f"Email:    {form.email}\n"
         f"Company:  {form.company}\n"
@@ -207,17 +207,17 @@ def submit_contact(form: ContactForm, request: Request):
     _attach_logo(msg)
 
     ack = EmailMessage()
-    ack["Subject"] = "Thanks for reaching out to enxplant"
-    ack["From"] = formataddr(("enxplant", SMTP_FROM))
+    ack["Subject"] = "Thanks for reaching out to enxco"
+    ack["From"] = formataddr(("enxco", SMTP_FROM))
     ack["To"] = form.email
     ack.set_content(
         f"Hi {form.name},\n\n"
-        "Thanks for contacting enxplant! We've received your message and our team "
+        "Thanks for contacting enxco! We've received your message and our team "
         "will get back to you within 24 hours.\n\n"
         "For your records, here's what you sent us:\n\n"
         f"Interest: {interest_label}\n"
         f"Message:\n{form.message}\n\n"
-        "Best regards,\nThe enxplant Team"
+        "Best regards,\nThe enxco Team"
     )
     ack.add_alternative(_thank_you_html(form.name, interest_label, form.message), subtype="html")
     _attach_logo(ack)
@@ -258,7 +258,7 @@ def _thank_you_html(name: str, interest_label: str, message: str) -> str:
               <td style="padding-right:14px;vertical-align:middle;">
                 <table cellpadding="0" cellspacing="0" style="width:48px;height:48px;background:#ffffff;border-radius:50%;">
                   <tr><td align="center" valign="middle" style="width:48px;height:48px;">
-                    <img src="cid:{LOGO_CID}" alt="enxplant" width="30" height="30" style="display:block;">
+                    <img src="cid:{LOGO_CID}" alt="enxco" width="30" height="30" style="display:block;">
                   </td></tr>
                 </table>
               </td>
@@ -272,7 +272,7 @@ def _thank_you_html(name: str, interest_label: str, message: str) -> str:
           <td style="padding:40px;">
             <p style="margin:0 0 16px;font-size:16px;color:#475569;line-height:24px;">Hi {name},</p>
             <p style="margin:0 0 24px;font-size:16px;color:#475569;line-height:24px;">
-              Thanks for contacting <strong style="color:#1a1c21;">enxplant</strong>. We've received your message
+              Thanks for contacting <strong style="color:#1a1c21;">enxco</strong>. We've received your message
               and our team will get back to you <strong>within 24 hours</strong>.
             </p>
             <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;">
@@ -284,7 +284,7 @@ def _thank_you_html(name: str, interest_label: str, message: str) -> str:
               </td></tr>
             </table>
             <p style="margin:24px 0 0;font-size:15px;color:#475569;line-height:22px;">
-              Best regards,<br><strong style="color:#1a1c21;">The enxplant Team</strong>
+              Best regards,<br><strong style="color:#1a1c21;">The enxco Team</strong>
             </p>
           </td>
         </tr>
@@ -319,7 +319,7 @@ def _enquiry_html(name: str, email: str, company: str, interest_label: str, mess
               <td style="padding-right:14px;vertical-align:middle;">
                 <table cellpadding="0" cellspacing="0" style="width:48px;height:48px;background:#ffffff;border-radius:50%;">
                   <tr><td align="center" valign="middle" style="width:48px;height:48px;">
-                    <img src="cid:{LOGO_CID}" alt="enxplant" width="30" height="30" style="display:block;">
+                    <img src="cid:{LOGO_CID}" alt="enxco" width="30" height="30" style="display:block;">
                   </td></tr>
                 </table>
               </td>
@@ -332,7 +332,7 @@ def _enquiry_html(name: str, email: str, company: str, interest_label: str, mess
         <tr>
           <td style="padding:40px;">
             <p style="margin:0 0 24px;font-size:16px;color:#475569;line-height:24px;">
-              You have a new enquiry from the <strong style="color:#1a1c21;">enxplant</strong> website.
+              You have a new enquiry from the <strong style="color:#1a1c21;">enxco</strong> website.
             </p>
             <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;">
               <tr><td style="padding:20px;">

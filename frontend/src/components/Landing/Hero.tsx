@@ -60,7 +60,7 @@ const Hero: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenConta
           ))}
         </div>
         <div className="hero-fade-up landing-hero-actions u-flex u-flex-wrap hero-delay-1500">
-          <button className="cta-solid button-text btn-primary" onClick={() => onOpenContact('Explore enxplant')}>Explore enxplant →</button>
+          <button className="cta-solid button-text btn-primary" onClick={() => onOpenContact('Explore enxco')}>Explore enxco →</button>
           <button className="button-text btn-outline" onClick={() => onOpenContact('Request a Pilot')}>Request a Pilot</button>
         </div>
       </div>
@@ -87,7 +87,7 @@ const Hero: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenConta
           ))}
         </div>
         <div className="hero-fade-up landing-hero-actions u-flex u-flex-wrap hero-delay-mobile-4">
-          <button className="cta-solid button-text btn-primary" onClick={() => onOpenContact('Explore enxplant')}>Explore enxplant →</button>
+          <button className="cta-solid button-text btn-primary" onClick={() => onOpenContact('Explore enxco')}>Explore enxco →</button>
           <button className="button-text btn-outline" onClick={() => onOpenContact('Request a Pilot')}>Request a Pilot</button>
         </div>
       </div>

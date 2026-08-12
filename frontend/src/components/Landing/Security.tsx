@@ -16,7 +16,7 @@ const Security: React.FC = () => (
       <LineReveal
         as="p"
         className="section-lead"
-        text="enxplant is built to run where the network never leaves the fence line. No cloud, no external calls, no vendor inside your perimeter."
+        text="enxco is built to run where the network never leaves the fence line. No cloud, no external calls, no vendor inside your perimeter."
       />
 
       <ScrollStagger className="grid-3-compact sec-grid" step={90}>

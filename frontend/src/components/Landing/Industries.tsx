@@ -15,7 +15,7 @@ const Industries: React.FC = () => (
       <LineReveal
         as="p"
         className="section-lead"
-        text="enxplant works wherever the plant floor lives in drawings, documents and live process data. Find your industry."
+        text="enxco works wherever the plant floor lives in drawings, documents and live process data. Find your industry."
       />
 
       <ScrollStagger className="ind-grid" step={70}>

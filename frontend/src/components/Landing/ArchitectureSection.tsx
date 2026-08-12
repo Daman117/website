@@ -35,7 +35,7 @@ export const ArchitectureSection: React.FC = () => (
           <div className="arch-platform-block">
             <div className="arch-platform-inner">
               <div className="arch-platform-logo">
-                <span className="arch-platform-en">en</span><span className="arch-platform-x">X</span>
+                <span className="arch-platform-en">en</span><span className="arch-platform-x">xco</span>
               </div>
               <div className="arch-platform-tagline">Local-first industrial intelligence platform</div>
               <div className="arch-platform-badges">

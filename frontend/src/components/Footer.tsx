@@ -53,7 +53,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenContact }) => (
           <div className="u-flex-center nav-mark">
             <Logo />
           </div>
-          <div className="nav-word"><span>en</span><span>xplant</span></div>
+          <div className="nav-word"><span>en</span><span>xco</span></div>
         </div>
         <LineReveal
           as="p"

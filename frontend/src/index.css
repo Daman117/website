@@ -3277,13 +3277,20 @@ button.foot-link {
   margin-bottom: 6px;
 }
 
+/* Geometry box only — the visible line is the animated SVG path inside.
+   A `background` gradient here too drew a second, static line beside it. */
 .how-connector {
   position: absolute;
   right: -22px;
   top: 50%;
   width: 22px;
   height: var(--line-thickness);
-  background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+.how-connector svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 @media (max-width: 1023px) {

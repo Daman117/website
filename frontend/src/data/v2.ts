@@ -14,7 +14,7 @@ export const heroChips: string[] = [
   'Runs Inside Your Network',
 ];
 
-/* §2 — "See enxplant in Action" product demonstrations */
+/* §2 — "See enxco in Action" product demonstrations */
 export interface DemoCard {
   id: string;
   product: string;
@@ -223,7 +223,7 @@ export const securityPrinciples: { title: string; desc: string; icon: string; im
   { title: 'Air-gapped deployment', desc: 'Runs with no internet connection at all. Built for sites where the network never leaves the fence line.', icon: 'WifiOff', img: '/air-gapped-deployment.webp' },
   { title: 'Local LLMs only', desc: 'Every model runs inside your network via Ollama. No prompts, documents or tags ever sent to a third party.', icon: 'Cpu', img: '/local-llms-only.webp' },
   { title: 'No external API dependency', desc: 'No cloud service to call, expire, rate-limit or breach. Your plant keeps working regardless of the outside world.', icon: 'Server', img: '/no-external-api-dependency.webp' },
-  { title: 'No cloud requirement', desc: 'There is no enxplant cloud. Nothing to opt out of, because nothing leaves the building by default.', icon: 'Lock', img: '/no-cloud-requirement.webp' },
+  { title: 'No cloud requirement', desc: 'There is no enxco cloud. Nothing to opt out of, because nothing leaves the building by default.', icon: 'Lock', img: '/no-cloud-requirement.webp' },
   { title: 'Full customer ownership', desc: 'Your data stays yours, in open formats you can read without our software. No lock-in on either side.', icon: 'ShieldCheck', img: '/full-customer-ownership.webp' },
   { title: 'On-premises operation', desc: 'Deploys to a single VM or Mac inside your perimeter. No vendor inside your security boundary.', icon: 'HardDrive', img: '/on-premises-operation.webp' },
 ];
@@ -277,7 +277,7 @@ export const resources: Resource[] = [
   { type: 'Technical Note', title: 'P&ID Extraction Methodology', desc: 'How enSTUDIO reaches 99.3% page accuracy across legacy and vector drawings.', icon: 'FileCode', img: '/p-and-id-extraction.webp' },
   { type: 'Product Brief', title: 'enVIEW SCADA Overview', desc: 'Three synchronized views, ISA-18.2 alarms and a 5-year historian with no database server.', icon: 'MonitorPlay', img: '/enview-scada-overview.webp' },
   { type: 'Architecture Guide', title: 'One Platform, Multiple Sources', desc: 'How enSTUDIO, enGRAM, enGENIE, enVIEW, enABLE and enTIE connect end to end.', icon: 'Workflow', img: '/one-platform-multiple-sources.webp' },
-  { type: 'Deployment Guide', title: 'Air-Gapped Installation', desc: 'Standing up enxplant on a single on-premises VM with local LLMs and zero cloud calls.', icon: 'Server', img: '/air-gapped-installation.webp' },
+  { type: 'Deployment Guide', title: 'Air-Gapped Installation', desc: 'Standing up enxco on a single on-premises VM with local LLMs and zero cloud calls.', icon: 'Server', img: '/air-gapped-installation.webp' },
   { type: 'Product Brief', title: 'enGENIE Instrument Selection', desc: 'Cited instrument selection grounded in Lipták, ISA, ISO and ASME.', icon: 'BookOpen', img: '/engenie-vault.webp' },
 ];
 
@@ -314,16 +314,16 @@ export const productExtras: Record<string, ProductExtra> = {
     flow: {
       inputs: ['DCS', 'Historian', 'MES', 'ERP'],
       processing: ['Open protocol adapters', 'Encrypted transit', 'MCP server exposure', 'Bi-directional mapping'],
-      outputs: ['enxplant ↔ existing systems', 'Plant data to Claude Desktop & AI tools', 'No proprietary lock-in'],
+      outputs: ['enxco ↔ existing systems', 'Plant data to Claude Desktop & AI tools', 'No proprietary lock-in'],
     },
     useCases: [
-      { role: 'Engineering', text: 'Reuse enxplant intelligence inside the systems you already run.' },
-      { role: 'Operations', text: 'Surface enxplant answers without leaving the control room HMI.' },
-      { role: 'Maintenance', text: 'Connect work-order and asset data from MES/ERP into enxplant context.' },
+      { role: 'Engineering', text: 'Reuse enxco intelligence inside the systems you already run.' },
+      { role: 'Operations', text: 'Surface enxco answers without leaving the control room HMI.' },
+      { role: 'Maintenance', text: 'Connect work-order and asset data from MES/ERP into enxco context.' },
       { role: 'Management', text: 'Connect one system at a time across whatever mix you already run — lower cost, results sooner, nothing torn out.' },
     ],
     outcomes: [
-      'Intelligence built in enxplant does not stay trapped in enxplant',
+      'Intelligence built in enxco does not stay trapped in enxco',
       'AI tools query live plant data via MCP',
       'No lock-in on either side',
       'Standards-compliant adapters — deployed one system at a time',

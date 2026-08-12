@@ -298,7 +298,7 @@ export const CAPS: Cap[] = [
   tag:'One connected layer. Zero lock-in. Every system you already run.',color:'#60A5FA',
   status:'Roadmap',statusBg:'#1C1030',statusBorder:'#2C1C48',statusText:'#A78BFA',
   openTie:true,
-  body:`enTIE connects enxplant capabilities to the plant systems you already run — DCS, historian, MES, ERP. It also exposes plant data via MCP server for Claude Desktop and other AI tools. The intelligence you build in enxplant doesn't stay in enxplant.`,
+  body:`enTIE connects enxco capabilities to the plant systems you already run — DCS, historian, MES, ERP. It also exposes plant data via MCP server for Claude Desktop and other AI tools. The intelligence you build in enxco doesn't stay in enxco.`,
   body2:`Built as an integration layer, not a migration project — open protocol adapters sit alongside your installed base, so adoption is incremental, standards-compliant, and reversible at every step.`,
   specs:[
     {l:'Protocol',v:'Open'},{l:'MCP',v:'Yes'},
@@ -307,10 +307,10 @@ export const CAPS: Cap[] = [
   ],
   tabs:[
     {label:'The Layer',content:`
-      <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">One connectivity layer between enxplant and everything you already run.</p>
+      <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">One connectivity layer between enxco and everything you already run.</p>
       <p style="font-size:12px;color:var(--t4);line-height:1.7;margin-bottom:12px">enTIE sits alongside your installed base — not underneath it. Each connected system gets its own adapter; enTIE doesn't become a new system of record, so nothing you already trust has to be replaced.</p>
       <div class="matrix-eq">
-        enxplant  ⇄  enTIE  ⇄  DCS · Historian · MES · ERP<br/><br/>
+        enxco  ⇄  enTIE  ⇄  DCS · Historian · MES · ERP<br/><br/>
         Open protocol adapters — no proprietary formats<br/>
         MCP server exposes the same data to Claude Desktop &amp; AI tools
       </div>`},
@@ -322,7 +322,7 @@ export const CAPS: Cap[] = [
         <div style="padding:8px;background:var(--bg);border:1px solid var(--border);border-radius:4px"><p style="font-size:10px;color:#60A5FA;font-weight:600;margin-bottom:2px">MES</p><p style="font-size:9px;color:var(--t5)">Work-order &amp; batch context</p></div>
         <div style="padding:8px;background:var(--bg);border:1px solid var(--border);border-radius:4px"><p style="font-size:10px;color:#60A5FA;font-weight:600;margin-bottom:2px">ERP</p><p style="font-size:9px;color:var(--t5)">Asset &amp; procurement data</p></div>
         <div style="padding:8px;background:var(--bg);border:1px solid var(--border);border-radius:4px"><p style="font-size:10px;color:#60A5FA;font-weight:600;margin-bottom:2px">Claude Desktop</p><p style="font-size:9px;color:var(--t5)">MCP server — AI tools query live plant data</p></div>
-        <div style="padding:8px;background:var(--bg);border:1px solid var(--border);border-radius:4px"><p style="font-size:10px;color:#60A5FA;font-weight:600;margin-bottom:2px">enxplant</p><p style="font-size:9px;color:var(--t5)">enVIEW · enGENIE · enABLE · enSTUDIO · enGRAM</p></div>
+        <div style="padding:8px;background:var(--bg);border:1px solid var(--border);border-radius:4px"><p style="font-size:10px;color:#60A5FA;font-weight:600;margin-bottom:2px">enxco</p><p style="font-size:9px;color:var(--t5)">enVIEW · enGENIE · enABLE · enSTUDIO · enGRAM</p></div>
       </div>`},
     {label:'Safe · Secure · Scalable',content:`
       <p style="font-size:13px;color:var(--t3);font-weight:500;margin-bottom:8px">Defense in depth, built in — not bolted on after.</p>
