@@ -26,7 +26,7 @@
  */
 
 /** The design canvas every coordinate in this file is expressed in. */
-export const STAGE = { w: 1660, h: 880 } as const;
+const STAGE = { w: 1660, h: 880 } as const;
 
 /**
  * Design-canvas px → CSS length. `--u` is one design pixel (see
@@ -36,14 +36,14 @@ export const STAGE = { w: 1660, h: 880 } as const;
 export const du = (n: number) => `calc(${n} * var(--u))`;
 
 /** Centre of the composition — plant, hub and platform all share it. */
-export const CORE_X = 1005;
+const CORE_X = 1005;
 
 /* ── Central system geometry ─────────────────────────────────────────────
    Exported because HeroConnections anchors onto the same shapes that
    HeroCentralSystem draws; a single source stops the two drifting apart. */
-export const CYLINDER = { cx: CORE_X, rx: 245, ry: 33, topY: 243, baseY: 447 } as const;
-export const HUB = { cx: CORE_X, rx: 83, ry: 18, topY: 443, baseY: 537 } as const;
-export const PLATFORM = {
+const CYLINDER = { cx: CORE_X, rx: 245, ry: 33, topY: 243, baseY: 447 } as const;
+const HUB = { cx: CORE_X, rx: 83, ry: 18, topY: 443, baseY: 537 } as const;
+const PLATFORM = {
   /* The two discs need a clear size gap. When their radii are close they
      merge into one black slab instead of reading as a layered platform. */
   upper: { cx: CORE_X, cy: 546, rx: 196, ry: 33, wall: 18 },
@@ -59,15 +59,9 @@ export const PLATFORM = {
  *  lines land on the real ellipse rather than a guessed horizontal, and on
  *  the near arc specifically so they read as descending into the opening
  *  rather than stopping short behind it. */
-export function cylinderRimY(x: number): number {
+function cylinderRimY(x: number): number {
   const t = (x - CYLINDER.cx) / CYLINDER.rx;
   return CYLINDER.topY + CYLINDER.ry * Math.sqrt(Math.max(0, 1 - t * t));
-}
-
-/** y where a structure of centre-x `x` meets the cylinder floor ellipse. */
-export function floorY(x: number): number {
-  const t = (x - CYLINDER.cx) / CYLINDER.rx;
-  return CYLINDER.baseY + 27 * Math.sqrt(Math.max(0, 1 - t * t));
 }
 
 /* ── Source documents (top row) ──────────────────────────────────────── */
@@ -90,9 +84,9 @@ export interface HeroSource {
   entryX: number;
 }
 
-export const SOURCE_CARD = { w: 74, h: 72, y: 105, labelY: 74 } as const;
+const SOURCE_CARD = { w: 74, h: 72, y: 105, labelY: 74 } as const;
 
-export const heroSources: HeroSource[] = [
+const heroSources: HeroSource[] = [
   { id: 'pids',       label: 'P&IDs',      glyph: 'pid',       cx: 752,  entryX: 838 },
   { id: 'datasheets', label: 'Datasheets', glyph: 'datasheet', cx: 858,  entryX: 905 },
   { id: 'procedures', label: 'Procedures', glyph: 'procedure', cx: 964,  entryX: 972 },
@@ -135,9 +129,9 @@ export interface HeroProduct {
   elbowX?: number;
 }
 
-export const PRODUCT_CARD = { x: 1394, w: 232, h: 100, elbowX: 1324 } as const;
+const PRODUCT_CARD = { x: 1394, w: 232, h: 100, elbowX: 1324 } as const;
 
-export const heroProducts: HeroProduct[] = [
+const heroProducts: HeroProduct[] = [
   {
     id: 'engram',
     name: 'enGRAM',
@@ -194,7 +188,7 @@ export const accent = (p: HeroProduct, a = 1) =>
   a === 1 ? `rgb(${p.accentRgb})` : `rgb(${p.accentRgb} / ${a})`;
 
 /** Vertical centre of a product card — the height its connector runs into. */
-export const productCardCy = (p: HeroProduct) => p.y + PRODUCT_CARD.h / 2;
+const productCardCy = (p: HeroProduct) => p.y + PRODUCT_CARD.h / 2;
 
 /* ── Connected systems (bottom row) ──────────────────────────────────── */
 
@@ -206,9 +200,9 @@ export interface HeroSystem {
   cx: number;
 }
 
-export const SYSTEM_CARD = { w: 88, h: 103, y: 680, nodeY: 668 } as const;
+const SYSTEM_CARD = { w: 88, h: 103, y: 680, nodeY: 668 } as const;
 
-export const heroSystems: HeroSystem[] = [
+const heroSystems: HeroSystem[] = [
   { id: 'dcs',       label: 'DCS',           cx: 784 },
   { id: 'historian', label: 'Historian',     cx: 893 },
   { id: 'mes',       label: 'MES',           cx: 1003 },
@@ -262,9 +256,9 @@ export const phaseOf = {
    tracks its line exactly rather than approximately. */
 
 /** Where a source card's line leaves the card — just below its bottom edge. */
-export const SOURCE_EXIT_Y = SOURCE_CARD.y + SOURCE_CARD.h + 6;
+const SOURCE_EXIT_Y = SOURCE_CARD.y + SOURCE_CARD.h + 6;
 
-export function sourcePath(s: HeroSource): string {
+function sourcePath(s: HeroSource): string {
   const ey = cylinderRimY(s.entryX);
   const lift = (ey - SOURCE_EXIT_Y) * 0.45;
   return `M${s.cx} ${SOURCE_EXIT_Y}C${s.cx} ${(SOURCE_EXIT_Y + lift).toFixed(1)} ${s.entryX} ${(
@@ -272,12 +266,12 @@ export function sourcePath(s: HeroSource): string {
   ).toFixed(1)} ${s.entryX} ${ey.toFixed(1)}`;
 }
 
-export function productPath(p: HeroProduct): string {
+function productPath(p: HeroProduct): string {
   const cy = productCardCy(p);
   return `M${p.anchor.x} ${p.anchor.y}L${p.elbowX ?? PRODUCT_CARD.elbowX} ${cy}L${PRODUCT_CARD.x} ${cy}`;
 }
 
-export function systemPath(s: HeroSystem): string {
+function systemPath(s: HeroSystem): string {
   return `M${PLATFORM.emitter.x} ${PLATFORM.emitter.y}L${s.cx} ${SYSTEM_CARD.nodeY}`;
 }
 
@@ -288,7 +282,7 @@ export function systemPath(s: HeroSystem): string {
  * orbit has to follow the ellipse itself. The start angle is what spaces
  * multiple orbiters apart, avoiding a negative SMIL `begin`.
  */
-export function ellipsePath(cx: number, cy: number, rx: number, ry: number, startDeg = 0): string {
+function ellipsePath(cx: number, cy: number, rx: number, ry: number, startDeg = 0): string {
   const a = (startDeg * Math.PI) / 180;
   const sx = cx + rx * Math.cos(a);
   const sy = cy + ry * Math.sin(a);
@@ -323,36 +317,53 @@ export interface PlantStructure {
   w: number;
   /** top-y */
   top: number;
-  kind: 'column' | 'vessel';
+  /**
+   * column  tall thin tower with banding
+   * vessel  rounded-corner process vessel
+   * stack   tapered flare stack, narrower at the top
+   * drum    horizontal drum lying across its supports
+   * sphere  spherical storage tank on legs
+   */
+  kind: 'column' | 'vessel' | 'stack' | 'drum' | 'sphere';
   /** thin mast + tip above the cap, as on the reference's tall towers */
   mast?: boolean;
+  /** sits on a low skid platform */
+  skid?: boolean;
 }
 
-/* Tall and narrow, packed close: the reference reads as a refinery skyline
-   filling the vessel, and a sparser set of wider boxes reads as a bar chart
-   instead. Tops run from just under the cylinder's rim down to mid-height. */
-export const plantStructures: PlantStructure[] = [
-  { x: 798,  w: 16, top: 374, kind: 'column' },
-  { x: 820,  w: 22, top: 340, kind: 'column' },
-  { x: 844,  w: 14, top: 300, kind: 'column', mast: true },
-  { x: 866,  w: 26, top: 352, kind: 'vessel' },
-  { x: 892,  w: 16, top: 286, kind: 'column' },
-  { x: 912,  w: 20, top: 320, kind: 'column' },
-  { x: 934,  w: 14, top: 262, kind: 'column', mast: true },
-  { x: 956,  w: 28, top: 346, kind: 'vessel' },
-  { x: 982,  w: 16, top: 274, kind: 'column' },
-  { x: 1002, w: 14, top: 248, kind: 'column', mast: true },
-  { x: 1020, w: 22, top: 308, kind: 'column' },
-  { x: 1044, w: 16, top: 278, kind: 'column' },
-  { x: 1066, w: 30, top: 350, kind: 'vessel' },
-  { x: 1094, w: 14, top: 268, kind: 'column', mast: true },
-  { x: 1112, w: 20, top: 312, kind: 'column' },
-  { x: 1136, w: 26, top: 344, kind: 'vessel' },
-  { x: 1162, w: 14, top: 292, kind: 'column' },
-  { x: 1182, w: 20, top: 332, kind: 'column' },
-  { x: 1206, w: 16, top: 368, kind: 'column' },
-];
+/* A refinery skyline, not a bar chart: silhouettes vary by kind, height and
+   width so the eye reads distinct process units rather than repeated tubes.
+   The variation lives in this data table, not in extra SVG machinery — the
+   renderer gained three small branches, not hundreds of nodes.
 
+   Back to front: tall towers and stacks hold the centre, vessels break the
+   rhythm, and low drums and spheres sit at the front where the floor ellipse
+   bulges toward the viewer. */
+const plantStructures: PlantStructure[] = [
+  { x: 792,  w: 15, top: 382, kind: 'column' },
+  { x: 814,  w: 24, top: 344, kind: 'vessel', skid: true },
+  { x: 840,  w: 13, top: 296, kind: 'stack',  mast: true },
+  { x: 860,  w: 30, top: 356, kind: 'vessel' },
+  { x: 888,  w: 15, top: 282, kind: 'column' },
+  { x: 908,  w: 19, top: 322, kind: 'column' },
+  { x: 930,  w: 13, top: 256, kind: 'stack',  mast: true },
+  { x: 952,  w: 27, top: 348, kind: 'vessel', skid: true },
+  { x: 978,  w: 15, top: 270, kind: 'column' },
+  { x: 1000, w: 13, top: 244, kind: 'stack',  mast: true },
+  { x: 1018, w: 21, top: 304, kind: 'column' },
+  { x: 1042, w: 15, top: 274, kind: 'column' },
+  { x: 1064, w: 31, top: 352, kind: 'vessel' },
+  { x: 1092, w: 13, top: 264, kind: 'stack',  mast: true },
+  { x: 1110, w: 19, top: 310, kind: 'column' },
+  { x: 1134, w: 26, top: 346, kind: 'vessel', skid: true },
+  { x: 1160, w: 14, top: 288, kind: 'column' },
+  { x: 1182, w: 20, top: 330, kind: 'column' },
+  { x: 1208, w: 15, top: 376, kind: 'column' },
+  { x: 856,  w: 46, top: 424, kind: 'drum' },
+  { x: 934,  w: 30, top: 418, kind: 'sphere' },
+  { x: 1076, w: 30, top: 418, kind: 'sphere' },
+  { x: 1150, w: 44, top: 426, kind: 'drum' },
+];
 /* ══ LAYOUTS ═════════════════════════════════════════════════════════════
    Two coordinate systems, not one scaled one.
 
@@ -483,33 +494,33 @@ export const desktopLayout: HeroLayout = {
 
 /* ── Compact (below 1280px) ──────────────────────────────────────────── */
 
-const C_STAGE = { w: 340, h: 916 };
+const C_STAGE = { w: 340, h: 748 };
 const C_CX = 170;
-const C_CYL: CylinderGeom = { cx: C_CX, rx: 126, ry: 20, topY: 176, baseY: 268 };
-const C_HUB = { cx: C_CX, rx: 44, ry: 10, topY: 264, baseY: 310 };
+const C_CYL: CylinderGeom = { cx: C_CX, rx: 128, ry: 20, topY: 142, baseY: 220 };
+const C_HUB = { cx: C_CX, rx: 45, ry: 10, topY: 216, baseY: 252 };
 const C_PLATFORM = {
-  upper: { cx: C_CX, cy: 316, rx: 104, ry: 18, wall: 10 },
-  lower: { cx: C_CX, cy: 342, rx: 132, ry: 23, wall: 13 },
-  ring: { cx: C_CX, cy: 316, rx: 78, ry: 13 },
-  emitter: { x: C_CX, y: 358 },
+  upper: { cx: C_CX, cy: 258, rx: 106, ry: 18, wall: 9 },
+  lower: { cx: C_CX, cy: 282, rx: 134, ry: 23, wall: 12 },
+  ring: { cx: C_CX, cy: 258, rx: 79, ry: 13 },
+  emitter: { x: C_CX, y: 298 },
 };
 
 /* Sources: 3 x 2 grid above the core, label inside to save vertical space. */
-const C_SOURCE_CARD = { w: 104, h: 62, y: 0, exitY: 0 };
+const C_SOURCE_CARD = { w: 106, h: 50, y: 0, exitY: 0 };
 const C_SOURCE_X = [56, 170, 284];
 const C_SOURCES = heroSources.map((s, i) => ({
   ...s,
   cx: C_SOURCE_X[i % 3],
-  y: i < 3 ? 0 : 70,
+  y: i < 3 ? 0 : 56,
   // Inner columns feed the rim closer to centre; outer ones stay wide.
   entryX: C_CX + (C_SOURCE_X[i % 3] - C_CX) * 0.62,
 }));
 
 /* Products: full-width rows hanging off a vertical trunk on the left. */
 const C_TRUNK_X = 14;
-const C_PRODUCT_CARD = { x: 30, w: 306, h: 62 };
-const C_PRODUCT_Y0 = 396;
-const C_PRODUCT_STEP = 70;
+const C_PRODUCT_CARD = { x: 30, w: 306, h: 54 };
+const C_PRODUCT_Y0 = 330;
+const C_PRODUCT_STEP = 60;
 const C_PRODUCTS = heroProducts.map((p, i) => ({
   ...p,
   y: C_PRODUCT_Y0 + i * C_PRODUCT_STEP,
@@ -517,7 +528,7 @@ const C_PRODUCTS = heroProducts.map((p, i) => ({
 }));
 
 const C_TRUNK_END = C_PRODUCT_Y0 + 5 * C_PRODUCT_STEP + C_PRODUCT_CARD.h / 2;
-const C_SYSTEM_CARD = { w: 62, h: 54, y: 850, nodeY: 838 };
+const C_SYSTEM_CARD = { w: 62, h: 50, y: 690, nodeY: 678 };
 const C_SYSTEM_X = [36, 103, 170, 237, 304];
 const C_SYSTEMS = heroSystems.map((s, i) => ({ ...s, cx: C_SYSTEM_X[i], y: C_SYSTEM_CARD.y }));
 

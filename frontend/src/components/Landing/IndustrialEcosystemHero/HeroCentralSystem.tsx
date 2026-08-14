@@ -22,6 +22,26 @@ const HeroCentralSystem: React.FC<{ layout: HeroLayout }> = ({ layout }) => {
   const { cx, rx, ry, topY, baseY } = cylinder;
   const floorY = (x: number) => seatY(cylinder, floorSpread, x);
 
+  /* ── Turntable footprint ──────────────────────────────────────────────
+     The authored plant is a skyline: units spread left-to-right across the
+     front. To revolve, they need to sit on a DISC instead, so each unit is
+     re-placed in polar coordinates while keeping its authored width, height
+     and kind — the silhouette variety is preserved, only the footprint
+     changes.
+
+     Sunflower placement: the golden angle (137.508 deg) spreads units evenly
+     around the pad with no visible rings or spokes, and sqrt(i/N) keeps the
+     area density uniform rather than crowding the centre. */
+  const N = plant.length;
+  const rMax = rx * 0.84;
+  const squash = ry / rx;
+  const units = plant.map((st, i) => {
+    const h = floorY(st.x) - st.top; // authored height, kept exactly
+    const orbit = rMax * Math.sqrt((i + 0.5) / N);
+    const theta = (i * 137.508) % 360;
+    return { st, h, orbit, theta };
+  });
+
   /* Floor rings on the cylinder's base plane — concentric ellipses keep the
      cylinder's own rx:ry ratio so they read as one flat surface. */
   const FLOOR_RINGS = [1, 0.76, 0.52, 0.29].map((f) => ({ rx: rx * f, ry: ry * f }));
@@ -124,33 +144,136 @@ const HeroCentralSystem: React.FC<{ layout: HeroLayout }> = ({ layout }) => {
     </g>
 
     {/* ── Plant structures ─────────────────────────────────────────── */}
-    <g>
-      {plant.map((s) => {
-        const base = floorY(s.x);
-        const left = s.x - s.w / 2;
-        const capRy = s.w / 5;
-        const corner = s.kind === 'vessel' ? s.w / 3 : 1.5;
-        const mast = Math.max(9, 24 * (rx / 245));
-        const bands: number[] = [];
+    <g transform={`translate(${cx} ${baseY})`}>
+      {units.map(({ st, h, orbit, theta }) => {
+        const left = -st.w / 2;
+        const half = st.w / 2;
+        const base = 0;
+        const top = -h;
+        // --rx/--ry are this unit's orbit, pre-squashed to the floor ellipse;
+        // the negative delay is its starting angle on the pad.
+        const orbitStyle = {
+          '--rx': `${orbit.toFixed(1)}px`,
+          '--ry': `${(orbit * squash).toFixed(2)}px`,
+          '--pd': `${(-(theta / 360) * 80).toFixed(2)}s`,
+        } as React.CSSProperties;
+
+        /* Horizontal drum: a lying cylinder on two short legs. */
+        if (st.kind === 'drum') {
+          const h = base - top;
+          return (
+            <g key={`${0}-d`}>
+              <rect
+                x={left}
+                y={top}
+                width={st.w}
+                height={h}
+                rx={h / 2}
+                fill="url(#ieh-tower)"
+                stroke="#60a5fa"
+                strokeOpacity="0.5"
+                strokeWidth="1"
+              />
+              <ellipse
+                cx={left + h / 2}
+                cy={top + h / 2}
+                rx={h / 2.6}
+                ry={h / 2.2}
+                fill="none"
+                stroke="#7dd3fc"
+                strokeOpacity="0.45"
+                strokeWidth="0.9"
+              />
+              <g stroke="#7dd3fc" strokeOpacity="0.35" strokeWidth="0.9">
+                <path d={`M${left + st.w * 0.28} ${base}L${left + st.w * 0.28} ${base + 6}`} />
+                <path d={`M${left + st.w * 0.72} ${base}L${left + st.w * 0.72} ${base + 6}`} />
+              </g>
+            </g>
+          );
+        }
+
+        /* Spherical storage tank on legs. */
+        if (st.kind === 'sphere') {
+          const r = st.w / 2;
+          const cy = top + r;
+          return (
+            <g key={`${0}-s`}>
+              <circle
+                cx={0}
+                cy={cy}
+                r={r}
+                fill="url(#ieh-tower)"
+                stroke="#60a5fa"
+                strokeOpacity="0.55"
+                strokeWidth="1"
+              />
+              <ellipse
+                cx={0}
+                cy={cy}
+                rx={r}
+                ry={r * 0.34}
+                fill="none"
+                stroke="#7dd3fc"
+                strokeOpacity="0.3"
+                strokeWidth="0.8"
+              />
+              <g stroke="#7dd3fc" strokeOpacity="0.35" strokeWidth="0.9">
+                <path d={`M${st.x - r * 0.6} ${cy + r * 0.8}L${st.x - r * 0.72} ${base + 5}`} />
+                <path d={`M${st.x + r * 0.6} ${cy + r * 0.8}L${st.x + r * 0.72} ${base + 5}`} />
+              </g>
+            </g>
+          );
+        }
+
+        /* Vertical units. A stack tapers toward its cap, which is what stops
+           the skyline reading as a row of identical tubes. */
+        const capW = st.kind === 'stack' ? st.w * 0.55 : st.w;
+        const capRy = Math.max(1.4, capW / 5);
+        const corner = st.kind === 'vessel' ? st.w / 3 : 1.2;
         const bandGap = Math.max(9, 18 * (rx / 245));
-        for (let y = s.top + bandGap * 0.9; y < base - 8; y += bandGap) bands.push(y);
+        const bands: number[] = [];
+        for (let y = top + bandGap * 0.9; y < base - 8; y += bandGap) bands.push(y);
+        const mast = Math.max(9, 24 * (rx / 245));
+        const body =
+          st.kind === 'stack'
+            ? `M${st.x - capW / 2} ${top}L${st.x + capW / 2} ${top}L${left + st.w} ${base}L${left} ${base}Z`
+            : null;
+
         return (
-          <g key={s.x}>
-            <rect
-              x={left}
-              y={s.top}
-              width={s.w}
-              height={base - s.top}
-              rx={corner}
-              fill="url(#ieh-tower)"
-              stroke="#60a5fa"
-              strokeOpacity="0.5"
-              strokeWidth="1"
-            />
+          <g key={theta} className="ieh-plant-unit" style={orbitStyle}>
+            {st.skid && (
+              <rect
+                x={left - half * 0.42}
+                y={base - 3}
+                width={st.w * 1.42}
+                height={6}
+                rx={1.5}
+                fill="#0f2a5e"
+                fillOpacity="0.5"
+                stroke="#38bdf8"
+                strokeOpacity="0.35"
+                strokeWidth="0.8"
+              />
+            )}
+            {body ? (
+              <path d={body} fill="url(#ieh-tower)" stroke="#60a5fa" strokeOpacity="0.5" strokeWidth="1" />
+            ) : (
+              <rect
+                x={left}
+                y={top}
+                width={st.w}
+                height={base - top}
+                rx={corner}
+                fill="url(#ieh-tower)"
+                stroke="#60a5fa"
+                strokeOpacity="0.5"
+                strokeWidth="1"
+              />
+            )}
             <ellipse
-              cx={s.x}
-              cy={s.top}
-              rx={s.w / 2}
+              cx={0}
+              cy={top}
+              rx={capW / 2}
               ry={capRy}
               fill="#122d6b"
               fillOpacity="0.5"
@@ -160,13 +283,13 @@ const HeroCentralSystem: React.FC<{ layout: HeroLayout }> = ({ layout }) => {
             />
             <g stroke="#7dd3fc" strokeOpacity="0.42" strokeWidth="0.9">
               {bands.map((y) => (
-                <path key={y} d={`M${left + 1.5} ${y}L${left + s.w - 1.5} ${y}`} />
+                <path key={y} d={`M${left + 1.2} ${y}L${left + st.w - 1.2} ${y}`} />
               ))}
             </g>
-            {s.mast && (
+            {st.mast && (
               <g stroke="#7dd3fc" strokeOpacity="0.6" strokeWidth="0.9" fill="none">
-                <path d={`M${s.x} ${s.top - capRy}L${s.x} ${s.top - mast}`} />
-                <circle cx={s.x} cy={s.top - mast - 3} r="2" fill="#7dd3fc" fillOpacity="0.65" stroke="none" />
+                <path d={`M${0} ${top - capRy}L${0} ${top - mast}`} />
+                <circle cx={0} cy={top - mast - 3} r="2" fill="#7dd3fc" fillOpacity="0.65" stroke="none" />
               </g>
             )}
           </g>
@@ -256,6 +379,18 @@ const HeroCentralSystem: React.FC<{ layout: HeroLayout }> = ({ layout }) => {
       strokeWidth="7"
     />
 
+    <ellipse
+      cx={cx}
+      cy={PLATFORM.lower.cy + PLATFORM.lower.wall * 0.5}
+      rx={PLATFORM.lower.rx * 1.16}
+      ry={PLATFORM.lower.ry * 1.16}
+      fill="none"
+      stroke="#1e40af"
+      strokeOpacity="0.4"
+      strokeWidth="1"
+      strokeDasharray="6 10"
+    />
+
     {/* upper, smaller disc */}
     <path
       d={`M${cx - PLATFORM.upper.rx} ${PLATFORM.upper.cy}L${cx - PLATFORM.upper.rx} ${
@@ -337,6 +472,18 @@ const HeroCentralSystem: React.FC<{ layout: HeroLayout }> = ({ layout }) => {
       strokeOpacity="0.6"
       strokeWidth="1.3"
       className="ieh-hub-ring"
+    />
+    {/* Cyan crown just inside the magenta ring — the reference reads warmer at
+        the hub's centre and cooler at its lip. */}
+    <ellipse
+      cx={cx}
+      cy={HUB.topY}
+      rx={HUB.rx * 0.52}
+      ry={HUB.ry * 0.44}
+      fill="none"
+      stroke="#67e8f9"
+      strokeOpacity="0.4"
+      strokeWidth="0.9"
     />
       <HubMark x={cx} y={HUB.topY + HUB.rx * 0.55} scale={(1.18 * HUB.rx) / 83} />
     </svg>

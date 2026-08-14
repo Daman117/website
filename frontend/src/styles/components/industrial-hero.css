@@ -34,6 +34,7 @@
 
 .ieh-inner {
   position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 1520px;
   margin: 0 auto;
@@ -80,10 +81,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(56, 189, 248, 0.24);
+  border: 1px solid rgba(56, 189, 248, 0.28);
   border-radius: calc(9 * var(--u));
   background:
-    linear-gradient(160deg, rgba(23, 45, 84, 0.62) 0%, rgba(8, 14, 30, 0.72) 100%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 44%),
+    linear-gradient(160deg, rgba(24, 47, 88, 0.7) 0%, rgba(8, 14, 30, 0.78) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .ieh-source-label {
@@ -111,10 +114,29 @@
   align-items: center;
   gap: calc(13 * var(--u));
   padding: 0 calc(16 * var(--u));
-  border: 1px solid rgb(var(--accent-rgb) / 0.42);
+  border: 1px solid rgb(var(--accent-rgb) / 0.46);
   border-radius: calc(10 * var(--u));
+  /* Three stacked layers rather than one flat tint: an accent wash bleeding
+     in from the connector edge, a soft vertical lift, then the base body.
+     Reads as depth without a blur, which would cost a backdrop-filter. */
   background:
-    linear-gradient(102deg, rgb(var(--accent-rgb) / 0.11) 0%, rgba(8, 12, 26, 0.74) 58%);
+    linear-gradient(90deg, rgb(var(--accent-rgb) / 0.2) 0%, rgb(var(--accent-rgb) / 0) 42%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.055) 0%, rgba(255, 255, 255, 0) 46%),
+    linear-gradient(102deg, rgba(14, 20, 40, 0.86) 0%, rgba(7, 11, 24, 0.9) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* A short accent rail on the connector edge ties the card to its endpoint
+   node instead of leaving the line stopping at a plain border. */
+.ieh-product::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 22%;
+  bottom: 22%;
+  width: calc(2 * var(--u));
+  border-radius: calc(2 * var(--u));
+  background: rgb(var(--accent-rgb) / 0.85);
 }
 
 .ieh-product-icon {
@@ -159,9 +181,12 @@
   align-items: center;
   justify-content: center;
   gap: calc(12 * var(--u));
-  border: 1px solid rgba(148, 178, 220, 0.2);
+  border: 1px solid rgba(148, 178, 220, 0.24);
   border-radius: calc(9 * var(--u));
-  background: rgba(9, 15, 31, 0.62);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0) 46%),
+    rgba(10, 17, 34, 0.72);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .ieh-system-icon {
@@ -490,45 +515,13 @@
    interfere with the loop's own animated properties. */
 .ieh-source,
 .ieh-system,
-.ieh-link,
-.ieh-link-system,
-.ieh-link-node {
-  transition: opacity 220ms ease, background 220ms ease, box-shadow 220ms ease;
-}
-
 .ieh-product {
-  transition: opacity 220ms ease, background 220ms ease, box-shadow 220ms ease;
+  transition: background 220ms ease, box-shadow 220ms ease, outline-color 220ms ease;
 }
 
-/* ── Quieten the unrelated ──────────────────────────────────────────── */
-.ieh-stage[data-active] .ieh-source:not(.is-active),
-.ieh-stage[data-active] .ieh-system:not(.is-active) {
-  opacity: 0.5;
-}
-
-.ieh-stage[data-active] .ieh-product:not(.is-active) {
-  opacity: 0.55;
-}
-
-.ieh-stage[data-active] .ieh-link:not(.is-active),
-.ieh-stage[data-active] .ieh-link-system:not(.is-active),
-.ieh-stage[data-active] .ieh-link-node:not(.is-active) {
-  opacity: 0.35;
-}
-
-/* Hovering the core is about the whole network, so nothing is dimmed there —
-   the links lift instead. */
-/* :not(.is-active) is carried here purely to MATCH the specificity of the
-   dim rules above (each has an extra class from its own :not), so that
-   source order decides the winner rather than an accidental 3-vs-4. */
-.ieh-stage[data-active="core"] .ieh-source:not(.is-active),
-.ieh-stage[data-active="core"] .ieh-product:not(.is-active),
-.ieh-stage[data-active="core"] .ieh-system:not(.is-active),
-.ieh-stage[data-active="core"] .ieh-link:not(.is-active),
-.ieh-stage[data-active="core"] .ieh-link-system:not(.is-active),
-.ieh-stage[data-active="core"] .ieh-link-node:not(.is-active) {
-  opacity: 1;
-}
+/* Nothing is dimmed on hover. The active strand brightens and everything
+   else is left exactly as it was — the ecosystem stays fully readable, and
+   a hover never restyles 17 cards at once. */
 
 /* ── Emphasise the active strand ────────────────────────────────────── */
 .ieh-source.is-active {
@@ -555,12 +548,10 @@
    read heavier, and stroke-width is owned by the running loop keyframe. */
 .ieh-link.is-active,
 .ieh-link-system.is-active {
-  opacity: 1;
   stroke-width: 2.6 !important;
 }
 
 .ieh-link-node.is-active {
-  opacity: 1;
   r: 5;
 }
 
@@ -594,6 +585,71 @@
   }
 }
 
+/* The network terrain's motion is the SMIL flow field in HeroBackdrop —
+   real particles on their own trajectories. Two earlier CSS attempts here
+   (a node opacity twinkle and a stroke-dashoffset dash train) were removed:
+   both animated marks that sat on top of already-drawn lines, so they read
+   as texture rather than travel. Nothing terrain-related is styled here now. */
+
+/* ── Terrain wave ───────────────────────────────────────────────────────
+   Slides the wave surface left by exactly one spatial period. The height
+   field repeats over that distance (see HeroBackdrop), so the last frame is
+   identical to the first and the loop has no seam — while the crests visibly
+   travel right-to-left throughout. One animation for the whole surface. */
+@keyframes iehTerrainDrift {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-780px); }
+}
+
+.ieh-terrain-drift {
+  will-change: transform;
+  animation: iehTerrainDrift 62s linear infinite;
+}
+
+/* ── Plant turntable ─────────────────────────────────────────────────────
+   The plant revolves by having each unit ORBIT the platform, not by spinning
+   the group. A flat rotate() would tip the whole skyline over on its side and
+   read as a spinning icon; this keeps every tower upright while its footprint
+   travels the floor ellipse, so units sweep out to the sides, pass across the
+   back, and return — the plant seen from all around.
+
+   Each unit carries its own --rx/--ry (its orbit radius, already squashed by
+   the cylinder's own rx:ry ratio) and a negative animation-delay for its angle
+   on the pad. So one keyframe drives all of them, and phase alone places each
+   unit — no per-element keyframes and no JS.
+
+   Only `translate` is animated, never `scale`: translate is unaffected by
+   transform-origin, which on nested SVG groups is easy to resolve to the wrong
+   point. Depth is carried by opacity plus the ellipse's own foreshortening,
+   which suits the drawing's flat, orthographic-ish projection anyway.
+
+   0% and 100% are the same point on the circle, so the loop is seamless and
+   reduced motion settles the plant at its starting orientation. */
+@keyframes iehTurntable {
+  0% { translate: calc(var(--rx) * 0.0000) calc(var(--ry) * 1.0000); opacity: 1.000; }
+  6.25% { translate: calc(var(--rx) * 0.3827) calc(var(--ry) * 0.9239); opacity: 0.979; }
+  12.5% { translate: calc(var(--rx) * 0.7071) calc(var(--ry) * 0.7071); opacity: 0.919; }
+  18.75% { translate: calc(var(--rx) * 0.9239) calc(var(--ry) * 0.3827); opacity: 0.830; }
+  25% { translate: calc(var(--rx) * 1.0000) calc(var(--ry) * 0.0000); opacity: 0.725; }
+  31.25% { translate: calc(var(--rx) * 0.9239) calc(var(--ry) * -0.3827); opacity: 0.620; }
+  37.5% { translate: calc(var(--rx) * 0.7071) calc(var(--ry) * -0.7071); opacity: 0.531; }
+  43.75% { translate: calc(var(--rx) * 0.3827) calc(var(--ry) * -0.9239); opacity: 0.471; }
+  50% { translate: calc(var(--rx) * 0.0000) calc(var(--ry) * -1.0000); opacity: 0.450; }
+  56.25% { translate: calc(var(--rx) * -0.3827) calc(var(--ry) * -0.9239); opacity: 0.471; }
+  62.5% { translate: calc(var(--rx) * -0.7071) calc(var(--ry) * -0.7071); opacity: 0.531; }
+  68.75% { translate: calc(var(--rx) * -0.9239) calc(var(--ry) * -0.3827); opacity: 0.620; }
+  75% { translate: calc(var(--rx) * -1.0000) calc(var(--ry) * -0.0000); opacity: 0.725; }
+  81.25% { translate: calc(var(--rx) * -0.9239) calc(var(--ry) * 0.3827); opacity: 0.830; }
+  87.5% { translate: calc(var(--rx) * -0.7071) calc(var(--ry) * 0.7071); opacity: 0.919; }
+  93.75% { translate: calc(var(--rx) * -0.3827) calc(var(--ry) * 0.9239); opacity: 0.979; }
+  100% { translate: calc(var(--rx) * -0.0000) calc(var(--ry) * 1.0000); opacity: 1.000; }
+}
+
+.ieh-plant-unit {
+  animation: iehTurntable var(--rev, 80s) linear infinite;
+  animation-delay: var(--pd, 0s);
+}
+
 /* ── Ticker band ────────────────────────────────────────────────────────
    The Ticker still renders inside the hero, unchanged. Its own rules are
    light-theme (`var(--border)` = #dce3ee), which on this near-black hero
@@ -620,14 +676,14 @@
    column stretched to tablet width would be over 2000px tall. */
 @media (max-width: 1279px) {
   .ieh {
-    padding-top: clamp(88px, 9vh, 120px);
+    padding: clamp(80px, 8vh, 112px) var(--gutter) 28px;
   }
 
   .ieh-inner {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 32px;
+    gap: 22px;
   }
 
   .ieh-copy {
@@ -641,13 +697,42 @@
   .ieh-stage {
     order: 2;
     width: 100%;
-    max-width: 400px;
+    max-width: 420px;
+    /* cqw resolves against .ieh-inner, which is still full width here, so
+       --u has to be re-derived from the capped stage instead. */
+    --u: calc(min(100cqw, 420px) / var(--canvas-w));
   }
 
-  /* cqw resolves against .ieh-inner, which is still full width here, so --u
-     has to be re-derived from the capped stage instead. */
+  /* Trim the copy's vertical rhythm — on a stacked hero these margins are
+     the second biggest block after the diagram itself. */
+  .ieh-copy .engram-hero-body { margin-bottom: 18px; }
+  .ieh-copy .landing-hero-chips { margin-bottom: 18px; }
+}
+
+/* ── Tablet: put the copy beside the stage ───────────────────────────────
+   Still the COMPACT layout — no third coordinate system. The only change is
+   arrangement: from ~860px there is room for two columns, which both fills
+   the empty side margins and removes the copy's height from the hero
+   entirely (side-by-side is max(copy, stage), stacked is their sum). */
+@media (min-width: 860px) and (max-width: 1279px) {
+  .ieh-inner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(28px, 5vw, 64px);
+  }
+
+  .ieh-copy {
+    order: 1;
+    flex: 1 1 46%;
+    max-width: 560px;
+  }
+
   .ieh-stage {
-    --u: calc(min(100cqw, 400px) / var(--canvas-w));
+    order: 2;
+    flex: 0 0 auto;
+    width: clamp(360px, 42vw, 470px);
+    --u: calc(clamp(360px, 42vw, 470px) / var(--canvas-w));
   }
 }
 

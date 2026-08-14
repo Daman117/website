@@ -6,7 +6,7 @@ import { ScrollStagger, LineReveal } from '../ScrollAnimation';
 import { prefersReducedMotion } from '../../utils/motion';
 import HowItWorksScroll from './HowItWorksScroll';
 import NativeApproachScroll from './NativeApproachScroll';
-import CapabilityHero from '../Capability/Hero';
+import EngramHero from './EngramHero/EngramHero';
 import FlashIcon from '../Capability/FlashIcon';
 import FeatureCard from '../Capability/FeatureCard';
 
@@ -178,9 +178,9 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
   return (
     <main className="engram-page">
 
-      {/* ── HERO (pinned parallax background — iOS-safe, see HeroShell) ── */}
-      <CapabilityHero
-        image="/engram-hero.webp"
+      {/* ── HERO — real HTML/SVG composition (EngramHero/), not the shared
+             photographic CapabilityHero. Content props mirror the old call. ── */}
+      <EngramHero
         badgeText="PLANT KNOWLEDGE"
         titleLine1="Turn Engineering Records Into"
         titleLine2="Plant Knowledge"
@@ -189,15 +189,6 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
         chips={heroChips}
         ctaLabel="Request a Demo"
         onCtaClick={() => onOpenContact('Request a Demo')}
-        classes={{
-          badge: 'badge-text engram-hero-badge-text',
-          title: 'engram-hero-h1-text',
-          accent: 'engram-hero-h1-accent',
-          subtitle: 'engram-hero-sub-text',
-          body: 'engram-hero-body-text',
-          chips: 'engram-hero-chips',
-          chip: 'engram-hero-chip',
-        }}
       />
 
       {/* ── CHALLENGE ── */}

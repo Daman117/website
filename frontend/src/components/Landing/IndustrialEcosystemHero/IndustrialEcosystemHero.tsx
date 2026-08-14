@@ -100,6 +100,15 @@ const IndustrialEcosystemHero: React.FC<IndustrialEcosystemHeroProps> = ({ id, c
 
   return (
     <section id={id} ref={ref} className={`ieh ieh--${layout.variant}${inView ? '' : ' ieh-idle'}`}>
+      {/* Full-bleed: a direct child of the section, so it spans the whole hero
+          rather than the padded, max-width stage box. */}
+      <HeroBackdrop
+        mesh={layout.mesh}
+        w={layout.stage.w}
+        h={layout.stage.h}
+        active={inView}
+        reduceMotion={reduceMotion}
+      />
       <div className="ieh-inner">
         <div
           className="ieh-stage"
@@ -109,7 +118,6 @@ const IndustrialEcosystemHero: React.FC<IndustrialEcosystemHeroProps> = ({ id, c
           // context menu, touch cancel): leaving the stage always clears.
           onPointerLeave={onDeactivate}
         >
-          <HeroBackdrop mesh={layout.mesh} />
           <HeroCentralSystem layout={layout} />
           <HeroConnections active={inView} layout={layout} highlight={active} reduceMotion={reduceMotion} />
           <HeroSourceCards {...interaction} />
