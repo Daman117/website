@@ -104,7 +104,7 @@ const EnviewHero: React.FC<EnviewHeroProps> = ({
           </button>
         </div>
 
-        <ScadaDashboard />
+        <ScadaDashboard reduceMotion={reduceMotion} />
       </div>
     </div>
   </section>

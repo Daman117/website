@@ -239,31 +239,95 @@ export const SystemIcon: React.FC<{ glyph: SystemGlyph; className?: string }> = 
 };
 
 /**
- * The mark on the face of the central hub — an "EX" built from a bar-chart
- * E and a circuit X, matching the reference's hub decal. Drawn rather than
- * using components/Logo.tsx, which renders a raster <img> that cannot live
- * inside an SVG layer.
+ * The mark on the face of the central hub: the enxco hexagonal circuit.
+ *
+ * The same mark as components/Logo.tsx, and drawn here rather than imported
+ * for one reason — Logo renders a standalone <svg>, and a nested <svg> inside
+ * this layer would bring its own viewport and coordinate system, so it could
+ * not be placed and scaled with the hub the way a <g> can. The geometry below
+ * is that component's, expressed as a group centred on the origin.
+ *
+ * It replaces the bar-chart-and-X decal that stood in before the mark existed.
+ * That decal was wide and short, so it was placed with a scale factor tuned
+ * against the hub's WIDTH. This mark is square and its height is what binds,
+ * so it takes the rendered radius instead and works the scale out itself —
+ * the caller states how big it should be rather than by how much to multiply
+ * a coordinate system it cannot see.
+ *
+ * Two tones, as in the logo: the ring at full strength, the inner signal trace
+ * held back. Colours are literal rather than currentColor because this sits in
+ * an SVG layer with no inherited text colour to take.
  */
-export const HubMark: React.FC<{ x: number; y: number; scale: number }> = ({ x, y, scale }) => (
-  <g transform={`translate(${x} ${y}) scale(${scale})`}>
-    {/* bar-chart "E" */}
-    <g fill="#ffffff" stroke="none">
-      <rect x="-25" y="2" width="4.6" height="8" rx="1" />
-      <rect x="-18.6" y="-2.4" width="4.6" height="12.4" rx="1" />
-      <rect x="-12.2" y="-7.6" width="4.6" height="17.6" rx="1" />
+export const HubMark: React.FC<{ x: number; y: number; r: number }> = ({ x, y, r }) => {
+  /** The mark's authored radius. `r` is what it should render at. */
+  const R = 27;
+  const scale = r / R;
+  const V = Array.from({ length: 6 }, (_, i) => {
+    const a = ((-90 + i * 60) * Math.PI) / 180;
+    return { x: R * Math.cos(a), y: R * Math.sin(a) };
+  });
+
+  /** Pulled back from both corners, so the node sits in the gap. */
+  const edge = (a: { x: number; y: number }, b: { x: number; y: number }, trim = 5) => {
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    const len = Math.hypot(dx, dy) || 1;
+    const ux = (dx / len) * trim;
+    const uy = (dy / len) * trim;
+    return `M${(a.x + ux).toFixed(2)} ${(a.y + uy).toFixed(2)}L${(b.x - ux).toFixed(2)} ${(
+      b.y - uy
+    ).toFixed(2)}`;
+  };
+
+  return (
+    <g transform={`translate(${x} ${y}) scale(${scale})`}>
+      {/* The ring: six segments, not a hexagon. The gaps are the design — it
+          reads as a circuit because the traces stop short of the nodes. */}
+      <g stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none">
+        {V.map((v, i) => (
+          <path key={i} d={edge(v, V[(i + 1) % 6])} />
+        ))}
+      </g>
+      <g fill="#ffffff" stroke="none">
+        {V.map((v, i) => (
+          <circle key={i} cx={v.x.toFixed(2)} cy={v.y.toFixed(2)} r="2.9" />
+        ))}
+      </g>
+
+      {/* The inner signal trace, held back — it is what is inside the
+          enclosure, not part of it. Teal, which is the accent this hub
+          already used. */}
+      <g
+        stroke="#5eead4"
+        strokeOpacity="0.85"
+        strokeWidth="2.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill="none"
+      >
+        <path d="M-7.5 -16.5v6.5l-6 5.5v9l7 5.5" />
+        <path d="M-4.5 -5.5l6-5v-6" />
+        <path d="M4.5 -7.5l4.5-3" />
+      </g>
+      <g fill="#5eead4" fillOpacity="0.85" stroke="none">
+        <circle cx="-7.5" cy="-17.5" r="2.4" />
+        <circle cx="1.5" cy="-18" r="2.2" />
+        <circle cx="-6.5" cy="10" r="2.6" />
+        <circle cx="9.5" cy="-11" r="2.4" />
+        <circle cx="4.5" cy="-7.5" r="2" />
+      </g>
+
+      {/* The right-hand traces belong to the frame, so they keep its weight. */}
+      <g stroke="#ffffff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" fill="none">
+        <path d="M8 -15.5l3.5 3" />
+        <path d="M8.5 2.5v5.5l-4 3" />
+      </g>
+      <g fill="#ffffff" stroke="none">
+        <circle cx="7.5" cy="-16" r="2.4" />
+        <circle cx="8.5" cy="1.5" r="2.2" />
+      </g>
+
+      <circle cx="0" cy="-1.5" r="2.6" fill="#5eead4" fillOpacity="0.5" />
     </g>
-    {/* circuit "X" */}
-    <g stroke="#ffffff" strokeWidth={3.4} strokeLinecap="round" fill="none">
-      <path d="M-3.4 -8 L14.2 10" />
-      <path d="M14.2 -8 L-3.4 10" />
-    </g>
-    <g fill="#5eead4" stroke="none">
-      <circle cx="18.4" cy="-8" r="2.1" />
-      <circle cx="18.4" cy="1" r="2.1" />
-      <circle cx="18.4" cy="10" r="2.1" />
-    </g>
-    <g stroke="#5eead4" strokeWidth={1.5} fill="none" strokeLinecap="round">
-      <path d="M14.2 -8h2.1M14.2 1h2.1M14.2 10h2.1" />
-    </g>
-  </g>
-);
+  );
+};

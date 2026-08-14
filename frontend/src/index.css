@@ -17,6 +17,7 @@
 }
 
 html {
+  background: var(--page-bg);
   scroll-behavior: smooth;
   /* clip prevents horizontal overflow WITHOUT creating a scroll container.
      overflow-x: hidden on <html> would transfer scroll ownership from window
@@ -64,13 +65,13 @@ html {
 /* ── ROOT — Light Theme ────────────────────────────────────────── */
 
 /* ── BODY ───────────────────────────────────────────────────────── */
+/* The page's own ground. It used to be the light --body-bg, which was fine
+   when it was never seen — but the nav is fixed at top:12px, so a strip of it
+   shows above the bar, and on a dark site that read as a white shade across
+   the top of the header. The glow gradients went with it: they were tuned to
+   lift a light ground and do nothing on a dark one. */
 body {
-  background: var(--body-bg);
-  background:
-    radial-gradient(circle at 18% 12%, var(--glow-blue), transparent 42%),
-    radial-gradient(circle at 85% 75%, var(--glow-teal), transparent 45%),
-    radial-gradient(circle at 50% 100%, var(--glow-blue), transparent 55%),
-    var(--body-bg);
+  background: var(--page-bg);
   color: var(--t1);
   font-family: "DM Sans", system-ui, sans-serif;
   font-size: 16px;
@@ -416,18 +417,30 @@ img {
   align-items: center;
   justify-content: flex-start;
   padding: 0 28px;
-  background: rgba(255, 255, 255, 0.72);
+  background: var(--nav-bg);
   -webkit-backdrop-filter: var(--card-blur);
   backdrop-filter: var(--card-blur);
-  border: 1px solid var(--card-border);
+  border: 1px solid var(--nav-border);
   border-radius: 18px;
-  box-shadow: var(--card-shadow);
+  /* NOT --card-shadow. That token carries `inset 0 2px 0 rgba(255,255,255,.92)`
+     — a near-opaque white bevel along the top edge, which is what a raised
+     light-glass card wants and exactly the white line that was showing across
+     the top of a dark bar. Its own shadow instead: a soft drop, and a bevel
+     dim enough to read as a lit edge rather than a stripe. */
+  box-shadow:
+    0 8px 30px rgba(2, 5, 15, 0.45),
+    inset 0 1px 0 rgba(191, 219, 254, 0.08);
   box-sizing: border-box;
   transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Scrolled, it sits over content rather than over the hero's own darkness, so
+   it takes a touch more body to stay legible. */
 #nav.scrolled {
-  box-shadow: var(--card-shadow-hover);
+  background: rgba(7, 10, 24, 0.82);
+  box-shadow:
+    0 10px 34px rgba(2, 5, 15, 0.55),
+    inset 0 1px 0 rgba(191, 219, 254, 0.1);
 }
 
 .nav-logo {
@@ -445,9 +458,22 @@ img {
   transform: translateY(-1px);
 }
 
+/* The mark inherits `color`, so ONE component serves both places it is used.
+   The footer still sits on the light --body-bg, so the default is the navy it
+   was drawn in; only the dark nav overrides it. Painting it light globally
+   would have made the footer mark invisible. */
+.nav-mark {
+  color: var(--navy);
+}
+
+#nav .nav-mark {
+  color: #dbeafe;
+}
+
 .nav-mark svg {
-  width: 20px;
-  height: 20px;
+  width: 28px;
+  height: 28px;
+  display: block;
 }
 
 .nav-word {
@@ -483,7 +509,7 @@ img {
 
 .nav-links a {
   font-size: 15px;
-  color: var(--t3);
+  color: var(--nav-link);
   font-weight: 500;
   transition: var(--transition-fast);
   white-space: nowrap;
@@ -513,7 +539,7 @@ img {
 }
 
 .nav-links a.nav-active {
-  color: var(--t3);
+  color: var(--nav-link-strong);
 }
 
 .nav-links a:focus-visible {
@@ -548,10 +574,10 @@ img {
 
 .nav-dropdown-inner {
   min-width: 270px;
-  background: rgba(255, 255, 255, 0.90);
+  background: var(--nav-panel);
   backdrop-filter: var(--blur-strong);
   -webkit-backdrop-filter: blur(16px) saturate(160%);
-  border: 1px solid rgba(229, 231, 235, 0.6);
+  border: 1px solid var(--nav-panel-border);
   border-radius: 14px;
   padding: var(--space-3xs);
   box-shadow:
@@ -579,7 +605,7 @@ img {
 }
 
 .nav-dropdown-item:hover {
-  background: #d7def2;
+  background: var(--nav-panel-hover);
 }
 
 .nav-dropdown-item::after {
@@ -589,13 +615,13 @@ img {
 .nav-dropdown-name {
   font-size: 13px;
   font-weight: 700;
-  color: #0a0f1e;
+  color: #f1f5f9;
   font-family: "Space Grotesk", "DM Sans", sans-serif;
 }
 
 .nav-dropdown-cat {
   font-size: 11px;
-  color: #4b5563;
+  color: rgba(148, 163, 184, 0.9);
   font-weight: 500;
 }
 

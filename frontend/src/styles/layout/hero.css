@@ -2,6 +2,8 @@
 .hero-content-wrapper {
   position: relative;
   z-index: var(--z-raised);
-  padding-top: clamp(110px, 16vh, 160px);
+  /* Matches the drawn heroes (.ieh, .egh, .evh, .eab, .egn), so the
+     composition starts at the same height on every page. */
+  padding-top: clamp(68px, 7vh, 94px);
   padding-bottom: 72px;
 }

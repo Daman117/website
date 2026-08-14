@@ -36,6 +36,7 @@ const HeroNodes: React.FC<HeroInteraction & { L: EngramLayout }> = ({
       <g
         key={n.id}
         className={`egh-cap-node${active === nodeId(n.id) ? ' is-active' : ''}`}
+        style={{ '--i': i } as React.CSSProperties}
         transform={`translate(${n.x} ${n.y})`}
         onPointerEnter={(e) => {
           if (e.pointerType !== 'touch') onActivate(nodeId(n.id));

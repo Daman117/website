@@ -1,0 +1,476 @@
+/* ── enGENIE HERO — background layer ────────────────────────────────────
+   /products/engenie only. Everything is scoped under .egn-hero, which wraps
+   the shared CapabilityHero on that page alone — so HeroShell, CapabilityHero
+   and the other five product heroes are untouched.
+
+   The photographic backdrop is gone. `.hero-shell-bg` is a FIXED, full-
+   viewport layer inside HeroShell; hiding it here rather than editing
+   HeroShell keeps the change to one page, and `display: none` also stops the
+   browser fetching the image at all.
+
+   The gradient that sat over the photo is retuned to a clean dark navy, since
+   it was authored to let a photo read through it and there is no longer one. */
+
+.egn-hero {
+  position: relative;
+}
+
+.egn-hero .hero-shell-bg {
+  display: none;
+}
+
+/* Deep navy to near-black. No photo underneath, so this IS the background. */
+.egn-hero .hero-shell-grad {
+  background:
+    radial-gradient(58% 46% at 18% 12%, rgba(59, 130, 246, 0.1) 0%, rgba(4, 6, 18, 0) 70%),
+    radial-gradient(64% 54% at 78% 78%, rgba(109, 40, 217, 0.14) 0%, rgba(4, 6, 18, 0) 72%),
+    linear-gradient(180deg, #05060f 0%, #070a1c 46%, #04050e 100%);
+}
+
+/* ── The wave layer ─────────────────────────────────────────────────────
+   Between the gradient and the content. `.hero-content-wrapper` already sits
+   on --z-raised, so the copy, badges and CTA stay above this without any of
+   their rules changing.
+
+   Absolutely positioned and pointer-events:none, so it adds no height and
+   cannot take a click — which is what keeps the layout from shifting by a
+   single pixel. */
+/* Held back a step. The right-side system is the subject of this hero and the
+   copy is the message; the field behind them is neither, and at full strength
+   it competed with both. */
+.egn-bg {
+  opacity: 0.86;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* The resting state of a travelling segment. Anime drives the offset — a
+   running CSS animation would outrank the inline style Anime writes, so only
+   one of them can own it, and the JS layer is where the timing lives. */
+.egn-wave-flow {
+  stroke-dasharray: 0.18 0.82;
+  stroke-dashoffset: 1;
+  stroke-opacity: 0.85;
+  filter: drop-shadow(0 0 3px rgba(167, 139, 250, 0.38));
+}
+
+/* The band's second lit strand. Dimmer, thinner, and with a longer dash gap,
+   so adding it gives the band depth without adding brightness — the copy sits
+   over these and must not get a lighter ground than it had. */
+.egn-wave-flow.is-second {
+  stroke-dasharray: 0.12 0.88;
+  stroke-opacity: 0.42;
+  filter: drop-shadow(0 0 3px rgba(129, 140, 248, 0.35));
+}
+
+/* With motion off the segment would freeze mid-band as a dashed stripe — a
+   pattern the composition never had. The static line work stays. */
+@media (prefers-reduced-motion: reduce) {
+  .egn-wave-flow {
+    display: none;
+  }
+}
+
+/* The left field's travelling segments. Same technique and same resting
+   contract as the bottom bands — Anime owns the offset, the stylesheet owns
+   the dash pattern — so the two read as one field rather than two effects. */
+.egn-left-flow {
+  stroke-dasharray: 0.18 0.82;
+  stroke-dashoffset: 1;
+  stroke-opacity: 0.62;
+  filter: drop-shadow(0 0 2px rgba(124, 58, 237, 0.32));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .egn-left-flow {
+    display: none;
+  }
+
+  /* The timeline never starts, so a particle would sit at opacity 0 at the
+     origin. Nothing to show — hide the layer rather than leave dead nodes. */
+  .egn-dots {
+    display: none;
+  }
+}
+
+/* ── Particles ──────────────────────────────────────────────────────────
+   Small and few. The glow is a drop-shadow rather than a second, larger
+   circle behind each dot: half the elements for the same halo.
+
+   Resting opacity is 0 — Anime fades each one up as it enters its route, so
+   nothing is visible before the timeline starts and nothing is stranded
+   mid-route if it never does. */
+.egn-dots circle {
+  filter: drop-shadow(0 0 4px currentColor);
+}
+
+.egn-dot {
+  color: #a5b4fc;
+}
+
+/* ══ THE RIGHT-SIDE SYSTEM ═══════════════════════════════════════════════
+   Absolutely placed in the right half, below the content layer. It sits on
+   the half the copy does not use, so it never has to be pushed out of the
+   way — and being out of flow means it cannot shift the layout by a pixel. */
+.egn-sys {
+  position: absolute;
+  right: clamp(8px, 3vw, 72px);
+  top: 50%;
+  transform: translateY(-46%);
+  z-index: 2;
+  width: min(46%, 640px);
+  max-height: 82%;
+  height: auto;
+  display: block;
+  pointer-events: none;
+}
+
+/* ── The framework ──────────────────────────────────────────────────── */
+.egn-sys-frame {
+  stroke: #7c3aed;
+  stroke-opacity: 0.3;
+  stroke-width: 1.7;
+  stroke-linejoin: round;
+}
+
+.egn-sys-frame.is-inner {
+  stroke: #818cf8;
+  stroke-opacity: 0.5;
+  stroke-width: 2.2;
+}
+
+/* One short dash run around the perimeter — the highlight. Anime owns the
+   offset; the dash pattern rests here. */
+.egn-sys-sweep {
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 0.1 0.9;
+  stroke-dashoffset: 1;
+  filter: drop-shadow(0 0 3px rgba(139, 92, 246, 0.5));
+}
+
+/* ── The instrument ─────────────────────────────────────────────────── */
+.egn-sys-instr {
+  stroke: #a78bfa;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 4px rgba(124, 58, 237, 0.28));
+}
+
+.egn-sys-face {
+  stroke: #38bdf8;
+  stroke-opacity: 0.7;
+}
+
+/* The one lit readout. Sans, because it is a digital display. */
+.egn-sys-read {
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  fill: #7dd3fc;
+  stroke: none;
+  letter-spacing: 0.5px;
+}
+
+/* The glow travelling the gauge rim. One short arc, run around the circle by
+   Anime; the dash pattern rests here, as everywhere else in this hero. */
+.egn-gauge-sweep {
+  stroke: #7dd3fc;
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-dasharray: 0.14 0.86;
+  stroke-dashoffset: 1;
+  filter: drop-shadow(0 0 3.5px rgba(125, 211, 252, 0.65));
+}
+
+/* The face scan. transform-box is view-box because the arm's own bounding box
+   is not centred on the gauge hub — the origin is stated in the component,
+   next to the geometry that determines it. */
+.egn-gauge-scan {
+  transform-box: view-box;
+  stroke-width: 3.2;
+  stroke-linecap: round;
+}
+
+/* ── Nodes ──────────────────────────────────────────────────────────── */
+.egn-node-fill {
+  fill: rgba(10, 15, 36, 0.72);
+  stroke: none;
+}
+
+.egn-node-ring {
+  stroke: #8b5cf6;
+  stroke-opacity: 0.55;
+  stroke-width: 2.1;
+  stroke-linejoin: round;
+}
+
+/* The occasional sweep: one short arc, run around the hexagon by Anime. It
+   rests invisible — dashoffset 1 puts the arc entirely off the path — so a
+   node at rest is exactly the outline it was drawn as. */
+.egn-node-sweep {
+  stroke: #c4b5fd;
+  stroke-width: 2.7;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  stroke-dasharray: 0.13 0.87;
+  stroke-dashoffset: 1;
+  filter: drop-shadow(0 0 2.5px rgba(167, 139, 250, 0.6));
+}
+
+.egn-node-glyph {
+  stroke: #c4b5fd;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+/* ── Connectors and their traffic ───────────────────────────────────── */
+.egn-sys-links {
+  stroke: #6366f1;
+  stroke-opacity: 0.34;
+  stroke-width: 1.3;
+  stroke-dasharray: 3 5;
+}
+
+/* Motion tracks only. Painted with nothing rather than `display: none` —
+   hidden that way an SVG path's geometry can stop being measurable, and
+   createMotionPath has to be able to read it. */
+.egn-sys-tracks {
+  stroke: none;
+  fill: none;
+}
+
+/* The travelling pulse: one short segment run down a connector. Rests at
+   dashoffset 1, entirely off the path, so a connector at rest is exactly the
+   dashed line it was drawn as. */
+.egn-link-pulse {
+  stroke: #a5f3fc;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-dasharray: 0.16 0.84;
+  stroke-dashoffset: 1;
+  filter: drop-shadow(0 0 2.5px rgba(103, 232, 249, 0.55));
+}
+
+.egn-sys-dots circle {
+  fill: #a5f3fc;
+  filter: drop-shadow(0 0 3px rgba(103, 232, 249, 0.6));
+}
+
+/* With motion off the sweep would freeze as a stray dash on one edge and the
+   particles would pile up at the origin. The static system stays. */
+/* With motion off these would freeze mid-run: the sweeps as stray dashes on
+   one edge, the pulse as a bar across the manifold, the particles piled at the
+   origin. The instrument's static line work, its readout and its glow all
+   stay — the device still reads, it is just not running. */
+@media (prefers-reduced-motion: reduce) {
+  .egn-sys-sweep,
+  .egn-sys-dots,
+  .egn-gauge-sweep,
+  .egn-gauge-scan,
+  .egn-instr-pulse,
+  .egn-node-sweep,
+  .egn-link-pulse {
+    display: none;
+  }
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────
+   The SVG is `xMidYMax slice`, so it crops from the top as the hero gets
+   shorter and the bands stay pinned to the bottom where they were composed.
+   Narrow screens have less room between the copy and the CTA, so the field
+   is pulled further back rather than being reflowed. */
+/* Tablet: half the density. Dropping every other line thins the fan without
+   changing its shape, which dimming alone would not do — the same ruling at
+   lower contrast still reads as busy behind text. */
+@media (max-width: 1100px) {
+  .egn-left path:nth-child(even) {
+    display: none;
+  }
+
+  .egn-left {
+    opacity: 0.7;
+  }
+}
+
+/* Tablet: fewer particles and a tighter halo. Count first — dimming a dense
+   set still reads as busy. */
+@media (max-width: 1100px) {
+  .egn-dots circle:nth-child(even) {
+    display: none;
+  }
+
+  .egn-dots circle {
+    filter: drop-shadow(0 0 2.5px currentColor);
+  }
+}
+
+/* Tablet: the copy needs more of the width, so the system gives some back
+   rather than being scaled to illegibility. */
+@media (max-width: 1100px) {
+  .egn-sys {
+    width: min(42%, 460px);
+    right: 8px;
+  }
+}
+
+@media (max-width: 860px) {
+  .egn-bg {
+    opacity: 0.62;
+  }
+
+  /* Below this the copy runs full width and there is no right half left to
+     put it in. Hidden rather than stacked, which would add height and move
+     the CTA — the one thing this step must not do. */
+  .egn-sys {
+    display: none;
+  }
+
+  .egn-dots circle {
+    filter: none;
+  }
+}
+
+/* Phone: the copy occupies the full width, so the left field has nowhere to
+   sit that is not behind text. The bottom bands stay. */
+@media (max-width: 700px) {
+  .egn-left {
+    display: none;
+  }
+
+  /* The left set rides paths inside .egn-left, so it goes with it; the wave
+     set stays, thinned. */
+  .egn-dots circle:nth-child(3n) {
+    display: none;
+  }
+}
+
+
+/* ══ ENTRANCE ════════════════════════════════════════════════════════════
+   The copy already stages itself through the shared hero-delay-* classes,
+   150ms to 1500ms. This is the other half: the field and the system used to
+   simply be there on the first frame, which made the page look like it had
+   loaded rather than started.
+
+   It runs on WRAPPERS and on group `opacity` only — never on a property
+   Anime is driving. Anime writes inline styles, and a CSS animation with
+   `both` fill outranks an inline style, so the two would fight and the
+   stylesheet would win. That is why the glow and the frame get wrapper groups
+   (Anime owns their own opacity and stroke-opacity) while the instrument, the
+   nodes and the link groups carry the entrance directly: on those, Anime only
+   ever touches stroke-opacity or a child.
+
+   Every keyframe ends on the element's resting style, so the loops start from
+   exactly where the entrance stopped, and the global reduced-motion rule
+   lands on the finished composition rather than a blank frame. */
+
+@keyframes egnIn {
+  from { opacity: 0; }
+  to   { opacity: var(--rest, 1); }
+}
+
+@keyframes egnRise {
+  from { opacity: 0; translate: 0 16px; }
+  to   { opacity: var(--rest, 1); translate: 0 0; }
+}
+
+/* 1. The field, under everything and first — atmosphere before objects. */
+.egn-bg {
+  --rest: 0.86;
+  animation: egnIn 1500ms ease-out 250ms both;
+}
+
+/* The left field follows the bands, so the lower edge settles before the
+   pattern behind the copy arrives. */
+.egn-left {
+  animation: egnIn 1100ms ease-out 900ms both;
+}
+
+/* 2-5. The system, built up in the order it would be assembled: the light it
+   sits in, the framework, the instrument, then the capabilities, then the
+   wiring between them. */
+.egn-in-glow {
+  animation: egnIn 1200ms ease-out 900ms both;
+}
+
+.egn-in-frame {
+  animation: egnRise 1000ms cubic-bezier(0.22, 1, 0.36, 1) 1150ms both;
+}
+
+.egn-sys-instr {
+  animation: egnRise 1000ms cubic-bezier(0.22, 1, 0.36, 1) 1550ms both;
+}
+
+/* One at a time. 170ms read as a single ripple; 420ms is long enough that
+   each node is its own arrival, and the six still finish before the
+   connectors are drawn between them. */
+.egn-node {
+  animation: egnRise 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(2000ms + var(--i, 0) * 420ms);
+}
+
+/* Last: the connectors and their traffic, so the system is wired only once
+   there is something at both ends to wire. */
+.egn-sys-links,
+.egn-sys-dots {
+  animation: egnIn 900ms ease-out 4750ms both;
+}
+
+
+/* ══ NODE HOVER ══════════════════════════════════════════════════════════
+   The layer is pointer-events:none so the artwork never eats a click; the
+   nodes opt back in. Their filled hexagon is what makes them hit-testable —
+   an outline alone would only respond on the stroke itself.
+
+   Every hover property is one neither the entrance nor Anime touches. The
+   entrance holds `opacity` and `translate`; Anime holds `stroke-opacity` on
+   the ring and `opacity` on the glyph. What is left — `transform`, `stroke`,
+   `stroke-width`, `fill` — is what the hover gets, so nothing has to fight
+   for a property and no !important is needed anywhere. */
+.egn-node {
+  pointer-events: auto;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 340ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.egn-node-ring,
+.egn-node-fill,
+.egn-node-glyph {
+  transition: stroke 260ms ease, stroke-width 260ms ease, fill 260ms ease;
+}
+
+/* A lift and a lift in brightness. Small: these are capabilities being
+   identified, not buttons being pressed. */
+.egn-node:hover {
+  transform: scale(1.07);
+}
+
+.egn-node:hover .egn-node-ring {
+  stroke: #c4b5fd;
+  stroke-width: 3;
+}
+
+.egn-node:hover .egn-node-fill {
+  fill: rgba(26, 21, 62, 0.9);
+}
+
+.egn-node:hover .egn-node-glyph {
+  stroke: #ede9fe;
+  stroke-width: 2.4;
+}
+
+/* Touch has no hover to leave, so a highlight would strand. */
+@media (hover: none) {
+  .egn-node {
+    pointer-events: none;
+  }
+}

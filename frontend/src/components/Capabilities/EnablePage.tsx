@@ -6,7 +6,7 @@ import { ScrollStagger, LineReveal } from '../ScrollAnimation';
 import { prefersReducedMotion } from '../../utils/motion';
 import HowItWorksScroll from './HowItWorksScroll';
 import NativeApproachScroll from './NativeApproachScroll';
-import CapabilityHero from '../Capability/Hero';
+import EnableHero from './EnableHero/EnableHero';
 import FlashIcon from '../Capability/FlashIcon';
 import ComparisonTable from '../Capability/ComparisonTable';
 
@@ -164,9 +164,10 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
 
   return (
     <main className="engram-page" style={{ '--accent': ACCENT } as React.CSSProperties}>
-      {/* ── HERO (pinned parallax background — iOS-safe, see HeroShell) ── */}
-      <CapabilityHero
-        image="/enable-hero.webp"
+      {/* ── HERO — the pipeline, as a real HTML/SVG composition
+             (EnableHero/), not the shared photographic CapabilityHero. The
+             copy is unchanged; only what stands behind it is. ── */}
+      <EnableHero
         badgeText="PROCESS INTELLIGENCE FOR DESIGN & CONTROL"
         titleLine1="Turn Your Plant Into a"
         titleLine2="Matrix"
@@ -175,16 +176,6 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
         chips={heroChips}
         ctaLabel="Join the Waitlist"
         onCtaClick={() => onOpenContact('Waitlist')}
-        classes={{
-          content: 'enable-hero-content',
-          badge: 'badge-text enable-hero-badge-text',
-          title: 'enable-hero-h1-text',
-          accent: 'enable-hero-h1-accent',
-          subtitle: 'enable-hero-sub-text',
-          body: 'enable-hero-body-text',
-          chips: 'enable-hero-chips',
-          chip: 'enable-hero-chip',
-        }}
       />
 
       {/* ── CHALLENGE ── */}

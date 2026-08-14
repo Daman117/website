@@ -1,0 +1,859 @@
+/* ── enABLE HERO ────────────────────────────────────────────────────────
+   /products/enable only. Every selector is scoped under .eab so nothing here
+   can reach the shared .engram-* primitives in index.css, which are used by
+   all six product pages, AboutPage and the landing hero despite their
+   misleading prefix.
+
+   LAYOUT
+   ------
+   Four equal columns and a connector between them, so it is a CSS grid —
+   not the fixed `--u` canvas the enGRAM and enVIEW heroes use. Those are
+   compositions, objects placed in a scene; this is a pipeline, and a grid
+   keeps it correct at every width without a single computed position.
+
+   COLOUR
+   ------
+   Each column sets `--c` once. The ring, its glow, the title, the connector
+   leaving it, the panel border and every row inside it inherit that, so no
+   rule below this line names a stage colour and a stage can be recoloured in
+   one place.
+
+   MOTION
+   ------
+   One thing moves: a dot travelling each connector, so the pipeline reads as
+   flowing rather than as a diagram of a flow. Its keyframe holds its resting
+   position at 0% and 100%, so the loop is seamless and the global
+   prefers-reduced-motion rule in index.css lands on the static layout. */
+
+.eab {
+  position: relative;
+  /* clip, not hidden: hidden on a full-bleed section would create a scroll
+     container and take scroll ownership away from window/Lenis. */
+  overflow: clip;
+  /* Sized to match the enVIEW hero, which is ~920px tall at desktop: the same
+     padding, the same 1520px content width, and a floor that lands on the
+     same figure.
+
+     enGRAM and enVIEW get their height from an aspect-locked stage, so it is
+     driven by WIDTH and identical on a tall or a short screen. This hero has
+     no canvas, so the floor is stated — capped at the viewport so a short
+     laptop is not forced to scroll past dead space, and only a floor, so the
+     rail can still grow if its content needs more. */
+  min-height: min(100vh, 920px);
+  display: flex;
+  align-items: center;
+  /* Same clearance as every other hero — see .ieh. */
+  padding: clamp(68px, 7vh, 94px) var(--gutter) 40px;
+  /* Dark navy to near-black, and BLUE/VIOLET only. There is deliberately no
+     warm stop anywhere in here: amber belongs to the ACTION stage, and an
+     ambient orange glow behind everything takes that meaning away from it —
+     which is exactly what the previous bottom-right radial was doing.
+
+     The structure of the background — the wave, the grid — is drawn in
+     HeroBackdrop. These gradients are only the room it sits in. */
+  background:
+    radial-gradient(46% 40% at 16% 34%, rgba(109, 40, 217, 0.2) 0%, rgba(4, 6, 16, 0) 70%),
+    radial-gradient(50% 44% at 52% 2%, rgba(37, 99, 235, 0.14) 0%, rgba(4, 6, 16, 0) 72%),
+    radial-gradient(60% 46% at 44% 100%, rgba(76, 29, 149, 0.18) 0%, rgba(4, 6, 16, 0) 74%),
+    linear-gradient(180deg, #04060f 0%, #070818 44%, #04050e 100%);
+}
+
+/* Full-bleed behind the content. The inner column is capped at 1520px and
+   centred, so a backdrop confined to it would leave the gutters empty; an SVG
+   clips to its VIEWPORT rather than its viewBox, and `slice` covers the box
+   at any aspect. The section's own `overflow: clip` is where the spill stops. */
+.eab-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Everything else sits above the backdrop. */
+.eab-inner {
+  z-index: 1;
+}
+
+/* The resting state of a travelling segment. Anime drives the offset — a
+   running CSS animation outranks the inline style Anime writes, so only one
+   of them can own it, and the JS layer is where the timing now lives. */
+.eab-bg-flow {
+  stroke-dasharray: 0.18 0.82;
+  stroke-dashoffset: 1;
+  stroke-opacity: 0.8;
+  filter: drop-shadow(0 0 3px rgba(167, 139, 250, 0.6));
+}
+
+/* A grid row is a perfectly horizontal line, so its bounding box has ZERO
+   height — and a transform-box of `fill-box` on an empty box makes the
+   browser drop the transform entirely. That is why the grid was not moving.
+
+   view-box instead, with the origin stated: every row is symmetric about the
+   middle of the 1520-unit canvas, so scaling about x=760 widens it in place,
+   and translateY does not care about the origin at all. */
+.eab-grid-row {
+  transform-box: view-box;
+  transform-origin: 760px 0;
+}
+
+/* Collapsed, the travelling segment would freeze as a dashed strand — a
+   pattern the composition never had. */
+@media (prefers-reduced-motion: reduce) {
+  .eab-bg-flow {
+    display: none;
+  }
+}
+
+.eab-inner {
+  position: relative;
+  width: 100%;
+  max-width: 1520px;
+  margin: 0 auto;
+}
+
+/* ── Copy ───────────────────────────────────────────────────────────────
+   The whole content of the hero now: the pipeline rail below it has been
+   taken out of the render. Capped well short of the frame so the paragraphs
+   keep a readable measure rather than running the full 1520px.
+
+   The rail's styles are left in place below. Nothing renders them, and they
+   cost about a kilobyte; they stay because the markup that used them is
+   uncommitted and one import away from returning. */
+.eab-copy {
+  max-width: 780px;
+}
+
+.eab-badge {
+  display: inline-block;
+  margin-bottom: 16px;
+  padding: var(--pill-padding);
+  border: 1px solid rgba(147, 197, 253, 0.32);
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.16);
+  color: #bfdbfe;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.eab-title {
+  margin-bottom: 16px;
+  font-family: "Space Grotesk", "DM Sans", sans-serif;
+  font-size: clamp(28px, 2.9vw, 46px);
+  font-weight: 700;
+  letter-spacing: -1.4px;
+  line-height: 1.08;
+  color: #ffffff;
+}
+
+/* The one word the headline turns on, so it takes the accent. */
+.eab-accent {
+  color: #34d399;
+}
+
+.eab-sub {
+  max-width: 68ch;
+  margin-bottom: 12px;
+  font-size: clamp(13.5px, 1vw, 15.5px);
+  font-weight: 500;
+  line-height: 1.66;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.eab-body {
+  max-width: 74ch;
+  margin-bottom: 20px;
+  font-size: clamp(12.5px, 0.86vw, 13.5px);
+  line-height: 1.74;
+  color: rgba(255, 255, 255, 0.66);
+}
+
+.eab-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: 22px;
+}
+
+.eab-chip {
+  padding: 6px 13px;
+  border: 1px solid rgba(52, 211, 153, 0.3);
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.12);
+  color: #a7f3d0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.eab-cta {
+  align-self: flex-start;
+}
+
+/* ── The rail ───────────────────────────────────────────────────────────
+   Equal columns are what makes the connectors exact: the next ring's centre
+   is always one column away, so a connector can be placed from its own
+   ring's edge without anything being measured. */
+.eab-rail {
+  --ring: 92px;
+  --flow-gap: 16px;
+  /* The column gap is a variable because the connector's width depends on it:
+     the next ring's centre is one column PLUS one gap away. */
+  --rail-gap: clamp(18px, 2vw, 32px);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--rail-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.eab-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  color: var(--c);
+}
+
+.eab-mark {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 18px;
+}
+
+/* The neon ring. Two shadows: one outside for the glow it throws, one inside
+   so the ring itself reads as lit rather than as a drawn circle. */
+.eab-ring {
+  display: grid;
+  place-items: center;
+  width: var(--ring);
+  height: var(--ring);
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.05) 0%, rgba(6, 8, 20, 0.9) 68%);
+  box-shadow:
+    0 0 26px -6px currentColor,
+    inset 0 0 22px -12px currentColor;
+}
+
+.eab-ring svg {
+  width: 46%;
+  height: 46%;
+  display: block;
+}
+
+/* ── Connectors ─────────────────────────────────────────────────────────
+   Runs from this ring's right edge to the next ring's left edge.
+
+   `100%` here is the column. The next ring's centre sits one column plus one
+   grid gap to the right, so its left edge is at
+   `150% + gap - ring/2`, and this connector starts at `50% + ring/2`. Both
+   ends inset by --flow-gap so the line does not touch either ring. The
+   arithmetic closes exactly, which is why nothing has to be measured. */
+.eab-flow {
+  position: absolute;
+  top: 50%;
+  left: calc(50% + var(--ring) / 2 + var(--flow-gap));
+  width: calc(100% + var(--rail-gap) - var(--ring) - var(--flow-gap) * 2);
+  height: 2px;
+  transform: translateY(-50%);
+}
+
+/* A dashed rule that changes colour along its length. The dashes are a MASK
+   rather than `border-style: dashed`, because a dashed border cannot carry a
+   gradient — and the handover from one stage's colour to the next is the
+   whole point of the connector. */
+.eab-flow-line {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, currentColor 0%, rgba(148, 163, 184, 0.55) 55%, currentColor 100%);
+  opacity: 0.55;
+  -webkit-mask-image: repeating-linear-gradient(90deg, #000 0 5px, transparent 5px 11px);
+  mask-image: repeating-linear-gradient(90deg, #000 0 5px, transparent 5px 11px);
+}
+
+/* The travelling dot — the only moving thing in the section. */
+.eab-flow-dot {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  margin-top: -3.5px;
+  margin-left: -3.5px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 10px 1px currentColor;
+  animation: eabFlow 3.4s ease-in-out infinite;
+}
+
+/* `left`, not `translateX`: a percentage transform resolves against the
+   ELEMENT — a 7px dot — while a percentage `left` resolves against the
+   connector, which is the distance the dot actually has to cover. One small
+   element, so the layout cost is nil.
+
+   0% and 100% are the same resting state, so the loop is seamless and the
+   global reduced-motion rule parks the dot at the start of the run. */
+@keyframes eabFlow {
+  0%   { left: 0; opacity: 0; }
+  12%  { opacity: 1; }
+  76%  { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+/* The arrowhead, in the colour of the stage being entered rather than the one
+   being left: it belongs to the arrival. */
+.eab-flow-head {
+  position: absolute;
+  top: 50%;
+  right: -1px;
+  width: 0;
+  height: 0;
+  transform: translateY(-50%);
+  border-top: 4.5px solid transparent;
+  border-bottom: 4.5px solid transparent;
+  border-left: 7px solid currentColor;
+  opacity: 0.9;
+}
+
+/* Each connector runs INTO the next stage, so it ends in that stage's colour.
+   Set here rather than in the component: it is a fact about adjacency, which
+   the sibling combinator already knows and JSX would have to be told. */
+.eab-stage:nth-child(1) .eab-flow-head { color: #c026d3; }
+.eab-stage:nth-child(2) .eab-flow-head { color: #22c55e; }
+.eab-stage:nth-child(3) .eab-flow-head { color: #f59e0b; }
+
+/* ── Stage copy ─────────────────────────────────────────────────────────── */
+.eab-stage-title {
+  /* The panel follows directly: the stage columns carry no description of
+     their own now, so this is the only gap between the ring and the card. */
+  margin: 0 0 20px;
+  font-family: "Space Grotesk", "DM Sans", sans-serif;
+  font-size: clamp(14px, 1.2vw, 17px);
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: currentColor;
+  text-shadow: 0 0 22px currentColor;
+}
+
+/* ── Panels ─────────────────────────────────────────────────────────────
+   Their TOPS align, because everything above them — ring, title — is a fixed
+   height. Aligning tops rather than bottoms is what the reference does, and
+   it is right here: the panels hold different amounts of content, so a common
+   top edge reads as one row while a common bottom edge would not. */
+.eab-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  width: 100%;
+  padding: 13px 13px 14px;
+  border: 1px solid color-mix(in srgb, currentColor 42%, transparent);
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, currentColor 7%, transparent) 0%, rgba(6, 8, 20, 0.72) 62%);
+  box-shadow:
+    0 0 30px -20px currentColor,
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.eab-panel-cap {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-align: center;
+  color: color-mix(in srgb, currentColor 88%, #fff);
+}
+
+/* ── SOURCES ────────────────────────────────────────────────────────────── */
+.eab-sources {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  padding: 11px 6px;
+  border: 1px solid color-mix(in srgb, currentColor 24%, transparent);
+  border-radius: 9px;
+}
+
+.eab-source {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.eab-source svg {
+  width: 22px;
+  height: 25px;
+  display: block;
+}
+
+.eab-source span {
+  font-size: 9.5px;
+  line-height: 1.2;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ── DIGITAL MODEL ──────────────────────────────────────────────────────── */
+.eab-model {
+  display: grid;
+  place-items: center;
+  padding: 8px 4px;
+  border: 1px solid color-mix(in srgb, currentColor 24%, transparent);
+  border-radius: 9px;
+}
+
+.eab-model-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  opacity: 0.92;
+}
+
+/* ── INSIGHTS and OUTCOMES ──────────────────────────────────────────────
+   One list, two treatments. Insights are boxed because each is a VERDICT
+   that has to be read on its own; outcomes are a plain list because they are
+   a menu, and boxing them would give four equal choices the weight of four
+   findings. */
+.eab-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.eab-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.eab-row-boxed {
+  padding: 8px 10px;
+  border: 1px solid color-mix(in srgb, currentColor 28%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, currentColor 5%, transparent);
+}
+
+.eab-row-icon {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  stroke-width: 1.8;
+}
+
+.eab-row-label {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.86);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The value is the point of an insight row, so it carries the weight and the
+   colour while its label stays neutral. */
+.eab-row-value {
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: currentColor;
+  white-space: nowrap;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────
+   Desktop is the composition. Below it the rail wraps to two columns and
+   then one; the connectors go with it, since an arrow that points at a stage
+   sitting on the next ROW is worse than no arrow at all. */
+@media (max-width: 1100px) {
+  .eab {
+    min-height: 0;
+  }
+
+  .eab-rail {
+    --ring: 84px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 44px 32px;
+  }
+
+  .eab-flow {
+    display: none;
+  }
+}
+
+@media (max-width: 620px) {
+  .eab-rail {
+    --ring: 76px;
+    grid-template-columns: 1fr;
+    gap: 38px;
+  }
+
+}
+
+
+/* ══ THE ENGINEERING FIGURE ══════════════════════════════════════════════
+   Right half of the hero. The copy keeps the left; nothing here reaches
+   across, which the two-column grid enforces rather than the figure having
+   to be careful.
+
+   THE SEQUENCE
+   ------------
+   Five independent groups, revealed in order: the plant, then the model it
+   reduces to, then the eigenvalues, the step response, and the stability
+   region. Everything is driven off `--i` on the group, so the pacing is one
+   number here rather than five delays scattered through the markup — and an
+   Anime.js timeline can later take any group by selector and drive it
+   without any of this being unpicked.
+
+   Line work DRAWS rather than fading. `pathLength="1"` on every stroke
+   normalises them, so forty paths of different lengths draw in step without
+   one of them being measured. */
+
+.eab-figure {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+}
+
+.eab-fig {
+  width: 100%;
+  max-width: 620px;
+  height: auto;
+  display: block;
+}
+
+/* ── Palette ────────────────────────────────────────────────────────────
+   Purple is the engineering line work; teal is reserved for SIGNALS — the
+   runs leaving the plant, the eigenvalues, the step response. Two roles, two
+   colours, and nothing coloured for decoration. */
+.eab-plant {
+  stroke: #60a5fa;
+  stroke-width: 1.15;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 3px rgba(96, 165, 250, 0.32));
+}
+
+.eab-plant-dim {
+  stroke-opacity: 0.45;
+}
+
+.eab-valve,
+.eab-exch {
+  stroke: #93c5fd;
+}
+
+.eab-signal {
+  stroke: #22d3ee;
+  stroke-width: 0.9;
+  stroke-opacity: 0.5;
+  stroke-dasharray: 4 5;
+  stroke-linecap: round;
+}
+
+.eab-signal-dot {
+  fill: #67e8f9;
+  stroke: none;
+  opacity: 0.65;
+}
+
+/* ── Maths ──────────────────────────────────────────────────────────────
+   Serif italic, because that is what set mathematics looks like and a sans
+   numeral in a state vector reads as a UI label. */
+.eab-math {
+  font-family: "Times New Roman", Times, Georgia, serif;
+  font-style: italic;
+  font-size: 17px;
+  fill: #dbeafe;
+}
+
+.eab-math-lg {
+  font-size: 25px;
+}
+
+.eab-math-sm {
+  font-size: 14px;
+}
+
+/* Subscripts, small and upright — they are indices, not variables. */
+.eab-math-idx {
+  font-size: 9px;
+  font-style: normal;
+  fill: #93c5fd;
+}
+
+/* Operators recede; the reader is meant to see the terms, not the plus. */
+.eab-math-op {
+  fill: rgba(219, 234, 254, 0.6);
+}
+
+/* The matrices are the claim, so they take the accent; the states stay
+   near-white so the equation still reads as one line. */
+.eab-math-m {
+  fill: #818cf8;
+}
+
+.eab-math-state {
+  fill: #f8fafc;
+}
+
+.eab-bracket {
+  stroke: #6366f1;
+  stroke-width: 1.1;
+  stroke-opacity: 0.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ── Plots ──────────────────────────────────────────────────────────────── */
+.eab-axis {
+  stroke: #6366f1;
+  stroke-width: 0.9;
+  stroke-opacity: 0.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.eab-axis-dash {
+  stroke-dasharray: 3.5 4;
+  stroke-opacity: 0.45;
+}
+
+.eab-curve {
+  stroke: #60a5fa;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 3px rgba(96, 165, 250, 0.42));
+}
+
+.eab-eigs {
+  stroke: #22d3ee;
+  stroke-width: 1.3;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 3px rgba(34, 211, 238, 0.55));
+}
+
+.eab-label {
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 10px;
+  fill: rgba(191, 219, 254, 0.72);
+}
+
+.eab-tick text {
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 8.5px;
+  fill: rgba(147, 197, 253, 0.58);
+}
+
+.eab-region {
+  opacity: 0.75;
+}
+
+/* ── The sequence ───────────────────────────────────────────────────────
+   Group in, then its line work draws. `both` on every one, and each keyframe
+   ends on the resting style, so the global prefers-reduced-motion rule —
+   which collapses animations to 0.001ms — lands on the finished figure
+   rather than on a blank frame. */
+@keyframes eabFigIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes eabFigDraw {
+  from { stroke-dashoffset: 1; }
+  to   { stroke-dashoffset: 0; }
+}
+
+.eab-fig-g {
+  /* fill-box, or the translate would be measured against the whole viewBox. */
+  transform-box: fill-box;
+  animation: eabFigIn 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(0.45s + var(--i, 0) * 0.75s);
+}
+
+.eab-draw {
+  stroke-dasharray: 1;
+  animation: eabFigDraw 1.15s ease-out both;
+  animation-delay: calc(0.55s + var(--i, 0) * 0.75s);
+}
+
+/* The region and the step curve are driven by the Anime.js layer, so neither
+   carries a CSS entrance: an animation with `both` fill outranks an inline
+   style, and the two would fight with the stylesheet winning. */
+
+/* ── Layout ─────────────────────────────────────────────────────────────
+   Two columns, copy left and figure right. The split is what keeps the
+   figure off the heading and the CTA — it cannot overlap something it does
+   not share space with. */
+.eab-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(28px, 4vw, 72px);
+}
+
+/* Below the two-column threshold the figure stacks under the copy rather
+   than shrinking into illegibility — its type is fixed at viewBox scale, so
+   past a point the tick labels stop being readable at all. */
+@media (max-width: 1023px) {
+  .eab-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .eab-fig {
+    max-width: 520px;
+  }
+}
+
+
+/* ══ THE FLOWING PROCESS ═════════════════════════════════════════════════
+   Particles ride the pipe routes on SMIL animateMotion (see HeroFigure), so
+   the geometry is the SVG's job. What is left here is how they look, and the
+   segment glow that follows them.
+
+   The plant itself never moves. Nothing below animates a transform on a
+   vessel, a valve or the exchanger — only what travels through them. */
+
+.eab-flow-dots circle {
+  fill: #67e8f9;
+  filter: drop-shadow(0 0 4px rgba(34, 211, 238, 0.9));
+  opacity: 0.9;
+}
+
+/* The segment a particle is passing through, brightening and falling back.
+   The window is narrow — about a fifth of the cycle — because a wide one
+   would leave the pipe lit most of the time, which is the flashing this is
+   meant to avoid. Resting state is invisible, so at rest the diagram is
+   exactly the line art it was composed as. */
+@keyframes eabPipeGlow {
+  0%, 100% { stroke-opacity: 0; }
+  8%       { stroke-opacity: 0.85; }
+  20%      { stroke-opacity: 0; }
+}
+
+.eab-pipe-glow path {
+  fill: none;
+  stroke: #67e8f9;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-opacity: 0;
+  filter: drop-shadow(0 0 5px rgba(34, 211, 238, 0.85));
+  /* Must match PERIOD / PARTICLES in HeroFigure: with three particles evenly
+     spaced on a 15s route, any point is passed every five seconds. */
+  animation: eabPipeGlow 5s ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+}
+
+
+/* ══ THE ANIME.JS LAYER ══════════════════════════════════════════════════
+   Anime drives the equation, the state vectors, the eigenvalues, the step
+   curve, the stability region and the connection lines (see useFigureMotion).
+   What is left here is the resting state each of them animates FROM, and the
+   two properties Anime cannot set for itself. */
+
+/* Scale about each cross's own centre. Without fill-box the origin is the
+   middle of the viewBox, and the points would swing across the plot instead
+   of pulsing where they sit. */
+.eab-eig {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* The step curve is dashed so it can be drawn, and starts undrawn — Anime
+   takes it from 1 to 0. `pathLength="1"` makes that independent of the
+   curve's real length. */
+.eab-curve-step {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+/* The region starts unshaded and is revealed by the timeline. */
+.eab-region {
+  opacity: 0;
+}
+
+/* The timeline never starts under reduced motion, so the two elements that
+   rest in a pre-animation state have to be given their finished one — or the
+   curve would stay undrawn and the region unshaded. */
+@media (prefers-reduced-motion: reduce) {
+  .eab-curve-step {
+    stroke-dashoffset: 0;
+  }
+
+  .eab-region {
+    opacity: 0.78;
+  }
+}
+
+
+/* ══ REFERENCE PASS ══════════════════════════════════════════════════════
+   Details the first build approximated: the chips carry a glyph, the CTA
+   carries its arrow, and the input term of the equation takes the page's
+   green so `Mx` and `Bu` read as two different things rather than one. */
+
+.eab-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 15px;
+  border-radius: 10px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.eab-chip-icon {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  stroke-width: 2;
+  color: #34d399;
+}
+
+.eab-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.eab-cta-arrow {
+  width: 17px;
+  height: 17px;
+  flex: none;
+  stroke-width: 2;
+}
+
+/* The input term. Green is the page's accent, and separating it from the
+   state matrix is the whole reason the equation is worth showing. */
+.eab-math-b {
+  fill: #34d399;
+}
+
+/* Packets riding the background wave. */
+.eab-bg-dots circle {
+  fill: #a5f3fc;
+  opacity: 0.7;
+  filter: drop-shadow(0 0 4px rgba(103, 232, 249, 0.85));
+}
+
+/* Far enough back that the copy and the figure stay the subject. The grid is
+   a floor for them to sit on; when it competes it has stopped doing its job. */
+.eab-bg {
+  opacity: 0.82;
+}

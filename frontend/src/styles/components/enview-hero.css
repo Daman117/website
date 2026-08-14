@@ -56,7 +56,8 @@
   overflow: clip;
   /* Tight under the fixed nav on purpose: the composition's own top edge
      is the dashboard, and any more padding reads as a band of dead space. */
-  padding: clamp(72px, 7.4vh, 104px) var(--gutter) 40px;
+  /* Same clearance as every other hero — see .ieh. */
+  padding: clamp(68px, 7vh, 94px) var(--gutter) 40px;
   /* The room's ambient light. Violet from the left where the wave is, blue
      from the ceiling on the right where the dashboard stands. */
   background:
@@ -531,6 +532,17 @@
   font-weight: 600;
   line-height: 1;
   font-variant-numeric: tabular-nums;
+}
+
+/* The count arriving. Short and small — an alarm total that swept in would
+   pull the eye off the plant, which is the thing being monitored. */
+@keyframes evhCountTick {
+  from { opacity: 0; transform: translateY(calc(-4 * var(--u))); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.evh-count-tick {
+  animation: evhCountTick 420ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .evh-count-l {
@@ -1424,55 +1436,39 @@
 }
 
 
-/* ══ LIVE TRENDS — THE MONITOR SWEEP ═════════════════════════════════════
-   A cursor sweeps left to right, exactly as on a bedside monitor: behind it
-   the trace stands, immediately ahead of it a short band is blanked where the
-   previous sweep is being overwritten, and beyond that the old trace is still
-   there.
+/* ══ LIVE TRENDS — THE DRIFT ═════════════════════════════════════════════
+   Each trace moves gently up and down on its own, the way a live tag does
+   when the process is steady. No sweep, no scroll: the sweep cursor that used
+   to run across here read as a beam passing over the chart rather than as
+   three tags behaving independently, which is what a trend screen shows.
 
-   That blank band is the whole illusion. Without it the cursor is just a
-   light passing over a static picture; with it, the line ahead visibly gives
-   way to the line behind, which is what reads as a recording being made.
+   Own phase and own period per tag — three lines rising in unison would read
+   as the chart being nudged rather than as the plant breathing. 0% and 100%
+   are the same resting state, so the loop is seamless and the global
+   reduced-motion rule lands on the composed chart.
 
-   The gap and the cursor run the SAME keyframes and the same duration, so the
-   cursor stays welded to the gap's leading edge with neither knowing about the
-   other. Both are plain `transform` translations — they composite, and no
-   path is ever recomputed.
-
-   `linear`, always. A monitor sweeps at a constant rate; any easing here
-   would read as the beam being dragged. */
-@keyframes evhSweep {
-  from { transform: translateX(-30px); }
-  to   { transform: translateX(330px); }
+   `transform` on a group, so it composites and no path is recomputed.
+   `transform-box: fill-box` makes the origin the trace's own bounding box
+   rather than the middle of the viewBox. */
+@keyframes evhTraceDrift {
+  0%, 100% { transform: translateY(0) scaleY(1); }
+  28%      { transform: translateY(-2.4px) scaleY(1.07); }
+  55%      { transform: translateY(1.1px) scaleY(0.95); }
+  78%      { transform: translateY(-0.9px) scaleY(1.03); }
 }
 
-.evh-sweep-gap,
-.evh-sweep-cursor {
-  animation: evhSweep 7s linear infinite;
-  animation-delay: 6s;
+.evh-trace-drift {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: evhTraceDrift var(--dur, 12s) ease-in-out infinite;
+  animation-delay: var(--d, 0s);
 }
 
 /* A steady glow, not an animated one — it is what makes the chart read as a
-   lit screen rather than printed ink. The sweep is the animation. */
+   lit screen rather than printed ink. The drift is the animation. */
 .evh-trace {
   filter: drop-shadow(0 0 1.6px currentColor);
   animation: evhTraceDraw 1.6s ease-out 4.6s both;
-}
-
-.evh-sweep-cursor {
-  filter: drop-shadow(0 0 3px rgba(186, 230, 253, 0.9));
-}
-
-/* With motion off there is no beam, so there must be no hole in the trace
-   either — the gap parks off-canvas and the chart reads as a full record. */
-@media (prefers-reduced-motion: reduce) {
-  .evh-sweep-gap {
-    transform: translateX(-40px);
-  }
-
-  .evh-sweep-cursor {
-    display: none;
-  }
 }
 
 /* ══ PLANT OVERVIEW — THE SCENE CYCLE ════════════════════════════════════

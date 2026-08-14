@@ -22,6 +22,25 @@
   --body-bg: #eef3f9;
   --card-bg: rgba(255, 255, 255, 0.45);
 
+  /* Navigation. The bar was white glass, which is right over a light page and
+     wrong over every page this site actually has — all of them are dark, so a
+     bright slab floated on top of the composition rather than sitting in it.
+     Dark glass instead, with the blur kept: the artwork now reads THROUGH the
+     bar, which is what makes it belong to the page. */
+  /* What shows in the 12px above the fixed nav, and anywhere else the page
+     itself is visible. Separate from --body-bg, which the footer, the mobile
+     menu and .lp-body paint deliberately and which is still the light value
+     they were built against. */
+  --page-bg: #05070f;
+
+  --nav-bg: rgba(9, 13, 30, 0.62);
+  --nav-border: rgba(148, 163, 184, 0.22);
+  --nav-link: rgba(226, 232, 240, 0.86);
+  --nav-link-strong: #ffffff;
+  --nav-panel: rgba(13, 18, 38, 0.94);
+  --nav-panel-border: rgba(148, 163, 184, 0.2);
+  --nav-panel-hover: rgba(99, 102, 241, 0.18);
+
   /* Shadows */
   --elev-1: 0 1px 2px rgba(11, 37, 69, 0.04), 0 2px 8px rgba(11, 37, 69, 0.05);
   --elev-2: 0 2px 4px rgba(11, 37, 69, 0.04), 0 8px 24px rgba(11, 37, 69, 0.07);
@@ -65,7 +84,7 @@
   /* Others */
   --surface: rgba(255, 255, 255, 0.7);
   --surface-strong: rgba(255, 255, 255, 0.86);
-  --nav-word-first: var(--navy);
+  --nav-word-first: rgba(226, 232, 240, 0.92);
   --card-blur: blur(14px) saturate(150%);
 
   /* Radius */

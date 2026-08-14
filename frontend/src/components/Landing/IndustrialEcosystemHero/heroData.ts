@@ -115,6 +115,12 @@ export interface HeroProduct {
    * Accent as a space-separated RGB triplet, not a hex string: CSS needs
    * `rgb(var(--accent-rgb) / 0.42)` for the tinted borders and fills, and
    * SVG gets `rgb(...)` from the same value — one field, both consumers.
+   *
+   * The six are a RAMP within one family — violet at the top of the column
+   * through to sky at the bottom — not six unrelated hues. Six saturated
+   * colours across the spectrum read as a toybox; six steps of one family read
+   * as a product line, while still letting the eye follow a connector to the
+   * card it belongs to.
    */
   accentRgb: string;
   /** Card top-y on the design canvas. */
@@ -129,6 +135,11 @@ export interface HeroProduct {
   elbowX?: number;
 }
 
+/* Cards are 100 tall on a 122 pitch, so 22 separates them. The pitch used to
+   be 107, which left 7 — a hairline that read as a divider rather than as
+   space, and made six cards look like one packed column. The `y` on each
+   product is that pitch applied from a start of 85, which centres the stack
+   on the canvas. */
 const PRODUCT_CARD = { x: 1394, w: 232, h: 100, elbowX: 1324 } as const;
 
 const heroProducts: HeroProduct[] = [
@@ -136,8 +147,8 @@ const heroProducts: HeroProduct[] = [
     id: 'engram',
     name: 'enGRAM',
     lines: ['Plant Knowledge', 'from Engineering Records'],
-    accentRgb: '226 77 196',
-    y: 105,
+    accentRgb: '167 139 250',
+    y: 85,
     anchor: { x: 1243, y: 262 },
     elbowX: 1362,
   },
@@ -145,40 +156,40 @@ const heroProducts: HeroProduct[] = [
     id: 'enstudio',
     name: 'enSTUDIO',
     lines: ['Drawing Intelligence', 'to Plant Configuration'],
-    accentRgb: '124 140 248',
-    y: 212,
+    accentRgb: '141 138 249',
+    y: 207,
     anchor: { x: 1246, y: 300 },
   },
   {
     id: 'engenie',
     name: 'enGENIE',
     lines: ['From Process Conditions', 'to Issue-Ready Spec'],
-    accentRgb: '34 211 238',
-    y: 320,
+    accentRgb: '119 152 249',
+    y: 329,
     anchor: { x: 1246, y: 372 },
   },
   {
     id: 'enview',
     name: 'enVIEW',
     lines: ['Modern SCADA', 'for Industrial Operations'],
-    accentRgb: '127 209 59',
-    y: 427,
+    accentRgb: '96 165 250',
+    y: 451,
     anchor: { x: 1088, y: 462 },
   },
   {
     id: 'enable',
     name: 'enABLE',
     lines: ['Process Engineering', 'Simulation & Analysis'],
-    accentRgb: '245 180 23',
-    y: 535,
+    accentRgb: '74 180 249',
+    y: 573,
     anchor: { x: 1196, y: 558 },
   },
   {
     id: 'entie',
     name: 'enTIE',
     lines: ['One Connected Layer', 'for Every System'],
-    accentRgb: '240 65 122',
-    y: 643,
+    accentRgb: '56 189 248',
+    y: 695,
     anchor: { x: 1150, y: 615 },
   },
 ];

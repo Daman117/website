@@ -26,7 +26,10 @@
   /* clip, not hidden: hidden on a full-bleed section would create a scroll
      container and take scroll ownership away from window/Lenis. */
   overflow-x: clip;
-  padding: clamp(96px, 11vh, 148px) var(--gutter) 44px;
+  /* Clears the fixed nav (66px tall, 12px from the top) and no more. It was
+     up to 148px, which left a band of empty canvas under the bar before the
+     composition began. */
+  padding: clamp(68px, 7vh, 94px) var(--gutter) 44px;
   background:
     radial-gradient(120% 88% at 62% 42%, rgba(19, 46, 100, 0.5) 0%, rgba(6, 10, 26, 0) 62%),
     linear-gradient(180deg, #05070f 0%, #060a18 46%, #04060e 100%);
@@ -114,13 +117,13 @@
   align-items: center;
   gap: calc(13 * var(--u));
   padding: 0 calc(16 * var(--u));
-  border: 1px solid rgb(var(--accent-rgb) / 0.46);
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
   border-radius: calc(10 * var(--u));
   /* Three stacked layers rather than one flat tint: an accent wash bleeding
      in from the connector edge, a soft vertical lift, then the base body.
      Reads as depth without a blur, which would cost a backdrop-filter. */
   background:
-    linear-gradient(90deg, rgb(var(--accent-rgb) / 0.2) 0%, rgb(var(--accent-rgb) / 0) 42%),
+    linear-gradient(90deg, rgb(var(--accent-rgb) / 0.12) 0%, rgb(var(--accent-rgb) / 0) 46%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.055) 0%, rgba(255, 255, 255, 0) 46%),
     linear-gradient(102deg, rgba(14, 20, 40, 0.86) 0%, rgba(7, 11, 24, 0.9) 100%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
@@ -136,7 +139,7 @@
   bottom: 22%;
   width: calc(2 * var(--u));
   border-radius: calc(2 * var(--u));
-  background: rgb(var(--accent-rgb) / 0.85);
+  background: rgb(var(--accent-rgb) / 0.75);
 }
 
 .ieh-product-icon {

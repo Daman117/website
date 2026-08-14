@@ -327,7 +327,13 @@ export const TIMING = {
 /** One full outward journey for a database ripple. */
 export const RIPPLE_PERIOD = 11;
 /** One slot of the document carousel — how long a card holds the front. */
-export const CARD_STEP = 3;
+export const CARD_STEP = 5;
+
+/** When the entrance has finished building the composition. The carousel is
+ *  held until then: sheets rotating while the graph is still arriving reads as
+ *  two unrelated things happening at once rather than one system starting up.
+ *  Must stay at or past the last entrance delay in engram-hero.css. */
+export const ENTRANCE_END = 6.4;
 /** How long a sheet takes to move between slots. Must match the duration of
  *  `eghStep` in engram-hero.css: the streams are hidden for exactly this long
  *  after each step, so a ribbon never hangs off a sheet still in transit. */

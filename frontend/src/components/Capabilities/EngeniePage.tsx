@@ -7,6 +7,8 @@ import { prefersReducedMotion } from '../../utils/motion';
 import HowItWorksScroll from './HowItWorksScroll';
 import NativeApproachScroll from './NativeApproachScroll';
 import CapabilityHero from '../Capability/Hero';
+import HeroBackground from './EngenieHero/HeroBackground';
+import HeroSystem from './EngenieHero/HeroSystem';
 import ComparisonTable from '../Capability/ComparisonTable';
 
 interface EngeniePageProps {
@@ -152,31 +154,42 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
     return () => ctx.revert();
   }, [matrixInView]);
 
+  const reduceMotion = prefersReducedMotion();
+  /* Not triggerOnce: the hero has to go quiet again once scrolled past. */
+  const { ref: heroRef, inView: heroInView } = useInView({ threshold: 0, rootMargin: '180px' });
+
   return (
     <main className="engram-page" style={{ '--accent': ACCENT, '--accent-rgb': ACCENT_RGB } as React.CSSProperties}>
 
-      {/* ── HERO (pinned parallax background — iOS-safe, see HeroShell) ── */}
-      <CapabilityHero
-        image="/engenie-hero.webp"
-        badgeText="INSTRUMENT SELECTION & SPECIFICATION"
-        titleLine1="From Process Conditions to"
-        titleLine2="An Issue-Ready Spec"
-        subText="enGENIE takes your service conditions and returns the right instrument — with the standard that justifies it, the reason every alternative was excluded, and a specification ready to issue."
-        bodyText="Selection runs as a structured, repeatable pipeline over your catalogs, datasheets and standards, so every recommendation is cited, compliant and explainable — and already matches your approved suppliers and purchasing rules by the time it reaches you."
-        chips={heroChips}
-        ctaLabel="Request a Demo"
-        onCtaClick={() => onOpenContact('Request a Demo')}
-        classes={{
-          badge: 'badge-text engenie-hero-badge-text',
-          title: 'engenie-hero-h1-text',
-          accent: 'engenie-hero-h1-accent',
-          subtitle: 'engenie-hero-sub-text',
-          body: 'engenie-hero-body-text',
-          chips: 'engenie-hero-chips',
-          chip: 'engenie-hero-chip',
-        }}
-      />
-
+      {/* ── HERO ──────────────────────────────────────────────────────
+             The photographic backdrop is gone; the wrapper scopes that removal
+             and the wave layer to THIS page, so HeroShell and CapabilityHero
+             stay shared and untouched. `image=""` stops the fetch; the CSS
+             hides the layer that would have painted it. ── */}
+      <div className="egn-hero" ref={heroRef}>
+        <HeroBackground reduceMotion={reduceMotion} active={heroInView} />
+        <HeroSystem reduceMotion={reduceMotion} active={heroInView} />
+        <CapabilityHero
+          image=""
+          badgeText="INSTRUMENT SELECTION & SPECIFICATION"
+          titleLine1="From Process Conditions to"
+          titleLine2="An Issue-Ready Spec"
+          subText="enGENIE takes your service conditions and returns the right instrument — with the standard that justifies it, the reason every alternative was excluded, and a specification ready to issue."
+          bodyText="Selection runs as a structured, repeatable pipeline over your catalogs, datasheets and standards, so every recommendation is cited, compliant and explainable — and already matches your approved suppliers and purchasing rules by the time it reaches you."
+          chips={heroChips}
+          ctaLabel="Request a Demo"
+          onCtaClick={() => onOpenContact('Request a Demo')}
+          classes={{
+            badge: 'badge-text engenie-hero-badge-text',
+            title: 'engenie-hero-h1-text',
+            accent: 'engenie-hero-h1-accent',
+            subtitle: 'engenie-hero-sub-text',
+            body: 'engenie-hero-body-text',
+            chips: 'engenie-hero-chips',
+            chip: 'engenie-hero-chip',
+          }}
+        />
+      </div>
 
       {/* ── AI FEATURES ── */}
       <section className="engram-section engram-container">

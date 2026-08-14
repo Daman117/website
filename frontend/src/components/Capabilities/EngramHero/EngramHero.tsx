@@ -44,7 +44,7 @@ import HeroKnowledgeLayer from './HeroKnowledgeLayer';
 import HeroNodes from './HeroNodes';
 import HeroStreams from './HeroStreams';
 import HeroTerrain from './HeroTerrain';
-import { CARD_MOVE, CARD_STEP } from './engramHeroData';
+import { CARD_MOVE, CARD_STEP, ENTRANCE_END } from './engramHeroData';
 import { compactLayout, desktopLayout } from './engramLayouts';
 
 /* Matches the copy/stage stacking breakpoint in engram-hero.css. Below this
@@ -92,14 +92,27 @@ const EngramHero: React.FC<EngramHeroProps> = ({
 
   useEffect(() => {
     if (reduceMotion) return;
+    let interval = 0;
     let settle = 0;
-    const t = window.setInterval(() => {
+
+    const step = () => {
       setShift((s) => s + 1);
       setStepping(true);
       settle = window.setTimeout(() => setStepping(false), CARD_MOVE * 1000);
-    }, CARD_STEP * 1000);
+    };
+
+    /* Held until the entrance has finished. Starting the interval at mount
+       meant the first sheet moved while the graph was still arriving, which
+       read as two unrelated things happening rather than one system starting.
+       The interval begins after the delay, so the opening sheet also gets a
+       full slot before it is replaced. */
+    const start = window.setTimeout(() => {
+      interval = window.setInterval(step, CARD_STEP * 1000);
+    }, ENTRANCE_END * 1000);
+
     return () => {
-      window.clearInterval(t);
+      window.clearTimeout(start);
+      window.clearInterval(interval);
       window.clearTimeout(settle);
     };
   }, [reduceMotion]);

@@ -485,7 +485,17 @@ const HeroCentralSystem: React.FC<{ layout: HeroLayout }> = ({ layout }) => {
       strokeOpacity="0.4"
       strokeWidth="0.9"
     />
-      <HubMark x={cx} y={HUB.topY + HUB.rx * 0.55} scale={(1.18 * HUB.rx) / 83} />
+      {/* Centred on the wall as it is SEEN, which is not (topY + baseY) / 2.
+          The top face is an ellipse, so its front edge hangs to topY + ry; the
+          wall path's bottom is an arc that bulges the same amount to
+          baseY + ry. The visible front therefore runs 461..555 on the desktop
+          hub, and its midpoint is a full ry below the geometric one — which is
+          why the mark sat high. */}
+      <HubMark
+        x={cx}
+        y={(HUB.topY + HUB.baseY) / 2 + HUB.ry}
+        r={Math.min(HUB.ry * 1.3, (HUB.baseY - HUB.topY) * 0.26)}
+      />
     </svg>
   );
 };

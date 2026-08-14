@@ -31,7 +31,7 @@
  * Kept apart deliberately: two animations on one property fight, and the
  * later declaration wins.
  */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Bell,
   Boxes,
@@ -60,6 +60,47 @@ import {
   trends,
 } from './enviewHeroData';
 import type { NavId } from './enviewHeroData';
+
+/* Plausible bounds per severity. Criticals are rare, others are the long
+   tail — a screen where all three roamed the same range would not read as an
+   alarm system. */
+const ALARM_RANGE: [number, number][] = [
+  [0, 4],
+  [3, 9],
+  [8, 17],
+];
+
+/**
+ * Live alarm counts.
+ *
+ * ONE count moves at a time, by one, every few seconds — because that is what
+ * an alarm list does: alarms come in and are acknowledged individually. Three
+ * numbers all jumping at once would read as a random number generator, which
+ * is exactly what it would be.
+ *
+ * Every four seconds, not every frame: no React state is touched on a
+ * animation tick, and the whole thing is one interval.
+ */
+function useLiveAlarms(reduceMotion: boolean) {
+  const [counts, setCounts] = useState<number[]>(() => alarmCounts.map((a) => a.n));
+
+  useEffect(() => {
+    if (reduceMotion) return;
+    const t = window.setInterval(() => {
+      setCounts((prev) => {
+        const i = Math.floor(Math.random() * prev.length);
+        const [lo, hi] = ALARM_RANGE[i];
+        const step = Math.random() < 0.5 ? -1 : 1;
+        const next = [...prev];
+        next[i] = Math.min(hi, Math.max(lo, prev[i] + step));
+        return next;
+      });
+    }, 4200);
+    return () => window.clearInterval(t);
+  }, [reduceMotion]);
+
+  return counts;
+}
 
 const NAV_ICON: Record<NavId, React.ComponentType<{ className?: string }>> = {
   overview: LayoutDashboard,
@@ -101,7 +142,10 @@ const Availability: React.FC<{ pct: number }> = ({ pct }) => {
   );
 };
 
-const ScadaDashboard: React.FC = () => (
+const ScadaDashboard: React.FC<{ reduceMotion: boolean }> = ({ reduceMotion }) => {
+  const live = useLiveAlarms(reduceMotion);
+
+  return (
   <div className="evh-dash" role="img" aria-label="enVIEW SCADA plant overview screen">
     <div className="evh-dash-glass">
       {/* Ambient. Both are absolutely positioned, so neither becomes a grid
@@ -182,11 +226,15 @@ const ScadaDashboard: React.FC = () => (
             <div className="evh-counts evh-in evh-in-status">
               {alarmCounts.map((a, i) => (
                 <div key={a.label} className="evh-count">
+                  {/* Keyed on the value, so a change remounts the span and
+                      its arrival animation runs again — the number is seen to
+                      update rather than silently swapping. */}
                   <span
-                    className={`evh-count-n${i === 0 ? ' evh-live' : ''}`}
+                    key={live[i]}
+                    className={`evh-count-n evh-count-tick${i === 0 ? ' evh-live' : ''}`}
                     style={{ color: a.color }}
                   >
-                    {a.n}
+                    {live[i]}
                   </span>
                   <span className="evh-count-l">{a.label}</span>
                 </div>
@@ -308,6 +356,7 @@ const ScadaDashboard: React.FC = () => (
       <span className="evh-stand-glow" />
     </div>
   </div>
-);
+  );
+};
 
 export default ScadaDashboard;

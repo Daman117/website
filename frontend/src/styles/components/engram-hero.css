@@ -41,7 +41,8 @@
      BOTH axes now — the terrain deliberately overflows its layer to reach the
      viewport edges, and the section is where that spill stops. */
   overflow: clip;
-  padding: clamp(104px, 12vh, 156px) var(--gutter) 48px;
+  /* Same clearance as every other hero — see .ieh. */
+  padding: clamp(68px, 7vh, 94px) var(--gutter) 48px;
   background:
     radial-gradient(112% 84% at 66% 40%, rgba(24, 40, 92, 0.5) 0%, rgba(6, 10, 26, 0) 62%),
     radial-gradient(70% 60% at 18% 78%, rgba(76, 29, 149, 0.28) 0%, rgba(6, 10, 26, 0) 70%),
@@ -119,10 +120,10 @@
   display: inline-block;
   margin-bottom: 16px;
   padding: var(--pill-padding);
-  border: 1px solid rgba(253, 224, 138, 0.34);
+  border: 1px solid rgba(125, 211, 252, 0.3);
   border-radius: 999px;
-  background: rgba(253, 176, 34, 0.12);
-  color: #fde68a;
+  background: rgba(56, 189, 248, 0.12);
+  color: #bae6fd;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -140,7 +141,7 @@
 }
 
 .egh-accent {
-  color: #FDB022;
+  color: #7dd3fc;
 }
 
 .egh-sub {
@@ -167,10 +168,10 @@
 
 .egh-chip {
   padding: 6px 13px;
-  border: 1px solid rgba(253, 224, 138, 0.32);
+  border: 1px solid rgba(125, 211, 252, 0.28);
   border-radius: 999px;
-  background: rgba(253, 176, 34, 0.14);
-  color: #fde68a;
+  background: rgba(56, 189, 248, 0.11);
+  color: #bae6fd;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.3px;
@@ -336,7 +337,7 @@
   stroke-dashoffset: 0;
   opacity: 1;
   transition: stroke-width 260ms ease, stroke 260ms ease, opacity 0s,
-    stroke-dashoffset 1100ms cubic-bezier(0.22, 1, 0.36, 1);
+    stroke-dashoffset 2000ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .egh-layer-streams.is-detached .egh-ribbon,
@@ -468,15 +469,27 @@
   animation: eghEnterGroup 1400ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
-/* The sequence. Slow on purpose — the point is that the build is legible. */
-.egh-layer-terrain { animation-delay: 0.15s; }
-.egh-in-platform   { animation-delay: 0.95s; }
-.egh-in-light      { animation-delay: 1.75s; }
-.egh-layer-docs    { animation-delay: 2.45s; }
-.egh-layer-streams { animation-delay: 3.25s; }
-.egh-in-hub        { animation-delay: 3.95s; }
-.egh-in-links      { animation-delay: 4.55s; }
-.egh-layer-nodes   { animation-delay: 5.15s; }
+/* The sequence. Tightened — the build was legible but the graph took over six
+   seconds to arrive, and the last thing to appear is the thing the hero is
+   about. Same order, about 25% quicker. */
+.egh-layer-terrain { animation-delay: 0.1s; }
+.egh-in-platform   { animation-delay: 0.7s; }
+.egh-in-light      { animation-delay: 1.3s; }
+.egh-layer-docs    { animation-delay: 1.85s; }
+.egh-layer-streams { animation-delay: 2.5s; }
+.egh-in-hub        { animation-delay: 3.05s; }
+.egh-in-links      { animation-delay: 3.5s; }
+
+/* The nodes are the exception: the LAYER carries no delay of its own, because
+   each node now arrives on its own. Ten at 160ms apart is quick enough to
+   feel like one gesture and slow enough to see them count in — the block fade
+   this replaced gave no sense of a graph being populated. */
+.egh-layer-nodes { animation-delay: 3.9s; animation-duration: 500ms; }
+
+.egh-cap-node {
+  animation: eghEnterGroup 620ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: calc(4s + var(--i, 0) * 160ms);
+}
 
 /* ══ ORCHESTRATION ═══════════════════════════════════════════════════════
    One master cycle turns the separate motions into a single sequence:
