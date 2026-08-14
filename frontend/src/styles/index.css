@@ -17,6 +17,7 @@
 @import "./components/native.css";
 @import "./components/industrial-hero.css";
 @import "./components/engram-hero.css";
+@import "./components/enview-hero.css";
 
 @import "./pages/landing.css";
 @import "./pages/about.css";

@@ -6,7 +6,7 @@ import { useInView } from 'react-intersection-observer';
 import gsap from 'gsap';
 import HowItWorksScroll from './HowItWorksScroll';
 import NativeApproachScroll from './NativeApproachScroll';
-import CapabilityHero from '../Capability/Hero';
+import EnviewHero from './EnviewHero/EnviewHero';
 import FlashIcon from '../Capability/FlashIcon';
 import FeatureCard from '../Capability/FeatureCard';
 
@@ -215,9 +215,9 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         @keyframes bannerFade   { from { opacity:0; transform:scale(0.98); } to { opacity:1; transform:scale(1); } }
       `}</style>
 
-      {/* ── HERO (pinned parallax background — iOS-safe, see HeroShell) ── */}
-      <CapabilityHero
-        image="/enview-hero.webp"
+      {/* ── HERO — real HTML/SVG composition (EnviewHero/), not the shared
+             photographic CapabilityHero. Content props mirror the old call. ── */}
+      <EnviewHero
         badgeText="NATIVE PERFORMANCE. REAL-TIME VISIBILITY. BUILT FOR APPLE SILICON."
         titleLine1="Modern SCADA for"
         titleLine2="Industrial & Manufacturing"
@@ -226,17 +226,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         chips={heroChips}
         ctaLabel="Request a Demo"
         onCtaClick={() => onOpenContact('Request a Demo')}
-        classes={{
-          badge: 'badge-text enview-hero-badge-text',
-          title: 'enview-hero-h1-text',
-          accent: 'enview-hero-h1-accent',
-          subtitle: 'enview-hero-sub-text',
-          body: 'enview-hero-body-text',
-          chips: 'enview-hero-chips',
-          chip: 'enview-hero-chip',
-        }}
       />
-
 
       {/* ── CHALLENGE ── */}
       <section ref={challengeRef} className="engram-section engram-container">
