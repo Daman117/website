@@ -18,7 +18,10 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="enxco — Industrial Intelligence by enSAR Solutions">
     <meta name="twitter:image" content="https://enx.ensarsolutions.com/og-image.jpg">
-    <link rel="preload" as="image" href="/bg-image.webp" fetchpriority="high">
+    <!-- The homepage hero is now an inline HTML/SVG composition, not a photo,
+         so /bg-image.webp is no longer requested — preloading it at high
+         priority just competed with the real LCP work. The file is kept in
+         public/ in case a future page wants it. -->
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

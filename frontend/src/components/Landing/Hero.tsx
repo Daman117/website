@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { heroChips } from '../../data/v2';
-import HeroShell from '../HeroShell';
+import IndustrialEcosystemHero from './IndustrialEcosystemHero/IndustrialEcosystemHero';
 import Ticker from './shared/Ticker';
 
 // ─────────────────────────────────────────────────────────────────
 // ── SECTION 1: HERO
-//    Same treatment as the enVIEW capability-page hero: a bounded,
-//    scoped background-attachment:fixed photo, a bottom-anchored dark
-//    gradient for legibility, and a single-column text block pinned
-//    to the bottom of the image.
+//    The photographic HeroShell treatment has been replaced here by
+//    IndustrialEcosystemHero — a real HTML/SVG composition of the plant,
+//    its data sources, the six products and the systems enxco connects
+//    out to. HeroShell itself is untouched and still serves the six
+//    product-page heroes; only the homepage moved.
+//
+//    The copy below is unchanged and still passed as children, so this
+//    component's props and text stay exactly as they were.
 // ─────────────────────────────────────────────────────────────────
 // Fires once per session (module state survives SPA nav, resets on refresh):
 // the ticker slides in once the intro text has finished revealing. Scroll is
@@ -32,7 +36,7 @@ const Hero: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenConta
   }, []);
 
   return (
-  <HeroShell id="hero" image="/bg-image.webp" contentClassName="section" after={<Ticker visible={introDone} />}>
+    <IndustrialEcosystemHero id="hero" after={<Ticker visible={introDone} />}>
       {/* Desktop — full staged reveal, both trees always render; a media
           query decides which is visible (no JS branch, no first-paint flash). */}
       <div className="u-hide-mobile">
@@ -91,8 +95,7 @@ const Hero: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenConta
           <button className="button-text btn-outline" onClick={() => onOpenContact('Request a Pilot')}>Request a Pilot</button>
         </div>
       </div>
-
-  </HeroShell>
+    </IndustrialEcosystemHero>
   );
 };
 

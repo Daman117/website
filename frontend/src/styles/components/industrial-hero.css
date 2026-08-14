@@ -1,0 +1,721 @@
+/* ── INDUSTRIAL ECOSYSTEM HERO ──────────────────────────────────────────
+   Homepage hero only. Scoped entirely under .ieh so nothing here can reach
+   the shared HeroShell used by the six product-page heroes.
+
+   THE UNIT SYSTEM
+   ---------------
+   The whole composition is authored on one fixed 1660x880 design canvas
+   (see heroData.ts). `--u` is exactly one canvas pixel:
+
+       --u: calc(100cqw / 1660)
+
+   so `calc(232 * var(--u))` is 232 canvas px whatever the stage measures.
+   The SVG layers use the same numbers as their viewBox, which is why
+   connector paths land on card borders precisely rather than approximately —
+   no measuring, no ResizeObserver, no JS layout at all.
+
+   `container-type: inline-size` sits on .ieh-inner, NOT on .ieh-stage:
+   container query units resolve against the nearest *ancestor* container, so
+   an element cannot size itself from its own container.
+
+   The composition above is the resting state. Everything in the ANIMATION
+   block further down moves around it and returns to it exactly. */
+
+.ieh {
+  position: relative;
+  /* clip, not hidden: hidden on a full-bleed section would create a scroll
+     container and take scroll ownership away from window/Lenis. */
+  overflow-x: clip;
+  padding: clamp(96px, 11vh, 148px) var(--gutter) 44px;
+  background:
+    radial-gradient(120% 88% at 62% 42%, rgba(19, 46, 100, 0.5) 0%, rgba(6, 10, 26, 0) 62%),
+    linear-gradient(180deg, #05070f 0%, #060a18 46%, #04060e 100%);
+}
+
+.ieh-inner {
+  position: relative;
+  width: 100%;
+  max-width: 1520px;
+  margin: 0 auto;
+  container-type: inline-size;
+}
+
+/* --canvas-w / --canvas-h are set inline from the active layout, so one rule
+   serves both coordinate systems and the aspect box can never disagree with
+   the SVG viewBox. */
+.ieh-stage {
+  --u: calc(100cqw / var(--canvas-w));
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--canvas-w) / var(--canvas-h);
+}
+
+/* Every SVG layer shares the stage box and the same viewBox, so they stack
+   in perfect register. */
+.ieh-layer {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.ieh-layer-backdrop { z-index: 0; }
+.ieh-layer-core     { z-index: 1; }
+.ieh-layer-links    { z-index: 2; }
+
+/* Card layers sit above the artwork; connectors terminate under their
+   borders rather than crossing them. */
+.ieh-cards {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ── Source documents (top row) ─────────────────────────────────────── */
+.ieh-source {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(56, 189, 248, 0.24);
+  border-radius: calc(9 * var(--u));
+  background:
+    linear-gradient(160deg, rgba(23, 45, 84, 0.62) 0%, rgba(8, 14, 30, 0.72) 100%);
+}
+
+.ieh-source-label {
+  position: absolute;
+  bottom: calc(100% + 11 * var(--u));
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: calc(16 * var(--u));
+  font-weight: 500;
+  letter-spacing: calc(0.2 * var(--u));
+  color: rgba(228, 240, 255, 0.88);
+}
+
+.ieh-source-icon {
+  width: calc(42 * var(--u));
+  height: calc(42 * var(--u));
+  color: #7dd3fc;
+}
+
+/* ── Products (right column) ────────────────────────────────────────── */
+.ieh-product {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: calc(13 * var(--u));
+  padding: 0 calc(16 * var(--u));
+  border: 1px solid rgb(var(--accent-rgb) / 0.42);
+  border-radius: calc(10 * var(--u));
+  background:
+    linear-gradient(102deg, rgb(var(--accent-rgb) / 0.11) 0%, rgba(8, 12, 26, 0.74) 58%);
+}
+
+.ieh-product-icon {
+  flex: none;
+  display: flex;
+  width: calc(34 * var(--u));
+  height: calc(34 * var(--u));
+  color: rgb(var(--accent-rgb));
+}
+
+.ieh-product-icon > svg {
+  width: 100%;
+  height: 100%;
+}
+
+.ieh-product-text {
+  display: flex;
+  flex-direction: column;
+  gap: calc(4 * var(--u));
+  min-width: 0;
+}
+
+.ieh-product-name {
+  font-family: "Space Grotesk", "DM Sans", sans-serif;
+  font-size: calc(18.5 * var(--u));
+  font-weight: 700;
+  letter-spacing: calc(0.2 * var(--u));
+  color: rgb(var(--accent-rgb));
+}
+
+.ieh-product-desc {
+  font-size: calc(12.5 * var(--u));
+  line-height: 1.42;
+  color: rgba(214, 228, 248, 0.68);
+}
+
+/* ── Connected systems (bottom row) ─────────────────────────────────── */
+.ieh-system {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(12 * var(--u));
+  border: 1px solid rgba(148, 178, 220, 0.2);
+  border-radius: calc(9 * var(--u));
+  background: rgba(9, 15, 31, 0.62);
+}
+
+.ieh-system-icon {
+  width: calc(30 * var(--u));
+  height: calc(30 * var(--u));
+  color: rgba(206, 227, 255, 0.84);
+}
+
+.ieh-system-label {
+  font-size: calc(12.5 * var(--u));
+  font-weight: 500;
+  letter-spacing: calc(0.1 * var(--u));
+  white-space: nowrap;
+  color: rgba(228, 240, 255, 0.88);
+}
+
+/* ── Hero copy ──────────────────────────────────────────────────────────
+   Occupies the region the composition deliberately leaves dark. Sized in
+   normal CSS units, NOT in --u: the artwork should scale with the stage,
+   the reading copy should not. */
+.ieh-copy {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 4;
+  width: min(38%, 600px);
+}
+
+/* ══ ANIMATION ═══════════════════════════════════════════════════════════
+   All of it. No JS animation library, no rAF, no per-frame React state.
+
+   WHY PURE CSS + SMIL, with framer-motion and GSAP both already installed:
+   the entire brief is "fixed sequence, fixed period, repeat forever". That
+   is `animation-delay` against one shared duration. A JS timeline would add
+   a scheduler, a cleanup path, and a main-thread cost to express the same
+   thing, and would then need its own prefers-reduced-motion branch because
+   inline styles bypass the global CSS rule. framer-motion stays where it is
+   already earning its place (route transitions, state-driven changes); it
+   is not needed to make a line pulse on a timer.
+
+   THE ONE INVARIANT: every looping keyframe's 0% AND 100% is the element's
+   resting style. That buys three things at once —
+     · the loop is seamless, with no hard reset;
+     · the hero settles to the approved static composition exactly;
+     · index.css's global prefers-reduced-motion rule (which collapses every
+       animation to 0.001ms / 1 iteration) lands on that same resting style,
+       so reduced motion needs no separate stylesheet.
+
+   Entrance animations use `translate`; loop animations use `transform`.
+   They are separate CSS properties, so both can run on one element at the
+   same time without the later declaration winning. */
+
+.ieh {
+  --loop: 20s;
+  --enter-end: 4.2s;
+  --core-phase: 4.4s;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* NOTE on delays: the `animation` shorthand RESETS animation-delay to 0s.
+   Elements with a single looping animation therefore carry their delay
+   inside the shorthand; elements running an entrance AND a loop declare a
+   two-value `animation-delay` longhand *after* the shorthand, so `--enter`
+   never leaks onto the loop clock. Declaring a delay before a shorthand
+   silently does nothing. */
+
+/* ── Off-screen: stop everything ──────────────────────────────────────
+   One class toggle from a single IntersectionObserver. SMIL ignores
+   animation-play-state, so HeroConnections pauses that separately via
+   pauseAnimations() on the same signal. */
+.ieh-idle *,
+.ieh-idle {
+  animation-play-state: paused !important;
+}
+
+/* ── Entrance keyframes (one-shot) ──────────────────────────────────── */
+@keyframes iehFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes iehInDown {
+  from { opacity: 0; translate: 0 -9px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+@keyframes iehInUp {
+  from { opacity: 0; translate: 0 11px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+@keyframes iehInRight {
+  from { opacity: 0; translate: 16px 0; }
+  to   { opacity: 1; translate: 0 0; }
+}
+@keyframes iehDraw {
+  from { stroke-dashoffset: 1; }
+  to   { stroke-dashoffset: 0; }
+}
+
+/* Backdrop and central system resolve first — the system exists, then the
+   things that feed it arrive. */
+.ieh-layer-backdrop { animation: iehFade 1500ms var(--ease-out) 100ms both; }
+.ieh-layer-core     { animation: iehFade 1200ms var(--ease-out) 250ms both; }
+
+/* ── Loop keyframes ─────────────────────────────────────────────────────
+   Windows are percentages of --loop (20s): 3% = 600ms, 8% = 1.6s. */
+
+@keyframes iehSourceActive {
+  0%, 100% { border-color: rgba(56, 189, 248, 0.24); transform: translateY(0); }
+  3%       { border-color: rgba(125, 211, 252, 0.72); transform: translateY(-2px); }
+  8%       { border-color: rgba(56, 189, 248, 0.24); transform: translateY(0); }
+}
+@keyframes iehIconActive {
+  0%, 100% { color: #7dd3fc; }
+  3%       { color: #e0f2fe; }
+  8%       { color: #7dd3fc; }
+}
+@keyframes iehProductActive {
+  0%, 100% {
+    border-color: rgb(var(--accent-rgb) / 0.42);
+    box-shadow: 0 0 0 1px rgb(var(--accent-rgb) / 0);
+    transform: translateX(0);
+  }
+  3.5% {
+    border-color: rgb(var(--accent-rgb) / 0.95);
+    box-shadow: 0 0 0 1px rgb(var(--accent-rgb) / 0.35);
+    transform: translateX(-3px);
+  }
+  9% {
+    border-color: rgb(var(--accent-rgb) / 0.42);
+    box-shadow: 0 0 0 1px rgb(var(--accent-rgb) / 0);
+    transform: translateX(0);
+  }
+}
+@keyframes iehSystemActive {
+  0%, 100% { border-color: rgba(148, 178, 220, 0.2); transform: translateY(0); }
+  3%       { border-color: rgba(125, 211, 252, 0.6); transform: translateY(-2px); }
+  8%       { border-color: rgba(148, 178, 220, 0.2); transform: translateY(0); }
+}
+/* Source links carry a gradient stroke, so a width swell reads better than
+   an opacity change there. */
+@keyframes iehLinkPulseSource {
+  0%, 100% { stroke-width: 1.3; }
+  3%       { stroke-width: 2.3; }
+  8%       { stroke-width: 1.3; }
+}
+@keyframes iehLinkPulseProduct {
+  0%, 100% { stroke-opacity: 0.72; stroke-width: 1.4; }
+  3.5%     { stroke-opacity: 1;    stroke-width: 2.2; }
+  9%       { stroke-opacity: 0.72; stroke-width: 1.4; }
+}
+@keyframes iehLinkPulseSystem {
+  0%, 100% { stroke-opacity: 0.62; }
+  3%       { stroke-opacity: 1; }
+  8%       { stroke-opacity: 0.62; }
+}
+@keyframes iehNodeActive {
+  0%, 100% { transform: scale(1); }
+  3%       { transform: scale(1.5); }
+  8%       { transform: scale(1); }
+}
+/* Resting state is invisible, so this adds nothing to the static design. */
+@keyframes iehHalo {
+  0%       { opacity: 0;    transform: scale(1); }
+  0.6%     { opacity: 0.65; transform: scale(1); }
+  7%       { opacity: 0;    transform: scale(3.2); }
+  100%     { opacity: 0;    transform: scale(1); }
+}
+
+/* ── Source cards ───────────────────────────────────────────────────── */
+.ieh-source {
+  animation:
+    iehInDown 900ms var(--ease-out) var(--enter) backwards,
+    iehSourceActive var(--loop) ease-in-out infinite;
+  animation-delay: var(--enter), calc(var(--enter-end) + var(--phase));
+}
+.ieh-source-icon {
+  animation: iehIconActive var(--loop) ease-in-out calc(var(--enter-end) + var(--phase)) infinite;
+}
+
+/* ── Product cards ──────────────────────────────────────────────────── */
+.ieh-product {
+  animation:
+    iehInRight 950ms var(--ease-out) var(--enter) backwards,
+    iehProductActive var(--loop) ease-in-out infinite;
+  animation-delay: var(--enter), calc(var(--enter-end) + var(--phase));
+}
+
+/* ── System cards ───────────────────────────────────────────────────── */
+.ieh-system {
+  animation:
+    iehInUp 900ms var(--ease-out) var(--enter) backwards,
+    iehSystemActive var(--loop) ease-in-out infinite;
+  animation-delay: var(--enter), calc(var(--enter-end) + var(--phase));
+}
+
+/* ── Connection paths ───────────────────────────────────────────────── */
+.ieh-link {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+.ieh-link-source {
+  animation:
+    iehDraw 950ms var(--ease-out) var(--enter) backwards,
+    iehLinkPulseSource var(--loop) ease-in-out infinite;
+  animation-delay: var(--enter), calc(var(--enter-end) + var(--phase));
+}
+.ieh-link-product {
+  animation:
+    iehDraw 1000ms var(--ease-out) var(--enter) backwards,
+    iehLinkPulseProduct var(--loop) ease-in-out infinite;
+  animation-delay: var(--enter), calc(var(--enter-end) + var(--phase));
+}
+/* Real-unit dashes (see HeroConnections). 85 = 10 × the 8.5-unit dash
+   period, so the slide loops seamlessly, and because the units are real the
+   dots travel at the same physical speed on every line regardless of its
+   length. */
+@keyframes iehDotFlow {
+  from { stroke-dashoffset: 85; }
+  to   { stroke-dashoffset: 0; }
+}
+.ieh-link-system {
+  stroke-dashoffset: 0;
+  animation:
+    iehFade 700ms var(--ease-out) var(--enter) backwards,
+    iehDotFlow 9s linear var(--enter-end) infinite,
+    iehLinkPulseSystem var(--loop) ease-in-out infinite;
+  animation-delay: var(--enter), var(--enter-end), calc(var(--enter-end) + var(--phase));
+}
+
+/* ── Endpoint nodes ─────────────────────────────────────────────────── */
+.ieh-link-node,
+.ieh-node-halo {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.ieh-link-node {
+  animation:
+    iehFade 600ms var(--ease-out) var(--enter) backwards,
+    iehNodeActive var(--loop) ease-in-out infinite;
+  animation-delay: var(--enter), calc(var(--enter-end) + var(--phase));
+}
+.ieh-node-halo {
+  opacity: 0;
+  animation: iehHalo var(--loop) ease-out calc(var(--enter-end) + var(--phase)) infinite;
+}
+
+/* ── Central system ─────────────────────────────────────────────────────
+   The core is the one thing with continuous idle motion. Everything here
+   returns to its authored stroke values, which differ per element — hence
+   four small keyframes rather than one shared one. */
+@keyframes iehCoreRing {
+  0%, 100% { stroke-opacity: 0.85; stroke-width: 2; }
+  5%       { stroke-opacity: 1;    stroke-width: 2.9; }
+  13%      { stroke-opacity: 0.85; stroke-width: 2; }
+}
+@keyframes iehCoreRingHalo {
+  0%, 100% { stroke-opacity: 0.22; stroke-width: 6; }
+  5%       { stroke-opacity: 0.5;  stroke-width: 9; }
+  13%      { stroke-opacity: 0.22; stroke-width: 6; }
+}
+@keyframes iehHubRing {
+  0%, 100% { stroke-opacity: 0.6; stroke-width: 1.3; }
+  5%       { stroke-opacity: 1;   stroke-width: 2; }
+  13%      { stroke-opacity: 0.6; stroke-width: 1.3; }
+}
+@keyframes iehCoreRim {
+  0%, 100% { stroke-opacity: 0.7; stroke-width: 1.6; }
+  5%       { stroke-opacity: 1;   stroke-width: 2.3; }
+  13%      { stroke-opacity: 0.7; stroke-width: 1.6; }
+}
+/* Slow idle breath under the hub — the only motion that runs on its own
+   clock, so the core never looks switched off between cycles. */
+@keyframes iehHubBreath {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.72; }
+}
+
+.ieh-core-ring      { animation: iehCoreRing     var(--loop) ease-in-out calc(var(--enter-end) + var(--core-phase)) infinite; }
+.ieh-core-ring-halo { animation: iehCoreRingHalo var(--loop) ease-in-out calc(var(--enter-end) + var(--core-phase)) infinite; }
+.ieh-hub-ring       { animation: iehHubRing      var(--loop) ease-in-out calc(var(--enter-end) + var(--core-phase)) infinite; }
+.ieh-core-rim       { animation: iehCoreRim      var(--loop) ease-in-out calc(var(--enter-end) + var(--core-phase)) infinite; }
+.ieh-hub-halo       { animation: iehHubBreath 7s ease-in-out 1s infinite; }
+
+/* ══ INTERACTION ═════════════════════════════════════════════════════════
+   Hovering or focusing a card reveals its relationship to the ecosystem.
+   Nothing here creates new geometry — it restyles the paths that are already
+   drawn.
+
+   TWO RULES DECIDED THE PROPERTY CHOICES BELOW:
+
+   1. A running CSS animation outranks any normal declaration. The loop
+      already animates border-color / transform / stroke-width /
+      stroke-opacity, so highlighting through those would simply lose. The
+      highlight therefore works in properties the loop does NOT touch —
+      `opacity`, `background`, `box-shadow`, `stroke` (colour) — and reaches
+      for !important only where the brief specifically asks for a heavier
+      line, which is the one case that cannot be expressed another way.
+
+   2. Quietening the rest works because the entrance animations use
+      fill-mode `backwards`, not `forwards`. `forwards` would pin opacity:1
+      from the keyframe and outrank these rules permanently.
+
+   Inactive elements are dimmed, never hidden — the ecosystem has to stay
+   readable while one strand of it is emphasised. */
+
+.ieh-source,
+.ieh-product,
+.ieh-system,
+.ieh-core-hit {
+  /* .ieh-cards is pointer-events:none so the artwork never eats a click;
+     the cards themselves opt back in. */
+  pointer-events: auto;
+}
+
+.ieh-core-hit {
+  position: absolute;
+  z-index: 2;
+}
+
+.ieh-product {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Transitions are on the highlight properties only, so they can never
+   interfere with the loop's own animated properties. */
+.ieh-source,
+.ieh-system,
+.ieh-link,
+.ieh-link-system,
+.ieh-link-node {
+  transition: opacity 220ms ease, background 220ms ease, box-shadow 220ms ease;
+}
+
+.ieh-product {
+  transition: opacity 220ms ease, background 220ms ease, box-shadow 220ms ease;
+}
+
+/* ── Quieten the unrelated ──────────────────────────────────────────── */
+.ieh-stage[data-active] .ieh-source:not(.is-active),
+.ieh-stage[data-active] .ieh-system:not(.is-active) {
+  opacity: 0.5;
+}
+
+.ieh-stage[data-active] .ieh-product:not(.is-active) {
+  opacity: 0.55;
+}
+
+.ieh-stage[data-active] .ieh-link:not(.is-active),
+.ieh-stage[data-active] .ieh-link-system:not(.is-active),
+.ieh-stage[data-active] .ieh-link-node:not(.is-active) {
+  opacity: 0.35;
+}
+
+/* Hovering the core is about the whole network, so nothing is dimmed there —
+   the links lift instead. */
+/* :not(.is-active) is carried here purely to MATCH the specificity of the
+   dim rules above (each has an extra class from its own :not), so that
+   source order decides the winner rather than an accidental 3-vs-4. */
+.ieh-stage[data-active="core"] .ieh-source:not(.is-active),
+.ieh-stage[data-active="core"] .ieh-product:not(.is-active),
+.ieh-stage[data-active="core"] .ieh-system:not(.is-active),
+.ieh-stage[data-active="core"] .ieh-link:not(.is-active),
+.ieh-stage[data-active="core"] .ieh-link-system:not(.is-active),
+.ieh-stage[data-active="core"] .ieh-link-node:not(.is-active) {
+  opacity: 1;
+}
+
+/* ── Emphasise the active strand ────────────────────────────────────── */
+.ieh-source.is-active {
+  background: linear-gradient(160deg, rgba(38, 76, 134, 0.85) 0%, rgba(12, 22, 44, 0.85) 100%);
+  box-shadow: 0 0 0 1px rgba(125, 211, 252, 0.55);
+}
+
+.ieh-system.is-active {
+  background: rgba(18, 30, 56, 0.85);
+  box-shadow: 0 0 0 1px rgba(125, 211, 252, 0.45);
+}
+
+/* NOT box-shadow: the loop's iehProductActive keyframe animates box-shadow,
+   and a running animation beats a normal declaration, so a shadow ring here
+   is silently discarded. outline is untouched by the loop and, unlike a
+   border, costs no layout. */
+.ieh-product.is-active {
+  background: linear-gradient(102deg, rgb(var(--accent-rgb) / 0.24) 0%, rgba(10, 15, 32, 0.82) 62%);
+  outline: 1px solid rgb(var(--accent-rgb) / 0.8);
+  outline-offset: -1px;
+}
+
+/* The one place !important is warranted: the brief asks the active line to
+   read heavier, and stroke-width is owned by the running loop keyframe. */
+.ieh-link.is-active,
+.ieh-link-system.is-active {
+  opacity: 1;
+  stroke-width: 2.6 !important;
+}
+
+.ieh-link-node.is-active {
+  opacity: 1;
+  r: 5;
+}
+
+/* Core hover: strengthen the centre without scaling or spinning it. */
+.ieh-stage[data-active="core"] .ieh-core-ring,
+.ieh-stage[data-active="core"] .ieh-hub-ring {
+  stroke: #f0abfc;
+}
+
+.ieh-stage[data-active="core"] .ieh-core-rim {
+  stroke: #67e8f9;
+}
+
+/* ── Focus ──────────────────────────────────────────────────────────────
+   Matches the site convention (2px solid + --focus-ring-offset), but in a
+   light blue: var(--primary) is #1f5fe0, which has poor contrast against
+   this near-black hero. */
+.ieh-product:focus-visible {
+  outline: 2px solid #7dd3fc;
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* ── Touch ──────────────────────────────────────────────────────────────
+   Card handlers already ignore pointerType 'touch' so no highlight can get
+   stranded. This removes the tap flash on top. */
+@media (hover: none) {
+  .ieh-source,
+  .ieh-product,
+  .ieh-system {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* ── Ticker band ────────────────────────────────────────────────────────
+   The Ticker still renders inside the hero, unchanged. Its own rules are
+   light-theme (`var(--border)` = #dce3ee), which on this near-black hero
+   read as two bright rules across the page. Retinted here, scoped to .ieh,
+   rather than editing the shared ticker CSS the rest of the site uses. */
+.ieh .ticker-wrap {
+  border-top-color: rgba(148, 178, 220, 0.16);
+  border-bottom-color: rgba(148, 178, 220, 0.16);
+}
+
+/* ══ RESPONSIVE ══════════════════════════════════════════════════════════
+   Below 1280px the component mounts the COMPACT layout (a 340x916 tall
+   column with its own card placements and its own connection topology) and
+   the copy moves above it. This is not the desktop hero shrunk: at phone
+   width the desktop canvas would put `--u` near 0.2, rendering 16px labels
+   at 3px.
+
+   1280px is also where the side-by-side arrangement stops working
+   mechanically: the desktop stage is aspect-locked, so its height falls with
+   viewport width while the copy's height does not. Below that the absolutely
+   centred copy overflows the stage, pushing the headline under the fixed nav.
+
+   The compact stage is width-capped and centred. Uncapped, a 0.37 aspect
+   column stretched to tablet width would be over 2000px tall. */
+@media (max-width: 1279px) {
+  .ieh {
+    padding-top: clamp(88px, 9vh, 120px);
+  }
+
+  .ieh-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .ieh-copy {
+    position: static;
+    order: 1;
+    width: 100%;
+    max-width: 640px;
+    transform: none;
+  }
+
+  .ieh-stage {
+    order: 2;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  /* cqw resolves against .ieh-inner, which is still full width here, so --u
+     has to be re-derived from the capped stage instead. */
+  .ieh-stage {
+    --u: calc(min(100cqw, 400px) / var(--canvas-w));
+  }
+}
+
+/* ── Compact card styling ────────────────────────────────────────────────
+   Same components, different proportions. The source label moves inside the
+   card (stacked under its icon) because a 3x2 grid has no room for labels
+   floating above each cell. */
+.ieh--compact .ieh-source {
+  flex-direction: column;
+  gap: calc(6 * var(--u));
+  border-radius: calc(8 * var(--u));
+}
+
+.ieh--compact .ieh-source-label {
+  position: static;
+  transform: none;
+  bottom: auto;
+  left: auto;
+  font-size: calc(12 * var(--u));
+}
+
+.ieh--compact .ieh-source-icon {
+  width: calc(26 * var(--u));
+  height: calc(26 * var(--u));
+}
+
+.ieh--compact .ieh-product {
+  gap: calc(11 * var(--u));
+  padding: 0 calc(13 * var(--u));
+  border-radius: calc(9 * var(--u));
+}
+
+.ieh--compact .ieh-product-icon {
+  width: calc(26 * var(--u));
+  height: calc(26 * var(--u));
+}
+
+.ieh--compact .ieh-product-name {
+  font-size: calc(15 * var(--u));
+}
+
+.ieh--compact .ieh-product-desc {
+  font-size: calc(10.5 * var(--u));
+  line-height: 1.36;
+}
+
+.ieh--compact .ieh-system {
+  gap: calc(7 * var(--u));
+  border-radius: calc(7 * var(--u));
+}
+
+.ieh--compact .ieh-system-icon {
+  width: calc(20 * var(--u));
+  height: calc(20 * var(--u));
+}
+
+/* "Other Systems" is far wider than a 62-unit card at any legible size, so
+   compact labels wrap instead of nowrapping past the card edge. */
+.ieh--compact .ieh-system-label {
+  font-size: calc(9.5 * var(--u));
+  white-space: normal;
+  text-align: center;
+  line-height: 1.15;
+  padding: 0 calc(3 * var(--u));
+}
+
+/* The Ticker's -40px pull is tuned for the desktop hero's bottom padding; on
+   the compact stage it drags the bar up over the system card row. */
+.ieh--compact .ticker-wrap {
+  margin-top: 8px;
+}

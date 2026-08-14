@@ -4,7 +4,7 @@ enxco contact-form backend.
 A small FastAPI service that receives contact-form submissions from the
 website and emails them to the team via SMTP.
 
-Run:
+Run: 
     cd backend
     python -m venv .venv && .venv\\Scripts\\activate   (Windows)
     pip install -r requirements.txt
