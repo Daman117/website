@@ -3,7 +3,7 @@
   margin-bottom: 8px;
 }
 
-.how-desc { color: var(--t4); margin: 0; }
+.how-desc { color: var(--text-muted); margin: 0; }
 
 .engram-card.how-video-wrap {
   margin-top: 48px;
@@ -46,17 +46,17 @@
 .how-impact-label {
   font-size: 17px;
   font-weight: 700;
-  color: var(--t1);
+  color: var(--text-primary);
   margin-bottom: 6px;
 }
 
 .how-impact-text {
   font-size: 13px;
-  color: var(--t4);
+  color: var(--text-muted);
 }
 
 .how-impact-strong {
-  color: var(--t1);
+  color: var(--text-primary);
 }
 
 .how-conn-wrap { flex: 0 0 50px; }

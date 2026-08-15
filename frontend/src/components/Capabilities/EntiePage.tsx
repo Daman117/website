@@ -6,7 +6,7 @@ import { ScrollStagger, LineReveal } from '../ScrollAnimation';
 import { prefersReducedMotion } from '../../utils/motion';
 import HowItWorksScroll from './HowItWorksScroll';
 import NativeApproachScroll from './NativeApproachScroll';
-import CapabilityHero from '../Capability/Hero';
+import EntieHero from './EntieHero/EntieHero';
 import FlashIcon from '../Capability/FlashIcon';
 import ComparisonTable from '../Capability/ComparisonTable';
 
@@ -158,9 +158,10 @@ const EntiePage: React.FC<EntiePageProps> = ({ onOpenContact }) => {
 
   return (
     <main className="engram-page" style={{ '--accent': ACCENT } as React.CSSProperties}>
-      {/* ── HERO ── */}
-      <CapabilityHero
-        image="/entie.png"
+      {/* ── HERO — own shell (EntieHero/), no photographic background. The
+             right side is held empty for the composition. Content props
+             mirror the old shared CapabilityHero call. ── */}
+      <EntieHero
         badgeText="CONNECTED INTELLIGENCE"
         titleLine1="One Connected Layer for"
         titleLine2="Every System You Run"
@@ -169,16 +170,6 @@ const EntiePage: React.FC<EntiePageProps> = ({ onOpenContact }) => {
         chips={heroChips}
         ctaLabel="Join the Waitlist"
         onCtaClick={() => onOpenContact('Waitlist')}
-        classes={{
-          content: 'entie-hero-content',
-          badge: 'badge-text entie-hero-badge-text',
-          title: 'entie-hero-h1-text',
-          accent: 'entie-hero-h1-accent',
-          subtitle: 'entie-hero-sub-text',
-          body: 'entie-hero-body-text',
-          chips: 'entie-hero-chips',
-          chip: 'entie-hero-chip',
-        }}
       />
 
       {/* ── CHALLENGE ── */}

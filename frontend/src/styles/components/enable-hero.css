@@ -122,8 +122,12 @@
    The rail's styles are left in place below. Nothing renders them, and they
    cost about a kilobyte; they stay because the markup that used them is
    uncommitted and one import away from returning. */
+/* PHASE 5B (audit D3): was 780px, which rendered a 659px measure against the
+   490px the other product heroes use. Matched to .esh-copy / .eth-copy's
+   min(34%, 508px) so the line length reads the same across products. The
+   composition is untouched — it sits in its own absolutely-placed layer. */
 .eab-copy {
-  max-width: 780px;
+  max-width: 508px;
 }
 
 .eab-badge {
@@ -143,7 +147,10 @@
 .eab-title {
   margin-bottom: 16px;
   font-family: "Space Grotesk", "DM Sans", sans-serif;
-  font-size: clamp(28px, 2.9vw, 46px);
+  /* PHASE 5B (audit D3): was clamp(28px, 2.9vw, 46px) — 46px against the
+     41.6px every other product hero renders. Same clamp as .esh-title and
+     .eth-title now. The 28px mobile floor is unchanged. */
+  font-size: clamp(28px, 2.6vw, 42px);
   font-weight: 700;
   letter-spacing: -1.4px;
   line-height: 1.08;
@@ -156,16 +163,16 @@
 }
 
 .eab-sub {
-  max-width: 68ch;
+  /* ch-based measures drift as the font loads and were what pushed this copy
+     wider than its siblings; the column cap on .eab-copy governs now. */
   margin-bottom: 12px;
-  font-size: clamp(13.5px, 1vw, 15.5px);
+  font-size: clamp(14px, 1.05vw, 16px);
   font-weight: 500;
   line-height: 1.66;
   color: rgba(255, 255, 255, 0.92);
 }
 
 .eab-body {
-  max-width: 74ch;
   margin-bottom: 20px;
   font-size: clamp(12.5px, 0.86vw, 13.5px);
   line-height: 1.74;
@@ -707,6 +714,17 @@
   grid-template-columns: minmax(0, 0.92fr) minmax(0, 1fr);
   align-items: center;
   gap: clamp(28px, 4vw, 72px);
+}
+
+/* PHASE 5C (audit D4). .eab-copy is centred in its grid row, so its gap from
+   the nav is derived exactly as in the stage-based heroes — it measured
+   134px against the ~120px target. Scoped to the two-column layout: below
+   1023px the grid collapses to one column and the badge already sits tight
+   under the nav, where pulling it up further would push it under the bar. */
+@media (min-width: 1024px) {
+  .eab-copy {
+    transform: translateY(-14px);
+  }
 }
 
 /* Below the two-column threshold the figure stacks under the copy rather

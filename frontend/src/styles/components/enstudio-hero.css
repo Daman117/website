@@ -1,0 +1,455 @@
+/* ── enSTUDIO HERO ──────────────────────────────────────────────────────
+   /products/enstudio only. Every selector is scoped under .esh so nothing
+   here can reach the shared .engram-* primitives in index.css, which are used
+   by all six product pages despite their misleading prefix.
+
+   THE UNIT SYSTEM (in place now, unused until the SVG layers arrive)
+   -----------------------------------------------------------------
+   The composition is authored on one fixed canvas (STAGE in EnstudioHero.tsx).
+   `--u` is exactly one canvas pixel:
+
+       --u: calc(100cqw / var(--canvas-w))
+
+   so `calc(178 * var(--u))` is 178 canvas px whatever the stage measures.
+   `container-type: inline-size` sits on .esh-inner, NOT on .esh-stage:
+   container query units resolve against the nearest *ancestor* container.
+
+   BACKGROUND
+   ----------
+   Flat, dark, and quiet — no image, no illustration. Three very faint radial
+   glows (violet where the copy sits, navy across the empty right side) over a
+   near-black navy base, so the right two thirds read as atmosphere rather
+   than as an empty panel. Nothing here should be identifiable as a shape.
+
+   The right side is empty ON PURPOSE. .esh-copy is capped at ~34% of the
+   stage and the stage's aspect-ratio holds the full height open, so the SVG
+   composition drops into .esh-visual next without moving the copy. */
+
+.esh {
+  position: relative;
+  /* clip, not hidden: hidden on a full-bleed section would create a scroll
+     container and take scroll ownership away from window/Lenis. */
+  overflow: clip;
+  /* Same clearance under the fixed nav as every other hero — see .evh/.egh. */
+  padding: clamp(68px, 7vh, 94px) var(--gutter) 40px;
+  background:
+    radial-gradient(56% 60% at 12% 42%, rgba(109, 40, 217, 0.26) 0%, rgba(4, 6, 15, 0) 66%),
+    radial-gradient(62% 66% at 72% 34%, rgba(76, 29, 149, 0.18) 0%, rgba(4, 6, 15, 0) 70%),
+    radial-gradient(46% 50% at 60% 98%, rgba(30, 41, 110, 0.16) 0%, rgba(4, 6, 15, 0) 72%),
+    linear-gradient(180deg, #04060f 0%, #070a1a 42%, #05070f 74%, #020409 100%);
+}
+
+.esh-inner {
+  position: relative;
+  width: 100%;
+  max-width: 1520px;
+  margin: 0 auto;
+  container-type: inline-size;
+}
+
+.esh-stage {
+  --u: calc(100cqw / var(--canvas-w));
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--canvas-w) / var(--canvas-h);
+}
+
+/* ── Copy ─────────────────────────────────────────────────────────────── */
+.esh-copy {
+  position: absolute;
+  left: 0;
+  /* PHASE 5C (audit D4). The copy is centred in a fixed-aspect stage, so the
+     nav-to-badge gap is DERIVED — it falls out of stage height minus copy
+     height, which is why the six products measured 87-157px apart with no
+     padding to blame.
+
+     The offset is expressed as a `top` PERCENTAGE, not a pixel nudge. Stage
+     height scales with viewport width, so a fixed px offset over-corrects as
+     the window narrows: measured at 1280px it pushed this hero's badge to
+     within ~21px of the nav. A percentage shrinks with the stage and keeps
+     the correction proportional.
+     Was 50%; gap was 98 px -> ~120px at 1600px wide.
+     transform stays a plain -50%, and the stacked breakpoint below resets
+     both, so mobile is untouched. */
+  top: 53.1%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: min(34%, 508px);
+}
+
+.esh-badge {
+  display: inline-block;
+  margin-bottom: 16px;
+  padding: var(--pill-padding);
+  border: 1px solid rgba(196, 181, 253, 0.4);
+  border-radius: 999px;
+  background: rgba(167, 139, 250, 0.16);
+  color: #c4b5fd;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.esh-title {
+  font-family: "Space Grotesk", "DM Sans", sans-serif;
+  font-size: clamp(28px, 2.6vw, 42px);
+  font-weight: 700;
+  letter-spacing: -1.4px;
+  line-height: 1.1;
+  color: #ffffff;
+  margin-bottom: 18px;
+}
+
+.esh-accent {
+  color: #a78bfa;
+}
+
+.esh-sub {
+  font-size: clamp(14px, 1.05vw, 16px);
+  font-weight: 500;
+  line-height: 1.68;
+  color: rgba(255, 255, 255, 0.94);
+  margin-bottom: 14px;
+}
+
+.esh-body {
+  font-size: clamp(12.5px, 0.86vw, 13.5px);
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 22px;
+}
+
+.esh-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: 26px;
+}
+
+.esh-chip {
+  padding: 6px 13px;
+  border: 1px solid rgba(196, 181, 253, 0.32);
+  border-radius: 999px;
+  background: rgba(167, 139, 250, 0.16);
+  color: #c4b5fd;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.esh-cta {
+  align-self: flex-start;
+}
+
+/* ── The bottom band ────────────────────────────────────────────────────
+   A signal stream under everything else. Absolutely positioned on the section
+   rather than inside .esh-inner, so it spans the full bleed while the content
+   stays in its gutter, and painted first so nothing has to out-rank it.
+
+   The field covers the whole hero. It fades out at the top so it never
+   crowds the navbar, and stays at full strength lower down where it has the
+   width to itself. */
+.esh-wave {
+  position: absolute;
+  inset: 0;
+  /* Explicit, not left to `inset`. An <svg> is a replaced element: with auto
+     sizing it takes its INTRINSIC height from the viewBox ratio and
+     top-aligns inside the inset box, which left the bottom of the section
+     uncovered. */
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  /* Low enough that a hundred hairlines behind body copy never compete with
+     it. This is the number to turn down first if the text starts to fight. */
+  opacity: 0.4;
+  -webkit-mask-image: linear-gradient(to top, #000 62%, rgba(0, 0, 0, 0.7) 86%, transparent 100%);
+  mask-image: linear-gradient(to top, #000 62%, rgba(0, 0, 0, 0.7) 86%, transparent 100%);
+}
+
+/* Hairlines at any width — the band is stretched horizontally to fill the
+   hero, and non-scaling-stroke is what stops the strokes stretching with it. */
+.esh .enstudio-net-edge,
+.esh .enstudio-net-route {
+  fill: none;
+  stroke-width: 1;
+}
+
+/* Depth by contrast alone: the far layer is barely there, the near one is
+   still well under the composition above it. No blur, no size change — a
+   network drawn at three strengths reads as three distances. */
+.esh .enstudio-net-layer--far .enstudio-net-edge { stroke: rgba(99, 102, 241, 0.2); }
+.esh .enstudio-net-layer--mid .enstudio-net-edge { stroke: rgba(129, 140, 248, 0.3); }
+.esh .enstudio-net-layer--near .enstudio-net-edge { stroke: rgba(139, 92, 246, 0.42); }
+
+.esh .enstudio-net-layer--far .enstudio-net-node { fill: rgba(129, 140, 248, 0.34); }
+.esh .enstudio-net-layer--mid .enstudio-net-node { fill: rgba(147, 158, 255, 0.44); }
+.esh .enstudio-net-layer--near .enstudio-net-node { fill: rgba(167, 139, 250, 0.56); }
+
+/* A few points of emphasis, or the field reads as texture rather than as a
+   network with structure. */
+.esh .enstudio-net-node--accent {
+  fill: rgba(196, 181, 253, 0.75);
+}
+
+.esh .enstudio-net-layer--near .enstudio-net-node--accent {
+  fill: rgba(125, 211, 252, 0.8);
+}
+
+/* The two routes a signal runs. Brighter than the edges around them, so the
+   path is legible before the signal arrives on it. */
+.esh .enstudio-net-route {
+  stroke: rgba(56, 189, 248, 0.5);
+}
+
+/* Dimmer and smaller than any packet in the composition above — the band is
+   the secondary layer and has to keep reading that way. */
+.esh .enstudio-net-particle {
+  fill: #bfdbfe;
+  opacity: 0;
+  filter: drop-shadow(0 0 2px rgba(56, 189, 248, 0.7));
+}
+
+/* ── The visual area ────────────────────────────────────────────────────
+   Holds no background of its own: the composition is line work and the
+   section's gradient is what it sits on. `meet` on the SVG means this box can
+   be any shape — the drawing centres itself and keeps its negative space. */
+.esh-visual {
+  position: absolute;
+  left: 38%;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.enstudio-visual {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* Never let the drawing grow past the height the copy occupies — that is
+     what keeps it compact rather than page-dominating. */
+  max-height: 100%;
+  overflow: visible;
+}
+
+/* Anything Anime.js may scale or rotate resolves its origin against its own
+   bounding box, not the 700×700 viewBox — the SVG default would swing a node
+   around the middle of the drawing instead of its own centre. Declared here,
+   once, so no keyframe has to remember it. No transform is applied: this only
+   decides what a later one means. */
+.esh [data-animation] {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+
+/* ── Connectors ─────────────────────────────────────────────────────────
+   Hairlines. The gradient carries the direction: violet at the source end,
+   cyan at the output end, so the flow is legible without an arrowhead. */
+.esh .enstudio-connector {
+  fill: none;
+  stroke-width: 1.1;
+  stroke-linecap: round;
+}
+
+.esh .enstudio-connector--in {
+  stroke: url(#eshFlowIn);
+}
+
+.esh .enstudio-connector--out {
+  stroke: url(#eshFlowOut);
+}
+
+/* The riders. Transparent at rest — useEnstudioHeroAnimation fades each one up
+   as it starts moving and back down as it lands, so with no JS (or with
+   reduced motion) the composition is exactly the static drawing.
+
+   The drop-shadow is the packet's own glow and the only one in the SVG that
+   moves: a tight radius, because a soft halo at this size reads as a smudge
+   rather than as light. */
+.esh .enstudio-flow-particle {
+  fill: #ddd6fe;
+  opacity: 0;
+  filter: drop-shadow(0 0 3px rgba(167, 139, 250, 0.9));
+}
+
+.esh .enstudio-flow-particle--out {
+  fill: #dbeafe;
+  filter: drop-shadow(0 0 3px rgba(56, 189, 248, 0.9));
+}
+
+.esh .enstudio-connector-dot {
+  fill: #a78bfa;
+  opacity: 0.75;
+}
+
+/* Same dot, the colour of the end of the flow it terminates. */
+.esh .enstudio-connector-dot--out {
+  fill: #60a5fa;
+}
+
+/* The two points every line converges on. Brighter and blue, because this is
+   where the composition says "one model". */
+.esh .enstudio-connector-dot--hub {
+  fill: #60a5fa;
+  opacity: 1;
+  filter: drop-shadow(0 0 4px rgba(96, 165, 250, 0.7));
+}
+
+/* ── Source and output nodes ────────────────────────────────────────────
+   Same treatment, different hue: what goes in is violet, what comes out is
+   blue. The fill is nearly nothing — enough to lift the tile off the
+   background, not enough to read as a filled shape. */
+.esh .enstudio-node-shape {
+  fill: rgba(10, 14, 32, 0.55);
+  stroke-width: 1.1;
+}
+
+.esh .enstudio-node-icon {
+  fill: none;
+  stroke-width: 1.3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.esh .enstudio-source-node .enstudio-node-shape {
+  stroke: rgba(167, 139, 250, 0.6);
+}
+
+.esh .enstudio-source-node .enstudio-node-icon {
+  stroke: rgba(226, 214, 255, 0.85);
+}
+
+.esh .enstudio-output-node .enstudio-node-shape {
+  stroke: rgba(129, 140, 248, 0.6);
+}
+
+.esh .enstudio-output-node .enstudio-node-icon {
+  stroke: rgba(209, 226, 255, 0.85);
+}
+
+/* ── The core ───────────────────────────────────────────────────────────
+   Two concentric hexagons and nothing else structural. The halo is its own
+   element behind them and the outer ring carries one small drop-shadow — the
+   inner ring and the schematic stay crisp, which is what keeps this looking
+   drawn rather than rendered. */
+.esh .enstudio-glow {
+  fill: url(#eshCoreGlow);
+  /* Low enough to read as the background being slightly warmer around the
+     core rather than as a light. Its own element so a breath can scale and
+     fade it without touching the ring's geometry. */
+  opacity: 0.34;
+}
+
+.esh .enstudio-core-ring {
+  fill: none;
+  stroke: url(#eshCoreEdge);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 6px rgba(129, 140, 248, 0.35));
+}
+
+.esh .enstudio-core-inner {
+  fill: none;
+  stroke: rgba(148, 163, 220, 0.32);
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+
+.esh .enstudio-core-vertex {
+  fill: #c4b5fd;
+  opacity: 0.9;
+}
+
+/* ── The schematic ──────────────────────────────────────────────────────
+   Process lines are the solid ones; signal leads are dashed, as on a real
+   P&ID. Both are dimmer than the ring — the core is the subject, its
+   contents are detail. */
+.esh .enstudio-process-line,
+.esh .enstudio-process-symbol {
+  fill: none;
+  stroke: rgba(196, 205, 255, 0.62);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The internal signal riders. Same arrangement as the flow packets — parked
+   at the origin, transparent, positioned by the animation — but smaller,
+   cyan, and with a tighter glow: this is the core working through what it
+   holds, not information arriving from outside. */
+.esh .enstudio-process-signal {
+  fill: #a5f3fc;
+  opacity: 0;
+  filter: drop-shadow(0 0 2.5px rgba(34, 211, 238, 0.85));
+}
+
+/* Instrument leads. Dashed here as a P&ID convention, not as an animation
+   hook — a later dash-offset run inherits this pattern rather than inventing
+   one. */
+.esh .enstudio-signal {
+  stroke: rgba(196, 181, 253, 0.5);
+  stroke-dasharray: 3 4;
+}
+
+/* ── Stacked ────────────────────────────────────────────────────────────
+   Below the width where a 1520px canvas stays legible, the copy takes the
+   full column and the composition drops beneath it, squared and capped so it
+   does not become the tallest thing on the page. */
+@media (max-width: 1279px) {
+  .esh-stage {
+    aspect-ratio: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .esh-copy,
+  .esh-visual {
+    position: static;
+    transform: none;
+    width: 100%;
+  }
+
+  /* Full width is a full-width measure — at 1024 the body ran to 920px,
+     which is roughly twice a readable line. */
+  .esh-copy {
+    max-width: 660px;
+  }
+
+  /* Less glow at every size below the desktop composition: the drawing is
+     smaller here, and a halo tuned for a 760px stage reads as haze on a
+     460px one. These are the CSS shadows only — the core's own glow element
+     is animated from JS and is left alone. */
+  .esh .enstudio-core-ring { filter: drop-shadow(0 0 4px rgba(129, 140, 248, 0.28)); }
+  .esh .enstudio-connector-dot--hub { filter: drop-shadow(0 0 3px rgba(96, 165, 250, 0.55)); }
+  .esh .enstudio-flow-particle { filter: drop-shadow(0 0 2px rgba(167, 139, 250, 0.8)); }
+  .esh .enstudio-flow-particle--out { filter: drop-shadow(0 0 2px rgba(56, 189, 248, 0.8)); }
+
+  /* Capped so the composition stays a companion to the copy rather than the
+     tallest thing in the hero — every pixel here is hero height on a device
+     that has none to spare. */
+  .esh-visual {
+    aspect-ratio: 1 / 1;
+    max-width: 460px;
+    margin: 0 auto;
+  }
+}
+
+/* The icons and the schematic hold up when scaled down; the hairlines do not.
+   Thickening them is most of the mobile treatment. */
+@media (max-width: 719px) {
+  .esh-stage { gap: 22px; }
+
+  .esh-visual { max-width: 320px; }
+
+  .esh .enstudio-connector { stroke-width: 1.4; }
+  .esh .enstudio-core-ring { stroke-width: 2; }
+  .esh .enstudio-core-inner { stroke-width: 1.3; }
+  .esh .enstudio-node-icon,
+  .esh .enstudio-process-line,
+  .esh .enstudio-process-symbol { stroke-width: 1.5; }
+}

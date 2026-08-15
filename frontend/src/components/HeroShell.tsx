@@ -15,11 +15,9 @@ interface HeroShellProps {
   /** className for the inner content container (e.g. "section" or "engram-hero engram-container") */
   contentClassName?: string;
   children: React.ReactNode;
-  /** Rendered inside the section, after the content container (e.g. the landing Ticker) */
-  after?: React.ReactNode;
 }
 
-const HeroShell: React.FC<HeroShellProps> = ({ image, id, contentClassName, children, after }) => (
+const HeroShell: React.FC<HeroShellProps> = ({ image, id, contentClassName, children }) => (
   <section id={id} className="hero-shell">
     <div className="hero-shell-bg" style={{ '--hero-image': `url(${image})` } as React.CSSProperties} />
     {/* dark gradient — lighter at top so the photo shows, darker at bottom for text */}
@@ -27,7 +25,6 @@ const HeroShell: React.FC<HeroShellProps> = ({ image, id, contentClassName, chil
     <div className={`hero-content-wrapper ${contentClassName || ''}`.trim()}>
       {children}
     </div>
-    {after}
   </section>
 );
 

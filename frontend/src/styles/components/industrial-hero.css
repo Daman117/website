@@ -653,16 +653,6 @@
   animation-delay: var(--pd, 0s);
 }
 
-/* ── Ticker band ────────────────────────────────────────────────────────
-   The Ticker still renders inside the hero, unchanged. Its own rules are
-   light-theme (`var(--border)` = #dce3ee), which on this near-black hero
-   read as two bright rules across the page. Retinted here, scoped to .ieh,
-   rather than editing the shared ticker CSS the rest of the site uses. */
-.ieh .ticker-wrap {
-  border-top-color: rgba(148, 178, 220, 0.16);
-  border-bottom-color: rgba(148, 178, 220, 0.16);
-}
-
 /* ══ RESPONSIVE ══════════════════════════════════════════════════════════
    Below 1280px the component mounts the COMPACT layout (a 340x916 tall
    column with its own card placements and its own connection topology) and
@@ -800,10 +790,4 @@
   text-align: center;
   line-height: 1.15;
   padding: 0 calc(3 * var(--u));
-}
-
-/* The Ticker's -40px pull is tuned for the desktop hero's bottom padding; on
-   the compact stage it drags the bar up over the system card row. */
-.ieh--compact .ticker-wrap {
-  margin-top: 8px;
 }

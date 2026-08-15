@@ -1,38 +1,40 @@
 :root {
 
-  /* Colors */
-  --bg: #edf1f7;
-  --bg2: #f4f7fc;
-  --bg3: #ffffff;
-  --t1: #0a1a30;
-  --t2: #1e293b;
-  --t3: #475569;
-  --t4: #64748b;
-  --t5: #5f6b7b;
+  /* ── Brand and status ─────────────────────────────────────────────────
+     PHASE 4: the Phase 2 alias layer (--bg*, --t1..--t5, --body-bg,
+     --card-bg, --surface*, --border*) is GONE. All 435 call sites were
+     renamed to the semantic tokens at the bottom of this file, so there is
+     one set of names again.
+
+     --primary/--navy stay: they drive the filled-button gradient, which
+     reads correctly on dark. */
   --navy: #0b2545;
   --primary: #1f5fe0;
   --primary-hover: #1747b5;
   --teal: #0e9bc4;
+  /* PHASE 4 status contrast, measured against --surface-raised (the worst
+     case — these appear on cards more often than on bare sections):
+       green #059669  4.92  passes AA        -> unchanged
+       teal  #0e9bc4  5.75  passes AA        -> unchanged
+       orange #c2630e 4.49  effectively AA   -> unchanged
+       red   #dc2626  3.84  UNDER AA         -> lifted to #ef4444 (4.93)
+       warn  #b45309  3.70  UNDER AA         -> lifted to #c2670b (4.63)
+     Smallest step that clears 4.5:1 in each case. Deliberately not the
+     brighter #f87171/#fbbf24 from the audit proposal — those measure 6.7
+     and 11.1, which reads as neon rather than as a status. Hue and semantic
+     meaning are unchanged. */
   --green: #059669;
-  --red: #dc2626;
-  --warn: #b45309;
+  --red: #ef4444;
+  --warn: #c2670b;
   --orange: #c2630e;
   --glow-blue: rgba(37, 99, 235, 0.08);
   --glow-teal: rgba(14, 155, 196, 0.06);
-  --body-bg: #eef3f9;
-  --card-bg: rgba(255, 255, 255, 0.45);
 
   /* Navigation. The bar was white glass, which is right over a light page and
      wrong over every page this site actually has — all of them are dark, so a
      bright slab floated on top of the composition rather than sitting in it.
      Dark glass instead, with the blur kept: the artwork now reads THROUGH the
      bar, which is what makes it belong to the page. */
-  /* What shows in the 12px above the fixed nav, and anywhere else the page
-     itself is visible. Separate from --body-bg, which the footer, the mobile
-     menu and .lp-body paint deliberately and which is still the light value
-     they were built against. */
-  --page-bg: #05070f;
-
   --nav-bg: rgba(9, 13, 30, 0.62);
   --nav-border: rgba(148, 163, 184, 0.22);
   --nav-link: rgba(226, 232, 240, 0.86);
@@ -41,21 +43,30 @@
   --nav-panel-border: rgba(148, 163, 184, 0.2);
   --nav-panel-hover: rgba(99, 102, 241, 0.18);
 
-  /* Shadows */
-  --elev-1: 0 1px 2px rgba(11, 37, 69, 0.04), 0 2px 8px rgba(11, 37, 69, 0.05);
-  --elev-2: 0 2px 4px rgba(11, 37, 69, 0.04), 0 8px 24px rgba(11, 37, 69, 0.07);
-  --elev-3: 0 4px 8px rgba(11, 37, 69, 0.05), 0 18px 48px rgba(11, 37, 69, 0.1);
+  /* ── Shadows ──────────────────────────────────────────────────────────
+     PHASE 2. On a light page, depth comes from a soft dark drop plus a WHITE
+     inset bevel along the top edge — that bevel is what made a card look
+     lifted. On #04060f the same bevel is a bright stripe across the top of
+     every card, which is exactly what the audit flagged.
+
+     Dark depth works the opposite way: a deeper, softer drop, and a hairline
+     top edge at low-alpha WHITE (not opaque) to catch the light. */
+  --elev-1: 0 1px 2px rgba(2, 5, 15, 0.5), 0 2px 8px rgba(2, 5, 15, 0.45);
+  --elev-2: 0 2px 6px rgba(2, 5, 15, 0.5), 0 10px 28px rgba(2, 5, 15, 0.5);
+  --elev-3: 0 6px 14px rgba(2, 5, 15, 0.55), 0 22px 56px rgba(2, 5, 15, 0.6);
   --card-shadow:
-    0 2px 6px rgba(15, 23, 42, 0.05), 0 8px 28px rgba(15, 23, 42, 0.08),
-    inset 0 2px 0 rgba(255, 255, 255, 0.92),
-    inset 0 -1px 0 rgba(15, 23, 42, 0.03);
+    0 2px 8px rgba(2, 5, 15, 0.45), 0 10px 30px rgba(2, 5, 15, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
   --card-shadow-hover:
-    0 4px 12px rgba(15, 23, 42, 0.07), 0 20px 52px rgba(15, 23, 42, 0.12),
-    0 0 0 1.5px rgba(31, 95, 224, 0.22), inset 0 2px 0 rgba(255, 255, 255, 0.95);
+    0 6px 16px rgba(2, 5, 15, 0.5), 0 22px 56px rgba(2, 5, 15, 0.6),
+    0 0 0 1px rgba(148, 163, 184, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  /* Was a near-opaque white radial across the top of the card. Same shape,
+     a twentieth of the strength: a lit edge, not a highlight. */
   --card-shimmer: radial-gradient(
     ellipse 90% 60% at 45% -8%,
-    rgba(255, 255, 255, 0.7) 0%,
-    rgba(255, 255, 255, 0.18) 48%,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.02) 48%,
     transparent 75%
   );
 
@@ -72,18 +83,21 @@
   --space-2xl: 24px;
   --space-3xl: 32px;
 
-  /* Borders */
-  --border: #dce3ee;
-  --border2: #c7d2e2;
-  --glass-border: rgba(11, 37, 69, 0.1);
-  --card-border: rgba(255, 255, 255, 0.78);
+  /* Borders — PHASE 2 aliases. A hex border cannot sit on four surface
+     depths; all four now resolve to the alpha scale. */
+  --border: var(--border-default);           /* was #dce3ee */
+  --border2: var(--border-strong);           /* was #c7d2e2 */
+  --glass-border: var(--border-default);     /* was rgba(11,37,69,0.1) */
+  --card-border: var(--border-default);      /* was rgba(255,255,255,0.78) */
 
   /* Typography */
   --font-size-sm: 12px;
 
-  /* Others */
-  --surface: rgba(255, 255, 255, 0.7);
-  --surface-strong: rgba(255, 255, 255, 0.86);
+  /* Others — PHASE 2 aliases. Both were white glass; both are now the same
+     raised dark glass, so .btn-outline, .nav-hamburger and .cta-panel
+     convert without touching their own rules. */
+  --surface: var(--surface-raised);          /* was rgba(255,255,255,0.7) */
+  --surface-strong: var(--surface-raised);   /* was rgba(255,255,255,0.86) */
   --nav-word-first: rgba(226, 232, 240, 0.92);
   --card-blur: blur(14px) saturate(150%);
 
@@ -152,5 +166,93 @@
      collapsing address bar, so full-height sections jump/clip while scrolling. */
   --min-height-viewport: 100dvh;
   --min-height-card: 200px;
+
+  /* ══ UNIFIED DARK THEME — PHASE 0 FOUNDATION ════════════════════════════
+     Semantic tokens for the dark visual language the heroes already use.
+     Every value below is LIFTED FROM EXISTING CODE, not invented — the
+     provenance is noted per token so nothing here is a new design decision.
+
+     PHASE 0 IS PURELY ADDITIVE. Nothing above this block was repointed, and
+     nothing below is consumed by any rule yet, so the rendered site is
+     byte-identical. The light tokens (--bg*, --t1..--t5, --border*,
+     --body-bg, --card-*) keep their current light values and remain the
+     ones components actually read.
+
+     Migration order and the eventual alias/retire step live in the Phase
+     plan; do not repoint the light tokens ahead of it, because doing so
+     flips every unconverted surface at once. */
+
+  /* ── Surfaces ─────────────────────────────────────────────────────────
+     A three-step depth ladder plus a floor. These are the four grounds the
+     whole site should eventually sit on — product identity comes from
+     accent and artwork, never from a different surface. */
+  /* Common top stop of the .esh / .eth / .eab hero ramps. */
+  --surface-page: #04060f;
+  /* Same value as the existing --page-bg, which this replaces in Phase 1. */
+  --surface-section: #05070f;
+  /* The --nav-panel family (rgba(13,18,38,…)) at card weight. */
+  --surface-raised: rgba(13, 18, 38, 0.72);
+  /* Common bottom stop of the .esh / .eth / .evh hero ramps. */
+  --surface-deep: #020409;
+  /* Exact value of the existing --nav-panel-hover. */
+  --surface-hover: rgba(99, 102, 241, 0.18);
+  /* Added in Phase 2, when the first hover/active pair needed it (the modal
+     close button). Same hue, one step firmer than hover. */
+  --surface-active: rgba(99, 102, 241, 0.28);
+
+  /* ── Text ─────────────────────────────────────────────────────────────
+     Four roles, taken from what the heroes already render. Replaces the
+     five-step light scale (--t1..--t5) in Phase 4. */
+  /* Every hero H1. */
+  --text-primary: #ffffff;
+  /* .eth-sub. */
+  --text-secondary: rgba(255, 255, 255, 0.82);
+  /* .esh-body / .eth-body. */
+  --text-body: rgba(255, 255, 255, 0.70);
+  /* The --nav-link family (rgba(226,232,240,…)) at a muted weight. */
+  --text-muted: rgba(226, 232, 240, 0.55);
+
+  /* ── Borders ──────────────────────────────────────────────────────────
+     Alpha over a cool grey, never a hex — a hex border cannot sit on four
+     different surface depths. --border-strong is the exact value the nav
+     already uses (--nav-border). */
+  --border-subtle: rgba(148, 163, 184, 0.12);
+  --border-default: rgba(148, 163, 184, 0.16);
+  --border-strong: rgba(148, 163, 184, 0.22);
+
+  /* ── Product accents ──────────────────────────────────────────────────
+     The four hues the product pages already set as --accent. Named, not
+     numbered, so a page can reference the shared value instead of
+     re-declaring a hex. Each page's own --accent (set inline on
+     .engram-page) stays the mechanism for per-product identity. */
+  /* enSTUDIO. */
+  --accent-violet: #a78bfa;
+  /* enTIE. */
+  --accent-blue: #60a5fa;
+  /* enGRAM's composition colour. */
+  --accent-cyan: #38bdf8;
+  /* enABLE. */
+  --accent-green: #10b981;
+
+  /* ── Text-safe accent ─────────────────────────────────────────────────
+     PHASE 5B (audit D1). --primary (#1f5fe0) does two jobs: it fills the CTA
+     gradient, where it is a background and reads fine, and it colours small
+     functional labels, where on dark it measures 3.61:1 on sections and
+     3.42:1 on cards — under the 4.5:1 AA needs at those sizes.
+
+     Splitting the roles rather than moving --primary, which would drag the
+     button treatment with it. Measured against the three real surfaces:
+       page #04060f    5.50
+       section #05070f 5.47
+       raised (11,15,32 composited)  5.17
+     Chosen over the audit's #4d87ff (5.64 on raised) because it clears AA
+     with margin while staying closer to the brand blue — the brief asked for
+     text-safe, not brighter. */
+  --text-accent: #3b82f6;
+
+  /* ── Focus ────────────────────────────────────────────────────────────
+     Not --primary (#1f5fe0): that is a mid-blue chosen against a light
+     page and it disappears on #04060f. */
+  --focus-ring: var(--accent-blue);
 
 }

@@ -355,7 +355,7 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
                     <td key={i} className="engram-table-cell-center">
                       {ok
                         ? <Check size={16} color="#10B981" strokeWidth={2.5} className="u-inline-block" />
-                        : <X size={16} color="var(--t5)" strokeWidth={2} className="u-inline-block" />}
+                        : <X size={16} color="var(--text-muted)" strokeWidth={2} className="u-inline-block" />}
                     </td>
                   ))}
                 </tr>

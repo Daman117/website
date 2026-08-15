@@ -23,9 +23,20 @@
   will-change: transform, opacity;
 }
 
+/* PHASE 5B (audit D2). This title is 16px/700 — not "large text" — so it
+   needs 4.5:1. Item colours vary: green 7.32, amber 10.08, #60a5fa 7.30 all
+   pass, but #2563EB measures 3.59 and it is used on enVIEW, enABLE, enTIE
+   and enGENIE. #2563EB is enVIEW's product accent and must not change, so
+   the TITLE moves to neutral text instead.
+
+   Card identity is unaffected: .approach-icon-circle still fills and borders
+   with --cap-color-rgb, and .approach-bullet-dash below still uses
+   --cap-color. The accent stays on the visual elements, which is where it
+   was carrying the meaning. It also matches every other card title on the
+   site, which is already --text-primary. */
 .approach-title-text {
   font-size: 15px;
-  color: var(--cap-color);
+  color: var(--text-primary);
 }
 
 .approach-bullet-dash {

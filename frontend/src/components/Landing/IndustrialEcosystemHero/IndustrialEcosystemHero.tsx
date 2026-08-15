@@ -56,8 +56,6 @@ interface IndustrialEcosystemHeroProps {
   id?: string;
   /** Hero copy — rendered into the reserved dark space on the left. */
   children: React.ReactNode;
-  /** Rendered after the stage, still inside the section (the landing Ticker). */
-  after?: React.ReactNode;
 }
 
 /* Hit area for the central system. The SVG layers are pointer-events:none
@@ -74,7 +72,7 @@ function coreHit(l: HeroLayout) {
   };
 }
 
-const IndustrialEcosystemHero: React.FC<IndustrialEcosystemHeroProps> = ({ id, children, after }) => {
+const IndustrialEcosystemHero: React.FC<IndustrialEcosystemHeroProps> = ({ id, children }) => {
   const reduceMotion = prefersReducedMotion();
   const [active, setActive] = useState<string | null>(null);
 
@@ -140,7 +138,6 @@ const IndustrialEcosystemHero: React.FC<IndustrialEcosystemHeroProps> = ({ id, c
         </div>
         <div className="ieh-copy">{children}</div>
       </div>
-      {after}
     </section>
   );
 };

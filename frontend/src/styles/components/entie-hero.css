@@ -1,0 +1,504 @@
+/* ── enTIE HERO ─────────────────────────────────────────────────────────
+   /products/entie only. Every selector is scoped under .eth so nothing here
+   can reach the shared .engram-* primitives in index.css, which are used by
+   all six product pages despite their misleading prefix.
+
+   THE UNIT SYSTEM (in place now, unused until the SVG layers arrive)
+   -----------------------------------------------------------------
+   The composition will be authored on one fixed canvas (STAGE in
+   EntieHero.tsx). `--u` is exactly one canvas pixel:
+
+       --u: calc(100cqw / var(--canvas-w))
+
+   so `calc(178 * var(--u))` is 178 canvas px whatever the stage measures.
+   `container-type: inline-size` sits on .eth-inner, NOT on .eth-stage:
+   container query units resolve against the nearest *ancestor* container.
+
+   BACKGROUND
+   ----------
+   Flat, dark, and quiet — no image, no illustration. Three very faint radial
+   glows over a near-black navy base, blue-leaning to match enTIE's accent the
+   way enSTUDIO's are violet. Nothing here should be identifiable as a shape.
+
+   The right side is empty ON PURPOSE. .eth-copy is capped at ~34% of the
+   stage and the stage's aspect-ratio holds the full height open, so the SVG
+   composition drops into .eth-visual next without moving the copy. */
+
+.eth {
+  position: relative;
+  /* clip, not hidden: hidden on a full-bleed section would create a scroll
+     container and take scroll ownership away from window/Lenis. */
+  overflow: clip;
+  /* Same clearance under the fixed nav as every other hero — see .esh/.evh. */
+  padding: clamp(68px, 7vh, 94px) var(--gutter) 40px;
+  background:
+    radial-gradient(56% 60% at 14% 40%, rgba(37, 99, 235, 0.24) 0%, rgba(4, 6, 15, 0) 66%),
+    radial-gradient(62% 66% at 70% 32%, rgba(30, 64, 175, 0.18) 0%, rgba(4, 6, 15, 0) 70%),
+    radial-gradient(46% 50% at 58% 98%, rgba(29, 78, 216, 0.14) 0%, rgba(4, 6, 15, 0) 72%),
+    linear-gradient(180deg, #04060f 0%, #06091a 42%, #04060f 74%, #020409 100%);
+}
+
+.eth-inner {
+  position: relative;
+  width: 100%;
+  max-width: 1520px;
+  margin: 0 auto;
+  container-type: inline-size;
+}
+
+.eth-stage {
+  --u: calc(100cqw / var(--canvas-w));
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--canvas-w) / var(--canvas-h);
+}
+
+/* ── Copy ─────────────────────────────────────────────────────────────── */
+.eth-copy {
+  position: absolute;
+  left: 0;
+  /* PHASE 5C (audit D4). The copy is centred in a fixed-aspect stage, so the
+     nav-to-badge gap is DERIVED — it falls out of stage height minus copy
+     height, which is why the six products measured 87-157px apart with no
+     padding to blame.
+
+     The offset is expressed as a `top` PERCENTAGE, not a pixel nudge. Stage
+     height scales with viewport width, so a fixed px offset over-corrects as
+     the window narrows: measured at 1280px it pushed this hero's badge to
+     within ~21px of the nav. A percentage shrinks with the stage and keeps
+     the correction proportional.
+     Was 50%; gap was 132 px -> ~120px at 1600px wide.
+     transform stays a plain -50%, and the stacked breakpoint below resets
+     both, so mobile is untouched. */
+  top: 48.3%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: min(34%, 508px);
+}
+
+.eth-badge {
+  display: inline-block;
+  margin-bottom: 16px;
+  padding: var(--pill-padding);
+  border: 1px solid rgba(147, 197, 253, 0.4);
+  border-radius: 999px;
+  background: rgba(96, 165, 250, 0.16);
+  color: #93c5fd;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.eth-title {
+  font-family: "Space Grotesk", "DM Sans", sans-serif;
+  font-size: clamp(28px, 2.6vw, 42px);
+  font-weight: 700;
+  letter-spacing: -1.4px;
+  line-height: 1.1;
+  color: #ffffff;
+  margin-bottom: 18px;
+}
+
+.eth-accent {
+  color: #60a5fa;
+}
+
+.eth-sub {
+  font-size: clamp(14px, 1.05vw, 16px);
+  font-weight: 500;
+  line-height: 1.68;
+  color: rgba(255, 255, 255, 0.96);
+  margin-bottom: 14px;
+}
+
+.eth-body {
+  font-size: clamp(12.5px, 0.86vw, 13.5px);
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.82);
+  margin-bottom: 22px;
+}
+
+.eth-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: 28px;
+}
+
+.eth-chip {
+  padding: 6px 13px;
+  border: 1px solid rgba(147, 197, 253, 0.4);
+  border-radius: 999px;
+  background: rgba(96, 165, 250, 0.22);
+  color: #93c5fd;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.eth-cta {
+  align-self: flex-start;
+}
+
+/* ── The visual area ────────────────────────────────────────────────────
+   Holds no background of its own: the composition is line work and the
+   section's gradient is what it sits on. `meet` on the SVG means this box can
+   be any shape — the drawing centres itself and keeps its negative space. */
+.eth-visual {
+  position: absolute;
+  left: 38%;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Every layer is an SVG on the same box with the same viewBox, so they stack
+   in perfect register and no layer has to know about another. `meet` means
+   the box can be any shape — the drawing centres itself and keeps its
+   negative space. */
+.entie-visual {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* ── The bottom band ────────────────────────────────────────────────────
+   A flowing field of fine lines behind everything else, covering the whole
+   hero. Absolutely positioned on the section rather than inside .eth-inner,
+   so it spans the full bleed while the content stays in its gutter, and
+   painted first so nothing has to out-rank it.
+
+   Two things keep it in its place. Horizontally, the mask fades it out
+   toward the LEFT, where the copy is — the field is weakest under the
+   reading column and only reaches full strength under the composition.
+   Vertically, nothing: the lines dim upward on their own (see lineAt in
+   EntieHeroWave), so the field dissolves under the navbar without a second
+   mask to composite. */
+.entie-wave {
+  position: absolute;
+  inset: 0;
+  /* Explicit, not left to `inset`. An <svg> is a replaced element: with auto
+     sizing it takes its INTRINSIC height from the viewBox ratio and
+     top-aligns inside the inset box, leaving the bottom uncovered. */
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  /* Low: the field covers the whole hero now, including behind body copy.
+     This is the number to turn down first if the text starts to fight. */
+  opacity: 0.42;
+  /* Thinned at BOTH sides, full strength through the middle. The field's
+     crest belongs in the open band between the reading column and the
+     composition — dimmed under the text so it stays legible, dimmed again
+     under the system so the field never competes with it. */
+  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0.3) 0%, #000 42%, rgba(0, 0, 0, 0.4) 100%);
+  mask-image: linear-gradient(to right, rgba(0, 0, 0, 0.3) 0%, #000 42%, rgba(0, 0, 0, 0.4) 100%);
+}
+
+/* Hairlines at any width — the band is stretched horizontally to fill the
+   hero, and non-scaling-stroke is what stops the strokes stretching with it. */
+.eth .entie-wave-path {
+  fill: none;
+  stroke-width: 1;
+}
+
+/* Violet dominant, magenta for the bands that carry the crest, one blue band
+   for the electric note. Per-line opacity is set inline by the component —
+   these are only the hues. */
+.eth .entie-wave-path--v { stroke: #8b5cf6; }
+.eth .entie-wave-path--m { stroke: #a855f7; }
+.eth .entie-wave-path--b { stroke: #38bdf8; }
+
+/* The scattered field over the lines. Small and unevenly lit, scrolling with
+   the band it belongs to. */
+.eth .entie-wave-dot {
+  fill: #d8b4fe;
+}
+
+/* Dimmer and smaller than any packet in the composition above — the band is
+   the secondary layer and has to keep reading that way. */
+.eth .entie-wave-particle {
+  fill: #bfdbfe;
+  opacity: 0;
+  filter: drop-shadow(0 0 2px rgba(56, 189, 248, 0.7));
+}
+
+
+/* Anything Anime.js may rotate or shift resolves its origin against its own
+   bounding box, not the 700×700 viewBox — the SVG default would swing the
+   inner outline around the middle of the drawing instead of its own centre.
+   Declared once, here, so no keyframe has to remember it. Translations are
+   unaffected either way, so the packets' motion paths are untouched. */
+.eth [data-animation] {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+
+/* ── The lanes ──────────────────────────────────────────────────────────
+   Hairlines, dark at rest and always visible: the bus is part of the
+   drawing, not something that only exists while data is on it. Violet in,
+   blue out — the same reading as the core's own gradient. */
+.eth .entie-connector {
+  fill: none;
+  stroke-width: 1.1;
+  stroke-linecap: round;
+}
+
+.eth .entie-source-connector { stroke: rgba(147, 51, 234, 0.45); }
+.eth .entie-output-connector { stroke: rgba(37, 99, 235, 0.45); }
+
+/* The travelling highlight: a second copy of the same curve, of which the
+   animation reveals only a short sliding segment. The dash pattern is owned
+   by Anime's drawable, not declared here — declaring it too would fight the
+   tween. Transparent at rest, so with no JS (or with reduced motion) only
+   the base line shows. */
+.eth .entie-connector-pulse {
+  fill: none;
+  stroke: #38bdf8;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  opacity: 0;
+  filter: drop-shadow(0 0 3px rgba(56, 189, 248, 0.7));
+}
+
+/* The packets. Transparent at rest for the same reason. Small and tight —
+   a soft halo at this size reads as a smudge rather than as light. */
+.eth .entie-flow-particle {
+  fill: #ddd6fe;
+  opacity: 0;
+  filter: drop-shadow(0 0 3px rgba(167, 139, 250, 0.9));
+}
+
+.eth .entie-flow-particle--output {
+  fill: #dbeafe;
+  filter: drop-shadow(0 0 3px rgba(56, 189, 248, 0.9));
+}
+
+/* ── The source column ──────────────────────────────────────────────────
+   Violet throughout: what arrives is violet, the same reading as the top of
+   the core's gradient. Tiles are outlines with a nearly-nothing interior —
+   enough to lift them off the background, not enough to read as cards. */
+.eth .entie-source-outline {
+  fill: rgba(8, 12, 28, 0.55);
+  stroke: rgba(192, 132, 252, 0.55);
+  stroke-width: 1.2;
+  /* The only glow on this side, and it is small: a halo at tile size reads
+     as a smudge rather than as light. */
+  filter: drop-shadow(0 0 5px rgba(147, 51, 234, 0.28));
+}
+
+.eth .entie-source-icon {
+  fill: none;
+  stroke: rgba(233, 222, 255, 0.85);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The attachment point. Its own element so the connector step only has to
+   join two known coordinates, and so a later pulse can find it alone. */
+.eth .entie-source-node {
+  fill: #c084fc;
+  opacity: 0.8;
+}
+
+/* ── The output column ──────────────────────────────────────────────────
+   Blue and cyan throughout, the same reading as the bottom of the core's
+   gradient: what arrives is violet, what leaves is blue. Otherwise identical
+   to the source tiles — same size, same weight, same restraint, so neither
+   column outranks the core between them. */
+.eth .entie-output-outline {
+  fill: rgba(8, 12, 28, 0.55);
+  stroke: rgba(56, 189, 248, 0.5);
+  stroke-width: 1.2;
+  filter: drop-shadow(0 0 5px rgba(37, 99, 235, 0.3));
+}
+
+.eth .entie-output-icon {
+  fill: none;
+  stroke: rgba(219, 234, 254, 0.88);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.eth .entie-output-node {
+  fill: #38bdf8;
+  opacity: 0.8;
+}
+
+/* ── The core ───────────────────────────────────────────────────────────
+   Thin line work throughout. The only glow is one low ellipse behind the
+   container and one small drop-shadow on its outline — everything else stays
+   crisp, which is what keeps this reading as drawn rather than rendered. */
+.eth .entie-core-glow {
+  fill: url(#ethCoreGlow);
+  /* Low enough to read as the background being slightly warmer around the
+     core rather than as a light. */
+  opacity: 0.32;
+}
+
+/* The interior. Nearly nothing — enough to separate inside from outside. */
+.eth .entie-core-fill {
+  fill: rgba(8, 12, 28, 0.55);
+  stroke: none;
+}
+
+.eth .entie-core-outline {
+  fill: none;
+  stroke: url(#ethCoreEdge);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 6px rgba(129, 140, 248, 0.32));
+}
+
+.eth .entie-core-inner {
+  fill: none;
+  stroke: rgba(148, 163, 220, 0.3);
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+
+.eth .entie-core-cap {
+  fill: none;
+  stroke: url(#ethCoreEdge);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  opacity: 0.7;
+}
+
+/* ── Interior signals ───────────────────────────────────────────────────
+   Dimmer than the outline: the container is the subject, its contents are
+   detail. */
+.eth .entie-core-signal {
+  stroke: rgba(167, 139, 250, 0.28);
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+.eth .entie-core-spark {
+  fill: rgba(196, 181, 253, 0.72);
+}
+
+/* ── Connection points ──────────────────────────────────────────────────
+   Ring and centre are separate elements so a later pulse can widen one
+   without disturbing the other. Violet where material arrives, blue where it
+   leaves — the same left-to-right reading as the outline's gradient. */
+.eth .entie-core-node-ring {
+  fill: rgba(6, 9, 22, 0.9);
+  stroke-width: 1.3;
+}
+
+.eth .entie-core-node--in .entie-core-node-ring { stroke: rgba(192, 132, 252, 0.7); }
+.eth .entie-core-node--out .entie-core-node-ring { stroke: rgba(56, 189, 248, 0.7); }
+
+.eth .entie-core-node--in .entie-core-node-dot { fill: #c084fc; }
+.eth .entie-core-node--out .entie-core-node-dot { fill: #38bdf8; }
+
+/* ── The intelligence mark ──────────────────────────────────────────────
+   The one symbol in the composition, and the brightest thing in it — but
+   only just. */
+.eth .entie-core-shield-ring {
+  fill: rgba(8, 12, 28, 0.6);
+  stroke: rgba(192, 132, 252, 0.55);
+  stroke-width: 1.2;
+}
+
+.eth .entie-core-shield-body {
+  fill: none;
+  stroke: rgba(216, 180, 254, 0.9);
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+}
+
+.eth .entie-core-shield-check {
+  fill: none;
+  stroke: #e9d5ff;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ── Stacked ────────────────────────────────────────────────────────────
+   Below the width where a 1520px canvas stays legible, the copy takes the
+   full column and the stage stops holding a fixed height open. While
+   .eth-visual is empty it contributes nothing, so there is no dead band. */
+@media (max-width: 1279px) {
+  .eth-stage {
+    aspect-ratio: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .eth-copy,
+  .eth-visual {
+    transform: none;
+    width: 100%;
+  }
+
+  .eth-copy {
+    position: static;
+  }
+
+  /* relative, NOT static: the SVG layers inside are absolutely positioned,
+     and a static parent would send them to the section instead. */
+  .eth-visual {
+    position: relative;
+    inset: auto;
+  }
+
+  /* Full width is a full-width measure — a capped column keeps the body at a
+     readable line length. */
+  .eth-copy {
+    max-width: 660px;
+  }
+
+  /* Less glow at every size below the desktop composition: the drawing is
+     smaller here, and haloes tuned for a 720px stage read as haze on a 460px
+     one. CSS shadows only — the core's own glow ELEMENT is animated from JS
+     and is left alone, or the two would fight over one property. */
+  .eth .entie-core-outline { filter: drop-shadow(0 0 4px rgba(129, 140, 248, 0.26)); }
+  .eth .entie-source-outline { filter: drop-shadow(0 0 3px rgba(147, 51, 234, 0.24)); }
+  .eth .entie-output-outline { filter: drop-shadow(0 0 3px rgba(37, 99, 235, 0.26)); }
+  .eth .entie-connector-pulse { filter: drop-shadow(0 0 2px rgba(56, 189, 248, 0.6)); }
+  .eth .entie-flow-particle { filter: drop-shadow(0 0 2px rgba(167, 139, 250, 0.8)); }
+
+  /* Stacked, the copy sits ABOVE the band rather than beside it, so a
+     left-to-right falloff only makes the wave look lopsided. Fade it upward
+     instead. */
+  .entie-wave {
+    -webkit-mask-image: linear-gradient(to top, #000 58%, transparent 100%);
+    mask-image: linear-gradient(to top, #000 58%, transparent 100%);
+  }
+
+  /* Squared and capped: every pixel here is hero height on a device that has
+     none to spare. */
+  .eth-visual {
+    aspect-ratio: 1 / 1;
+    max-width: 460px;
+    margin: 0 auto;
+  }
+}
+
+/* The core's line work holds up when scaled down; the hairlines do not. */
+@media (max-width: 719px) {
+  .eth-stage { gap: 22px; }
+
+  .eth-visual { max-width: 320px; }
+
+  .eth .entie-core-outline { stroke-width: 2; }
+  .eth .entie-core-inner,
+  .eth .entie-core-signal { stroke-width: 1.3; }
+  .eth .entie-source-outline,
+  .eth .entie-source-icon,
+  .eth .entie-output-outline,
+  .eth .entie-output-icon { stroke-width: 1.5; }
+}

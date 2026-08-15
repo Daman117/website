@@ -119,7 +119,20 @@
 .evh-copy {
   position: absolute;
   left: 0;
-  top: 50%;
+  /* PHASE 5C (audit D4). The copy is centred in a fixed-aspect stage, so the
+     nav-to-badge gap is DERIVED — it falls out of stage height minus copy
+     height, which is why the six products measured 87-157px apart with no
+     padding to blame.
+
+     The offset is expressed as a `top` PERCENTAGE, not a pixel nudge. Stage
+     height scales with viewport width, so a fixed px offset over-corrects as
+     the window narrows: measured at 1280px it pushed this hero's badge to
+     within ~21px of the nav. A percentage shrinks with the stage and keeps
+     the correction proportional.
+     Was 50%; gap was 157 px -> ~120px at 1600px wide.
+     transform stays a plain -50%, and the stacked breakpoint below resets
+     both, so mobile is untouched. */
+  top: 45.1%;
   transform: translateY(-50%);
   z-index: 3;
   width: min(34%, 508px);

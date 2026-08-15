@@ -101,7 +101,12 @@ export interface WorkStep {
 
 export const workSteps: WorkStep[] = [
   {
-    icon: 'Upload', title: 'Upload plant information', actor: 'You', color: '#1F5FE0',
+    // PHASE 5B (audit D1): was #1F5FE0, the brand blue. This step's colour is
+    // read as small text by .how-actor, .how-io-label-accent and .how-tag-out,
+    // where it measured 3.42:1 on the card. The other three steps (violet
+    // 7.3, amber 10.1, green 7.3) pass and are untouched. This is the only
+    // non-product step — "You", the user — so no product accent moves.
+    icon: 'Upload', title: 'Upload plant information', actor: 'You', color: '#3B82F6',
     inLabel: 'Inputs', inputs: ['P&IDs', 'Datasheets', 'Procedures', 'Loop drawings', 'Engineering docs'],
     outLabel: 'Ingested', outputs: ['Inside your network', 'No cloud upload'],
   },

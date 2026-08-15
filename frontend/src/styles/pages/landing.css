@@ -54,7 +54,9 @@
 }
 
 .landing-pipe-node-static {
-  background: rgba(255, 255, 255, 0.94);
+  /* PHASE 2: was near-opaque white. It composes onto .card, whose text now
+     uses the dark-theme scale, so a white surface left it white-on-white. */
+  background: var(--surface-raised);
   backdrop-filter: blur(14px) saturate(150%);
   -webkit-backdrop-filter: blur(14px) saturate(150%);
   transform-origin: left center;

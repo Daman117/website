@@ -33,14 +33,14 @@
 
 .enview-section-lead-max {
   font-size: 14px;
-  color: var(--t4);
+  color: var(--text-muted);
   margin-bottom: 32px;
   max-width: var(--content-width-xl);
 }
 
 .enview-section-lead {
   font-size: 14px;
-  color: var(--t4);
+  color: var(--text-muted);
   margin-bottom: 28px;
 }
 
@@ -69,7 +69,7 @@
 }
 
 .enview-card-desc {
-  color: var(--t4);
+  color: var(--text-muted);
 }
 
 .enview-view-title {
@@ -109,7 +109,7 @@
 }
 
 .enview-table-th-first {
-  color: var(--t1);
+  color: var(--text-primary);
 }
 
 .enview-table-th-accent {
@@ -117,22 +117,22 @@
 }
 
 .enview-table-th-default {
-  color: var(--t2);
+  color: var(--text-secondary);
 }
 
 .enview-table-phase {
   font-weight: 700;
-  color: var(--t1);
+  color: var(--text-primary);
   white-space: nowrap;
 }
 
 .enview-table-td {
-  color: var(--t4);
+  color: var(--text-muted);
   transition: background 0.35s ease, color 0.35s ease, box-shadow 0.35s ease;
 }
 
 .enview-table-td.first {
-  color: var(--t3);
+  color: var(--text-body);
   font-weight: 600;
 }
 
@@ -172,7 +172,7 @@
 .enview-transform-from {
   position: relative;
   display: inline-block;
-  color: var(--t4);
+  color: var(--text-muted);
 }
 
 .enview-transform-strike {
@@ -181,7 +181,7 @@
   right: 0;
   top: 52%;
   height: var(--line-thickness);
-  background: var(--t4);
+  background: var(--text-muted);
   will-change: transform;
 }
 
@@ -199,11 +199,11 @@
 }
 
 .enview-transform-desc {
-  color: var(--t4);
+  color: var(--text-muted);
 }
 
 .enview-outcomes-lead {
-  color: var(--t3);
+  color: var(--text-body);
   margin-top: 28px;
 }
 

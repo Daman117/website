@@ -1,32 +1,6 @@
-/* enTIE Page — hero/trust-card colour overrides; layout classes shared with enABLE (enable-*, var(--accent)-driven) */
-
-.entie-hero-badge-text { color: #93c5fd; }
-
-.entie-hero-h1-text {
-  color: #ffffff;
-}
-
-.entie-hero-h1-accent {
-  color: #60A5FA;
-}
-
-.entie-hero-sub-text {
-  color: rgba(255, 255, 255, 0.96);
-}
-
-.entie-hero-body-text {
-  color: rgba(255, 255, 255, 0.82);
-}
-
-.entie-hero-chips {
-  margin-bottom: 28px;
-}
-
-.entie-hero-chip {
-  color: #93c5fd;
-  background: rgba(96, 165, 250, 0.22);
-  border-color: rgba(147, 197, 253, 0.4);
-}
+/* enTIE Page — trust-card colour override; layout classes shared with enABLE
+   (enable-*, var(--accent)-driven). Hero styles live in
+   components/entie-hero.css (.eth-*). */
 
 .entie-trust-card {
   border-color: rgba(96, 165, 250, 0.25);

@@ -15,6 +15,75 @@
   position: relative;
 }
 
+/* The shared .hero-shell bottom-aligns its content (justify-content:flex-end
+   in index.css), which was right when a photograph filled the space above it.
+   With the photo gone this page had a 216px dead band under the navbar and
+   ZERO gap beneath the CTA — the copy sat flush on the section's bottom edge,
+   which reads as the hero being too short for what is in it.
+
+   Top-aligned with an explicit pad, so the pad IS the gap. Centring it
+   instead — the first fix — put the copy in the middle of a shell taller
+   than the copy needs, adding ~39px of slack on top of the padding and
+   leaving a 132px band under the navbar, half again the 94px the enSTUDIO
+   hero sits at.
+
+   The pad has an 88px floor rather than the 68px the other heroes use:
+   their copy is centred inside a taller stage and clears the nav on its own,
+   whereas this content wrapper starts at the padding edge, and at 768px tall
+   a 68px pad puts the badge under the fixed navbar (which ends at 78px).
+
+   The leftover height falls below the CTA, where a hero normally carries it,
+   and the composition centres itself on the shell independently — the two
+   midpoints land within about 20px, so they still read as a pair.
+   min-height still governs, so a short viewport grows the section rather
+   than clipping it.
+
+   Scoped to .egn-hero, so enABLE and the other pages still on the
+   photographic shell are untouched. */
+.egn-hero .hero-shell {
+  justify-content: flex-start;
+  /* PHASE 5C (audit D4): top pad raised from clamp(88px, 10vh, 112px), which
+     produced an 87px nav-to-badge gap — the tightest of the six products
+     against the ~120px target. This is the one hero where the gap is real
+     padding rather than a derived centring offset, so it is the one place a
+     padding change is the right lever. The shell's min-height still governs
+     (content + padding stays under it), so hero height is unchanged.
+     Mobile keeps the old value — see the max-width: 860px block. */
+  padding: clamp(121px, 13.5vh, 145px) 0 clamp(40px, 5vh, 72px);
+}
+
+/* ── Copy scale ─────────────────────────────────────────────────────────
+   This page inherits the shared .engram-hero-* type, which was set for the
+   photographic heroes: a 58px headline running the full container width.
+   Beside the newer product heroes it read as a different, larger design —
+   measured, 58px against their 41.6px, over a 1080px column against their
+   490px.
+
+   Matched to them here rather than in index.css, because five other pages
+   still want the larger scale. Same clamps as .esh-title / .eth-title. */
+.egn-hero .engram-hero-h1 {
+  font-size: clamp(28px, 2.6vw, 42px);
+  letter-spacing: -1.4px;
+  line-height: 1.1;
+}
+
+.egn-hero .engram-hero-sub {
+  font-size: clamp(14px, 1.05vw, 16px);
+  line-height: 1.68;
+}
+
+.egn-hero .engram-hero-body {
+  font-size: clamp(12.5px, 0.86vw, 13.5px);
+  line-height: 1.75;
+}
+
+/* The column, not the wrapper: capping the wrapper would re-centre the whole
+   block inside the container and pull the copy off the left gutter. Capping
+   its children holds the measure while the block stays where it is. */
+.egn-hero .hero-content-wrapper > * {
+  max-width: 560px;
+}
+
 .egn-hero .hero-shell-bg {
   display: none;
 }
@@ -117,13 +186,18 @@
    Absolutely placed in the right half, below the content layer. It sits on
    the half the copy does not use, so it never has to be pushed out of the
    way — and being out of flow means it cannot shift the layout by a pixel. */
+/* Sized to match the other product heroes' compositions rather than to fill
+   the half it sits in. Nothing inside uses vector-effect, so every stroke in
+   the system scales with this one number — narrowing the box thins the whole
+   drawing in proportion, which is what brings its weight back in line with
+   the hairline language of the enSTUDIO and enTIE heroes. */
 .egn-sys {
   position: absolute;
   right: clamp(8px, 3vw, 72px);
   top: 50%;
   transform: translateY(-46%);
   z-index: 2;
-  width: min(46%, 640px);
+  width: min(42%, 580px);
   max-height: 82%;
   height: auto;
   display: block;
@@ -317,7 +391,7 @@
    rather than being scaled to illegibility. */
 @media (max-width: 1100px) {
   .egn-sys {
-    width: min(42%, 460px);
+    width: min(40%, 440px);
     right: 8px;
   }
 }
@@ -327,11 +401,42 @@
     opacity: 0.62;
   }
 
-  /* Below this the copy runs full width and there is no right half left to
-     put it in. Hidden rather than stacked, which would add height and move
-     the CTA — the one thing this step must not do. */
+  /* Phase 5A (audit C2): the system used to be display:none here, so enGENIE
+     was the only product with no composition at all on a phone. It is stacked
+     under the copy now — the same principle the other five product heroes
+     already use, at a size chosen for THIS composition (720x780, so a 300px
+     width renders ~325px tall).
+
+     .egn-hero becomes a flex column so `order` can move the system below the
+     copy: it is rendered BEFORE CapabilityHero in the DOM, and without this
+     it would sit above the headline once it left the absolute layer.
+     .egn-bg stays absolutely positioned and is untouched by the flex context. */
+  .egn-hero {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* The shell keeps a 95vh floor from the shared .hero-shell rule, which left
+     ~100px of dead space under the CTA. With the system now below it, that
+     slack would be pure page height — so the shell hugs its content and the
+     composition takes the space instead. */
+  .egn-hero .hero-shell {
+    min-height: auto;
+    /* The D4 desktop pad would add ~33px of empty space above the badge on a
+       phone, where the hero is already the tallest of the six. */
+    padding-top: clamp(88px, 10vh, 112px);
+  }
+
   .egn-sys {
-    display: none;
+    position: static;
+    order: 2;
+    width: min(86%, 300px);
+    height: auto;
+    max-height: none;
+    right: auto;
+    top: auto;
+    transform: none;
+    margin: 0 auto clamp(24px, 4vh, 40px);
   }
 
   .egn-dots circle {

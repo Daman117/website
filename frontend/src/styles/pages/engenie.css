@@ -38,17 +38,17 @@
   margin-bottom: 8px;
 }
 
-.engenie-card-p { color: var(--t4); }
+.engenie-card-p { color: var(--text-muted); }
 
 .engenie-section-lead {
   font-size: 14px;
-  color: var(--t4);
+  color: var(--text-muted);
   margin-bottom: 32px;
 }
 
 .engenie-section-lead-sm {
   font-size: 14px;
-  color: var(--t4);
+  color: var(--text-muted);
   margin-bottom: 24px;
 }
 
@@ -66,7 +66,7 @@
   margin-bottom: 4px;
 }
 
-.engenie-audience-desc { color: var(--t4); margin-bottom: 16px; }
+.engenie-audience-desc { color: var(--text-muted); margin-bottom: 16px; }
 
 .engenie-audience-list-item {
   margin-bottom: 8px;
@@ -81,7 +81,7 @@
   background: var(--adapter-color);
 }
 
-.engenie-audience-text { color: var(--t3); }
+.engenie-audience-text { color: var(--text-body); }
 
 .engenie-dna-header {
   margin-bottom: 10px;
@@ -103,7 +103,7 @@
   margin: 0;
 }
 
-.engenie-dna-desc { color: var(--t4); }
+.engenie-dna-desc { color: var(--text-muted); }
 
 .engenie-comparison-card {
   padding: var(--chip-padding);
@@ -115,19 +115,19 @@
 
 .engenie-table-phase {
   font-weight: 600;
-  color: var(--t2);
+  color: var(--text-secondary);
   white-space: nowrap;
 }
 
 .engenie-table-llm {
-  color: var(--t4);
+  color: var(--text-muted);
 }
 
 .engenie-table-engenie {
-  color: var(--t3);
+  color: var(--text-body);
 }
 
-.engenie-outcomes-lead { color: var(--t3); margin-bottom: 32px; }
+.engenie-outcomes-lead { color: var(--text-body); margin-bottom: 32px; }
 
 .engenie-outcome-bullet {
   width: var(--dot-md);

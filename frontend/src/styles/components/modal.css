@@ -21,24 +21,27 @@
 
 .contact-modal-dialog {
   margin: auto;
-  background: linear-gradient(165deg, #fcfdff 0%, #e9eff7 100%);
-  border: 1px solid rgba(15, 23, 42, 0.07);
+  /* PHASE 2: was a light gradient (#fcfdff -> #e9eff7). Same shape, dark
+     surfaces: raised at the top edge falling to the section ground, so the
+     panel reads as lit from above rather than as a flat slab. */
+  background: linear-gradient(165deg, #0c1226 0%, #06091a 100%);
+  border: 1px solid var(--border-default);
   border-radius: 24px;
   max-width: var(--content-width-sm);
   width: 100%;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 40px 100px rgba(11, 37, 69, 0.30), 0 12px 36px rgba(11, 37, 69, 0.14);
+  box-shadow: 0 40px 100px rgba(2, 5, 15, 0.7), 0 12px 36px rgba(2, 5, 15, 0.5);
 }
 
 .contact-modal-close {
   position: absolute;
   top: 18px;
   right: 18px;
-  background: rgba(15, 23, 42, 0.04);
-  border: 1px solid var(--border);
+  background: var(--surface-hover);
+  border: 1px solid var(--border-default);
   border-radius: var(--radius-full);
-  color: var(--t3);
+  color: var(--text-body);
   cursor: pointer;
   width: 40px;
   height: 40px;
@@ -50,13 +53,13 @@
 }
 
 .contact-modal-close:focus-visible {
-  outline: 2px solid var(--primary);
+  outline: 2px solid var(--focus-ring);
   outline-offset: var(--focus-ring-offset);
 }
 
 .contact-modal-close:hover {
-  background: rgba(15, 23, 42, 0.09);
-  color: var(--t1);
+  background: var(--surface-active);
+  color: var(--text-primary);
 }
 
 .contact-modal-body {
@@ -78,28 +81,28 @@
 .contact-modal-success-title {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 22px;
-  color: var(--t1);
+  color: var(--text-primary);
   margin-bottom: 8px;
   font-weight: 700;
 }
 
 .contact-modal-success-text {
   font-size: 14px;
-  color: var(--t3);
+  color: var(--text-body);
 }
 
 .contact-modal-title {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 30px;
   font-weight: 700;
-  color: var(--t1);
+  color: var(--text-primary);
   margin-bottom: 10px;
   letter-spacing: -1px;
 }
 
 .contact-modal-desc {
   font-size: 14px;
-  color: var(--t3);
+  color: var(--text-body);
   margin-bottom: 32px;
   line-height: 1.6;
 }
@@ -134,7 +137,7 @@
 
 .contact-footer-note {
   font-size: 11px;
-  color: var(--t5);
+  color: var(--text-muted);
   margin-top: 14px;
   text-align: center;
 }
@@ -153,7 +156,7 @@
 
 .contact-privacy-note {
   font-size: 11px;
-  color: var(--t5);
+  color: var(--text-muted);
   margin-top: 12px;
   text-align: center;
 }
@@ -163,15 +166,15 @@
 }
 
 .cm-select-value {
-  color: var(--t4);
+  color: var(--text-muted);
 }
 
 .cm-select-value.active {
-  color: var(--t1);
+  color: var(--text-primary);
 }
 
 .cm-select-icon {
-  color: var(--t4);
+  color: var(--text-muted);
   margin-right: 2px;
   flex-shrink: 0;
   transition: transform .2s;

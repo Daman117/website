@@ -19,7 +19,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
 }) => (
   <div
     className="card engram-cap-card enview-view-card"
-    style={{ '--cap-color': color, ...(img ? { '--card-bg': `url(${img})` } : {}) } as React.CSSProperties}
+    style={{ '--cap-color': color, ...(img ? { '--card-img': `url(${img})` } : {}) } as React.CSSProperties}
   >
     {/* Background image — zooms on hover via CSS */}
     <div className="enview-view-card-img" />

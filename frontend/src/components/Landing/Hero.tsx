@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { heroChips } from '../../data/v2';
 import IndustrialEcosystemHero from './IndustrialEcosystemHero/IndustrialEcosystemHero';
-import Ticker from './shared/Ticker';
 
 // ─────────────────────────────────────────────────────────────────
 // ── SECTION 1: HERO
@@ -14,29 +13,9 @@ import Ticker from './shared/Ticker';
 //    The copy below is unchanged and still passed as children, so this
 //    component's props and text stay exactly as they were.
 // ─────────────────────────────────────────────────────────────────
-// Fires once per session (module state survives SPA nav, resets on refresh):
-// the ticker slides in once the intro text has finished revealing. Scroll is
-// never locked — users who scroll early simply cut the show short.
-let heroIntroPlayed = false;
-const HERO_INTRO_MS = 1800;
-
 const Hero: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenContact }) => {
-  const [introDone, setIntroDone] = useState(heroIntroPlayed);
-
-  useEffect(() => {
-    if (heroIntroPlayed) return;
-    const t = setTimeout(() => {
-      // Only mark "played" once the timer actually completes — setting this
-      // at the start instead makes React StrictMode's dev-only double-invoke
-      // (mount -> cleanup -> mount) skip the real timer on the second mount.
-      heroIntroPlayed = true;
-      setIntroDone(true);
-    }, HERO_INTRO_MS);
-    return () => clearTimeout(t);
-  }, []);
-
   return (
-    <IndustrialEcosystemHero id="hero" after={<Ticker visible={introDone} />}>
+    <IndustrialEcosystemHero id="hero">
       {/* Desktop — full staged reveal, both trees always render; a media
           query decides which is visible (no JS branch, no first-paint flash). */}
       <div className="u-hide-mobile">

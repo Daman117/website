@@ -36,7 +36,7 @@
 
 .enable-section-lead {
   font-size: 14px;
-  color: var(--t4);
+  color: var(--text-muted);
   margin-bottom: 32px;
 }
 
@@ -54,9 +54,9 @@
   line-height: 1;
 }
 
-.enable-card-text { color: var(--t3); }
+.enable-card-text { color: var(--text-body); }
 
-.enable-challenge-note { color: var(--t5); margin-top: 20px; }
+.enable-challenge-note { color: var(--text-muted); margin-top: 20px; }
 
 .enable-trust-eyebrow {
   margin-bottom: 8px;
@@ -73,7 +73,7 @@
   color: var(--accent);
 }
 
-.enable-trust-desc { color: var(--t4); margin-bottom: 16px; }
+.enable-trust-desc { color: var(--text-muted); margin-bottom: 16px; }
 
 .enable-trust-list-item {
   margin-bottom: 8px;
@@ -95,9 +95,9 @@
   background: #2563EB;
 }
 
-.enable-trust-text { color: var(--t3); }
+.enable-trust-text { color: var(--text-body); }
 
-.enable-trust-note { color: var(--t5); margin-top: 14px; }
+.enable-trust-note { color: var(--text-muted); margin-top: 14px; }
 
 .enable-comparison-card {
   padding: var(--chip-padding);
@@ -110,21 +110,21 @@
 
 .enable-table-phase {
   font-weight: 600;
-  color: var(--t2);
+  color: var(--text-secondary);
   white-space: nowrap;
 }
 
 .enable-table-limitation {
-  color: var(--t4);
+  color: var(--text-muted);
 }
 
 .enable-table-fix {
-  color: var(--t3);
+  color: var(--text-body);
 }
 
 .enable-table-summary { color: var(--accent); margin-top: 16px; }
 
-.enable-outcomes-lead { color: var(--t3); margin-bottom: 32px; }
+.enable-outcomes-lead { color: var(--text-body); margin-bottom: 32px; }
 
 .enable-outcome-bullet {
   width: var(--dot-md);

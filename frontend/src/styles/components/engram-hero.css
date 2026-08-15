@@ -110,7 +110,20 @@
 .egh-copy {
   position: absolute;
   left: 0;
-  top: 50%;
+  /* PHASE 5C (audit D4). The copy is centred in a fixed-aspect stage, so the
+     nav-to-badge gap is DERIVED — it falls out of stage height minus copy
+     height, which is why the six products measured 87-157px apart with no
+     padding to blame.
+
+     The offset is expressed as a `top` PERCENTAGE, not a pixel nudge. Stage
+     height scales with viewport width, so a fixed px offset over-corrects as
+     the window narrows: measured at 1280px it pushed this hero's badge to
+     within ~21px of the nav. A percentage shrinks with the stage and keeps
+     the correction proportional.
+     Was 50%; gap was 146 px -> ~120px at 1600px wide.
+     transform stays a plain -50%, and the stacked breakpoint below resets
+     both, so mobile is untouched. */
+  top: 46.8%;
   transform: translateY(-50%);
   z-index: 6;
   width: min(33%, 520px);
@@ -673,27 +686,43 @@
 }
 
 /* ── Below the desktop composition ──────────────────────────────────────
-   Placeholder only. The canvas is aspect-locked, so its height falls with
-   viewport width while the copy's height does not; below 1280px the
-   absolutely-centred copy would overflow the stage and slide under the fixed
-   nav. Stacking it above keeps the page usable until a proper compact
-   composition (its own coordinate system, as the landing hero has) is built
-   in a later phase. */
+   The canvas is aspect-locked, so its height falls with viewport width while
+   the copy's height does not; below 1280px the absolutely-centred copy would
+   overflow the stage and slide under the fixed nav. Below this width the copy
+   is therefore taken out of the overlay entirely and stacked ABOVE the
+   composition, and the compact canvas (its own coordinate system — see
+   engramLayouts.ts) is mounted in place of the desktop one.
+
+   These rules only became reachable once .egh-copy was moved out of
+   .egh-stage and made a sibling of it in EngramHero.tsx. While it was nested,
+   `order` had no flex parent to act on and `position: static` put reading
+   copy underneath six absolutely-positioned SVG layers. */
 @media (max-width: 1279px) {
   .egh {
     padding-top: clamp(88px, 9vh, 120px);
+    /* The composition now ENDS the hero rather than sitting behind it, so the
+       floor of the terrain lands close to the next section. A little more air
+       than the desktop 48px, which had a half-empty stage below the core. */
+    padding-bottom: clamp(56px, 8vh, 88px);
   }
 
   .egh-inner {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 28px;
+    gap: clamp(28px, 4vh, 44px);
   }
 
   .egh-copy {
-    position: static;
+    /* relative, NOT static: the terrain and core layers are deliberately
+       `overflow: visible` so the surface can reach the viewport edges, and a
+       positioned element paints above an unpositioned one whatever the source
+       order. Keeping the copy positioned keeps z-index meaningful, so the
+       spill stays background and never crosses the text. */
+    position: relative;
+    z-index: 6;
     order: 1;
+    top: auto;
     width: 100%;
     max-width: 660px;
     transform: none;
@@ -723,21 +752,43 @@
 @media (min-width: 880px) and (max-width: 1279px) {
   .egh-inner {
     flex-direction: row;
-    align-items: center;
+    /* flex-start, NOT center. The compact canvas is a tall narrow column
+       (380x720, so ~1.9:1) and the copy is barely 420px high, so centring the
+       two against each other left a ~300px void ABOVE the badge and another
+       below the CTA — the copy floated in the middle of the row with no
+       relationship to anything. Aligned to the top, the copy starts where the
+       composition starts and the single remaining gap falls under the CTA,
+       where the terrain's ground plane already spreads across to fill it. */
+    align-items: flex-start;
     justify-content: center;
     gap: clamp(28px, 5vw, 64px);
   }
 
   .egh-copy {
     order: 1;
-    flex: 1 1 48%;
-    max-width: 540px;
+    /* 56%, up from 48%: at 1024 the copy column measured 461px, which put the
+       13.5px body at ~52 characters and made the reading side feel like the
+       leftover of the artwork's width rather than the primary column. */
+    flex: 1 1 56%;
+    /* A flex item's automatic minimum size is its content, so a long word or
+       a chip row could push the column wider than its share and shove the
+       stage off the right edge. */
+    min-width: 0;
+    /* Without a cap the column reaches 727px at 1279 — ~90 characters, well
+       past a comfortable measure. */
+    max-width: 620px;
+    padding-top: clamp(8px, 4vh, 56px);
   }
 
   .egh-stage {
     order: 2;
     flex: 0 0 auto;
-    width: clamp(340px, 40vw, 430px);
-    --u: calc(clamp(340px, 40vw, 430px) / var(--canvas-w));
+    /* Narrowed from clamp(340px, 40vw, 430px). Height is width x 1.9 here, so
+       every pixel of stage width cost nearly two of hero height: at 1024 the
+       old 410px column stood 776px tall against 417px of copy. 328px still
+       reads as the full pipeline — sheets, core, graph and all six capability
+       nodes — and takes the hero from 984px to 829px. */
+    width: clamp(300px, 32vw, 360px);
+    --u: calc(clamp(300px, 32vw, 360px) / var(--canvas-w));
   }
 }

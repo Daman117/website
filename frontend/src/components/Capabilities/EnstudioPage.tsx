@@ -6,7 +6,7 @@ import { ScrollStagger, LineReveal } from '../ScrollAnimation';
 import { prefersReducedMotion } from '../../utils/motion';
 import HowItWorksScroll from './HowItWorksScroll';
 import NativeApproachScroll from './NativeApproachScroll';
-import CapabilityHero from '../Capability/Hero';
+import EnstudioHero from './EnstudioHero/EnstudioHero';
 import FlashIcon from '../Capability/FlashIcon';
 import FeatureCard from '../Capability/FeatureCard';
 import ComparisonTable from '../Capability/ComparisonTable';
@@ -250,9 +250,10 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
   return (
     <main className="engram-page" style={{ '--accent': ACCENT, '--accent-rgb': '167,139,250' } as React.CSSProperties}>
 
-      {/* ── HERO (pinned parallax background — iOS-safe, see HeroShell) ── */}
-      <CapabilityHero
-        image="/enstudio-hero.webp"
+      {/* ── HERO — own shell (EnstudioHero/), no photographic background. The
+             right side is held empty for the composition. Content props
+             mirror the old shared CapabilityHero call. ── */}
+      <EnstudioHero
         badgeText="DRAWING INTELLIGENCE"
         titleLine1="Turn Engineering Drawings Into"
         titleLine2="Plant Configuration"
@@ -261,15 +262,6 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
         chips={heroChips}
         ctaLabel="Request a Demo"
         onCtaClick={() => onOpenContact('Request a Demo')}
-        classes={{
-          badge: 'badge-text enstudio-hero-badge-text',
-          title: 'enstudio-hero-h1-text',
-          accent: 'enstudio-hero-h1-accent',
-          subtitle: 'enstudio-hero-sub-text',
-          body: 'enstudio-hero-body-text',
-          chips: 'enstudio-hero-chips',
-          chip: 'enstudio-hero-chip',
-        }}
       />
 
       {/* ── CHALLENGE ── */}

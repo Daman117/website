@@ -126,7 +126,38 @@ const EngramHero: React.FC<EngramHeroProps> = ({
 
   return (
   <section ref={ref} className={`egh egh--${L.variant}${inView ? '' : ' egh-idle'}`}>
+    {/* The copy is a SIBLING of the stage, not a child of it. On desktop the
+        two are interchangeable — the copy is absolute and .egh-inner is the
+        same box as .egh-stage, so `left: 0`, `width: min(33%, 520px)` and
+        `top: 46.8%` resolve identically either way. Below 1280px they are not:
+        the stacked layout turns .egh-inner into a flex column and orders copy
+        above stage, and `order` only applies to a flex container's own
+        children. Nested inside the stage the copy could not be ordered, could
+        not be taken out of the artwork's box, and — once `position: static` —
+        lost its z-index, so the six absolutely-positioned SVG layers painted
+        straight over the heading, body and CTA. */}
     <div className="egh-inner">
+      <div className="egh-copy">
+        <span className="egh-badge">{badgeText}</span>
+        <h1 className="egh-title">
+          {titleLine1}
+          <br />
+          <span className="egh-accent">{titleLine2}</span>
+        </h1>
+        <p className="egh-sub">{subText}</p>
+        <p className="egh-body">{bodyText}</p>
+        <div className="egh-chips" aria-label="enGRAM capabilities">
+          {chips.map((c) => (
+            <span key={c} className="egh-chip">
+              {c}
+            </span>
+          ))}
+        </div>
+        <button className="cta-solid button-text btn-primary egh-cta" onClick={onCtaClick}>
+          {ctaLabel}
+        </button>
+      </div>
+
       <div
         className="egh-stage"
         style={{ '--canvas-w': L.stage.w, '--canvas-h': L.stage.h } as React.CSSProperties}
@@ -140,27 +171,6 @@ const EngramHero: React.FC<EngramHeroProps> = ({
         <HeroKnowledgeCore {...touch} />
         <HeroKnowledgeLayer {...flow} highlight={hover} />
         <HeroNodes {...touch} />
-
-        <div className="egh-copy">
-          <span className="egh-badge">{badgeText}</span>
-          <h1 className="egh-title">
-            {titleLine1}
-            <br />
-            <span className="egh-accent">{titleLine2}</span>
-          </h1>
-          <p className="egh-sub">{subText}</p>
-          <p className="egh-body">{bodyText}</p>
-          <div className="egh-chips" aria-label="enGRAM capabilities">
-            {chips.map((c) => (
-              <span key={c} className="egh-chip">
-                {c}
-              </span>
-            ))}
-          </div>
-          <button className="cta-solid button-text btn-primary egh-cta" onClick={onCtaClick}>
-            {ctaLabel}
-          </button>
-        </div>
       </div>
     </div>
   </section>

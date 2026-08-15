@@ -1,37 +1,10 @@
 /* Enstudio */
 
-/* enSTUDIO Page */
-.enstudio-hero-badge-text { color: #c4b5fd; }
-
-.enstudio-hero-h1-text {
-  color: #ffffff;
-}
-
-.enstudio-hero-h1-accent {
-  color: #A78BFA;
-}
-
-.enstudio-hero-sub-text {
-  color: rgba(255, 255, 255, 0.96);
-}
-
-.enstudio-hero-body-text {
-  color: rgba(255, 255, 255, 0.82);
-}
-
-.enstudio-hero-chips {
-  margin-bottom: 28px;
-}
-
-.enstudio-hero-chip {
-  color: #c4b5fd;
-  background: rgba(167, 139, 250, 0.22);
-  border-color: rgba(196, 181, 253, 0.4);
-}
+/* enSTUDIO Page — hero styles live in components/enstudio-hero.css (.esh-*) */
 
 .enstudio-section-lead {
   font-size: 14px;
-  color: var(--t4);
+  color: var(--text-muted);
   margin-bottom: 32px;
 }
 
@@ -45,9 +18,9 @@
   line-height: 1;
 }
 
-.enstudio-card-text { color: var(--t3); }
+.enstudio-card-text { color: var(--text-body); }
 
-.enstudio-card-note { color: var(--t5); margin-top: 20px; }
+.enstudio-card-note { color: var(--text-muted); margin-top: 20px; }
 
 .enstudio-card-h3 { color: #fff; margin: 0; }
 
@@ -80,7 +53,7 @@
   margin-bottom: 6px;
 }
 
-.enstudio-trust-desc { color: var(--t4); margin-bottom: 16px; }
+.enstudio-trust-desc { color: var(--text-muted); margin-bottom: 16px; }
 
 .enstudio-trust-list-item {
   margin-bottom: 8px;
@@ -106,7 +79,7 @@
   background: var(--accent);
 }
 
-.enstudio-trust-text { color: var(--t3); }
+.enstudio-trust-text { color: var(--text-body); }
 
 .enstudio-comparison-card {
   padding: var(--chip-padding);
@@ -115,16 +88,16 @@
 
 .enstudio-table-phase {
   font-weight: 600;
-  color: var(--t2);
+  color: var(--text-secondary);
   white-space: nowrap;
 }
 
 .enstudio-table-limitation {
-  color: var(--t4);
+  color: var(--text-muted);
 }
 
 .enstudio-table-fix {
-  color: var(--t3);
+  color: var(--text-body);
 }
 
 .enstudio-table-summary { color: var(--accent); margin-top: 16px; }
@@ -153,7 +126,7 @@
   margin-bottom: 8px;
 }
 
-.enstudio-adapter-desc { color: var(--t4); margin-bottom: 16px; }
+.enstudio-adapter-desc { color: var(--text-muted); margin-bottom: 16px; }
 
 .enstudio-adapter-point-bullet {
   width: var(--dot-sm);
@@ -164,9 +137,9 @@
   background: var(--adapter-color);
 }
 
-.enstudio-adapter-point-text { color: var(--t3); }
+.enstudio-adapter-point-text { color: var(--text-body); }
 
-.enstudio-outcomes-lead { color: var(--t3); margin-bottom: 32px; }
+.enstudio-outcomes-lead { color: var(--text-body); margin-bottom: 32px; }
 
 .enstudio-outcome-bullet {
   width: var(--dot-md);
