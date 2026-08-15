@@ -17,7 +17,6 @@ interface EnviewPageProps {
 const ACCENT = '#2563EB';
 const ACCENT_RGB = '37,99,235';
 
-const heroChips = ['Native macOS', 'Apple Silicon', 'AI-Ready', 'ISA Compliant'];
 
 const howItWorksSteps = [
   { icon: Plug,        color: '#2563EB', title: 'Connect', desc: 'OPC-UA / Modbus TCP / MQTT native connections established instantly via the command line.' },
@@ -218,12 +217,10 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
       {/* ── HERO — real HTML/SVG composition (EnviewHero/), not the shared
              photographic CapabilityHero. Content props mirror the old call. ── */}
       <EnviewHero
-        badgeText="NATIVE PERFORMANCE. REAL-TIME VISIBILITY. BUILT FOR APPLE SILICON."
+        badgeText="REAL-TIME SCADA"
         titleLine1="Modern SCADA for"
         titleLine2="Industrial & Manufacturing"
-        subText="enVIEW is a next-generation SCADA platform built in Swift that delivers instant startup, sub-100 ms response times, and synchronized operator views from a single data model."
-        bodyText="Engineered for modern industrial operations, it keeps dashboards, alarms, trends, and P&ID graphics fast, responsive, and always in sync."
-        chips={heroChips}
+        subText="enVIEW is a SCADA platform written in Swift for Apple silicon. It starts in under two seconds and keeps dashboards, alarms, trends and P&ID graphics on one live data model."
         ctaLabel="Request a Demo"
         onCtaClick={() => onOpenContact('Request a Demo')}
       />

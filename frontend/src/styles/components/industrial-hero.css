@@ -213,8 +213,21 @@
 .ieh-copy {
   position: absolute;
   left: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  /* CONTENT PASS: was `top: 50%` + `translateY(-50%)`. Centring made the
+     copy's position a function of its own height, so cutting the second
+     paragraph and the six pills let the block float to the middle of a tall
+     stage — the headline dropped to ~240px below the nav, against the 120px
+     line the six product heroes hold.
+
+     Top-anchored on the same construction they use: 129px is the shared
+     197px content line minus the 68px this hero's own padding already
+     contributes, so the homepage headline starts level with a product
+     hero's badge. Being an anchor rather than a centre, it also cannot move
+     again the next time the wording changes.
+
+     The stacked and two-column breakpoints below set `position: static`,
+     which nullifies `top`, so tablet and mobile are untouched. */
+  top: 129px;
   z-index: 4;
   width: min(38%, 600px);
 }
@@ -695,11 +708,6 @@
        --u has to be re-derived from the capped stage instead. */
     --u: calc(min(100cqw, 420px) / var(--canvas-w));
   }
-
-  /* Trim the copy's vertical rhythm — on a stacked hero these margins are
-     the second biggest block after the diagram itself. */
-  .ieh-copy .engram-hero-body { margin-bottom: 18px; }
-  .ieh-copy .landing-hero-chips { margin-bottom: 18px; }
 }
 
 /* ── Tablet: put the copy beside the stage ───────────────────────────────

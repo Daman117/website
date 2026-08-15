@@ -7,8 +7,6 @@ interface CapabilityHeroProps {
   titleLine1: string;
   titleLine2: string;
   subText: string;
-  bodyText: string;
-  chips: string[];
   ctaLabel: string;
   onCtaClick: () => void;
   classes: {
@@ -17,14 +15,11 @@ interface CapabilityHeroProps {
     title: string;
     accent: string;
     subtitle: string;
-    body: string;
-    chips: string;
-    chip: string;
   };
 }
 
 const CapabilityHero: React.FC<CapabilityHeroProps> = ({
-  image, badgeText, titleLine1, titleLine2, subText, bodyText, chips, ctaLabel, onCtaClick, classes,
+  image, badgeText, titleLine1, titleLine2, subText, ctaLabel, onCtaClick, classes,
 }) => (
   <HeroShell image={image} contentClassName={`engram-hero engram-container ${classes.content || ''}`.trim()}>
     <div className="engram-hero-badge">
@@ -41,16 +36,6 @@ const CapabilityHero: React.FC<CapabilityHeroProps> = ({
     <p className={`engram-hero-sub hero-fade-up ${classes.subtitle} hero-delay-900`}>
       {subText}
     </p>
-    <p className={`engram-hero-body hero-fade-up ${classes.body} hero-delay-1100`}>
-      {bodyText}
-    </p>
-    <div className={`hero-fade-up ${classes.chips} u-flex u-gap-10 u-flex-wrap hero-delay-1300`}>
-      {chips.map((c) => (
-        <span key={c} className={`badge hero-chip-badge ${classes.chip}`}>
-          {c}
-        </span>
-      ))}
-    </div>
     <div className="hero-fade-up u-flex u-gap-12 u-flex-wrap hero-delay-1500">
       <button className="cta-solid button-text btn-primary" onClick={onCtaClick}>
         {ctaLabel}

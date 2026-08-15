@@ -2,18 +2,6 @@
 //    business impact, trust, security, case studies, resources ──────────
 
 /* §1 — Hero capability keyword chips */
-// 'Local AI', 'Air-Gapped' and 'On-Premises' all made the same point and
-// took three of seven slots; 'Runs Inside Your Network' says it once and
-// leaves room for a capability the platform is not otherwise credited for.
-export const heroChips: string[] = [
-  'Industrial AI Platform',
-  'P&ID Intelligence',
-  'SCADA Intelligence',
-  'Engineering Knowledge',
-  'Instrument Selection',
-  'Runs Inside Your Network',
-];
-
 /* §2 — "See enxco in Action" product demonstrations */
 export interface DemoCard {
   id: string;

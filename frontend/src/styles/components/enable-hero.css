@@ -41,7 +41,13 @@
      rail can still grow if its content needs more. */
   min-height: min(100vh, 920px);
   display: flex;
-  align-items: center;
+  /* CONTENT PASS: was `center`. Centring the inner block made this hero the
+     only one whose nav-to-badge gap moved with VIEWPORT HEIGHT — the row top
+     is (hero height - row height) / 2, so it measured 120px at 900 and 94px at
+     800 while enGENIE held 118-119 everywhere. Anchored to the top, the gap is
+     the hero's own padding and nothing else, which is exactly how enGENIE gets
+     a constant one. */
+  align-items: flex-start;
   /* Same clearance as every other hero — see .ieh. */
   padding: clamp(68px, 7vh, 94px) var(--gutter) 40px;
   /* Dark navy to near-black, and BLUE/VIOLET only. There is deliberately no
@@ -127,7 +133,8 @@
    min(34%, 508px) so the line length reads the same across products. The
    composition is untouched — it sits in its own absolutely-placed layer. */
 .eab-copy {
-  max-width: 508px;
+  /* 560px — the enGENIE measure, now shared by all six heroes. */
+  max-width: 560px;
 }
 
 .eab-badge {
@@ -170,32 +177,6 @@
   font-weight: 500;
   line-height: 1.66;
   color: rgba(255, 255, 255, 0.92);
-}
-
-.eab-body {
-  margin-bottom: 20px;
-  font-size: clamp(12.5px, 0.86vw, 13.5px);
-  line-height: 1.74;
-  color: rgba(255, 255, 255, 0.66);
-}
-
-.eab-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  margin-bottom: 22px;
-}
-
-.eab-chip {
-  padding: 6px 13px;
-  border: 1px solid rgba(52, 211, 153, 0.3);
-  border-radius: 999px;
-  background: rgba(16, 185, 129, 0.12);
-  color: #a7f3d0;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  white-space: nowrap;
 }
 
 .eab-cta {
@@ -512,7 +493,6 @@
 
 }
 
-
 /* ══ THE ENGINEERING FIGURE ══════════════════════════════════════════════
    Right half of the hero. The copy keeps the left; nothing here reaches
    across, which the two-column grid enforces rather than the figure having
@@ -716,14 +696,25 @@
   gap: clamp(28px, 4vw, 72px);
 }
 
-/* PHASE 5C (audit D4). .eab-copy is centred in its grid row, so its gap from
-   the nav is derived exactly as in the stage-based heroes — it measured
-   134px against the ~120px target. Scoped to the two-column layout: below
-   1023px the grid collapses to one column and the badge already sits tight
-   under the nav, where pulling it up further would push it under the bar. */
+/* PHASE 5C (audit D4), re-solved in the CONTENT PASS. .eab-copy is centred in
+   its grid row, so its gap from the nav was DERIVED from copy height: when the
+   body paragraph and chip row came out, the block lost ~150px and the gap went
+   from 134px to 230px.
+
+   Aligned to the top of the row instead of nudged again. Centring is what made
+   the gap depend on content length in the first place; from the row's top edge
+   the gap is a constant the copy cannot move, so editing the wording will never
+   drag the badge with it. The row itself is unchanged — the figure still spans
+   it and still governs its height.
+
+   Scoped to the two-column layout: below 1023px the grid collapses to one
+   column and the badge already sits tight under the nav. */
 @media (min-width: 1024px) {
   .eab-copy {
-    transform: translateY(-14px);
+    align-self: start;
+    /* 128px = enGENIE's 197px badge line, minus the 68px of hero padding
+       above the row and the badge's own 1px offset inside the copy box. */
+    padding-top: 128px;
   }
 }
 
@@ -739,7 +730,6 @@
     max-width: 520px;
   }
 }
-
 
 /* ══ THE FLOWING PROCESS ═════════════════════════════════════════════════
    Particles ride the pipe routes on SMIL animateMotion (see HeroFigure), so
@@ -778,7 +768,6 @@
   animation: eabPipeGlow 5s ease-in-out infinite;
   animation-delay: var(--d, 0s);
 }
-
 
 /* ══ THE ANIME.JS LAYER ══════════════════════════════════════════════════
    Anime drives the equation, the state vectors, the eigenvalues, the step
@@ -820,29 +809,10 @@
   }
 }
 
-
 /* ══ REFERENCE PASS ══════════════════════════════════════════════════════
-   Details the first build approximated: the chips carry a glyph, the CTA
-   carries its arrow, and the input term of the equation takes the page's
+   Details the first build approximated: the CTA carries its arrow, and the
+   input term of the equation takes the page's
    green so `Mx` and `Bu` read as two different things rather than one. */
-
-.eab-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 8px 15px;
-  border-radius: 10px;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-}
-
-.eab-chip-icon {
-  width: 14px;
-  height: 14px;
-  flex: none;
-  stroke-width: 2;
-  color: #34d399;
-}
 
 .eab-cta {
   display: inline-flex;

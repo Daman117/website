@@ -14,7 +14,6 @@ interface EngramPageProps {
   onOpenContact: (source?: string) => void;
 }
 
-const heroChips = ['Local AI', 'Air-Gapped', 'Cited Answers', 'Any Document Format'];
 
 const challenges = [
   { title: 'Documents Everywhere', desc: 'Datasheets, maintenance records and logs are scattered across network drives with no single place to look.' },
@@ -184,9 +183,7 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
         badgeText="PLANT KNOWLEDGE"
         titleLine1="Turn Engineering Records Into"
         titleLine2="Plant Knowledge"
-        subText="enGRAM transforms static engineering documents, drawings, and records into a living, searchable knowledge system built specifically for industrial plants."
-        bodyText="Engineering information is often trapped inside PDFs, scanned drawings, spreadsheets, manuals, and disconnected repositories. enGRAM extracts, connects, and structures that information into a plant-wide intelligence layer that engineers can query, validate, and trust."
-        chips={heroChips}
+        subText="enGRAM reads your P&IDs, datasheets and manuals, connects them into one plant knowledge graph, and answers engineers' questions with a link back to the source document."
         ctaLabel="Request a Demo"
         onCtaClick={() => onOpenContact('Request a Demo')}
       />

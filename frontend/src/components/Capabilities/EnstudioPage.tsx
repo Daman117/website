@@ -17,7 +17,6 @@ interface EnstudioPageProps {
 
 const ACCENT = '#A78BFA';
 
-const heroChips = ['Local AI', 'Air-Gapped', 'ISA-5.1 Symbols', 'Any Drawing Format'];
 
 const challenges = [
   { title: 'Drawings You Cannot Use', desc: 'P&IDs are missing, outdated, or locked inside scanned PDFs from decades ago.' },
@@ -257,9 +256,7 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
         badgeText="DRAWING INTELLIGENCE"
         titleLine1="Turn Engineering Drawings Into"
         titleLine2="Plant Configuration"
-        subText="enSTUDIO is the intelligent middle layer between your drawings and your systems. Upload it, draw it, or describe it — it becomes structured, validated, downstream-ready configuration."
-        bodyText="Engineering drawings sit in scanned PDFs, legacy CAD files, and decades-old archives. enSTUDIO reads them with local AI, builds one normalized project model, and exports VIDS for enVIEW and YMPL for enableSim — without re-keying a single tag."
-        chips={heroChips}
+        subText="Upload a P&ID, draw it, or describe it in plain language. enSTUDIO builds one structured project model and exports it to enVIEW and enableSim without re-keying tags."
         ctaLabel="Request a Demo"
         onCtaClick={() => onOpenContact('Request a Demo')}
       />

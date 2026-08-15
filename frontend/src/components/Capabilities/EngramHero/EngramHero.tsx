@@ -57,8 +57,6 @@ export interface EngramHeroProps {
   titleLine1: string;
   titleLine2: string;
   subText: string;
-  bodyText: string;
-  chips: string[];
   ctaLabel: string;
   onCtaClick: () => void;
 }
@@ -68,8 +66,6 @@ const EngramHero: React.FC<EngramHeroProps> = ({
   titleLine1,
   titleLine2,
   subText,
-  bodyText,
-  chips,
   ctaLabel,
   onCtaClick,
 }) => {
@@ -145,14 +141,6 @@ const EngramHero: React.FC<EngramHeroProps> = ({
           <span className="egh-accent">{titleLine2}</span>
         </h1>
         <p className="egh-sub">{subText}</p>
-        <p className="egh-body">{bodyText}</p>
-        <div className="egh-chips" aria-label="enGRAM capabilities">
-          {chips.map((c) => (
-            <span key={c} className="egh-chip">
-              {c}
-            </span>
-          ))}
-        </div>
         <button className="cta-solid button-text btn-primary egh-cta" onClick={onCtaClick}>
           {ctaLabel}
         </button>

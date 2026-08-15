@@ -70,10 +70,25 @@
      Was 50%; gap was 132 px -> ~120px at 1600px wide.
      transform stays a plain -50%, and the stacked breakpoint below resets
      both, so mobile is untouched. */
-  top: 48.3%;
-  transform: translateY(-50%);
+  /* CONTENT PASS — matched to the enGENIE hero, which is the reference for
+     copy treatment across the six products.
+
+     enGENIE lays its copy out in NORMAL FLOW under a fixed shell padding, so
+     its badge sits a constant 119px below the nav at every width. The four
+     stage heroes instead centred the copy in an aspect-locked stage, which
+     made the gap a function of stage height minus copy height: it measured
+     120/86/67px at 1600/1440/1280 where enGENIE held 119/119/118.
+
+     Anchored to the top of the stage instead. 129px = enGENIE's 197px badge
+     position minus the 68px the hero's own padding already contributes, so
+     the two land on the same line and stay there as the window narrows.
+     The stacked breakpoints below set `position: static`, which nullifies
+     `top`, so the mobile layouts are untouched. */
+  top: 129px;
   z-index: 3;
-  width: min(34%, 508px);
+  /* enGENIE caps its title and sub at 560px; matching it means the same
+     line length on every product page. */
+  width: min(100%, 560px);
 }
 
 .eth-badge {
@@ -110,32 +125,6 @@
   line-height: 1.68;
   color: rgba(255, 255, 255, 0.96);
   margin-bottom: 14px;
-}
-
-.eth-body {
-  font-size: clamp(12.5px, 0.86vw, 13.5px);
-  line-height: 1.75;
-  color: rgba(255, 255, 255, 0.82);
-  margin-bottom: 22px;
-}
-
-.eth-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  margin-bottom: 28px;
-}
-
-.eth-chip {
-  padding: 6px 13px;
-  border: 1px solid rgba(147, 197, 253, 0.4);
-  border-radius: 999px;
-  background: rgba(96, 165, 250, 0.22);
-  color: #93c5fd;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  white-space: nowrap;
 }
 
 .eth-cta {
@@ -229,7 +218,6 @@
   opacity: 0;
   filter: drop-shadow(0 0 2px rgba(56, 189, 248, 0.7));
 }
-
 
 /* Anything Anime.js may rotate or shift resolves its origin against its own
    bounding box, not the 700×700 viewBox — the SVG default would swing the

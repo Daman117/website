@@ -128,7 +128,6 @@ const outcomes = [
   'Lower total cost of ownership than a forklift integration project',
 ];
 
-const heroChips = ['Open Protocols', 'MCP Server', 'Zero Lock-in', 'Roadmap'];
 
 const EntiePage: React.FC<EntiePageProps> = ({ onOpenContact }) => {
   const { ref: challengeRef, inView: challengeInView } = useInView({ triggerOnce: true, threshold: 0.1 });
@@ -165,9 +164,7 @@ const EntiePage: React.FC<EntiePageProps> = ({ onOpenContact }) => {
         badgeText="CONNECTED INTELLIGENCE"
         titleLine1="One Connected Layer for"
         titleLine2="Every System You Run"
-        subText="enTIE connects enxco capabilities to the plant systems you already run — DCS, historian, MES, ERP — and exposes the same data to Claude Desktop and other AI tools via an MCP server."
-        bodyText="Built as an integration layer, not a migration project: open protocol adapters sit alongside your installed base, so adoption is incremental, standards-aligned, and reversible at every step."
-        chips={heroChips}
+        subText="enTIE connects your DCS, historian, MES and ERP through open read-only adapters that run alongside what you already have — and exposes the same data to AI tools over MCP."
         ctaLabel="Join the Waitlist"
         onCtaClick={() => onOpenContact('Waitlist')}
       />

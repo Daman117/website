@@ -13,20 +13,6 @@
   color: rgba(255, 255, 255, 0.96);
 }
 
-.engenie-hero-body-text {
-  color: rgba(255, 255, 255, 0.82);
-}
-
-.engenie-hero-chips {
-  margin-bottom: 28px;
-}
-
-.engenie-hero-chip {
-  color: #93c5fd;
-  background: rgba(27, 111, 216, 0.22);
-  border-color: rgba(96, 165, 250, 0.4);
-}
-
 .engenie-feature-icon {
   color: var(--accent);
   margin-bottom: 12px;

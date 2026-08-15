@@ -31,8 +31,6 @@ interface EnstudioHeroProps {
   titleLine1: string;
   titleLine2: string;
   subText: string;
-  bodyText: string;
-  chips: string[];
   ctaLabel: string;
   onCtaClick: () => void;
 }
@@ -42,8 +40,6 @@ const EnstudioHero: React.FC<EnstudioHeroProps> = ({
   titleLine1,
   titleLine2,
   subText,
-  bodyText,
-  chips,
   ctaLabel,
   onCtaClick,
 }) => {
@@ -72,14 +68,6 @@ const EnstudioHero: React.FC<EnstudioHeroProps> = ({
             <span className="esh-accent">{titleLine2}</span>
           </h1>
           <p className="esh-sub">{subText}</p>
-          <p className="esh-body">{bodyText}</p>
-          <div className="esh-chips" aria-label="enSTUDIO capabilities">
-            {chips.map((c) => (
-              <span key={c} className="esh-chip">
-                {c}
-              </span>
-            ))}
-          </div>
           <button className="cta-solid button-text btn-primary esh-cta" onClick={onCtaClick}>
             {ctaLabel}
           </button>

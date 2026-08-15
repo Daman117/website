@@ -11,21 +11,6 @@
   color: rgba(255, 255, 255, 0.96);
 }
 
-.landing-hero-body-text {
-  color: rgba(255, 255, 255, 0.82);
-}
-
-.landing-hero-chips {
-  max-width: var(--content-width-md);
-  margin-bottom: 28px;
-}
-
-.landing-hero-chip {
-  color: #93c5fd;
-  background: rgba(37, 99, 235, 0.22);
-  border-color: rgba(96, 165, 250, 0.4);
-}
-
 .landing-hero-actions {
   gap: var(--space-sm);
 }

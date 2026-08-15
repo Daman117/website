@@ -110,22 +110,28 @@
 .egh-copy {
   position: absolute;
   left: 0;
-  /* PHASE 5C (audit D4). The copy is centred in a fixed-aspect stage, so the
-     nav-to-badge gap is DERIVED — it falls out of stage height minus copy
-     height, which is why the six products measured 87-157px apart with no
-     padding to blame.
+  /* CONTENT PASS — matched to the enGENIE hero, which is the reference for
+     copy treatment across the six products.
 
-     The offset is expressed as a `top` PERCENTAGE, not a pixel nudge. Stage
-     height scales with viewport width, so a fixed px offset over-corrects as
-     the window narrows: measured at 1280px it pushed this hero's badge to
-     within ~21px of the nav. A percentage shrinks with the stage and keeps
-     the correction proportional.
-     Was 50%; gap was 146 px -> ~120px at 1600px wide.
-     transform stays a plain -50%, and the stacked breakpoint below resets
-     both, so mobile is untouched. */
-  top: 46.8%;
-  transform: translateY(-50%);
+     enGENIE lays its copy out in NORMAL FLOW under a fixed shell padding, so
+     its badge sits a constant 119px below the nav at every width. The four
+     stage heroes instead centred the copy in an aspect-locked stage, which
+     made the gap a function of stage height minus copy height: it measured
+     120/86/67px at 1600/1440/1280 where enGENIE held 119/119/118.
+
+     Anchored to the top of the stage instead. 129px = enGENIE's 197px badge
+     position minus the 68px the hero's own padding already contributes, so
+     the two land on the same line and stay there as the window narrows.
+     The stacked breakpoints below set `position: static`, which nullifies
+     `top`, so the mobile layouts are untouched. */
+  top: 129px;
   z-index: 6;
+  /* CONTENT PASS: NOT the flat 560px the other heroes took from enGENIE.
+     enGENIE has no artwork beside its copy; this hero does, and the artwork's
+     left edge is a PERCENTAGE of the stage — the document cascade starts at
+     ~37%% of the canvas — so it moves inward as the window narrows. A flat cap
+     clears it at 1600 and runs into it below. A percentage cap sits left of
+     the artwork at every width, which is what this value was for. */
   width: min(33%, 520px);
 }
 
@@ -163,32 +169,6 @@
   line-height: 1.68;
   color: rgba(255, 255, 255, 0.94);
   margin-bottom: 14px;
-}
-
-.egh-body {
-  font-size: clamp(12.5px, 0.86vw, 13.5px);
-  line-height: 1.75;
-  color: rgba(255, 255, 255, 0.72);
-  margin-bottom: 22px;
-}
-
-.egh-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  margin-bottom: 26px;
-}
-
-.egh-chip {
-  padding: 6px 13px;
-  border: 1px solid rgba(125, 211, 252, 0.28);
-  border-radius: 999px;
-  background: rgba(56, 189, 248, 0.11);
-  color: #bae6fd;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  white-space: nowrap;
 }
 
 .egh-cta {
@@ -737,11 +717,6 @@
     max-width: 440px;
     --u: calc(min(100cqw, 440px) / var(--canvas-w));
   }
-
-  /* Trim the copy's vertical rhythm — on a stacked hero these margins are
-     the second biggest block after the diagram. */
-  .egh-copy .egh-body { margin-bottom: 16px; }
-  .egh-copy .egh-chips { margin-bottom: 18px; }
 }
 
 /* ── Tablet: copy beside the column ─────────────────────────────────────

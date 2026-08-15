@@ -1,5 +1,4 @@
 import React from 'react';
-import { heroChips } from '../../data/v2';
 import IndustrialEcosystemHero from './IndustrialEcosystemHero/IndustrialEcosystemHero';
 
 // ─────────────────────────────────────────────────────────────────
@@ -10,8 +9,10 @@ import IndustrialEcosystemHero from './IndustrialEcosystemHero/IndustrialEcosyst
 //    out to. HeroShell itself is untouched and still serves the six
 //    product-page heroes; only the homepage moved.
 //
-//    The copy below is unchanged and still passed as children, so this
-//    component's props and text stay exactly as they were.
+//    CONTENT PASS: the hero now carries one supporting sentence. The second
+//    paragraph and the six capability pills were removed — the composition to
+//    the right already names every product and every data source, so the pills
+//    were restating it in words. Composition, delays and CTAs are untouched.
 // ─────────────────────────────────────────────────────────────────
 const Hero: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenContact }) => {
   return (
@@ -28,20 +29,9 @@ const Hero: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenConta
           </span>
         </h1>
         <p className="engram-hero-sub hero-fade-up landing-hero-sub-text hero-delay-900">
-          Everything your plant knows — P&amp;IDs, datasheets, procedures and live SCADA —
-          made searchable in one place, running entirely on your own network.
+          enxco connects your engineering documents, operational data and live SCADA
+          into one searchable layer of plant intelligence.
         </p>
-        <p className="engram-hero-body hero-fade-up landing-hero-body-text hero-delay-1100">
-          Each product works on its own, and works better alongside the others. Nothing
-          you upload ever leaves your building.
-        </p>
-        <div className="hero-fade-up landing-hero-chips u-flex u-flex-wrap u-gap-10 hero-delay-1300" aria-label="Platform capabilities">
-          {heroChips.map((c) => (
-            <span key={c} className="badge hero-chip-badge landing-hero-chip">
-              {c}
-            </span>
-          ))}
-        </div>
         <div className="hero-fade-up landing-hero-actions u-flex u-flex-wrap hero-delay-1500">
           <button className="cta-solid button-text btn-primary" onClick={() => onOpenContact('Explore enxco')}>Explore enxco →</button>
           <button className="button-text btn-outline" onClick={() => onOpenContact('Request a Pilot')}>Request a Pilot</button>
@@ -55,20 +45,9 @@ const Hero: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenConta
           <span className="hero-fade-up hero-mobile-line landing-hero-h1-accent hero-delay-mobile-2">Understood.</span>
         </h1>
         <p className="engram-hero-sub hero-fade-up landing-hero-sub-text hero-delay-mobile-2">
-          Everything your plant knows — P&amp;IDs, datasheets, procedures and live SCADA —
-          made searchable in one place, running entirely on your own network.
+          enxco connects your engineering documents, operational data and live SCADA
+          into one searchable layer of plant intelligence.
         </p>
-        <p className="engram-hero-body hero-fade-up landing-hero-body-text hero-delay-mobile-3">
-          Each product works on its own, and works better alongside the others. Nothing
-          you upload ever leaves your building.
-        </p>
-        <div className="hero-fade-up landing-hero-chips u-flex u-flex-wrap u-gap-10 hero-delay-mobile-3" aria-label="Platform capabilities">
-          {heroChips.map((c) => (
-            <span key={c} className="badge hero-chip-badge landing-hero-chip">
-              {c}
-            </span>
-          ))}
-        </div>
         <div className="hero-fade-up landing-hero-actions u-flex u-flex-wrap hero-delay-mobile-4">
           <button className="cta-solid button-text btn-primary" onClick={() => onOpenContact('Explore enxco')}>Explore enxco →</button>
           <button className="button-text btn-outline" onClick={() => onOpenContact('Request a Pilot')}>Request a Pilot</button>

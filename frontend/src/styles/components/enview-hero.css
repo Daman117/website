@@ -132,9 +132,28 @@
      Was 50%; gap was 157 px -> ~120px at 1600px wide.
      transform stays a plain -50%, and the stacked breakpoint below resets
      both, so mobile is untouched. */
-  top: 45.1%;
-  transform: translateY(-50%);
+  /* CONTENT PASS — matched to the enGENIE hero, which is the reference for
+     copy treatment across the six products.
+
+     enGENIE lays its copy out in NORMAL FLOW under a fixed shell padding, so
+     its badge sits a constant 119px below the nav at every width. The four
+     stage heroes instead centred the copy in an aspect-locked stage, which
+     made the gap a function of stage height minus copy height: it measured
+     120/86/67px at 1600/1440/1280 where enGENIE held 119/119/118.
+
+     Anchored to the top of the stage instead. 129px = enGENIE's 197px badge
+     position minus the 68px the hero's own padding already contributes, so
+     the two land on the same line and stay there as the window narrows.
+     The stacked breakpoints below set `position: static`, which nullifies
+     `top`, so the mobile layouts are untouched. */
+  top: 129px;
   z-index: 3;
+  /* CONTENT PASS: NOT the flat 560px the other heroes took from enGENIE.
+     enGENIE has no artwork beside its copy; this hero does, and the artwork's
+     left edge is a PERCENTAGE of the stage — the document cascade starts at
+     ~37%% of the canvas — so it moves inward as the window narrows. A flat cap
+     clears it at 1600 and runs into it below. A percentage cap sits left of
+     the artwork at every width, which is what this value was for. */
   width: min(34%, 508px);
 }
 
@@ -172,32 +191,6 @@
   line-height: 1.68;
   color: rgba(255, 255, 255, 0.94);
   margin-bottom: 14px;
-}
-
-.evh-body {
-  font-size: clamp(12.5px, 0.86vw, 13.5px);
-  line-height: 1.75;
-  color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 22px;
-}
-
-.evh-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  margin-bottom: 26px;
-}
-
-.evh-chip {
-  padding: 6px 13px;
-  border: 1px solid rgba(147, 197, 253, 0.3);
-  border-radius: 999px;
-  background: rgba(37, 99, 235, 0.16);
-  color: #bfdbfe;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  white-space: nowrap;
 }
 
 .evh-cta {
@@ -876,7 +869,6 @@
   }
 }
 
-
 /* ══ LIVE ════════════════════════════════════════════════════════════════ */
 
 /* ── F. The plant ──────────────────────────────────────────────────────── */
@@ -1047,7 +1039,6 @@
   100% { transform: translateX(300%); opacity: 0; }
 }
 
-
 /* ══ THE WAVE'S FLOW ═════════════════════════════════════════════════════
    One bright segment travelling down each strand: a dash of 18% of the path
    with an 82% gap, run from offset 1 to 0. `pathLength="1"` on the paths
@@ -1154,7 +1145,6 @@
   from { stroke-dasharray: 0 1400; }
   to   { stroke-dasharray: 1400 0; }
 }
-
 
 /* ══ M. INTERACTION ══════════════════════════════════════════════════════
    Visual only. Nothing here navigates, selects, or changes a value — this is
@@ -1447,7 +1437,6 @@
     --rest: 0.42;
   }
 }
-
 
 /* ══ LIVE TRENDS — THE DRIFT ═════════════════════════════════════════════
    Each trace moves gently up and down on its own, the way a live tag does

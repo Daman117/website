@@ -20,18 +20,9 @@
  * unchanged; only what stands behind them is.
  */
 import React from 'react';
-import { Activity, ArrowRight, Laptop, Lock, Play } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { prefersReducedMotion } from '../../../utils/motion';
 import HeroBackdrop from './HeroBackdrop';
-
-/* A glyph per capability. Keyed by the chip's own text, so the page keeps
-   owning the wording and this file only decides how each one is marked. */
-const CHIP_ICON: Record<string, React.ComponentType<{ className?: string }>> = {
-  'Eigenvalue Analysis': Activity,
-  'Desktop App': Laptop,
-  'Air-Gapped': Lock,
-  'Live Simulation': Play,
-};
 import HeroFigure from './HeroFigure';
 
 interface EnableHeroProps {
@@ -39,8 +30,6 @@ interface EnableHeroProps {
   titleLine1: string;
   titleLine2: string;
   subText: string;
-  bodyText: string;
-  chips: string[];
   ctaLabel: string;
   onCtaClick: () => void;
 }
@@ -50,8 +39,6 @@ const EnableHero: React.FC<EnableHeroProps> = ({
   titleLine1,
   titleLine2,
   subText,
-  bodyText,
-  chips,
   ctaLabel,
   onCtaClick,
 }) => {
@@ -74,18 +61,6 @@ const EnableHero: React.FC<EnableHeroProps> = ({
           <span className="eab-accent">{titleLine2}</span>
         </h1>
         <p className="eab-sub">{subText}</p>
-        <p className="eab-body">{bodyText}</p>
-        <div className="eab-chips" aria-label="enABLE capabilities">
-          {chips.map((c) => {
-            const Icon = CHIP_ICON[c];
-            return (
-              <span key={c} className="eab-chip">
-                {Icon && <Icon className="eab-chip-icon" />}
-                {c}
-              </span>
-            );
-          })}
-        </div>
         <button className="cta-solid button-text btn-primary eab-cta" onClick={onCtaClick}>
           {ctaLabel}
           <ArrowRight className="eab-cta-arrow" />

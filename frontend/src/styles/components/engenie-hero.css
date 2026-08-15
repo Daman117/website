@@ -72,11 +72,6 @@
   line-height: 1.68;
 }
 
-.egn-hero .engram-hero-body {
-  font-size: clamp(12.5px, 0.86vw, 13.5px);
-  line-height: 1.75;
-}
-
 /* The column, not the wrapper: capping the wrapper would re-centre the whole
    block inside the container and pull the copy off the left gutter. Capping
    its children holds the measure while the block stays where it is. */
@@ -458,7 +453,6 @@
   }
 }
 
-
 /* ══ ENTRANCE ════════════════════════════════════════════════════════════
    The copy already stages itself through the shared hero-delay-* classes,
    150ms to 1500ms. This is the other half: the field and the system used to
@@ -528,7 +522,6 @@
 .egn-sys-dots {
   animation: egnIn 900ms ease-out 4750ms both;
 }
-
 
 /* ══ NODE HOVER ══════════════════════════════════════════════════════════
    The layer is pointer-events:none so the artwork never eats a click; the

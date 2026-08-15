@@ -36,8 +36,6 @@ interface EntieHeroProps {
   titleLine1: string;
   titleLine2: string;
   subText: string;
-  bodyText: string;
-  chips: string[];
   ctaLabel: string;
   onCtaClick: () => void;
 }
@@ -47,8 +45,6 @@ const EntieHero: React.FC<EntieHeroProps> = ({
   titleLine1,
   titleLine2,
   subText,
-  bodyText,
-  chips,
   ctaLabel,
   onCtaClick,
 }) => {
@@ -78,14 +74,6 @@ const EntieHero: React.FC<EntieHeroProps> = ({
             <span className="eth-accent">{titleLine2}</span>
           </h1>
           <p className="eth-sub">{subText}</p>
-          <p className="eth-body">{bodyText}</p>
-          <div className="eth-chips" aria-label="enTIE capabilities">
-            {chips.map((c) => (
-              <span key={c} className="eth-chip">
-                {c}
-              </span>
-            ))}
-          </div>
           <button className="cta-solid button-text btn-primary eth-cta" onClick={onCtaClick}>
             {ctaLabel}
           </button>

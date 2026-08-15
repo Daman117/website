@@ -18,7 +18,6 @@ interface EngeniePageProps {
 const ACCENT = '#1B6FD8';
 const ACCENT_RGB = '27,111,216';
 
-const heroChips = ['Cited Recommendations', 'Audit-Ready', 'Meets Your Standards', 'Compares Vendors'];
 
 const modules = [
   {
@@ -174,9 +173,7 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
           badgeText="INSTRUMENT SELECTION & SPECIFICATION"
           titleLine1="From Process Conditions to"
           titleLine2="An Issue-Ready Spec"
-          subText="enGENIE takes your service conditions and returns the right instrument — with the standard that justifies it, the reason every alternative was excluded, and a specification ready to issue."
-          bodyText="Selection runs as a structured, repeatable pipeline over your catalogs, datasheets and standards, so every recommendation is cited, compliant and explainable — and already matches your approved suppliers and purchasing rules by the time it reaches you."
-          chips={heroChips}
+          subText="Describe the service conditions and enGENIE returns the instrument to use, the standard that justifies it, and why the alternatives were ruled out — checked against your approved suppliers."
           ctaLabel="Request a Demo"
           onCtaClick={() => onOpenContact('Request a Demo')}
           classes={{
@@ -184,9 +181,6 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
             title: 'engenie-hero-h1-text',
             accent: 'engenie-hero-h1-accent',
             subtitle: 'engenie-hero-sub-text',
-            body: 'engenie-hero-body-text',
-            chips: 'engenie-hero-chips',
-            chip: 'engenie-hero-chip',
           }}
         />
       </div>

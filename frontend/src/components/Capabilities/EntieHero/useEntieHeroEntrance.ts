@@ -77,7 +77,7 @@ export function useEntieHeroEntrance() {
          lanes only — see the note above about why no individual outline,
          signal, dot or packet is touched here. */
       utils.set(root, { opacity: 0 });
-      utils.set('.eth-badge, .eth-title, .eth-sub, .eth-body, .eth-chip, .eth-cta', {
+      utils.set('.eth-badge, .eth-title, .eth-sub, .eth-cta', {
         opacity: 0,
         translateY: COPY_LIFT,
       });
@@ -101,8 +101,6 @@ export function useEntieHeroEntrance() {
         .add('.eth-badge', { opacity: 1, translateY: 0 }, 200)
         .add('.eth-title', { opacity: 1, translateY: 0, duration: 650 }, 400)
         .add('.eth-sub', { opacity: 1, translateY: 0 }, 680)
-        .add('.eth-body', { opacity: 1, translateY: 0 }, 880)
-        .add('.eth-chip', { opacity: 1, translateY: 0, duration: 480, delay: stagger(80) }, 1080)
         .add('.eth-cta', { opacity: 1, translateY: 0 }, 1300)
 
         /* 3. The core, settling into place with its halo. Its outline,

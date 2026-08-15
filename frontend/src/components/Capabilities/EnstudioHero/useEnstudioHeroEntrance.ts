@@ -69,7 +69,7 @@ export function useEnstudioHeroEntrance() {
          note above about why no individual connector, dot or ring is touched
          here. */
       utils.set(root, { opacity: 0 });
-      utils.set('.esh-badge, .esh-title, .esh-sub, .esh-body, .esh-chip, .esh-cta', {
+      utils.set('.esh-badge, .esh-title, .esh-sub, .esh-cta', {
         opacity: 0,
         translateY: COPY_LIFT,
       });
@@ -90,8 +90,6 @@ export function useEnstudioHeroEntrance() {
         .add('.esh-badge', { opacity: 1, translateY: 0, duration: 550 }, 200)
         .add('.esh-title', { opacity: 1, translateY: 0, duration: 650 }, 400)
         .add('.esh-sub', { opacity: 1, translateY: 0, duration: 550 }, 680)
-        .add('.esh-body', { opacity: 1, translateY: 0, duration: 550 }, 880)
-        .add('.esh-chip', { opacity: 1, translateY: 0, duration: 480, delay: stagger(80) }, 1080)
         .add('.esh-cta', { opacity: 1, translateY: 0, duration: 550 }, 1350)
 
         // 3. The composition's container.

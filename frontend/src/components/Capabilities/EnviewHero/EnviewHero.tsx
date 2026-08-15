@@ -51,8 +51,6 @@ interface EnviewHeroProps {
   titleLine1: string;
   titleLine2: string;
   subText: string;
-  bodyText: string;
-  chips: string[];
   ctaLabel: string;
   onCtaClick: () => void;
 }
@@ -62,8 +60,6 @@ const EnviewHero: React.FC<EnviewHeroProps> = ({
   titleLine1,
   titleLine2,
   subText,
-  bodyText,
-  chips,
   ctaLabel,
   onCtaClick,
 }) => {
@@ -91,14 +87,6 @@ const EnviewHero: React.FC<EnviewHeroProps> = ({
             <span className="evh-accent">{titleLine2}</span>
           </h1>
           <p className="evh-sub">{subText}</p>
-          <p className="evh-body">{bodyText}</p>
-          <div className="evh-chips" aria-label="enVIEW capabilities">
-            {chips.map((c) => (
-              <span key={c} className="evh-chip">
-                {c}
-              </span>
-            ))}
-          </div>
           <button className="cta-solid button-text btn-primary evh-cta" onClick={onCtaClick}>
             {ctaLabel}
           </button>

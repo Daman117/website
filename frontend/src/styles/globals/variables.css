@@ -207,7 +207,7 @@
   --text-primary: #ffffff;
   /* .eth-sub. */
   --text-secondary: rgba(255, 255, 255, 0.82);
-  /* .esh-body / .eth-body. */
+  /* The hero supporting paragraphs (.esh-sub / .eth-sub). */
   --text-body: rgba(255, 255, 255, 0.70);
   /* The --nav-link family (rgba(226,232,240,…)) at a muted weight. */
   --text-muted: rgba(226, 232, 240, 0.55);

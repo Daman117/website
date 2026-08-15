@@ -134,7 +134,6 @@ const outcomes = [
   'Decision support, not a replacement for review',
 ];
 
-const heroChips = ['Eigenvalue Analysis', 'Desktop App', 'Air-Gapped', 'Live Simulation'];
 
 const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
   const { ref: challengeRef, inView: challengeInView } = useInView({ triggerOnce: true, threshold: 0.1 });
@@ -168,12 +167,10 @@ const EnablePage: React.FC<EnablePageProps> = ({ onOpenContact }) => {
              (EnableHero/), not the shared photographic CapabilityHero. The
              copy is unchanged; only what stands behind it is. ── */}
       <EnableHero
-        badgeText="PROCESS INTELLIGENCE FOR DESIGN & CONTROL"
+        badgeText="PROCESS DESIGN & CONTROL"
         titleLine1="Turn Your Plant Into a"
         titleLine2="Matrix"
-        subText="enABLE is a desktop engineering application for process and control engineers. Draw your plant as a flowsheet and it becomes a block-matrix model — dx/dt = M·x + B·u — that yields eigenvalue-based engineering judgment at design time."
-        bodyText="From that one matrix, enABLE computes stability, controllability, loop pairing, recommended changes, alarm bounds and a HAZOP pre-fill — then runs the same plant as a live closed-loop dynamic simulation."
-        chips={heroChips}
+        subText="Draw your plant as a flowsheet and enABLE builds a block-matrix model of it, then reports stability, loop pairing and the changes worth making — before anything is built."
         ctaLabel="Join the Waitlist"
         onCtaClick={() => onOpenContact('Waitlist')}
       />
