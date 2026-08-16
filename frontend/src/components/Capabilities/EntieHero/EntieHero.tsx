@@ -21,7 +21,6 @@
 import React from 'react';
 import EntieConnectors from './EntieConnectors';
 import EntieCore from './EntieCore';
-import EntieHeroWave from './EntieHeroWave';
 import EntieOutputs from './EntieOutputs';
 import EntieSources from './EntieSources';
 import { useEntieFlowAnimation } from './useEntieFlowAnimation';
@@ -56,10 +55,6 @@ const EntieHero: React.FC<EntieHeroProps> = ({
 
   return (
   <section className="eth" ref={entranceRef}>
-    {/* Bottom layer. First in the DOM and outside .eth-inner, so it paints
-        behind every piece of content without needing to win a z-index race
-        with the copy or the composition. */}
-    <EntieHeroWave />
 
     <div className="eth-inner">
       <div

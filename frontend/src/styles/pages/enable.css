@@ -6,22 +6,22 @@
    badge up behind the fixed nav. Every other product page relies on the
    clamp value with no override; enABLE now matches them. */
 
-.enable-hero-badge-text { color: #6ee7b7; }
+.enable-hero-badge-text { color: var(--accent, var(--brand)); }
 
 .enable-hero-h1-text {
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .enable-hero-h1-accent {
-  color: #10B981;
+  color: var(--accent, var(--brand));
 }
 
 .enable-hero-sub-text {
-  color: rgba(255, 255, 255, 0.96);
+  color: var(--text-secondary);
 }
 
 .enable-hero-body-text {
-  color: rgba(255, 255, 255, 0.82);
+  color: var(--text-body);
 }
 
 .enable-hero-chips {
@@ -29,9 +29,9 @@
 }
 
 .enable-hero-chip {
-  color: #6ee7b7;
-  background: rgba(16, 185, 129, 0.22);
-  border-color: rgba(110, 231, 183, 0.4);
+  color: var(--accent, var(--brand));
+  background: var(--brand-soft);
+  border-color: var(--border-hover);
 }
 
 .enable-section-lead {
@@ -64,7 +64,7 @@
 }
 
 .enable-trust-card {
-  border-color: rgba(16, 185, 129, 0.25);
+  border-color: rgba(5, 150, 105, 0.25);
 }
 
 .enable-trust-eyebrow-accent {

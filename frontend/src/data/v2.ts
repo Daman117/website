@@ -20,7 +20,7 @@ export interface DemoCard {
 
 export const demos: DemoCard[] = [
   {
-    id: 'enstudio', product: 'enSTUDIO', color: '#A78BFA', kind: 'transform',
+    id: 'enstudio', product: 'enSTUDIO', color: '#4338CA', kind: 'transform',
     title: 'A P&ID becomes searchable engineering data',
     before: { label: 'Input — P&ID drawing', items: ['Scanned / vector PDF', 'Symbols & line work', 'Hand annotations'] },
     after: {
@@ -29,13 +29,13 @@ export const demos: DemoCard[] = [
     },
   },
   {
-    id: 'engram', product: 'enGRAM', color: '#FDB022', kind: 'query',
+    id: 'engram', product: 'enGRAM', color: '#1E40AF', kind: 'query',
     title: 'Ask in plain English. Get a cited answer.',
     query: 'What is the calibrated range of FT-3045?',
     answer: { value: '0–500 kg/h (4–20 mA)', source: 'Datasheet INST-DS-3045', revision: 'Rev. C', page: 'p. 2, §3.1' },
   },
   {
-    id: 'enview', product: 'enVIEW', color: '#2563EB', kind: 'dashboard',
+    id: 'enview', product: 'enVIEW', color: '#0369A1', kind: 'dashboard',
     title: 'Live SCADA — process, alarms and trends',
     panels: [
       { label: 'R-201 Temp', value: '184.2 °C', tone: 'ok' },
@@ -45,7 +45,7 @@ export const demos: DemoCard[] = [
     ],
   },
   {
-    id: 'engenie', product: 'enGENIE', color: '#1B6FD8', kind: 'decision',
+    id: 'engenie', product: 'enGENIE', color: '#0F766E', kind: 'decision',
     title: 'The right instrument, with the reason cited',
     steps: [
       { label: 'Recommended', value: 'Coriolis mass flowmeter' },
@@ -55,7 +55,7 @@ export const demos: DemoCard[] = [
     refs: ['Lipták §3.7, Table 3.7-2', 'ISA 75.01', 'ASME PTC 19.3'],
   },
   {
-    id: 'enable', product: 'enABLE', color: '#10B981', kind: 'decision',
+    id: 'enable', product: 'enABLE', color: '#047857', kind: 'decision',
     title: 'Know if the plant will be stable before it is built',
     steps: [
       { label: 'Verdict', value: 'Stable — settles after an upset' },
@@ -68,7 +68,7 @@ export const demos: DemoCard[] = [
     refs: ['Computed at design time', 'No step tests on the plant'],
   },
   {
-    id: 'entie', product: 'enTIE', color: '#60A5FA', kind: 'transform',
+    id: 'entie', product: 'enTIE', color: '#0E7490', kind: 'transform',
     title: 'Separate plant systems finally work together',
     before: { label: 'Siloed sources', items: ['DCS live tags', 'CMMS work orders', 'ERP inventory', 'enGRAM knowledge base'] },
     after: { label: 'Connected output', items: ['Unified plant model', 'Cross-system queries', 'Automated workflows', 'Single source of truth'] },
@@ -94,22 +94,22 @@ export const workSteps: WorkStep[] = [
     // where it measured 3.42:1 on the card. The other three steps (violet
     // 7.3, amber 10.1, green 7.3) pass and are untouched. This is the only
     // non-product step — "You", the user — so no product accent moves.
-    icon: 'Upload', title: 'Upload plant information', actor: 'You', color: '#3B82F6',
+    icon: 'Upload', title: 'Upload plant information', actor: 'You', color: '#0369A1',
     inLabel: 'Inputs', inputs: ['P&IDs', 'Datasheets', 'Procedures', 'Loop drawings', 'Engineering docs'],
     outLabel: 'Ingested', outputs: ['Inside your network', 'No cloud upload'],
   },
   {
-    icon: 'FileCode', title: 'enSTUDIO reads your drawings', actor: 'enSTUDIO', color: '#A78BFA',
+    icon: 'FileCode', title: 'enSTUDIO reads your drawings', actor: 'enSTUDIO', color: '#4338CA',
     inLabel: 'Reads', inputs: ['Drawings', 'Documents'],
     outLabel: 'Produces', outputs: ['Tags', 'Equipment', 'Relationships', 'Metadata'],
   },
   {
-    icon: 'Network', title: 'enGRAM & enGENIE build knowledge', actor: 'enGRAM · enGENIE', color: '#FDB022',
+    icon: 'Network', title: 'enGRAM & enGENIE build knowledge', actor: 'enGRAM · enGENIE', color: '#1E40AF',
     inLabel: 'From', inputs: ['Structured model', 'Standards'],
     outLabel: 'Produces', outputs: ['Searchable intelligence', 'Engineering reasoning', 'Cited decisions'],
   },
   {
-    icon: 'MonitorPlay', title: 'enVIEW & enABLE put it to work', actor: 'enVIEW · enABLE', color: '#10B981',
+    icon: 'MonitorPlay', title: 'enVIEW & enABLE put it to work', actor: 'enVIEW · enABLE', color: '#047857',
     inLabel: 'From', inputs: ['Knowledge base', 'Live tags'],
     outLabel: 'Produces', outputs: ['Live operations', 'Plant understanding', 'How the plant behaves'],
   },
@@ -143,12 +143,12 @@ export const archSources: string[] = ['P&IDs', 'SCADA', 'Historian', 'ERP', 'MES
 // footer and caps.ts use a different (menu) order on purpose; those are
 // navigation, not a story.
 export const archCaps: { name: string; color: string }[] = [
-  { name: 'enSTUDIO', color: '#A78BFA' },
-  { name: 'enGRAM', color: '#FDB022' },
-  { name: 'enVIEW', color: '#2563EB' },
-  { name: 'enGENIE', color: '#1B6FD8' },
-  { name: 'enABLE', color: '#10B981' },
-  { name: 'enTIE', color: '#60A5FA' },
+  { name: 'enSTUDIO', color: '#4338CA' },
+  { name: 'enGRAM', color: '#1E40AF' },
+  { name: 'enVIEW', color: '#0369A1' },
+  { name: 'enGENIE', color: '#0F766E' },
+  { name: 'enABLE', color: '#047857' },
+  { name: 'enTIE', color: '#0E7490' },
 ];
 export const archUsers: { name: string; icon: string }[] = [
   { name: 'Engineers', icon: 'UserCog' },
@@ -234,21 +234,21 @@ export interface CaseStudy {
 
 export const caseStudies: CaseStudy[] = [
   {
-    id: 'legacy', tag: 'Internal pilot · Brownfield', color: '#A78BFA',
+    id: 'legacy', tag: 'Internal pilot · Brownfield', color: '#4338CA',
     title: 'Digitizing 30 years of P&IDs',
     problem: 'A brownfield plant held its engineering truth in 139 scanned P&IDs from the 1980s onward — unsearchable, partly hand-annotated, with the original engineers retired.',
     solution: 'enSTUDIO structured every drawing into tags, equipment and connections; enGRAM indexed the result for plain-English search.',
     result: '5,945 tags recovered at 99.3% accuracy in days, not the months a manual re-draw would have taken.',
   },
   {
-    id: 'incident', tag: 'Use case · Operations', color: '#FDB022',
+    id: 'incident', tag: 'Use case · Operations', color: '#1E40AF',
     title: 'Answering at 2AM during an upset',
     problem: 'During a process upset an operator needed the isolation procedure and calibrated range for a transmitter — buried across loop drawings and datasheets nobody could find fast.',
     solution: "enGRAM returned the exact value with the source document, revision and page, grounded entirely in the plant's own controlled documents.",
     result: 'A query that previously meant a 30-minute drawing hunt now resolves in seconds, with a citation an auditor will accept.',
   },
   {
-    id: 'spec', tag: 'Scenario · Engineering', color: '#1B6FD8',
+    id: 'spec', tag: 'Scenario · Engineering', color: '#0F766E',
     title: 'Specifying a flowmeter, defensibly',
     problem: 'Selecting a flowmeter for a low-conductivity, high-temperature service meant cross-checking multiple standards by hand — slow and easy to get wrong.',
     solution: 'enGENIE eliminated unsuitable technologies with a cited reason for each exclusion and ranked the survivors against the service conditions.',

@@ -53,25 +53,19 @@ const HeroKnowledgeLayer: React.FC<Props> = ({ active, reduceMotion, highlight, 
     focusable="false"
   >
     <defs>
-      <radialGradient id="egh-hub-halo" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stopColor="#818cf8" stopOpacity="0.34" />
-        <stop offset="60%" stopColor="#6366f1" stopOpacity="0.12" />
-        <stop offset="100%" stopColor="#4c1d95" stopOpacity="0" />
-      </radialGradient>
       <radialGradient id="egh-hub-face" cx="42%" cy="34%" r="72%">
-        <stop offset="0%" stopColor="#1b2450" />
-        <stop offset="100%" stopColor="#070b1c" />
+        <stop offset="0%" stopColor="#f2f5fb" />
+        <stop offset="100%" stopColor="#eaedf1" />
       </radialGradient>
     </defs>
 
     {/* Ambient depth behind the graph */}
-    <circle cx={HUB.cx} cy={HUB.cy} r={HUB.r * 4.4} fill="url(#egh-hub-halo)" />
 
     <g className="egh-in-links">
     {/* Chords first, so spokes stay legible on top of them. Only every third
         one brightens, and slowly — most of the mesh stays still so the
         structure remains readable. */}
-    <g fill="none" stroke="#818cf8" strokeWidth="0.8">
+    <g fill="none" stroke="#1249c1" strokeWidth="0.8">
       {L.chords.map(([a, b], i) => (
         <path
           key={i}
@@ -153,18 +147,18 @@ const HeroKnowledgeLayer: React.FC<Props> = ({ active, reduceMotion, highlight, 
 
     <g className="egh-in-hub">
     {/* The hub */}
-    <circle className="egh-hub-breath" cx={HUB.cx} cy={HUB.cy} r={HUB.r + 13} fill="#818cf8" fillOpacity="0.08" />
+    <circle className="egh-hub-breath" cx={HUB.cx} cy={HUB.cy} r={HUB.r + 13} fill="#1249c1" fillOpacity="0.08" />
     <circle
       cx={HUB.cx}
       cy={HUB.cy}
       r={HUB.r}
       fill="url(#egh-hub-face)"
-      stroke="#a78bfa"
+      stroke="#2156c9"
       strokeOpacity="0.85"
       strokeWidth="1.8"
     />
-    <circle cx={HUB.cx} cy={HUB.cy} r={HUB.r - 9} fill="none" stroke="#c4b5fd" strokeOpacity="0.22" strokeWidth="0.8" />
-    <g transform={`translate(${HUB.cx} ${HUB.cy}) scale(1.6)`} style={{ color: '#ddd6fe' }}>
+    <circle cx={HUB.cx} cy={HUB.cy} r={HUB.r - 9} fill="none" stroke="#4a78dd" strokeOpacity="0.35" strokeWidth="0.8" />
+    <g transform={`translate(${HUB.cx} ${HUB.cy}) scale(1.6)`} style={{ color: '#0e3998' }}>
       <HubBrain />
     </g>
     </g>

@@ -15,7 +15,7 @@ interface EnstudioPageProps {
   onOpenContact: (source?: string) => void;
 }
 
-const ACCENT = '#A78BFA';
+const ACCENT = '#4338CA';
 
 
 const challenges = [
@@ -56,7 +56,7 @@ const inputModes = [
     title: 'Draw',
     subtitle: 'Author from scratch',
     desc: 'Drag ISA-5.1 symbols onto the canvas, draw connections, and fill parameter forms. Every action writes straight to the internal model.',
-    color: '#A78BFA',
+    color: '#4338CA',
     img: '/enstudio-draw.webp',
     features: [
       'ISA-5.1 symbol palette',
@@ -70,7 +70,7 @@ const inputModes = [
     title: 'Import',
     subtitle: 'Upload any drawing',
     desc: 'Drop a P&ID PDF, scanned sheet, equipment CSV, datasheet, or YMPL file. AI reads it and renders equipment and connections on the canvas.',
-    color: '#60A5FA',
+    color: '#0E7490',
     img: '/enstudio-import.webp',
     features: [
       'Vector & scanned P&ID PDFs',
@@ -108,7 +108,7 @@ const capabilities = [
       'Auto-generated Mermaid diagram for instant visual verification',
       '>80% tag accuracy on real P&ID sheets',
     ],
-    color: '#A78BFA',
+    color: '#4338CA',
   },
   {
     Icon: BadgeCheck,
@@ -122,7 +122,7 @@ const capabilities = [
       'Safety-critical (TAHH, PAHH, SIL) require explicit sign-off',
       'Inline [VERIFY] annotations carried into export',
     ],
-    color: '#60A5FA',
+    color: '#0E7490',
   },
   {
     Icon: SlidersHorizontal,
@@ -152,7 +152,7 @@ const adapters = [
   {
     label: 'VIDS Adapter',
     target: 'enVIEW',
-    color: '#A78BFA',
+    color: '#4338CA',
     desc: 'Converts the internal model into VPlant YAML (VIDS v1.0) for vplant import.',
     points: [
       'Equipment → plant screens, instruments → tag & alarm configs',
@@ -176,7 +176,7 @@ const adapters = [
   {
     label: 'Future Adapters',
     target: 'Extensible',
-    color: '#60A5FA',
+    color: '#0E7490',
     desc: 'The adapter pattern supports new targets without touching the core.',
     points: [
       'Ignition tag export (CSV / JSON)',
@@ -247,7 +247,7 @@ const EnstudioPage: React.FC<EnstudioPageProps> = ({ onOpenContact }) => {
   }, [matrixInView]);
 
   return (
-    <main className="engram-page" style={{ '--accent': ACCENT, '--accent-rgb': '167,139,250' } as React.CSSProperties}>
+    <main className="engram-page" style={{ '--accent': ACCENT, '--accent-rgb': '67,56,202' } as React.CSSProperties}>
 
       {/* ── HERO — own shell (EnstudioHero/), no photographic background. The
              right side is held empty for the composition. Content props

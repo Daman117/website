@@ -6,7 +6,7 @@
   inset: 0;
   z-index: 9999;
   overflow-y: auto;
-  background: rgba(3, 7, 18, 0.72);
+  background: rgba(15, 23, 42, 0.45);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 }
@@ -21,17 +21,16 @@
 
 .contact-modal-dialog {
   margin: auto;
-  /* PHASE 2: was a light gradient (#fcfdff -> #e9eff7). Same shape, dark
-     surfaces: raised at the top edge falling to the section ground, so the
-     panel reads as lit from above rather than as a flat slab. */
-  background: linear-gradient(165deg, #0c1226 0%, #06091a 100%);
+  /* A plain white panel. The dialog is the only thing lit on screen once the
+     scrim is down, so it needs no gradient of its own to read as raised. */
+  background: var(--surface-raised);
   border: 1px solid var(--border-default);
   border-radius: 24px;
   max-width: var(--content-width-sm);
   width: 100%;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 40px 100px rgba(2, 5, 15, 0.7), 0 12px 36px rgba(2, 5, 15, 0.5);
+  box-shadow: 0 24px 64px rgba(15, 23, 42, 0.18), 0 8px 24px rgba(15, 23, 42, 0.1);
 }
 
 .contact-modal-close {

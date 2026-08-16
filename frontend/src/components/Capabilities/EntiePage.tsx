@@ -14,7 +14,7 @@ interface EntiePageProps {
   onOpenContact: (source?: string) => void;
 }
 
-const ACCENT = '#60A5FA';
+const ACCENT = '#0E7490';
 
 const challenges = [
   { title: 'Systems That Do Not Talk', desc: 'Your DCS, historian, MES and ERP each hold part of the picture, and none of them can see the others.' },
@@ -59,7 +59,7 @@ const capabilities = [
       'Runs alongside legacy DCS/SCADA during the transition',
       'No lock-in on either side',
     ],
-    color: '#60A5FA',
+    color: '#0E7490',
   },
   {
     Icon: ShieldCheck,
@@ -72,7 +72,7 @@ const capabilities = [
       'Grows with you — add one adapter at a time, from a single line up to several plants',
       'Designed to plant-floor rules from the start, not added afterwards',
     ],
-    color: '#2563EB',
+    color: '#0369A1',
   },
   {
     Icon: Cpu,
@@ -85,7 +85,7 @@ const capabilities = [
       'Read-only exposure protects systems of record',
       'Same adapters power enxco and AI tooling',
     ],
-    color: '#A78BFA',
+    color: '#4338CA',
   },
 ];
 

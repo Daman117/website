@@ -60,11 +60,7 @@
   padding: clamp(68px, 7vh, 94px) var(--gutter) 40px;
   /* The room's ambient light. Violet from the left where the wave is, blue
      from the ceiling on the right where the dashboard stands. */
-  background:
-    radial-gradient(58% 62% at 74% 22%, rgba(37, 99, 235, 0.26) 0%, rgba(5, 8, 20, 0) 66%),
-    radial-gradient(64% 70% at 8% 62%, rgba(109, 40, 217, 0.3) 0%, rgba(5, 8, 20, 0) 68%),
-    radial-gradient(40% 46% at 52% 96%, rgba(30, 64, 175, 0.22) 0%, rgba(5, 8, 20, 0) 70%),
-    linear-gradient(180deg, #04060f 0%, #070b1a 40%, #05070f 72%, #020409 100%);
+  background: var(--hero-ground);
 }
 
 .evh-inner {
@@ -80,36 +76,6 @@
   position: relative;
   width: 100%;
   aspect-ratio: var(--canvas-w) / var(--canvas-h);
-}
-
-/* Every SVG layer shares the stage box and the same viewBox, so they stack in
-   perfect register. */
-.evh-layer {
-  position: absolute;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-/* The room is capped at 1520px and centred, so a layer confined to the stage
-   leaves the gutters empty. An SVG clips to its VIEWPORT, not its viewBox:
-   relaxing that lets the floor and the light strips reach the viewport edges
-   while the element stays on the stage box and keeps its register. */
-.evh-layer-room {
-  z-index: 0;
-  /* --rest, not a literal: the entrance keyframe ends on it and holds it with
-     `both`, so a media query that wants a different resting opacity has to be
-     able to change what the keyframe lands on. */
-  --rest: 0.9;
-  opacity: var(--rest);
-  overflow: visible;
-}
-
-.evh-layer-wave {
-  z-index: 1;
-  overflow: visible;
 }
 
 /* ── Copy ───────────────────────────────────────────────────────────────
@@ -161,10 +127,10 @@
   display: inline-block;
   margin-bottom: 16px;
   padding: var(--pill-padding);
-  border: 1px solid rgba(147, 197, 253, 0.34);
+  border: 1px solid rgba(17, 69, 183, 0.34);
   border-radius: 999px;
   background: rgba(37, 99, 235, 0.16);
-  color: #bfdbfe;
+  color: #0f3da2;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -177,19 +143,19 @@
   font-weight: 700;
   letter-spacing: -1.4px;
   line-height: 1.1;
-  color: #ffffff;
+  color: var(--text-primary);
   margin-bottom: 18px;
 }
 
 .evh-accent {
-  color: #60a5fa;
+  color: #134ecf;
 }
 
 .evh-sub {
   font-size: clamp(14px, 1.05vw, 16px);
   font-weight: 500;
   line-height: 1.68;
-  color: rgba(255, 255, 255, 0.94);
+  color: var(--text-secondary);
   margin-bottom: 14px;
 }
 
@@ -222,22 +188,22 @@
   height: 100%;
   transform: rotateY(-13deg) rotateX(2.2deg);
   transform-origin: 82% 50%;
-  border: calc(1.2 * var(--u)) solid rgba(96, 165, 250, 0.36);
+  border: calc(1.2 * var(--u)) solid rgba(19, 78, 207, 0.36);
   border-radius: calc(20 * var(--u));
   overflow: hidden;
   background:
-    radial-gradient(90% 70% at 78% 0%, rgba(37, 99, 235, 0.16) 0%, rgba(6, 10, 24, 0) 60%),
-    linear-gradient(160deg, rgba(13, 20, 42, 0.96) 0%, rgba(6, 10, 24, 0.98) 100%);
+    radial-gradient(90% 70% at 78% 0%, rgba(37, 99, 235, 0.16) 0%, rgba(237, 240, 243, 0) 60%),
+    linear-gradient(160deg, rgba(221, 227, 234, 0.96) 0%, rgba(237, 240, 243, 0.98) 100%);
   /* Five shadows, each doing one job: the bezel highlight, an inner vignette
      so the glass has body, a tight contact shadow, the long cast shadow, and
      the blue the screen spills into the room. Depth on a dark panel comes
      from the NEAR shadow — the far one alone just makes it float. */
   box-shadow:
-    inset 0 calc(1 * var(--u)) 0 rgba(191, 219, 254, 0.2),
-    inset 0 0 calc(34 * var(--u)) rgba(2, 6, 20, 0.5),
-    0 calc(6 * var(--u)) calc(16 * var(--u)) rgba(2, 5, 15, 0.6),
-    0 calc(44 * var(--u)) calc(96 * var(--u)) rgba(2, 5, 15, 0.72),
-    0 0 calc(140 * var(--u)) rgba(37, 99, 235, 0.26);
+    inset 0 calc(1 * var(--u)) 0 rgba(15, 61, 162, 0.2),
+
+    0 calc(6 * var(--u)) calc(16 * var(--u)) rgba(245, 246, 248, 0.6),
+    0 calc(44 * var(--u)) calc(96 * var(--u)) rgba(245, 246, 248, 0.72),
+    0 18px 48px rgba(15, 23, 42, 0.1);
 }
 
 /* ── Left rail ─────────────────────────────────────────────────────────── */
@@ -247,8 +213,8 @@
   align-items: center;
   gap: calc(6 * var(--u));
   padding: calc(14 * var(--u)) 0;
-  border-right: calc(1 * var(--u)) solid rgba(96, 165, 250, 0.14);
-  background: linear-gradient(180deg, rgba(10, 16, 36, 0.7) 0%, rgba(6, 10, 24, 0.4) 100%);
+  border-right: calc(1 * var(--u)) solid rgba(19, 78, 207, 0.14);
+  background: linear-gradient(180deg, rgba(227, 232, 237, 0.7) 0%, rgba(237, 240, 243, 0.4) 100%);
 }
 
 .evh-brand {
@@ -280,7 +246,7 @@
   gap: calc(3 * var(--u));
   padding: calc(7 * var(--u)) 0 calc(6 * var(--u));
   border-radius: calc(9 * var(--u));
-  color: rgba(148, 163, 184, 0.78);
+  color: #64748b;
 }
 
 /* The current screen. A filled tile rather than a coloured label: that is
@@ -288,8 +254,8 @@
    glance across a control room. */
 .evh-nav-item.is-current {
   background: linear-gradient(180deg, rgba(37, 99, 235, 0.4) 0%, rgba(37, 99, 235, 0.18) 100%);
-  box-shadow: inset 0 0 0 calc(1 * var(--u)) rgba(96, 165, 250, 0.34);
-  color: #e0f2fe;
+  box-shadow: inset 0 0 0 calc(1 * var(--u)) rgba(19, 78, 207, 0.34);
+  color: #0d3793;
 }
 
 .evh-nav-icon {
@@ -326,14 +292,14 @@
   font-weight: 600;
   letter-spacing: calc(1.4 * var(--u));
   text-transform: uppercase;
-  color: rgba(226, 232, 240, 0.92);
+  color: #0f172a;
 }
 
 .evh-tools {
   display: flex;
   align-items: center;
   gap: calc(14 * var(--u));
-  color: rgba(148, 163, 184, 0.8);
+  color: #64748b;
 }
 
 .evh-tool {
@@ -358,8 +324,8 @@
   height: calc(9 * var(--u));
   padding: 0 calc(2 * var(--u));
   border-radius: 999px;
-  background: #ef4444;
-  color: #fff;
+  background: #c82020;
+  color: var(--text-primary);
   font-size: calc(6 * var(--u));
   font-style: normal;
   font-weight: 700;
@@ -372,10 +338,10 @@
   place-items: center;
   width: calc(20 * var(--u));
   height: calc(20 * var(--u));
-  border: calc(1 * var(--u)) solid rgba(96, 165, 250, 0.3);
+  border: calc(1 * var(--u)) solid rgba(19, 78, 207, 0.3);
   border-radius: 999px;
   background: rgba(37, 99, 235, 0.14);
-  color: rgba(191, 219, 254, 0.9);
+  color: rgba(15, 61, 162, 0.9);
 }
 
 /* ── The panel grid ────────────────────────────────────────────────────
@@ -403,12 +369,12 @@
   flex-direction: column;
   min-width: 0;
   padding: calc(11 * var(--u)) calc(12 * var(--u));
-  border: calc(1 * var(--u)) solid rgba(96, 165, 250, 0.17);
+  border: calc(1 * var(--u)) solid rgba(19, 78, 207, 0.17);
   border-radius: calc(11 * var(--u));
-  background: linear-gradient(165deg, rgba(19, 29, 56, 0.88) 0%, rgba(9, 14, 32, 0.92) 100%);
+  background: linear-gradient(165deg, rgba(244, 247, 251, 0.88) 0%, rgba(230, 234, 239, 0.92) 100%);
   box-shadow:
-    inset 0 calc(1 * var(--u)) 0 rgba(191, 219, 254, 0.08),
-    0 calc(2 * var(--u)) calc(8 * var(--u)) rgba(2, 5, 15, 0.35);
+    inset 0 calc(1 * var(--u)) 0 rgba(15, 61, 162, 0.08),
+    0 calc(2 * var(--u)) calc(8 * var(--u)) rgba(245, 246, 248, 0.35);
   /* Hover works on properties nothing animates — the entrance owns `opacity`
      and `translate`, so brightness and lift go on background, border-color
      and `transform`, which compose rather than collide. */
@@ -433,7 +399,7 @@
   font-weight: 600;
   letter-spacing: calc(1 * var(--u));
   text-transform: uppercase;
-  color: rgba(148, 163, 184, 0.62);
+  color: #64748b;
 }
 
 .evh-link {
@@ -442,7 +408,7 @@
   gap: calc(3 * var(--u));
   font-size: calc(7.6 * var(--u));
   font-weight: 500;
-  color: #60a5fa;
+  color: #134ecf;
 }
 
 .evh-link-foot {
@@ -471,13 +437,13 @@
   font-size: calc(20 * var(--u));
   font-weight: 600;
   line-height: 1.1;
-  color: #10b981;
+  color: #06b07b;
 }
 
 .evh-status-note {
   margin: calc(4 * var(--u)) 0 0;
   font-size: calc(7.8 * var(--u));
-  color: rgba(148, 163, 184, 0.78);
+  color: #64748b;
 }
 
 .evh-avail {
@@ -507,12 +473,12 @@
   font-family: "Space Grotesk", "DM Sans", sans-serif;
   font-size: calc(12 * var(--u));
   font-weight: 600;
-  color: #e2e8f0;
+  color: #0f172a;
 }
 
 .evh-avail-cap {
   font-size: calc(5.6 * var(--u));
-  color: rgba(148, 163, 184, 0.72);
+  color: #64748b;
 }
 
 /* ── Active alarms ─────────────────────────────────────────────────────── */
@@ -553,7 +519,7 @@
 
 .evh-count-l {
   font-size: calc(7.6 * var(--u));
-  color: rgba(148, 163, 184, 0.8);
+  color: #64748b;
 }
 
 /* ── Plant overview ────────────────────────────────────────────────────── */
@@ -577,11 +543,11 @@
   align-items: center;
   gap: calc(3 * var(--u));
   padding: calc(3 * var(--u)) calc(6 * var(--u));
-  border: calc(1 * var(--u)) solid rgba(96, 165, 250, 0.22);
+  border: calc(1 * var(--u)) solid rgba(19, 78, 207, 0.22);
   border-radius: calc(5 * var(--u));
-  background: rgba(15, 23, 42, 0.7);
+  background: #ffffff;
   font-size: calc(7.4 * var(--u));
-  color: rgba(203, 213, 225, 0.86);
+  color: #334155;
   white-space: nowrap;
 }
 
@@ -639,7 +605,7 @@
   padding: 0;
   list-style: none;
   font-size: calc(6.8 * var(--u));
-  color: rgba(148, 163, 184, 0.86);
+  color: #64748b;
 }
 
 .evh-legend li {
@@ -676,14 +642,14 @@
 
 .evh-metric-l {
   font-size: calc(7.4 * var(--u));
-  color: rgba(148, 163, 184, 0.82);
+  color: #64748b;
 }
 
 .evh-metric-v {
   font-size: calc(8.2 * var(--u));
   font-weight: 600;
   font-variant-numeric: tabular-nums;
-  color: #e2e8f0;
+  color: #0f172a;
   white-space: nowrap;
 }
 
@@ -694,7 +660,7 @@
   font-size: calc(6.6 * var(--u));
   font-style: normal;
   font-weight: 500;
-  color: rgba(148, 163, 184, 0.8);
+  color: #64748b;
 }
 
 /* ── Recent alarms ─────────────────────────────────────────────────────── */
@@ -727,12 +693,12 @@
   flex: none;
 }
 
-.evh-sev-crit { background: #ef4444; box-shadow: 0 0 calc(5 * var(--u)) rgba(239, 68, 68, 0.7); }
-.evh-sev-warn { background: #f59e0b; box-shadow: 0 0 calc(5 * var(--u)) rgba(245, 158, 11, 0.6); }
-.evh-sev-ok   { background: #10b981; box-shadow: 0 0 calc(5 * var(--u)) rgba(16, 185, 129, 0.55); }
+.evh-sev-crit { background: #c82020; }
+.evh-sev-warn { background: #b45309; }
+.evh-sev-ok   { background: #06b07b; }
 
 .evh-recent-n {
-  color: rgba(226, 232, 240, 0.92);
+  color: #0f172a;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -740,7 +706,7 @@
 
 .evh-recent-u,
 .evh-recent-t {
-  color: rgba(148, 163, 184, 0.78);
+  color: #64748b;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -755,7 +721,7 @@
 }
 
 .evh-health-l {
-  color: rgba(226, 232, 240, 0.9);
+  color: #0f172a;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -765,7 +731,7 @@
   display: inline-flex;
   align-items: center;
   gap: calc(2 * var(--u));
-  color: #10b981;
+  color: #06b07b;
   white-space: nowrap;
 }
 
@@ -793,23 +759,21 @@
 .evh-stand-bar {
   position: absolute;
   inset: 0;
-  border: calc(1.4 * var(--u)) solid rgba(96, 165, 250, 0.5);
+  border: calc(1.4 * var(--u)) solid rgba(19, 78, 207, 0.5);
   border-radius: 999px;
-  background: linear-gradient(180deg, rgba(37, 99, 235, 0.3) 0%, rgba(8, 13, 30, 0.9) 100%);
+  background: linear-gradient(180deg, rgba(37, 99, 235, 0.3) 0%, rgba(232, 236, 240, 0.9) 100%);
   box-shadow:
-    inset 0 0 calc(14 * var(--u)) rgba(96, 165, 250, 0.4),
-    0 0 calc(46 * var(--u)) rgba(37, 99, 235, 0.42);
+    0 4px 14px rgba(15, 23, 42, 0.08);
 }
 
-.evh-stand-glow {
+.evh-stand-shade {
   position: absolute;
   left: 8%;
   right: 8%;
   top: 42%;
   height: calc(3 * var(--u));
   border-radius: 999px;
-  background: linear-gradient(90deg, rgba(96, 165, 250, 0) 0%, #bfdbfe 42%, rgba(56, 189, 248, 0.5) 100%);
-  filter: blur(calc(1.4 * var(--u)));
+  background: linear-gradient(90deg, rgba(19, 78, 207, 0) 0%, rgba(15, 61, 162, 0.35) 42%, rgba(7, 126, 155, 0.2) 100%);
 }
 
 /* ══ RESPONSIVE ══════════════════════════════════════════════════════════
@@ -848,11 +812,6 @@
   .evh-dash-glass {
     transform: none;
     border-radius: calc(14 * var(--u));
-  }
-
-  /* Below this the room reads as noise behind type that is already small. */
-  .evh-layer-room {
-    --rest: 0.55;
   }
 
   .evh-stand {
@@ -935,8 +894,8 @@
 
 /* The availability ring: a slow breath in its own colour. */
 @keyframes evhAvailGlow {
-  0%, 100% { filter: drop-shadow(0 0 1px rgba(16, 185, 129, 0.5)); }
-  50%      { filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.95)); }
+  0%, 100% { }
+  50%      { }
 }
 
 .evh-avail-arc {
@@ -947,8 +906,8 @@
    lamp's own severity, so critical, warning and healthy glow in their own
    colour off a single rule. */
 @keyframes evhLampPulse {
-  0%, 100% { box-shadow: 0 0 calc(4 * var(--u)) currentColor; opacity: 1; }
-  50%      { box-shadow: 0 0 calc(9 * var(--u)) currentColor; opacity: 0.78; }
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.82; }
 }
 
 .evh-sev.evh-live {
@@ -958,15 +917,15 @@
 
 /* The lamps take their glow colour from `color` so one keyframe can serve
    all three severities. The background stays the flat fill. */
-.evh-sev-crit { color: #ef4444; }
-.evh-sev-warn { color: #f59e0b; }
-.evh-sev-ok   { color: #10b981; }
+.evh-sev-crit { color: #c82020; }
+.evh-sev-warn { color: #b45309; }
+.evh-sev-ok   { color: #06b07b; }
 
 /* The critical count and the unacknowledged badge: restrained, and only
    these two. An alarm screen where everything pulses tells you nothing. */
 @keyframes evhCritGlow {
-  0%, 100% { text-shadow: 0 0 calc(6 * var(--u)) rgba(239, 68, 68, 0.28); }
-  50%      { text-shadow: 0 0 calc(13 * var(--u)) rgba(239, 68, 68, 0.72); }
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.72; }
 }
 
 .evh-count-n.evh-live {
@@ -974,8 +933,8 @@
 }
 
 @keyframes evhBadgePulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
-  70%      { box-shadow: 0 0 0 calc(4 * var(--u)) rgba(239, 68, 68, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(200, 32, 32, 0.5); }
+  70%      { box-shadow: 0 0 0 calc(4 * var(--u)) rgba(200, 32, 32, 0); }
 }
 
 .evh-badge-dot.evh-live {
@@ -1000,14 +959,9 @@
   z-index: 2;
   pointer-events: none;
   background:
-    radial-gradient(70% 52% at 74% 4%, rgba(59, 130, 246, 0.2) 0%, rgba(6, 10, 24, 0) 62%),
-    radial-gradient(60% 46% at 18% 96%, rgba(124, 58, 237, 0.16) 0%, rgba(6, 10, 24, 0) 66%);
-  animation: evhBloom 11s ease-in-out infinite;
-}
-
-@keyframes evhBloom {
-  0%, 100% { opacity: 0.65; }
-  50%      { opacity: 1; }
+    radial-gradient(70% 52% at 74% 4%, rgba(21, 85, 226, 0.2) 0%, rgba(237, 240, 243, 0) 62%),
+    radial-gradient(60% 46% at 18% 96%, rgba(58, 110, 223, 0.16) 0%, rgba(237, 240, 243, 0) 66%);
+  opacity: 0.65;
 }
 
 /* A reflection raking across the glass. Very low contrast and very slow —
@@ -1023,20 +977,16 @@
   pointer-events: none;
   background: linear-gradient(
     102deg,
-    rgba(191, 219, 254, 0) 0%,
-    rgba(191, 219, 254, 0.05) 45%,
-    rgba(226, 240, 255, 0.09) 52%,
-    rgba(191, 219, 254, 0.04) 60%,
-    rgba(191, 219, 254, 0) 100%
+    rgba(15, 61, 162, 0) 0%,
+    rgba(15, 61, 162, 0.05) 45%,
+    rgba(29, 41, 53, 0.09) 52%,
+    rgba(15, 61, 162, 0.04) 60%,
+    rgba(15, 61, 162, 0) 100%
   );
-  animation: evhSheen 19s ease-in-out infinite;
-}
-
-@keyframes evhSheen {
-  0%   { transform: translateX(-60%); opacity: 0; }
-  18%  { opacity: 1; }
-  76%  { opacity: 1; }
-  100% { transform: translateX(300%); opacity: 0; }
+  /* Parked, not swept. The rake used to travel the full width on a 19s
+     loop; held still it is just a soft highlight on the left of the glass. */
+  transform: translateX(40%);
+  opacity: 0.6;
 }
 
 /* ══ THE WAVE'S FLOW ═════════════════════════════════════════════════════
@@ -1047,17 +997,6 @@
    band read as a stream rather than as a band that brightens.
 
    `linear`, always. Easing here would read as the light being dragged. */
-@keyframes evhStrandFlow {
-  from { stroke-dashoffset: 1; }
-  to   { stroke-dashoffset: 0; }
-}
-
-.evh-strand-flow {
-  stroke-dasharray: 0.18 0.82;
-  stroke-opacity: 0.9;
-  animation: evhStrandFlow var(--dur, 10s) linear infinite;
-  animation-delay: var(--d, 0s);
-}
 
 /* ══ ENTRANCE ════════════════════════════════════════════════════════════
    A staged reveal, back to front: the room, then the wave, then the frame,
@@ -1095,17 +1034,6 @@
 @keyframes evhWaveIn {
   from { opacity: 0; translate: 0 calc(30 * var(--u)); }
   to   { opacity: 1; translate: 0 0; }
-}
-
-/* 1. The room. Slowest of everything: the atmosphere should already be there
-      before anything is put in it. */
-.evh-layer-room {
-  animation: evhRoomIn 1.5s ease-out 0.15s both;
-}
-
-/* 2. The wave, rising into its own flow. */
-.evh-layer-wave {
-  animation: evhWaveIn 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.85s both;
 }
 
 /* The copy comes with the wave — it shares the left half, and holding it
@@ -1164,12 +1092,12 @@
 /* Panels lift by a pixel and warm slightly. Any more and the screen starts
    behaving like a web page. */
 .evh-panel:hover {
-  border-color: rgba(96, 165, 250, 0.42);
-  background: linear-gradient(165deg, rgba(25, 39, 74, 0.92) 0%, rgba(12, 19, 42, 0.94) 100%);
+  border-color: rgba(19, 78, 207, 0.42);
+  background: linear-gradient(165deg, rgba(243, 245, 251, 0.92) 0%, rgba(246, 248, 252, 0.94) 100%);
   box-shadow:
-    inset 0 calc(1 * var(--u)) 0 rgba(191, 219, 254, 0.14),
-    0 calc(4 * var(--u)) calc(16 * var(--u)) rgba(2, 5, 15, 0.5),
-    0 0 calc(26 * var(--u)) rgba(59, 130, 246, 0.2);
+    inset 0 calc(1 * var(--u)) 0 rgba(15, 61, 162, 0.14),
+    0 calc(4 * var(--u)) calc(16 * var(--u)) rgba(245, 246, 248, 0.5),
+    0 0 calc(26 * var(--u)) rgba(21, 85, 226, 0.2);
   transform: translateY(calc(-1.5 * var(--u)));
 }
 
@@ -1181,12 +1109,12 @@
 
 .evh-nav-item:hover:not(.is-current) {
   background: rgba(37, 99, 235, 0.18);
-  box-shadow: inset 0 0 0 calc(1 * var(--u)) rgba(96, 165, 250, 0.2);
-  color: #cbd5e1;
+  box-shadow: inset 0 0 0 calc(1 * var(--u)) rgba(19, 78, 207, 0.2);
+  color: #475569;
 }
 
 .evh-nav-item.is-current:hover {
-  box-shadow: inset 0 0 0 calc(1 * var(--u)) rgba(147, 197, 253, 0.55);
+  box-shadow: inset 0 0 0 calc(1 * var(--u)) rgba(17, 69, 183, 0.55);
 }
 
 /* Rows — alarms, metrics, health. A rule that lights up under the pointer,
@@ -1204,7 +1132,7 @@
 .evh-recent li:hover,
 .evh-health li:hover,
 .evh-metrics li:hover {
-  background: rgba(59, 130, 246, 0.12);
+  background: rgba(21, 85, 226, 0.12);
   transform: translateX(calc(1.5 * var(--u)));
 }
 
@@ -1225,12 +1153,12 @@
 }
 
 .evh-select:hover {
-  border-color: rgba(96, 165, 250, 0.45);
+  border-color: rgba(19, 78, 207, 0.45);
   background: rgba(30, 41, 59, 0.85);
 }
 
 .evh-link:hover {
-  color: #93c5fd;
+  color: #1145b7;
 }
 
 /* Touch has no hover state to leave, so a stranded highlight is the risk. */
@@ -1250,12 +1178,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* The travelling segments are motion and nothing else. Collapsed, they
-     would freeze as a dashed strand — a pattern the composition never had.
-     The band's own strands underneath are untouched. */
-  .evh-strand-flow {
-    display: none;
-  }
 
   /* Decorative light with no static meaning. */
   .evh-sheen {
@@ -1288,12 +1210,6 @@
     display: flex;
     flex-direction: column;
     gap: 34px;
-  }
-
-  /* The layers stay absolute so they remain the backdrop for the whole
-     column rather than for a band of it. */
-  .evh-layer {
-    height: 100%;
   }
 
   .evh-dash {
@@ -1379,7 +1295,7 @@
     gap: calc(4 * var(--u));
     padding: calc(9 * var(--u)) calc(10 * var(--u));
     border-right: 0;
-    border-bottom: calc(1 * var(--u)) solid rgba(96, 165, 250, 0.14);
+    border-bottom: calc(1 * var(--u)) solid rgba(19, 78, 207, 0.14);
   }
 
   .evh-brand {
@@ -1430,12 +1346,6 @@
     flex-wrap: wrap;
     gap: calc(6 * var(--u)) calc(10 * var(--u));
   }
-
-  /* The wave stays — it is the page's signature — but the room's detail
-     behind a phone-sized dashboard is noise. */
-  .evh-layer-room {
-    --rest: 0.42;
-  }
 }
 
 /* ══ LIVE TRENDS — THE DRIFT ═════════════════════════════════════════════
@@ -1469,7 +1379,6 @@
 /* A steady glow, not an animated one — it is what makes the chart read as a
    lit screen rather than printed ink. The drift is the animation. */
 .evh-trace {
-  filter: drop-shadow(0 0 1.6px currentColor);
   animation: evhTraceDraw 1.6s ease-out 4.6s both;
 }
 

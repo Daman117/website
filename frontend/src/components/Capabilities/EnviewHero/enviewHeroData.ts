@@ -31,14 +31,14 @@ export const BLEED = 760;
  *  the room; the status colours are ISA-ish rather than decorative. */
 export const C = {
   blue: '#2563eb',
-  sky: '#38bdf8',
-  cyan: '#22d3ee',
-  violet: '#8b5cf6',
-  purple: '#a855f7',
-  green: '#10b981',
-  amber: '#f59e0b',
-  red: '#ef4444',
-  magenta: '#d946ef',
+  sky: '#077e9b',
+  cyan: '#088aaa',
+  violet: '#2760dc',
+  purple: '#2a62dc',
+  green: '#06b07b',
+  amber: '#b45309',
+  red: '#c82020',
+  magenta: '#3469de',
 } as const;
 
 /* ══ DASHBOARD ═══════════════════════════════════════════════════════════ */

@@ -43,7 +43,6 @@ import HeroKnowledgeCore from './HeroKnowledgeCore';
 import HeroKnowledgeLayer from './HeroKnowledgeLayer';
 import HeroNodes from './HeroNodes';
 import HeroStreams from './HeroStreams';
-import HeroTerrain from './HeroTerrain';
 import { CARD_MOVE, CARD_STEP, ENTRANCE_END } from './engramHeroData';
 import { compactLayout, desktopLayout } from './engramLayouts';
 
@@ -153,7 +152,6 @@ const EngramHero: React.FC<EngramHeroProps> = ({
         // Belt and braces for pointer capture loss: leaving the stage clears.
         onPointerLeave={onDeactivate}
       >
-        <HeroTerrain {...flow} />
         <HeroDocuments {...touch} shift={shift} />
         <HeroStreams {...flow} highlight={hover} stepping={stepping} />
         <HeroKnowledgeCore {...touch} />

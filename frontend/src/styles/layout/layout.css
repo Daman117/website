@@ -1,5 +1,46 @@
 /* Layout */
+
+/* Route-level loading. The other pages are lazy, so navigating to one shows
+   this while its chunk downloads. Deliberately quieter than the boot layer in
+   index.html: the nav and footer are already on screen by now, so this only
+   has to fill the content area, not stand in for the whole app. */
 .app-suspense {
   min-height: 100vh; /* fallback for browsers without dvh */
   min-height: var(--min-height-viewport);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-suspense > span {
+  width: 132px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--border-default);
+  overflow: hidden;
+  position: relative;
+}
+
+.app-suspense > span::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 38%;
+  border-radius: 2px;
+  background: var(--brand);
+  animation: appSuspenseSlide 1.15s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes appSuspenseSlide {
+  from { transform: translateX(-105%); }
+  to   { transform: translateX(370%); }
+}
+
+/* Matches the boot layer: an indeterminate bar is motion for its own sake to
+   someone who asked for less of it. */
+@media (prefers-reduced-motion: reduce) {
+  .app-suspense > span::after {
+    width: 100%;
+    animation: none;
+  }
 }

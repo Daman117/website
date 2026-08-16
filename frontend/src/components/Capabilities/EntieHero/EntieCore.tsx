@@ -61,30 +61,13 @@ const EntieCore: React.FC = () => (
           every stroke in the core reads off ONE ramp and a short horizontal
           element cannot land on a degenerate bounding box. */}
       <linearGradient id="ethCoreEdge" gradientUnits="userSpaceOnUse" x1="0" y1={T} x2="0" y2={B}>
-        <stop offset="0%" stopColor="#c084fc" />
-        <stop offset="52%" stopColor="#818cf8" />
-        <stop offset="100%" stopColor="#38bdf8" />
+        <stop offset="0%" stopColor="#2156cb" />
+        <stop offset="52%" stopColor="#1249c1" />
+        <stop offset="100%" stopColor="#077e9b" />
       </linearGradient>
 
-      {/* The halo. Held very low in CSS — enough to seat the container in the
-          background, not enough to read as a light source. */}
-      <radialGradient id="ethCoreGlow">
-        <stop offset="0%" stopColor="#818cf8" stopOpacity="0.5" />
-        <stop offset="55%" stopColor="#7c3aed" stopOpacity="0.14" />
-        <stop offset="100%" stopColor="#7c3aed" stopOpacity="0" />
-      </radialGradient>
     </defs>
 
-    {/* Behind everything: atmosphere, not an object. */}
-    <ellipse
-      id="eth-core-glow"
-      className="entie-core-glow"
-      data-animation="glow"
-      cx={CORE.cx}
-      cy={CORE.cy}
-      rx="150"
-      ry="290"
-    />
 
     <g id="eth-core" className="entie-core" data-animation="core">
       {/* The interior, dark and barely there, so the signals read as being

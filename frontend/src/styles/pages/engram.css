@@ -1,20 +1,20 @@
 /* enGRAM Page */
-.engram-hero-badge-text { color: #fde68a; }
+.engram-hero-badge-text { color: var(--accent, var(--brand)); }
 
 .engram-hero-h1-text {
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .engram-hero-h1-accent {
-  color: #FDB022;
+  color: var(--accent, var(--brand));
 }
 
 .engram-hero-sub-text {
-  color: rgba(255, 255, 255, 0.96);
+  color: var(--text-secondary);
 }
 
 .engram-hero-body-text {
-  color: rgba(255, 255, 255, 0.82);
+  color: var(--text-body);
 }
 
 .engram-hero-chips {
@@ -22,9 +22,9 @@
 }
 
 .engram-hero-chip {
-  color: #fde68a;
-  background: rgba(253, 176, 34, 0.22);
-  border-color: rgba(253, 224, 138, 0.4);
+  color: var(--accent, var(--brand));
+  background: var(--brand-soft);
+  border-color: var(--border-hover);
 }
 
 .engram-section-lead {
@@ -44,7 +44,7 @@
 }
 
 .engram-challenge-icon {
-  color: #FDB022;
+  color: var(--accent, #7c3aed);
   margin-bottom: 12px;
   line-height: 1;
 }
@@ -84,7 +84,7 @@
 }
 
 .engram-trust-bullet-green {
-  background: #10B981;
+  background: #059669;
 }
 
 .engram-trust-bullet-blue {
@@ -92,7 +92,7 @@
 }
 
 .engram-trust-bullet-yellow {
-  background: #FDB022;
+  background: var(--accent, #7c3aed);
 }
 
 .engram-trust-text { color: var(--text-body); }
@@ -100,11 +100,11 @@
 .engram-trust-note { color: var(--text-muted); margin-top: 14px; }
 
 .engram-trust-card-yellow {
-  border-color: rgba(253, 176, 34, 0.25);
+  border-color: rgba(124, 58, 237, 0.25);
 }
 
 .engram-trust-eyebrow-yellow {
-  color: #FDB022;
+  color: var(--accent, #7c3aed);
 }
 
 .engram-comparison-card {
@@ -129,7 +129,7 @@
 }
 
 .engram-highlight {
-  color: #FDB022;
+  color: var(--accent, #7c3aed);
 }
 
 .engram-table-phase {
@@ -149,7 +149,7 @@
   width: var(--dot-md);
   height: var(--dot-md);
   border-radius: var(--radius-full);
-  background: #FDB022;
+  background: var(--accent, #7c3aed);
   flex-shrink: 0;
 }
 

@@ -6,7 +6,6 @@ import ScrollAnimation, { LineReveal, RevealLines } from '../ScrollAnimation';
 // ─────────────────────────────────────────────────────────────────
 const CTA: React.FC<{ onOpenContact: (src?: string) => void }> = ({ onOpenContact }) => (
   <section id="cta">
-    <div className="cta-glow" />
     <ScrollAnimation threshold={0.2}>
       <div className="cta-panel">
         <span className="eyebrow">Start here</span>

@@ -143,39 +143,20 @@ const EnstudioHeroVisual: React.FC = () => {
           fixes that, and has the side benefit that all five links on a side
           share one ramp instead of each stretching its own. */}
       <linearGradient id="eshFlowIn" gradientUnits="userSpaceOnUse" x1={IN_START} y1="0" x2={CORE.x - CORE.r} y2="0">
-        <stop offset="0%" stopColor="#7c3aed" stopOpacity="0.35" />
-        <stop offset="100%" stopColor="#a78bfa" stopOpacity="0.9" />
+        <stop offset="0%" stopColor="#3a6edf" stopOpacity="0.35" />
+        <stop offset="100%" stopColor="#2156c9" stopOpacity="0.9" />
       </linearGradient>
       <linearGradient id="eshFlowOut" gradientUnits="userSpaceOnUse" x1={CORE.x + CORE.r} y1="0" x2={OUT_END} y2="0">
-        <stop offset="0%" stopColor="#818cf8" stopOpacity="0.9" />
-        <stop offset="100%" stopColor="#38bdf8" stopOpacity="0.35" />
+        <stop offset="0%" stopColor="#1249c1" stopOpacity="0.9" />
+        <stop offset="100%" stopColor="#077e9b" stopOpacity="0.35" />
       </linearGradient>
       <linearGradient id="eshCoreEdge" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#c084fc" />
-        <stop offset="55%" stopColor="#818cf8" />
-        <stop offset="100%" stopColor="#38bdf8" />
+        <stop offset="0%" stopColor="#2156cb" />
+        <stop offset="55%" stopColor="#1249c1" />
+        <stop offset="100%" stopColor="#077e9b" />
       </linearGradient>
-      {/* The core's halo. One radial, held very low in CSS — enough to seat
-          the hexagon in the background, not enough to read as a light source.
-          A separate element rather than a filter so it can be scaled and
-          faded on its own clock later. */}
-      <radialGradient id="eshCoreGlow">
-        <stop offset="0%" stopColor="#818cf8" stopOpacity="0.5" />
-        <stop offset="55%" stopColor="#7c3aed" stopOpacity="0.14" />
-        <stop offset="100%" stopColor="#7c3aed" stopOpacity="0" />
-      </radialGradient>
     </defs>
 
-    {/* Behind everything, including the connectors: the halo is atmosphere,
-        not an object. */}
-    <circle
-      id="esh-glow"
-      className="enstudio-glow"
-      data-animation="glow"
-      cx={CORE.x}
-      cy={CORE.y}
-      r="230"
-    />
 
     {/* ── Connectors ─────────────────────────────────────────────────────
         One path per link, never merged: each is both the drawn line

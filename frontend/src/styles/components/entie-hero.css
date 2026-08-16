@@ -31,11 +31,7 @@
   overflow: clip;
   /* Same clearance under the fixed nav as every other hero — see .esh/.evh. */
   padding: clamp(68px, 7vh, 94px) var(--gutter) 40px;
-  background:
-    radial-gradient(56% 60% at 14% 40%, rgba(37, 99, 235, 0.24) 0%, rgba(4, 6, 15, 0) 66%),
-    radial-gradient(62% 66% at 70% 32%, rgba(30, 64, 175, 0.18) 0%, rgba(4, 6, 15, 0) 70%),
-    radial-gradient(46% 50% at 58% 98%, rgba(29, 78, 216, 0.14) 0%, rgba(4, 6, 15, 0) 72%),
-    linear-gradient(180deg, #04060f 0%, #06091a 42%, #04060f 74%, #020409 100%);
+  background: var(--hero-ground);
 }
 
 .eth-inner {
@@ -95,10 +91,10 @@
   display: inline-block;
   margin-bottom: 16px;
   padding: var(--pill-padding);
-  border: 1px solid rgba(147, 197, 253, 0.4);
+  border: 1px solid rgba(17, 69, 183, 0.4);
   border-radius: 999px;
-  background: rgba(96, 165, 250, 0.16);
-  color: #93c5fd;
+  background: rgba(19, 78, 207, 0.16);
+  color: #1145b7;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -111,19 +107,19 @@
   font-weight: 700;
   letter-spacing: -1.4px;
   line-height: 1.1;
-  color: #ffffff;
+  color: var(--text-primary);
   margin-bottom: 18px;
 }
 
 .eth-accent {
-  color: #60a5fa;
+  color: #134ecf;
 }
 
 .eth-sub {
   font-size: clamp(14px, 1.05vw, 16px);
   font-weight: 500;
   line-height: 1.68;
-  color: rgba(255, 255, 255, 0.96);
+  color: var(--text-secondary);
   margin-bottom: 14px;
 }
 
@@ -143,6 +139,9 @@
   bottom: 0;
   z-index: 1;
   pointer-events: none;
+  /* Reclaims the dead wedge between the drawing and the stage's right edge at
+     wide viewports. Zeroed below 1280px, where the hero stacks. */
+  transform: translateX(var(--hero-art-shift));
 }
 
 /* Every layer is an SVG on the same box with the same viewBox, so they stack
@@ -187,8 +186,8 @@
      crest belongs in the open band between the reading column and the
      composition — dimmed under the text so it stays legible, dimmed again
      under the system so the field never competes with it. */
-  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0.3) 0%, #000 42%, rgba(0, 0, 0, 0.4) 100%);
-  mask-image: linear-gradient(to right, rgba(0, 0, 0, 0.3) 0%, #000 42%, rgba(0, 0, 0, 0.4) 100%);
+  -webkit-mask-image: linear-gradient(to right, rgba(250, 251, 252, 0.3) 0%, #000 42%, rgba(250, 251, 252, 0.4) 100%);
+  mask-image: linear-gradient(to right, rgba(250, 251, 252, 0.3) 0%, #000 42%, rgba(250, 251, 252, 0.4) 100%);
 }
 
 /* Hairlines at any width — the band is stretched horizontally to fill the
@@ -201,22 +200,21 @@
 /* Violet dominant, magenta for the bands that carry the crest, one blue band
    for the electric note. Per-line opacity is set inline by the component —
    these are only the hues. */
-.eth .entie-wave-path--v { stroke: #8b5cf6; }
-.eth .entie-wave-path--m { stroke: #a855f7; }
-.eth .entie-wave-path--b { stroke: #38bdf8; }
+.eth .entie-wave-path--v { stroke: #2760dc; }
+.eth .entie-wave-path--m { stroke: #2a62dc; }
+.eth .entie-wave-path--b { stroke: #077e9b; }
 
 /* The scattered field over the lines. Small and unevenly lit, scrolling with
    the band it belongs to. */
 .eth .entie-wave-dot {
-  fill: #d8b4fe;
+  fill: #1e4db5;
 }
 
 /* Dimmer and smaller than any packet in the composition above — the band is
    the secondary layer and has to keep reading that way. */
 .eth .entie-wave-particle {
-  fill: #bfdbfe;
+  fill: #0f3da2;
   opacity: 0;
-  filter: drop-shadow(0 0 2px rgba(56, 189, 248, 0.7));
 }
 
 /* Anything Anime.js may rotate or shift resolves its origin against its own
@@ -239,7 +237,7 @@
   stroke-linecap: round;
 }
 
-.eth .entie-source-connector { stroke: rgba(147, 51, 234, 0.45); }
+.eth .entie-source-connector { stroke: rgba(62, 113, 224, 0.45); }
 .eth .entie-output-connector { stroke: rgba(37, 99, 235, 0.45); }
 
 /* The travelling highlight: a second copy of the same curve, of which the
@@ -249,24 +247,21 @@
    the base line shows. */
 .eth .entie-connector-pulse {
   fill: none;
-  stroke: #38bdf8;
+  stroke: #077e9b;
   stroke-width: 1.5;
   stroke-linecap: round;
   opacity: 0;
-  filter: drop-shadow(0 0 3px rgba(56, 189, 248, 0.7));
 }
 
 /* The packets. Transparent at rest for the same reason. Small and tight —
    a soft halo at this size reads as a smudge rather than as light. */
 .eth .entie-flow-particle {
-  fill: #ddd6fe;
+  fill: #0e3998;
   opacity: 0;
-  filter: drop-shadow(0 0 3px rgba(167, 139, 250, 0.9));
 }
 
 .eth .entie-flow-particle--output {
-  fill: #dbeafe;
-  filter: drop-shadow(0 0 3px rgba(56, 189, 248, 0.9));
+  fill: #0e3895;
 }
 
 /* ── The source column ──────────────────────────────────────────────────
@@ -274,17 +269,16 @@
    the core's gradient. Tiles are outlines with a nearly-nothing interior —
    enough to lift them off the background, not enough to read as cards. */
 .eth .entie-source-outline {
-  fill: rgba(8, 12, 28, 0.55);
-  stroke: rgba(192, 132, 252, 0.55);
+  fill: rgba(233, 237, 241, 0.55);
+  stroke: rgba(33, 86, 203, 0.55);
   stroke-width: 1.2;
   /* The only glow on this side, and it is small: a halo at tile size reads
      as a smudge rather than as light. */
-  filter: drop-shadow(0 0 5px rgba(147, 51, 234, 0.28));
 }
 
 .eth .entie-source-icon {
   fill: none;
-  stroke: rgba(233, 222, 255, 0.85);
+  stroke: rgba(27, 69, 163, 0.85);
   stroke-width: 1.3;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -293,7 +287,7 @@
 /* The attachment point. Its own element so the connector step only has to
    join two known coordinates, and so a later pulse can find it alone. */
 .eth .entie-source-node {
-  fill: #c084fc;
+  fill: #2156cb;
   opacity: 0.8;
 }
 
@@ -303,39 +297,31 @@
    to the source tiles — same size, same weight, same restraint, so neither
    column outranks the core between them. */
 .eth .entie-output-outline {
-  fill: rgba(8, 12, 28, 0.55);
-  stroke: rgba(56, 189, 248, 0.5);
+  fill: rgba(233, 237, 241, 0.55);
+  stroke: rgba(7, 126, 155, 0.5);
   stroke-width: 1.2;
-  filter: drop-shadow(0 0 5px rgba(37, 99, 235, 0.3));
 }
 
 .eth .entie-output-icon {
   fill: none;
-  stroke: rgba(219, 234, 254, 0.88);
+  stroke: rgba(14, 56, 149, 0.88);
   stroke-width: 1.3;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
 .eth .entie-output-node {
-  fill: #38bdf8;
+  fill: #077e9b;
   opacity: 0.8;
 }
 
 /* ── The core ───────────────────────────────────────────────────────────
-   Thin line work throughout. The only glow is one low ellipse behind the
-   container and one small drop-shadow on its outline — everything else stays
-   crisp, which is what keeps this reading as drawn rather than rendered. */
-.eth .entie-core-glow {
-  fill: url(#ethCoreGlow);
-  /* Low enough to read as the background being slightly warmer around the
-     core rather than as a light. */
-  opacity: 0.32;
-}
+   Thin line work throughout, and nothing else — the low halo that used to sit
+   behind the container is gone, so the whole hero is drawn rather than lit. */
 
 /* The interior. Nearly nothing — enough to separate inside from outside. */
 .eth .entie-core-fill {
-  fill: rgba(8, 12, 28, 0.55);
+  fill: rgba(233, 237, 241, 0.55);
   stroke: none;
 }
 
@@ -344,12 +330,11 @@
   stroke: url(#ethCoreEdge);
   stroke-width: 1.6;
   stroke-linejoin: round;
-  filter: drop-shadow(0 0 6px rgba(129, 140, 248, 0.32));
 }
 
 .eth .entie-core-inner {
   fill: none;
-  stroke: rgba(148, 163, 220, 0.3);
+  stroke: rgba(18, 74, 197, 0.3);
   stroke-width: 1;
   stroke-linejoin: round;
 }
@@ -366,13 +351,13 @@
    Dimmer than the outline: the container is the subject, its contents are
    detail. */
 .eth .entie-core-signal {
-  stroke: rgba(167, 139, 250, 0.28);
+  stroke: rgba(33, 86, 201, 0.28);
   stroke-width: 1;
   stroke-linecap: round;
 }
 
 .eth .entie-core-spark {
-  fill: rgba(196, 181, 253, 0.72);
+  fill: rgba(190, 207, 244, 0.72);
 }
 
 /* ── Connection points ──────────────────────────────────────────────────
@@ -380,35 +365,35 @@
    without disturbing the other. Violet where material arrives, blue where it
    leaves — the same left-to-right reading as the outline's gradient. */
 .eth .entie-core-node-ring {
-  fill: rgba(6, 9, 22, 0.9);
+  fill: rgba(238, 241, 244, 0.9);
   stroke-width: 1.3;
 }
 
-.eth .entie-core-node--in .entie-core-node-ring { stroke: rgba(192, 132, 252, 0.7); }
-.eth .entie-core-node--out .entie-core-node-ring { stroke: rgba(56, 189, 248, 0.7); }
+.eth .entie-core-node--in .entie-core-node-ring { stroke: rgba(33, 86, 203, 0.7); }
+.eth .entie-core-node--out .entie-core-node-ring { stroke: rgba(7, 126, 155, 0.7); }
 
-.eth .entie-core-node--in .entie-core-node-dot { fill: #c084fc; }
-.eth .entie-core-node--out .entie-core-node-dot { fill: #38bdf8; }
+.eth .entie-core-node--in .entie-core-node-dot { fill: #2156cb; }
+.eth .entie-core-node--out .entie-core-node-dot { fill: #077e9b; }
 
 /* ── The intelligence mark ──────────────────────────────────────────────
    The one symbol in the composition, and the brightest thing in it — but
    only just. */
 .eth .entie-core-shield-ring {
-  fill: rgba(8, 12, 28, 0.6);
-  stroke: rgba(192, 132, 252, 0.55);
+  fill: rgba(233, 237, 241, 0.6);
+  stroke: rgba(33, 86, 203, 0.55);
   stroke-width: 1.2;
 }
 
 .eth .entie-core-shield-body {
   fill: none;
-  stroke: rgba(216, 180, 254, 0.9);
+  stroke: rgba(30, 77, 181, 0.9);
   stroke-width: 1.4;
   stroke-linejoin: round;
 }
 
 .eth .entie-core-shield-check {
   fill: none;
-  stroke: #e9d5ff;
+  stroke: #1b47a7;
   stroke-width: 1.6;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -453,11 +438,11 @@
      smaller here, and haloes tuned for a 720px stage read as haze on a 460px
      one. CSS shadows only — the core's own glow ELEMENT is animated from JS
      and is left alone, or the two would fight over one property. */
-  .eth .entie-core-outline { filter: drop-shadow(0 0 4px rgba(129, 140, 248, 0.26)); }
-  .eth .entie-source-outline { filter: drop-shadow(0 0 3px rgba(147, 51, 234, 0.24)); }
-  .eth .entie-output-outline { filter: drop-shadow(0 0 3px rgba(37, 99, 235, 0.26)); }
-  .eth .entie-connector-pulse { filter: drop-shadow(0 0 2px rgba(56, 189, 248, 0.6)); }
-  .eth .entie-flow-particle { filter: drop-shadow(0 0 2px rgba(167, 139, 250, 0.8)); }
+  .eth .entie-core-outline { }
+  .eth .entie-source-outline { }
+  .eth .entie-output-outline { }
+  .eth .entie-connector-pulse { }
+  .eth .entie-flow-particle { }
 
   /* Stacked, the copy sits ABOVE the band rather than beside it, so a
      left-to-right falloff only makes the wave look lopsided. Fade it upward

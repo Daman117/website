@@ -220,7 +220,7 @@ const C_LANES: FlowLane[] = Array.from({ length: 5 }, (_, k) => {
     d: c_toPath(pts),
     dur: TIMING.terrain * (0.8 + (k % 3) * 0.16),
     phase: -k * 3.1,
-    tint: k % 3 === 2 ? '#67e8f9' : '#c084fc',
+    tint: k % 3 === 2 ? '#066f89' : '#2156cb',
     r: 0.85 + (k % 2) * 0.3,
   };
 });

@@ -69,7 +69,7 @@ export function useFigureMotion(
     if (cells.length) {
       runs.push(
         animate(cells, {
-          fill: ['#e9d5ff', '#ffffff', '#e9d5ff'],
+          fill: ['#1b47a7', '#ffffff', '#1b47a7'],
           duration: 1100,
           delay: stagger(190, { start: 900 }),
           ease: 'inOutQuad',

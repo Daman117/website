@@ -1,16 +1,16 @@
 /* enGENIE Page */
-.engenie-hero-badge-text { color: #93c5fd; }
+.engenie-hero-badge-text { color: var(--accent, var(--brand)); }
 
 .engenie-hero-h1-text {
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .engenie-hero-h1-accent {
-  color: #2563EB;
+  color: var(--accent, var(--brand));
 }
 
 .engenie-hero-sub-text {
-  color: rgba(255, 255, 255, 0.96);
+  color: var(--text-secondary);
 }
 
 .engenie-feature-icon {

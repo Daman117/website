@@ -7,7 +7,6 @@ import { prefersReducedMotion } from '../../utils/motion';
 import HowItWorksScroll from './HowItWorksScroll';
 import NativeApproachScroll from './NativeApproachScroll';
 import CapabilityHero from '../Capability/Hero';
-import HeroBackground from './EngenieHero/HeroBackground';
 import HeroSystem from './EngenieHero/HeroSystem';
 import ComparisonTable from '../Capability/ComparisonTable';
 
@@ -15,8 +14,8 @@ interface EngeniePageProps {
   onOpenContact: (source?: string) => void;
 }
 
-const ACCENT = '#1B6FD8';
-const ACCENT_RGB = '27,111,216';
+const ACCENT = '#0F766E';
+const ACCENT_RGB = '15,118,110';
 
 
 const modules = [
@@ -31,7 +30,7 @@ const modules = [
       'Integration compatibility assessment',
       'Technical specification alignment',
     ],
-    color: '#1B6FD8',
+    color: '#0F766E',
   },
   {
     Icon: Search,
@@ -44,7 +43,7 @@ const modules = [
       'Transparent decision rationale',
       'Alternative options comparison',
     ],
-    color: '#2563EB',
+    color: '#0369A1',
   },
   {
     Icon: MessageSquare,
@@ -57,7 +56,7 @@ const modules = [
       'Product comparison guidance',
       'Troubleshooting support',
     ],
-    color: '#60A5FA',
+    color: '#0E7490',
   },
 ];
 
@@ -89,7 +88,7 @@ const audiences = [
     label: 'For Enterprises',
     tag: 'Procurement teams & buyers',
     desc: "Specify instruments the way your company already does it — the suppliers you have agreements with, the purchasing rules you follow, and the standards you have to meet.",
-    color: '#1B6FD8',
+    color: '#0F766E',
     points: [
       'Specifications written in a fraction of the time',
       'Company standards applied every time',
@@ -102,7 +101,7 @@ const audiences = [
     label: 'For Suppliers',
     tag: 'Manufacturers & distributors',
     desc: "Your products get put forward when they genuinely fit the job. enGENIE matches on the service conditions, so you are shortlisted for work your instruments are actually right for.",
-    color: '#2563EB',
+    color: '#0369A1',
     points: [
       'Seen by buyers who are specifying right now',
       'Matched on real service conditions, not keywords',
@@ -114,9 +113,9 @@ const audiences = [
 ];
 
 const orgDna = [
-  { title: 'Your Suppliers Come First', desc: 'Recommendations respect the supplier agreements and volume commitments you already have in place.', color: '#1B6FD8' },
-  { title: 'Your Purchasing Rules Apply', desc: 'Spending limits and purchasing policies are followed without anyone having to remember them.', color: '#2563EB' },
-  { title: 'Your Standards Are Checked', desc: 'Every specification is verified against your own engineering and safety standards before it reaches you.', color: '#60A5FA' },
+  { title: 'Your Suppliers Come First', desc: 'Recommendations respect the supplier agreements and volume commitments you already have in place.', color: '#0F766E' },
+  { title: 'Your Purchasing Rules Apply', desc: 'Spending limits and purchasing policies are followed without anyone having to remember them.', color: '#0369A1' },
+  { title: 'Your Standards Are Checked', desc: 'Every specification is verified against your own engineering and safety standards before it reaches you.', color: '#0E7490' },
 ];
 
 const outcomes = [
@@ -166,7 +165,6 @@ const EngeniePage: React.FC<EngeniePageProps> = ({ onOpenContact }) => {
              stay shared and untouched. `image=""` stops the fetch; the CSS
              hides the layer that would have painted it. ── */}
       <div className="egn-hero" ref={heroRef}>
-        <HeroBackground reduceMotion={reduceMotion} active={heroInView} />
         <HeroSystem reduceMotion={reduceMotion} active={heroInView} />
         <CapabilityHero
           image=""

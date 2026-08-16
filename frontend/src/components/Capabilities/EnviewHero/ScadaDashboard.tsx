@@ -120,14 +120,14 @@ const Availability: React.FC<{ pct: number }> = ({ pct }) => {
   return (
     <div className="evh-avail evh-in evh-in-status">
       <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-        <circle cx="32" cy="32" r={r} fill="none" stroke="#1e293b" strokeWidth="4" />
+        <circle cx="32" cy="32" r={r} fill="none" stroke="#e2e8f0" strokeWidth="4" />
         <circle
           className="evh-avail-arc evh-live"
           cx="32"
           cy="32"
           r={r}
           fill="none"
-          stroke="#10b981"
+          stroke="#06b07b"
           strokeWidth="4"
           strokeLinecap="round"
           strokeDasharray={`${((pct / 100) * c).toFixed(2)} ${c.toFixed(2)}`}
@@ -161,14 +161,14 @@ const ScadaDashboard: React.FC<{ reduceMotion: boolean }> = ({ reduceMotion }) =
             <path
               d="M12 2.6 20.4 7.3v9.4L12 21.4 3.6 16.7V7.3z"
               fill="url(#evh-brand-fill)"
-              stroke="#60a5fa"
+              stroke="#134ecf"
               strokeWidth="1.1"
             />
-            <path d="M12 7.4 16.6 10v5L12 17.6 7.4 15v-5z" fill="#0b1a3d" />
+            <path d="M12 7.4 16.6 10v5L12 17.6 7.4 15v-5z" fill="#f5f7fc" />
             <defs>
               <linearGradient id="evh-brand-fill" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor="#3b82f6" />
-                <stop offset="100%" stopColor="#7c3aed" />
+                <stop offset="0%" stopColor="#1555e2" />
+                <stop offset="100%" stopColor="#3a6edf" />
               </linearGradient>
             </defs>
           </svg>
@@ -353,7 +353,7 @@ const ScadaDashboard: React.FC<{ reduceMotion: boolean }> = ({ reduceMotion }) =
         object standing in the room rather than a rectangle floating in it. */}
     <div className="evh-stand" aria-hidden="true">
       <span className="evh-stand-bar" />
-      <span className="evh-stand-glow" />
+      <span className="evh-stand-shade" />
     </div>
   </div>
   );

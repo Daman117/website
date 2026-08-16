@@ -24,17 +24,22 @@ export const STAGE = { w: 1660, h: 950 } as const;
 export const du = (n: number) => `calc(${n} * var(--u))`;
 
 export const C = {
-  amber: '#FDB022',
-  amberSoft: '#fde68a',
-  cyan: '#22d3ee',
-  sky: '#38bdf8',
-  blue: '#60a5fa',
-  indigo: '#818cf8',
-  violet: '#a78bfa',
-  magenta: '#d946ef',
-  green: '#34d399',
-  rose: '#f472b6',
-  white: '#e2e8f0',
+  amber: '#a54c08',
+  amberSoft: '#883f07',
+  cyan: '#088aaa',
+  sky: '#077e9b',
+  blue: '#134ecf',
+  indigo: '#1249c1',
+  violet: '#2156c9',
+  magenta: '#3469de',
+  green: '#059266',
+  rose: '#235bd7',
+  /* Was literally white when this hero sat on near-black, and the automated
+     recolour skipped it because #e2e8f0 is a system neutral. On the light
+     ground that left the "Cited Answers" node drawn in slate-200 on white —
+     invisible. Slate ink instead: still the one uncoloured node in the ring,
+     but readable. */
+  white: '#475569',
 } as const;
 
 /* ── Document planes ───────────────────────────────────────────────────
@@ -416,7 +421,7 @@ export const terrainLanes = Array.from({ length: TERRAIN_STREAMS }, (_, k) => ({
   dur: TIMING.terrain * (0.78 + ((k * 3) % 5) * 0.14),
   phase: -k * 2.6,
   // Violet over the swell on the left, cooling to cyan toward the core.
-  tint: k % 3 === 2 ? '#67e8f9' : '#c084fc',
+  tint: k % 3 === 2 ? '#066f89' : '#2156cb',
   r: 0.9 + ((k * 2) % 3) * 0.4,
 }));
 
@@ -424,7 +429,7 @@ export const convergeLanes = Array.from({ length: TERRAIN_CONVERGE }, (_, k) => 
   d: terrainConvergePath(k),
   dur: TIMING.terrain * (0.62 + k * 0.1),
   phase: -k * 4.4,
-  tint: '#bae6fd',
+  tint: '#0f3ea5',
   r: 1.5 + (k % 2) * 0.4,
 }));
 

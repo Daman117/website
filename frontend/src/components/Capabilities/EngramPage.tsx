@@ -45,7 +45,7 @@ const capabilities = [
       'Connectivity Mapping – Understand relationships between instruments, equipment, and processes',
       'Rapid Processing – Analyzes complex, high-density engineering sheets in 15–30 seconds',
     ],
-    color: '#FDB022',
+    color: '#4a78dd',
   },
   {
     Icon: FileText,
@@ -60,7 +60,7 @@ const capabilities = [
       'Citation-based answers for engineering confidence',
       'Knowledge Library – Textbooks, manuals, and vendor standards indexed alongside plant documents',
     ],
-    color: '#10B981',
+    color: '#047857',
   },
   {
     Icon: Network,
@@ -73,7 +73,7 @@ const capabilities = [
       'Build a searchable digital representation of plant knowledge',
       'Provide context-aware answers across systems and assets',
     ],
-    color: '#A78BFA',
+    color: '#4338CA',
   },
 ];
 
@@ -83,7 +83,7 @@ const diagramViews = [
     title: 'Diagram Editor',
     subtitle: 'The Review & Correction View',
     desc: 'A triage-first correction workspace — confidence-ranked detections you accept, edit, or reject. Edits stage until Save All, then write a full audit trail and auto-rebuild the PFD Canvas and Operator views.',
-    color: '#FDB022',
+    color: '#4a78dd',
     img: '/engram-static-svg.webp',
   },
   {
@@ -91,7 +91,7 @@ const diagramViews = [
     title: 'Operator Graphics',
     subtitle: 'The Operator View',
     desc: 'An HMI-style live process screen, rebuilt purely from connectivity semantics — never the original drawing geometry. Click any tag for a live faceplate.',
-    color: '#60A5FA',
+    color: '#0E7490',
     img: '/engram-operator-graphics.webp',
   },
   {
@@ -251,7 +251,7 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
         eyebrow="How It Works"
         title="From Raw Files to Actionable Intelligence"
         steps={steps}
-        accent="#FDB022"
+        accent="#4a78dd"
         accentRgb="253,176,34"
         video="/engram-demo.mp4"
         videoPoster="/engram-demo-poster.webp"
@@ -351,7 +351,7 @@ const EngramPage: React.FC<EngramPageProps> = ({ onOpenContact }) => {
                   {row.v.map((ok, i) => (
                     <td key={i} className="engram-table-cell-center">
                       {ok
-                        ? <Check size={16} color="#10B981" strokeWidth={2.5} className="u-inline-block" />
+                        ? <Check size={16} color="#047857" strokeWidth={2.5} className="u-inline-block" />
                         : <X size={16} color="var(--text-muted)" strokeWidth={2} className="u-inline-block" />}
                     </td>
                   ))}

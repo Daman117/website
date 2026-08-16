@@ -72,19 +72,6 @@ const BRANCH_BOTTOMS = 'M38 320V334H66';
 const PERIOD = 15;
 const PARTICLES = 3;
 
-/* Segment glow. Each is a stretch of MAIN, with the fraction of the route at
-   which its midpoint sits. With PARTICLES evenly spaced, a point at fraction
-   f is passed every PERIOD/PARTICLES seconds, at phase (f * PERIOD) into that
-   shorter cycle — which is the delay each segment needs to stay in step. The
-   cycle length itself lives with the keyframe, in enable-hero.css. */
-const SEGMENTS: { d: string; f: number }[] = [
-  { d: 'M38 120V98', f: 0.022 },
-  { d: 'M38 98H160', f: 0.165 },
-  { d: 'M160 98V334', f: 0.52 },
-  { d: 'M160 334H88', f: 0.825 },
-  { d: 'M88 334V386', f: 0.948 },
-];
-
 /** A short cross, for an eigenvalue. */
 const Eig: React.FC<{ x: number; y: number }> = ({ x, y }) => (
   <g className="eab-eig">
@@ -163,7 +150,7 @@ const HeroFigure: React.FC<Props> = ({ reduceMotion }) => {
           the region reads as bounded-and-shaded the way a textbook plots it,
           without adding a gradient. */}
       <pattern id="eab-hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-        <path d="M0 0V7" stroke="#6366f1" strokeOpacity="0.46" strokeWidth="0.8" />
+        <path d="M0 0V7" stroke="#134fd2" strokeOpacity="0.46" strokeWidth="0.8" />
       </pattern>
     </defs>
 
@@ -216,23 +203,11 @@ const HeroFigure: React.FC<Props> = ({ reduceMotion }) => {
       </g>
 
       {/* ── The flowing process ──────────────────────────────────────
-          The segment under a particle brightens as it passes. Phase comes
-          from the segment's position along the route, so the glow follows the
-          particles instead of the whole diagram pulsing together. */}
+          Particles travel the route. The pipe under each one used to brighten
+          as it passed; that pass is gone, so the pipework stays line art and
+          only the particles move. */}
       {!reduceMotion && (
         <>
-          <g className="eab-pipe-glow">
-            {SEGMENTS.map((seg) => (
-              <path
-                key={seg.d}
-                d={seg.d}
-                style={
-                  { '--d': `${(-seg.f * PERIOD).toFixed(2)}s` } as React.CSSProperties
-                }
-              />
-            ))}
-          </g>
-
           <g className="eab-flow-dots">
             {Array.from({ length: PARTICLES }, (_, i) => (
               <circle key={`m${i}`} r={i % 2 ? 1.7 : 2.1}>

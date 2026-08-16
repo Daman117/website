@@ -3,8 +3,8 @@ import type { Cap } from '../types';
 export const CAPS: Cap[] = [
 {
   id:'enview',name:'enVIEW',cat:'SCADA / Live Process Intelligence',
-  tag:'See your plant. Live.',color:'#2563EB',
-  status:'Available',statusBg:'#0A1E38',statusBorder:'#1E40AF',statusText:'#60A5FA',
+  tag:'See your plant. Live.',color:'#0369A1',
+  status:'Available',statusBg:'#0A1E38',statusBorder:'#1E40AF',statusText:'#0E7490',
   zerod:true,
   body:`enVIEW is what SCADA looks like when you start from scratch today — not when you migrate a 1990s Windows system to the cloud. Native Apple Silicon. Three synchronized views of your plant from one data model. An AI operator assistant that understands your process. A CLI that lets you manage everything without touching the GUI.`,
   body2:`Every incumbent SCADA was built for the world before Apple Silicon, before LLMs, before engineers expected software to respond in milliseconds. enVIEW wasn't constrained by any of that.`,
@@ -66,8 +66,8 @@ export const CAPS: Cap[] = [
   right:'perf',
 },{
   id:'engram',name:'enGRAM',cat:'Plant Knowledge',
-  tag:'Ask your plant a question. Get a cited answer.',color:'#FDB022',
-  status:'Pilot',statusBg:'#2E1F00',statusBorder:'#594400',statusText:'#FDB022',
+  tag:'Ask your plant a question. Get a cited answer.',color:'#1E40AF',
+  status:'Pilot',statusBg:'#2E1F00',statusBorder:'#594400',statusText:'#1E40AF',
   body:`enGRAM indexes every document your plant already has — P&IDs, datasheets, loop drawings, equipment specs, procedures, calibration records — and makes them queryable in plain English. Fully inside your network. No cloud. Every answer traced back to the exact source document, revision, and page.`,
   specs:[
     {l:'Deployment',v:'Local VM'},{l:'Cloud',v:'None'},
@@ -116,8 +116,8 @@ export const CAPS: Cap[] = [
   right:'specs',
 },{
   id:'enstudio',name:'enSTUDIO',cat:'Drawing Intelligence',
-  tag:'Draw it. Import it. Describe it. It becomes structured.',color:'#A78BFA',
-  status:'Available',statusBg:'#0A1E38',statusBorder:'#1E40AF',statusText:'#60A5FA',
+  tag:'Draw it. Import it. Describe it. It becomes structured.',color:'#4338CA',
+  status:'Available',statusBg:'#0A1E38',statusBorder:'#1E40AF',statusText:'#0E7490',
   airgap:true,
   body:`enSTUDIO meets engineers where they are. Draw the unit on a canvas, import an existing drawing, or describe it in plain language — every channel produces the same structured, LLM-ready output, and every channel runs on local AI models inside your network. No internet. No cloud.`,
   specs:[
@@ -144,9 +144,9 @@ export const CAPS: Cap[] = [
     {label:'Describe',content:`
       <p style="font-size:13px;color:var(--text-body);font-weight:500;margin-bottom:8px">No drawing? Describe what you know.</p>
       <div class="cli-block" style="margin-bottom:10px">
-        <div style="color:#A78BFA">Input:</div>
+        <div style="color:#4338CA">Input:</div>
         <div style="color:var(--text-muted);font-style:italic">"FT-3045 is a flow transmitter on the feed line to R-201. Range 0–500 kg/h. Alarm at 450. Connected to FCV-201 downstream."</div>
-        <div style="color:#A78BFA;margin-top:8px">Output:</div>
+        <div style="color:#4338CA;margin-top:8px">Output:</div>
         <div>tag: FT-3045 | type: flow_transmitter | range: 0–500 kg/h</div>
         <div>alarm_hi: 450 | connected_to: R-201, FCV-201</div>
       </div>
@@ -154,26 +154,26 @@ export const CAPS: Cap[] = [
     {label:'Describe · Spoken',content:`
       <p style="font-size:13px;color:var(--text-body);font-weight:500;margin-bottom:8px">Talk through a process unit. It builds the model as you go.</p>
       <div class="cli-block" style="margin-bottom:10px">
-        <div><span style="color:#A78BFA">enSTUDIO:</span> <span style="color:var(--text-muted)">What units are in section 2?</span></div>
+        <div><span style="color:#4338CA">enSTUDIO:</span> <span style="color:var(--text-muted)">What units are in section 2?</span></div>
         <div><span style="color:var(--text-secondary)">Engineer:</span> <span style="color:var(--text-muted)">Feed preheat, the main reactor, separator.</span></div>
-        <div><span style="color:#A78BFA">enSTUDIO:</span> <span style="color:var(--text-muted)">What does the feed preheat connect to?</span></div>
+        <div><span style="color:#4338CA">enSTUDIO:</span> <span style="color:var(--text-muted)">What does the feed preheat connect to?</span></div>
         <div><span style="color:var(--text-secondary)">Engineer:</span> <span style="color:var(--text-muted)">Shell-and-tube HX. FT-1001 on tube side, TC on shell outlet.</span></div>
-        <div><span style="color:#A78BFA">enSTUDIO:</span> <span style="color:var(--text-muted)">Added: HX-101 · FT-1001 · TT-102 ✓</span></div>
+        <div><span style="color:#4338CA">enSTUDIO:</span> <span style="color:var(--text-muted)">Added: HX-101 · FT-1001 · TT-102 ✓</span></div>
       </div>
       <p style="font-size:11px;color:var(--text-muted)">Runs entirely on local LLM. The conversation never leaves the network.</p>`},
     {label:'Outputs',content:`
       <p style="font-size:13px;color:var(--text-body);font-weight:500;margin-bottom:8px">Four formats. All downstream-ready.</p>
       <div style="display:flex;flex-direction:column;gap:5px">
-        <div style="display:grid;grid-template-columns:90px 1fr;gap:10px;padding:8px 12px;background:var(--surface-section);border:1px solid var(--border-default);border-radius:4px"><span class="mono" style="font-size:10px;color:#A78BFA">VIDS</span><span style="font-size:11px;color:var(--text-muted)">Process simulation — equipment, streams, connections</span></div>
-        <div style="display:grid;grid-template-columns:90px 1fr;gap:10px;padding:8px 12px;background:var(--surface-section);border:1px solid var(--border-default);border-radius:4px"><span class="mono" style="font-size:10px;color:#A78BFA">VPlant YAML</span><span style="font-size:11px;color:var(--text-muted)">enABLE plant matrix M — topology as structured data</span></div>
-        <div style="display:grid;grid-template-columns:90px 1fr;gap:10px;padding:8px 12px;background:var(--surface-section);border:1px solid var(--border-default);border-radius:4px"><span class="mono" style="font-size:10px;color:#A78BFA">YMPL / YAML</span><span style="font-size:11px;color:var(--text-muted)">enVIEW tag database, alarm setpoints, screen config</span></div>
-        <div style="display:grid;grid-template-columns:90px 1fr;gap:10px;padding:8px 12px;background:var(--surface-section);border:1px solid var(--border-default);border-radius:4px"><span class="mono" style="font-size:10px;color:#A78BFA">Markdown</span><span style="font-size:11px;color:var(--text-muted)">Full tag lists — ready for enGRAM indexing</span></div>
+        <div style="display:grid;grid-template-columns:90px 1fr;gap:10px;padding:8px 12px;background:var(--surface-section);border:1px solid var(--border-default);border-radius:4px"><span class="mono" style="font-size:10px;color:#4338CA">VIDS</span><span style="font-size:11px;color:var(--text-muted)">Process simulation — equipment, streams, connections</span></div>
+        <div style="display:grid;grid-template-columns:90px 1fr;gap:10px;padding:8px 12px;background:var(--surface-section);border:1px solid var(--border-default);border-radius:4px"><span class="mono" style="font-size:10px;color:#4338CA">VPlant YAML</span><span style="font-size:11px;color:var(--text-muted)">enABLE plant matrix M — topology as structured data</span></div>
+        <div style="display:grid;grid-template-columns:90px 1fr;gap:10px;padding:8px 12px;background:var(--surface-section);border:1px solid var(--border-default);border-radius:4px"><span class="mono" style="font-size:10px;color:#4338CA">YMPL / YAML</span><span style="font-size:11px;color:var(--text-muted)">enVIEW tag database, alarm setpoints, screen config</span></div>
+        <div style="display:grid;grid-template-columns:90px 1fr;gap:10px;padding:8px 12px;background:var(--surface-section);border:1px solid var(--border-default);border-radius:4px"><span class="mono" style="font-size:10px;color:#4338CA">Markdown</span><span style="font-size:11px;color:var(--text-muted)">Full tag lists — ready for enGRAM indexing</span></div>
       </div>`},
   ],
   right:'specs',
 },{
   id:'enable',name:'enABLE',cat:'Process Intelligence for Design & Control',
-  tag:'Turn your plant into a matrix — and get eigenvalue-based engineering judgment.',color:'#10B981',
+  tag:'Turn your plant into a matrix — and get eigenvalue-based engineering judgment.',color:'#047857',
   status:'In Development',statusBg:'#1E1B4B',statusBorder:'#3730A3',statusText:'#A5B4FC',
   patent:true,
   body:`enABLE is a desktop engineering application for process and control engineers. You draw your plant as a flowsheet — equipment plus stream connections — and enABLE encodes it as a block-matrix model, dx/dt = M·x + B·u. From that one matrix it computes engineering verdicts about the design — stability, controllability, loop pairing, recommended changes, alarm bounds and a HAZOP pre-fill — and then runs the same plant as a live closed-loop dynamic simulation.`,
@@ -240,8 +240,8 @@ export const CAPS: Cap[] = [
   right:'specs',
 },{
   id:'engenie',name:'enGENIE',cat:'Instrument Selection & Specification',
-  tag:'From process conditions to a cited, issue-ready specification.',color:'#1B6FD8',
-  status:'Early Access',statusBg:'#0A1E38',statusBorder:'#1E40AF',statusText:'#60A5FA',
+  tag:'From process conditions to a cited, issue-ready specification.',color:'#0F766E',
+  status:'Early Access',statusBg:'#0A1E38',statusBorder:'#1E40AF',statusText:'#0E7490',
   body:`enGENIE takes your service conditions and returns the right instrument — with the standard that justifies it and the reason every alternative was excluded. The finished specification is ready to issue, already matching your engineering standards, approved suppliers and purchasing rules. Grounded in Lipták — the authoritative reference every serious I&C engineer already uses.`,
   specs:[
     {l:'Disciplines',v:'8'},{l:'Technologies',v:'70'},
@@ -295,8 +295,8 @@ export const CAPS: Cap[] = [
   right:'specs',
 },{
   id:'entie',name:'enTIE',cat:'Connected Intelligence',
-  tag:'One connected layer. Zero lock-in. Every system you already run.',color:'#60A5FA',
-  status:'Roadmap',statusBg:'#1C1030',statusBorder:'#2C1C48',statusText:'#A78BFA',
+  tag:'One connected layer. Zero lock-in. Every system you already run.',color:'#0E7490',
+  status:'Roadmap',statusBg:'#1C1030',statusBorder:'#2C1C48',statusText:'#4338CA',
   openTie:true,
   body:`enTIE connects enxco capabilities to the plant systems you already run — DCS, historian, MES, ERP. It also exposes plant data via MCP server for Claude Desktop and other AI tools. The intelligence you build in enxco doesn't stay in enxco.`,
   body2:`Built as an integration layer, not a migration project — open protocol adapters sit alongside your installed base, so adoption is incremental, standards-compliant, and reversible at every step.`,
@@ -317,12 +317,12 @@ export const CAPS: Cap[] = [
     {label:'Connections',content:`
       <p style="font-size:13px;color:var(--text-body);font-weight:500;margin-bottom:8px">Plugs into the systems already on your floor.</p>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">
-        <div style="padding:8px;background:var(--surface-section);border:1px solid var(--border-default);border-radius:4px"><p style="font-size:10px;color:#60A5FA;font-weight:600;margin-bottom:2px">DCS</p><p style="font-size:9px;color:var(--text-muted)">OPC-UA · Modbus adapters</p></div>
-        <div style="padding:8px;background:var(--surface-section);border:1px solid var(--border-default);border-radius:4px"><p style="font-size:10px;color:#60A5FA;font-weight:600;margin-bottom:2px">Historian</p><p style="font-size:9px;color:var(--text-muted)">Time-series read/write bridge</p></div>
-        <div style="padding:8px;background:var(--surface-section);border:1px solid var(--border-default);border-radius:4px"><p style="font-size:10px;color:#60A5FA;font-weight:600;margin-bottom:2px">MES</p><p style="font-size:9px;color:var(--text-muted)">Work-order &amp; batch context</p></div>
-        <div style="padding:8px;background:var(--surface-section);border:1px solid var(--border-default);border-radius:4px"><p style="font-size:10px;color:#60A5FA;font-weight:600;margin-bottom:2px">ERP</p><p style="font-size:9px;color:var(--text-muted)">Asset &amp; procurement data</p></div>
-        <div style="padding:8px;background:var(--surface-section);border:1px solid var(--border-default);border-radius:4px"><p style="font-size:10px;color:#60A5FA;font-weight:600;margin-bottom:2px">Claude Desktop</p><p style="font-size:9px;color:var(--text-muted)">MCP server — AI tools query live plant data</p></div>
-        <div style="padding:8px;background:var(--surface-section);border:1px solid var(--border-default);border-radius:4px"><p style="font-size:10px;color:#60A5FA;font-weight:600;margin-bottom:2px">enxco</p><p style="font-size:9px;color:var(--text-muted)">enVIEW · enGENIE · enABLE · enSTUDIO · enGRAM</p></div>
+        <div style="padding:8px;background:var(--surface-section);border:1px solid var(--border-default);border-radius:4px"><p style="font-size:10px;color:#0E7490;font-weight:600;margin-bottom:2px">DCS</p><p style="font-size:9px;color:var(--text-muted)">OPC-UA · Modbus adapters</p></div>
+        <div style="padding:8px;background:var(--surface-section);border:1px solid var(--border-default);border-radius:4px"><p style="font-size:10px;color:#0E7490;font-weight:600;margin-bottom:2px">Historian</p><p style="font-size:9px;color:var(--text-muted)">Time-series read/write bridge</p></div>
+        <div style="padding:8px;background:var(--surface-section);border:1px solid var(--border-default);border-radius:4px"><p style="font-size:10px;color:#0E7490;font-weight:600;margin-bottom:2px">MES</p><p style="font-size:9px;color:var(--text-muted)">Work-order &amp; batch context</p></div>
+        <div style="padding:8px;background:var(--surface-section);border:1px solid var(--border-default);border-radius:4px"><p style="font-size:10px;color:#0E7490;font-weight:600;margin-bottom:2px">ERP</p><p style="font-size:9px;color:var(--text-muted)">Asset &amp; procurement data</p></div>
+        <div style="padding:8px;background:var(--surface-section);border:1px solid var(--border-default);border-radius:4px"><p style="font-size:10px;color:#0E7490;font-weight:600;margin-bottom:2px">Claude Desktop</p><p style="font-size:9px;color:var(--text-muted)">MCP server — AI tools query live plant data</p></div>
+        <div style="padding:8px;background:var(--surface-section);border:1px solid var(--border-default);border-radius:4px"><p style="font-size:10px;color:#0E7490;font-weight:600;margin-bottom:2px">enxco</p><p style="font-size:9px;color:var(--text-muted)">enVIEW · enGENIE · enABLE · enSTUDIO · enGRAM</p></div>
       </div>`},
     {label:'Safe · Secure · Scalable',content:`
       <p style="font-size:13px;color:var(--text-body);font-weight:500;margin-bottom:8px">Defense in depth, built in — not bolted on after.</p>
@@ -335,19 +335,19 @@ export const CAPS: Cap[] = [
       <p style="font-size:13px;color:var(--text-body);font-weight:500;margin-bottom:8px">Connect one system at a time — nothing gets torn out.</p>
       <div style="display:flex;flex-direction:column;gap:6px">
         <div style="display:flex;gap:10px;padding:8px 12px;background:var(--surface-section);border:1px solid var(--border-default);border-radius:4px">
-          <span class="mono" style="font-size:10px;color:#60A5FA;flex-shrink:0;margin-top:1px">01</span>
+          <span class="mono" style="font-size:10px;color:#0E7490;flex-shrink:0;margin-top:1px">01</span>
           <p style="font-size:12px;color:var(--text-muted);line-height:1.5">Turn on a single adapter — historian is the common starting point.</p>
         </div>
         <div style="display:flex;gap:10px;padding:8px 12px;background:var(--surface-section);border:1px solid var(--border-default);border-radius:4px">
-          <span class="mono" style="font-size:10px;color:#60A5FA;flex-shrink:0;margin-top:1px">02</span>
+          <span class="mono" style="font-size:10px;color:#0E7490;flex-shrink:0;margin-top:1px">02</span>
           <p style="font-size:12px;color:var(--text-muted);line-height:1.5">Runs alongside legacy DCS/SCADA during the transition — nothing is switched off.</p>
         </div>
         <div style="display:flex;gap:10px;padding:8px 12px;background:var(--surface-section);border:1px solid var(--border-default);border-radius:4px">
-          <span class="mono" style="font-size:10px;color:#60A5FA;flex-shrink:0;margin-top:1px">03</span>
+          <span class="mono" style="font-size:10px;color:#0E7490;flex-shrink:0;margin-top:1px">03</span>
           <p style="font-size:12px;color:var(--text-muted);line-height:1.5">Add MES/ERP adapters as needed — lower TCO than a forklift integration project.</p>
         </div>
         <div style="display:flex;gap:10px;padding:8px 12px;background:var(--surface-section);border:1px solid var(--border-default);border-radius:4px">
-          <span class="mono" style="font-size:10px;color:#60A5FA;flex-shrink:0;margin-top:1px">04</span>
+          <span class="mono" style="font-size:10px;color:#0E7490;flex-shrink:0;margin-top:1px">04</span>
           <p style="font-size:12px;color:var(--text-muted);line-height:1.5">Time-to-value in weeks, not a multi-quarter rollout.</p>
         </div>
       </div>`},

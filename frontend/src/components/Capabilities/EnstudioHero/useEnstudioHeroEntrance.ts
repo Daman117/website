@@ -77,7 +77,6 @@ export function useEnstudioHeroEntrance() {
       utils.set(links, { draw: '0 0' });
       utils.set('.enstudio-connector-dots, .enstudio-core, .enstudio-flow-particles', { opacity: 0 });
       utils.set('.enstudio-source-node, .enstudio-output-node', { opacity: 0 });
-      utils.set('.esh-wave', { opacity: 0 });
 
       /* One timeline, absolute positions in milliseconds. Written as numbers
          rather than relative offsets so the running order is readable as a
@@ -110,10 +109,7 @@ export function useEnstudioHeroEntrance() {
 
         /* 7. The packets. Their loops have been running unseen since mount,
               so the flow is already mid-stride when it becomes visible. */
-        .add('.enstudio-flow-particles', { opacity: 1, duration: 650 }, 3600)
-
-        // 8. The network field, last and slowest.
-        .add('.esh-wave', { opacity: 0.4, duration: 900, ease: 'inOutSine' }, 3800);
+        .add('.enstudio-flow-particles', { opacity: 1, duration: 650 }, 3600);
     });
 
     scopeRef.current = scope;

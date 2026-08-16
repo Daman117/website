@@ -34,7 +34,7 @@ const TrendChart: React.FC = () => (
   >
     {/* Gridlines at the axis ticks. Horizontal only: vertical rules would
         fight the traces at this size. */}
-    <g stroke="#1e293b" strokeOpacity="0.85" strokeWidth="0.5">
+    <g stroke="#cbd5e1" strokeOpacity="0.9" strokeWidth="0.5">
       {[0, 0.25, 0.5, 0.75, 1].map((f) => {
         const y = TREND.pad + f * (TREND.h - TREND.pad * 2);
         return <path key={f} d={`M0 ${y.toFixed(1)}H${TREND.w}`} />;

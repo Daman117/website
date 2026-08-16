@@ -19,7 +19,6 @@
  */
 import React from 'react';
 import EnstudioHeroVisual from './EnstudioHeroVisual';
-import EnstudioHeroWave from './EnstudioHeroWave';
 import { useEnstudioHeroEntrance } from './useEnstudioHeroEntrance';
 
 /** The stage's aspect ratio. Not the composition's — EnstudioHeroVisual owns
@@ -50,10 +49,6 @@ const EnstudioHero: React.FC<EnstudioHeroProps> = ({
 
   return (
   <section className="esh" ref={ref}>
-    {/* Bottom layer. First in the DOM and outside .esh-inner, so it paints
-        behind every piece of content without needing to win a z-index race
-        with the copy or the composition. */}
-    <EnstudioHeroWave />
 
     <div className="esh-inner">
       <div

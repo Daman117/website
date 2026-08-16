@@ -22,7 +22,6 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { prefersReducedMotion } from '../../../utils/motion';
-import HeroBackdrop from './HeroBackdrop';
 import HeroFigure from './HeroFigure';
 
 interface EnableHeroProps {
@@ -46,11 +45,6 @@ const EnableHero: React.FC<EnableHeroProps> = ({
 
   return (
   <section className="eab">
-    {/* Drawn, not approximated with gradients: the reference's background has
-        structure — a ribbon with countable strands, a grid that recedes to a
-        vanishing point — and a radial gradient can only ever be a smudge in
-        roughly the right place. */}
-    <HeroBackdrop reduceMotion={reduceMotion} />
 
     <div className="eab-inner">
       <div className="eab-copy">

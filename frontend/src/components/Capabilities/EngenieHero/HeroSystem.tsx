@@ -436,40 +436,30 @@ const HeroSystem: React.FC<Props> = ({ reduceMotion, active }) => {
         {/* The face scan: bright at the hub, gone at the rim, so it reads as a
             sweep rather than a spoke. */}
         <linearGradient id="egn-scan-grad" gradientUnits="userSpaceOnUse" x1={C.x} y1={C.y - 62} x2={C.x} y2={C.y - 92}>
-          <stop offset="0%" stopColor="#7dd3fc" stopOpacity="0.85" />
-          <stop offset="100%" stopColor="#7dd3fc" stopOpacity="0" />
+          <stop offset="0%" stopColor="#066f89" stopOpacity="0.85" />
+          <stop offset="100%" stopColor="#066f89" stopOpacity="0" />
         </linearGradient>
 
         {/* The rising pulse, and the clip that keeps it inside the body. */}
         <linearGradient id="egn-pulse-grad" gradientUnits="userSpaceOnUse" x1={C.x - 40} y1="0" x2={C.x + 40} y2="0">
-          <stop offset="0%" stopColor="#38bdf8" stopOpacity="0" />
-          <stop offset="50%" stopColor="#a5f3fc" stopOpacity="0.9" />
-          <stop offset="100%" stopColor="#38bdf8" stopOpacity="0" />
+          <stop offset="0%" stopColor="#077e9b" stopOpacity="0" />
+          <stop offset="50%" stopColor="#066f89" stopOpacity="0.9" />
+          <stop offset="100%" stopColor="#077e9b" stopOpacity="0" />
         </linearGradient>
         <clipPath id="egn-instr-clip">
           <rect x={C.x - 120} y={C.y - 120} width="240" height="220" />
         </clipPath>
 
-        <radialGradient id="egn-sys-core-glow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#7c3aed" stopOpacity="0.42" />
-          <stop offset="55%" stopColor="#4c1d95" stopOpacity="0.16" />
-          <stop offset="100%" stopColor="#0b1026" stopOpacity="0" />
-        </radialGradient>
         <linearGradient id="egn-sys-body" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#1e2a52" />
-          <stop offset="52%" stopColor="#111a38" />
-          <stop offset="100%" stopColor="#0a1024" />
+          <stop offset="0%" stopColor="#f2f5fb" />
+          <stop offset="52%" stopColor="#f5f7fc" />
+          <stop offset="100%" stopColor="#e3e8ed" />
         </linearGradient>
         <linearGradient id="egn-sys-sweep-grad" gradientUnits="userSpaceOnUse" x1={C.x - R_CORE} y1="0" x2={C.x + R_CORE} y2="0">
-          <stop offset="0%" stopColor="#38bdf8" />
-          <stop offset="100%" stopColor="#a78bfa" />
+          <stop offset="0%" stopColor="#077e9b" />
+          <stop offset="100%" stopColor="#2156c9" />
         </linearGradient>
       </defs>
-
-      {/* Ambient behind the core, and the layer that breathes. */}
-      <g className="egn-in-glow">
-        <ellipse className="egn-sys-glow" cx={C.x} cy={C.y} rx="250" ry="240" fill="url(#egn-sys-core-glow)" opacity="0.45" />
-      </g>
 
       {/* ── Connectors, under everything they join ───────────────────── */}
       <g className="egn-sys-links">
@@ -536,7 +526,7 @@ const HeroSystem: React.FC<Props> = ({ reduceMotion, active }) => {
         {/* housing */}
         <circle cx={C.x} cy={C.y - 62} r="56" fill="url(#egn-sys-body)" />
         <circle cx={C.x} cy={C.y - 62} r="44" strokeOpacity="0.55" />
-        <circle className="egn-sys-face" cx={C.x} cy={C.y - 62} r="30" fill="#050a1c" />
+        <circle className="egn-sys-face" cx={C.x} cy={C.y - 62} r="30" fill="#ebeef2" />
         <text className="egn-sys-read" x={C.x} y={C.y - 56} textAnchor="middle">
           25.00
         </text>

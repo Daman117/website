@@ -38,7 +38,7 @@
 }
 
 .enstudio-trust-eyebrow-green {
-  color: #34D399;
+  color: #059669;
 }
 
 .enstudio-table-th-accent {
@@ -46,7 +46,7 @@
 }
 
 .enstudio-trust-card {
-  border-color: rgba(167, 139, 250, 0.25);
+  border-color: rgba(var(--brand-rgb), 0.25);
 }
 
 .enstudio-adapter-row {
@@ -68,11 +68,11 @@
 }
 
 .enstudio-trust-bullet-blue {
-  background: #60A5FA;
+  background: #0891b2;
 }
 
 .enstudio-trust-bullet-green {
-  background: #34D399;
+  background: #059669;
 }
 
 .enstudio-trust-bullet-accent {

@@ -3,7 +3,7 @@
  *
  * Scoped to the .eth-visual container rather than to one SVG, because the
  * flow crosses layers: the packets and lanes live in EntieConnectors, and the
- * connection points and glow they light up live in EntieCore.
+ * connection points they light up live in EntieCore.
  *
  * ── What moves ──────────────────────────────────────────────────────────
  *   packets   one per lane, riding the real connector path. Constant SPEED,
@@ -13,7 +13,7 @@
  *             visible underneath and no whole-line flash.
  *   core      an arrival brightens the CORRESPONDING connection point, not
  *             the whole core: row 2's packet lights row 2's node. The core's
- *             own glow and its shield lift a little, throttled, so four
+ *             own shield lifts a little, throttled, so four
  *             arrivals a cycle read as one busy moment rather than a strobe.
  *             A departure is a smaller event on the outbound node only.
  *   idle      the core's own life underneath all that: the outer outline
@@ -69,7 +69,7 @@ const PULSE_LEN = 0.14;
 
 /** Outer outline breath. Nine seconds each way — slow enough to register as
  *  the drawing being alive, not as an animation running. Its drop-shadow is
- *  painted from the element's own alpha, so the glow follows for free. */
+ *  painted from the element's own alpha. */
 const BREATH = 9000;
 const BREATH_LOW = 0.65;
 const BREATH_HIGH = 0.85;
@@ -115,26 +115,17 @@ export function useEntieFlowAnimation() {
 
     const scope = createScope({ root }).add(() => {
       const anims: JSAnimation[] = [];
-      const glow = root.querySelector<SVGEllipseElement>('.entie-core-glow');
       const shield = root.querySelector<SVGGElement>('.entie-core-shield');
 
-      /* The core's response to an arrival: a lift in the glow and a brief
-         brightening of the shield. Only on arrival, never on departure, and
-         throttled on top of that — eight events a cycle would read as a
-         constant pulse rather than as an answer. */
+      /* The core's response to an arrival: a brief brightening of the shield.
+         Only on arrival, never on departure, and throttled on top of that —
+         eight events a cycle would read as a constant pulse rather than as an
+         answer. The halo that used to lift with it has been removed. */
       let lastArrival = 0;
       const respond = () => {
         const now = performance.now();
         if (now - lastArrival < 420) return;
         lastArrival = now;
-        if (glow) {
-          animate(glow, {
-            opacity: [
-              { to: 0.46, duration: 240, ease: 'outSine' },
-              { to: 0.32, duration: 900, ease: 'inOutSine' },
-            ],
-          });
-        }
         if (shield) {
           animate(shield, {
             opacity: [
@@ -277,7 +268,7 @@ export function useEntieFlowAnimation() {
         if (skip(i)) return;
         const start = phase(i * LAUNCH_STEP + inDurations[i] + PROCESS + i * OUT_DRIFT);
         // A departure is a smaller event than an arrival, and it does not
-        // wake the glow or the shield — those answer incoming data only.
+        // wake the shield — it answers incoming data only.
         runLane('output', i, start, () => lightNode('out', i, 0.6));
       });
 

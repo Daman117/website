@@ -251,8 +251,8 @@ const HeroDocuments: React.FC<
   >
     <defs>
       <linearGradient id="egh-sheet" x1="0" y1="0" x2="0.35" y2="1">
-        <stop offset="0%" stopColor="#13315f" stopOpacity="0.86" />
-        <stop offset="100%" stopColor="#08132c" stopOpacity="0.92" />
+        <stop offset="0%" stopColor="#f2f5fb" stopOpacity="0.86" />
+        <stop offset="100%" stopColor="#f6f8fc" stopOpacity="0.92" />
       </linearGradient>
     </defs>
 

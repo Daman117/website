@@ -58,7 +58,7 @@ const HeroNodes: React.FC<HeroInteraction & { L: EngramLayout }> = ({
         <circle
           className="egh-cap-ring"
           r={n.r}
-          fill="#070c1e"
+          fill="#e8ecf1"
           fillOpacity="0.96"
           stroke={n.color}
           strokeOpacity="0.9"

@@ -41,8 +41,6 @@
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
 import { prefersReducedMotion } from '../../../utils/motion';
-import HeroEnvironment from './HeroEnvironment';
-import HeroWave from './HeroWave';
 import ScadaDashboard from './ScadaDashboard';
 import { STAGE } from './enviewHeroData';
 
@@ -76,8 +74,6 @@ const EnviewHero: React.FC<EnviewHeroProps> = ({
         className="evh-stage"
         style={{ '--canvas-w': STAGE.w, '--canvas-h': STAGE.h } as React.CSSProperties}
       >
-        <HeroEnvironment />
-        <HeroWave reduceMotion={reduceMotion} active={inView} />
 
         <div className="evh-copy">
           <span className="evh-badge">{badgeText}</span>

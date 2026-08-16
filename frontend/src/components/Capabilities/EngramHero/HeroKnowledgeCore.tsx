@@ -47,46 +47,33 @@ const HeroKnowledgeCore: React.FC<HeroInteraction & { L: EngramLayout }> = ({
   >
     <defs>
       <linearGradient id="egh-disc-wall" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0%" stopColor="#04060f" />
-        <stop offset="30%" stopColor="#0d1c3c" />
-        <stop offset="72%" stopColor="#0a1430" />
-        <stop offset="100%" stopColor="#04060f" />
+        <stop offset="0%" stopColor="#f3f5f8" />
+        <stop offset="30%" stopColor="#f5f7fc" />
+        <stop offset="72%" stopColor="#f6f8fc" />
+        <stop offset="100%" stopColor="#f3f5f8" />
       </linearGradient>
       <radialGradient id="egh-topface" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stopColor="#e0f2fe" stopOpacity="0.5" />
-        <stop offset="45%" stopColor="#38bdf8" stopOpacity="0.24" />
-        <stop offset="100%" stopColor="#1d4ed8" stopOpacity="0.1" />
+        <stop offset="0%" stopColor="#0d3793" stopOpacity="0.5" />
+        <stop offset="45%" stopColor="#077e9b" stopOpacity="0.24" />
+        <stop offset="100%" stopColor="#2a66eb" stopOpacity="0.1" />
       </radialGradient>
       {/* The column: bright at the disc, dissolving upward */}
       {/* Runs along the link's own bounding box: bright where it leaves the
           core, thinning across the gap, brightening again as it reaches the
           brain — so both ends read as connected rather than fading out. */}
       <linearGradient id="egh-beam" x1="0" y1="1" x2="1" y2="0">
-        <stop offset="0%" stopColor="#e0f2fe" stopOpacity="0.5" />
-        <stop offset="42%" stopColor="#60a5fa" stopOpacity="0.16" />
-        <stop offset="100%" stopColor="#a78bfa" stopOpacity="0.4" />
+        <stop offset="0%" stopColor="#0d3793" stopOpacity="0.5" />
+        <stop offset="42%" stopColor="#134ecf" stopOpacity="0.16" />
+        <stop offset="100%" stopColor="#2156c9" stopOpacity="0.4" />
       </linearGradient>
       <radialGradient id="egh-beam-base" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stopColor="#e0f2fe" stopOpacity="0.75" />
-        <stop offset="100%" stopColor="#38bdf8" stopOpacity="0" />
-      </radialGradient>
-      <radialGradient id="egh-floor-glow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.28" />
-        <stop offset="100%" stopColor="#1e1b4b" stopOpacity="0" />
+        <stop offset="0%" stopColor="#0d3793" stopOpacity="0.75" />
+        <stop offset="100%" stopColor="#077e9b" stopOpacity="0" />
       </radialGradient>
     </defs>
 
     <g className="egh-in-platform">
     {/* ── Floor ripples ─────────────────────────────────────────────── */}
-    <ellipse
-      className="egh-core-floor"
-      cx={cx}
-      cy={CORE_FLOOR}
-      rx={rx * 4.2}
-      ry={ry * 4.6}
-      fill="url(#egh-floor-glow)"
-      opacity="0.72"
-    />
     {/* Energy leaving the database. Every ring is DRAWN at the innermost
         radius and scaled outward, which is what lets one ring travel through
         the next one's position instead of each pulsing in place. Staggered
@@ -113,7 +100,7 @@ const HeroKnowledgeCore: React.FC<HeroInteraction & { L: EngramLayout }> = ({
           }
           rx={RIPPLES[0].rx.toFixed(1)}
           ry={RIPPLES[0].ry.toFixed(1)}
-          stroke={i % 2 ? '#818cf8' : '#38bdf8'}
+          stroke={i % 2 ? '#1249c1' : '#077e9b'}
           strokeOpacity={RIPPLES[0].o}
           strokeWidth={1.6}
         />
@@ -135,7 +122,7 @@ const HeroKnowledgeCore: React.FC<HeroInteraction & { L: EngramLayout }> = ({
             d={`M${cx - rx} ${y + wall}A${rx} ${ry} 0 0 0 ${cx + rx} ${y + wall}`}
             fill="none"
             className="egh-disc-rim"
-            stroke="#38bdf8"
+            stroke="#077e9b"
             strokeOpacity={0.3 + (discs - i) * 0.07}
             strokeWidth="1.4"
           />
@@ -144,8 +131,8 @@ const HeroKnowledgeCore: React.FC<HeroInteraction & { L: EngramLayout }> = ({
             cy={y}
             rx={rx}
             ry={ry}
-            fill="#081428"
-            stroke="#60a5fa"
+            fill="#f6f8fc"
+            stroke="#134ecf"
             strokeOpacity="0.42"
             strokeWidth="1"
           />
@@ -164,11 +151,11 @@ const HeroKnowledgeCore: React.FC<HeroInteraction & { L: EngramLayout }> = ({
       rx={rx}
       ry={ry}
       fill="url(#egh-topface)"
-      stroke="#7dd3fc"
+      stroke="#066f89"
       strokeOpacity="0.7"
       strokeWidth="1.4"
     />
-    <g fill="none" stroke="#bae6fd" strokeOpacity="0.22" strokeWidth="0.6">
+    <g fill="none" stroke="#0f3ea5" strokeOpacity="0.22" strokeWidth="0.6">
       {[0.72, 0.5, 0.28].map((f) => (
         <ellipse key={f} cx={cx} cy={CORE.topY} rx={rx * f} ry={ry * f} />
       ))}
@@ -194,7 +181,7 @@ const HeroKnowledgeCore: React.FC<HeroInteraction & { L: EngramLayout }> = ({
       className="egh-core-spine"
       d={L.coreToHub}
       fill="none"
-      stroke="#e0f2fe"
+      stroke="#0d3793"
       strokeOpacity="0.5"
       strokeWidth="1.2"
       strokeLinecap="round"

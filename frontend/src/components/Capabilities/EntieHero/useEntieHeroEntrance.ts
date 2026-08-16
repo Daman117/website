@@ -53,9 +53,7 @@ const COPY_LIFT = 12;
 const COLUMN_SHIFT = 14;
 /** The wave's resting opacity — matched to its CSS so the reveal lands
  *  exactly where the stylesheet would have left it. */
-const WAVE_REST = 0.62;
 /** The core halo's resting opacity, matched to the flow hook's. */
-const GLOW_REST = 0.32;
 
 export function useEntieHeroEntrance() {
   const rootRef = useRef<HTMLElement | null>(null);
@@ -82,13 +80,11 @@ export function useEntieHeroEntrance() {
         translateY: COPY_LIFT,
       });
       utils.set('.entie-core', { opacity: 0, translateY: 14 });
-      utils.set('.entie-core-glow', { opacity: 0 });
       utils.set('.entie-core-nodes, .entie-core-signals', { opacity: 0 });
       utils.set('.entie-source', { opacity: 0, translateX: -COLUMN_SHIFT });
       utils.set('.entie-output', { opacity: 0, translateX: COLUMN_SHIFT });
       utils.set(lanes, { draw: '0 0' });
       utils.set('.entie-flow-particles, .entie-connector-pulses', { opacity: 0 });
-      utils.set('.entie-wave', { opacity: 0 });
 
       /* One timeline, absolute positions in milliseconds. Written as numbers
          rather than relative offsets so the running order reads as a column
@@ -103,11 +99,10 @@ export function useEntieHeroEntrance() {
         .add('.eth-sub', { opacity: 1, translateY: 0 }, 680)
         .add('.eth-cta', { opacity: 1, translateY: 0 }, 1300)
 
-        /* 3. The core, settling into place with its halo. Its outline,
-              interior fill and shield come with it; the parts that make it
-              look busy are held back for step 7. */
+        /* 3. The core, settling into place. Its outline, interior fill and
+              shield come with it; the parts that make it look busy are held
+              back for step 7. The halo that used to arrive with it is gone. */
         .add('.entie-core', { opacity: 1, translateY: 0, duration: 700 }, 1350)
-        .add('.entie-core-glow', { opacity: GLOW_REST, duration: 800 }, 1350)
 
         // 4. Its connection points, so the lanes have somewhere to land.
         .add('.entie-core-nodes', { opacity: 1, duration: 500 }, 1750)
@@ -126,10 +121,7 @@ export function useEntieHeroEntrance() {
 
         /* 8. The flow. Its loops have been running unseen since mount, so it
               is already mid-stride when it becomes visible. */
-        .add('.entie-flow-particles, .entie-connector-pulses', { opacity: 1, duration: 600 }, 3100)
-
-        // 9. The field underneath, last and slowest.
-        .add('.entie-wave', { opacity: WAVE_REST, duration: 800, ease: 'inOutSine' }, 3200);
+        .add('.entie-flow-particles, .entie-connector-pulses', { opacity: 1, duration: 600 }, 3100);
     });
 
     scopeRef.current = scope;

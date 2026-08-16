@@ -74,7 +74,7 @@ const HeroStreams: React.FC<Props> = ({ active, reduceMotion, highlight, steppin
         <linearGradient key={i} id={`egh-ribbon-${i}`} x1="0" y1="0" x2="1" y2="0">
           <stop offset="0%" stopColor={r.color} stopOpacity="0.12" />
           <stop offset="32%" stopColor={r.color} stopOpacity="0.85" />
-          <stop offset="100%" stopColor="#e0f2fe" stopOpacity="0.95" />
+          <stop offset="100%" stopColor="#0d3793" stopOpacity="0.95" />
         </linearGradient>
       ))}
       {/* Dots emerge just clear of the sheet and dissolve into the core */}
@@ -97,20 +97,6 @@ const HeroStreams: React.FC<Props> = ({ active, reduceMotion, highlight, steppin
       </mask>
     </defs>
 
-    {/* Soft under-glow, so the bundle reads as light rather than wire */}
-    <g fill="none" strokeLinecap="round">
-      {L.ribbons.map((r, i) => (
-        <path
-          key={`g${i}`}
-          className="egh-ribbon-glow"
-          d={L.ribbonPath(r)}
-          pathLength="1"
-          stroke={r.color}
-          strokeOpacity="0.13"
-          strokeWidth={r.w * 4}
-        />
-      ))}
-    </g>
 
     <g fill="none" strokeLinecap="round">
       {L.ribbons.map((r, i) => (
@@ -133,7 +119,7 @@ const HeroStreams: React.FC<Props> = ({ active, reduceMotion, highlight, steppin
           Array.from({ length: L.ribbonDots }, (_, j) => {
             const dur = TIMING.ribbon * (1 + (i % 3) * 0.14);
             return (
-              <circle key={`${i}-${j}`} r={1.1 + ((i + j) % 3) * 0.5} fill="#e0f2fe" opacity="0.9">
+              <circle key={`${i}-${j}`} r={1.1 + ((i + j) % 3) * 0.5} fill="#0d3793" opacity="0.9">
                 <animateMotion
                   dur={`${dur.toFixed(2)}s`}
                   repeatCount="indefinite"

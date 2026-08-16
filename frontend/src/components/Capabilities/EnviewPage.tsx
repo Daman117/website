@@ -14,14 +14,14 @@ interface EnviewPageProps {
   onOpenContact: (source?: string) => void;
 }
 
-const ACCENT = '#2563EB';
-const ACCENT_RGB = '37,99,235';
+const ACCENT = '#0369A1';
+const ACCENT_RGB = '3,105,161';
 
 
 const howItWorksSteps = [
-  { icon: Plug,        color: '#2563EB', title: 'Connect', desc: 'OPC-UA / Modbus TCP / MQTT native connections established instantly via the command line.' },
+  { icon: Plug,        color: '#0369A1', title: 'Connect', desc: 'OPC-UA / Modbus TCP / MQTT native connections established instantly via the command line.' },
   { icon: FolderInput, color: '#0E9BC4', title: 'Import',  desc: 'AI-native ingest of P&IDs, files, and drawings — auto-generating tags and topology.' },
-  { icon: Layers,      color: '#10B981', title: 'Design',  desc: 'Engineering Studio with a visual importer and 331 pre-built industrial symbols.' },
+  { icon: Layers,      color: '#047857', title: 'Design',  desc: 'Engineering Studio with a visual importer and 331 pre-built industrial symbols.' },
   { icon: Zap,         color: '#F59E0B', title: 'Run',     desc: 'The system switches seamlessly from Edit to Run mode and live data flows.' },
 ];
 
@@ -39,7 +39,7 @@ const nativeApproach = [
     subtitle: 'Built from scratch in Swift',
     desc: 'Zero JVM, zero .NET overhead — a control platform engineered for modern hardware.',
     features: ['Pure Swift codebase', 'No virtual machine', 'Runs on Mac mini / Apple Silicon'],
-    color: '#2563EB',
+    color: '#0369A1',
   },
   {
     Icon: Gauge,
@@ -55,7 +55,7 @@ const nativeApproach = [
     subtitle: 'Data and visuals never collide',
     desc: 'Strict separation of the background data layer and the visual presentation layer keeps the UI alive.',
     features: ['Async data engine', 'Independent render thread', 'No UI thread blocking'],
-    color: '#10B981',
+    color: '#047857',
   },
   {
     Icon: Zap,
@@ -73,7 +73,7 @@ const views = [
     title: 'P&ID View',
     subtitle: 'Engineering',
     desc: 'ISA-101 compliant background, ISA-5.1 instrument bubbles, and an absolute single source of truth topology.',
-    color: '#2563EB',
+    color: '#0369A1',
     img: '/enview-pid-view.webp',
   },
   {
@@ -89,7 +89,7 @@ const views = [
     title: '3D Plant View',
     subtitle: 'Management',
     desc: 'RealityKit spatial rendering, orbit-camera navigation, and physical asset location mapping.',
-    color: '#10B981',
+    color: '#047857',
     img: '/enview-plant-view.webp',
   },
 ];
@@ -210,7 +210,7 @@ const EnviewPage: React.FC<EnviewPageProps> = ({ onOpenContact }) => {
         @keyframes colShimmer  { 0%,100% { background:rgba(37,99,235,0.06); } 50% { background:rgba(37,99,235,0.14); } }
         @keyframes cardEntrance { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
         @keyframes iconPulse    { 0%,100% { transform:scale(1); box-shadow:0 0 0 0 rgba(37,99,235,0); } 50% { transform:scale(1.12); box-shadow:0 0 0 6px rgba(37,99,235,0.2); } }
-        @keyframes lineDrawn    { from { stroke-dashoffset:80; opacity:0; filter:drop-shadow(0 0 0px #2563EB); } to { stroke-dashoffset:0; opacity:1; filter:drop-shadow(0 0 4px #2563EB); } }
+        @keyframes lineDrawn    { from { stroke-dashoffset:80; opacity:0; } to { stroke-dashoffset:0; opacity:1; } }
         @keyframes bannerFade   { from { opacity:0; transform:scale(0.98); } to { opacity:1; transform:scale(1); } }
       `}</style>
 

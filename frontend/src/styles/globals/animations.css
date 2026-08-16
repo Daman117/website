@@ -8,8 +8,7 @@
 @keyframes iconFlash {
   0%, 25% { color: inherit; }
   35% {
-    color: var(--flash-color, #f97316);
-    filter: drop-shadow(0 0 6px var(--flash-color, #f97316));
+    color: var(--flash-color, var(--brand));
   }
   45%, 100% { color: inherit; }
 }

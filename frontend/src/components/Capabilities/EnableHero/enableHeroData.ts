@@ -30,25 +30,25 @@ export const stages: Stage[] = [
   {
     id: 'ingest',
     title: 'Ingest',
-    c: '#38bdf8',
+    c: '#077e9b',
     panel: 'Sources',
   },
   {
     id: 'analyze',
     title: 'Analyze',
-    c: '#c026d3',
+    c: '#4e7ce2',
     panel: 'Digital Model',
   },
   {
     id: 'insight',
     title: 'Insight',
-    c: '#22c55e',
+    c: '#05a271',
     panel: 'Insights',
   },
   {
     id: 'action',
     title: 'Action',
-    c: '#f59e0b',
+    c: '#b45309',
     panel: 'Outcomes',
   },
 ];

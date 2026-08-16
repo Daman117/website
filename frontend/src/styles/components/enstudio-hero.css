@@ -32,11 +32,7 @@
   overflow: clip;
   /* Same clearance under the fixed nav as every other hero — see .evh/.egh. */
   padding: clamp(68px, 7vh, 94px) var(--gutter) 40px;
-  background:
-    radial-gradient(56% 60% at 12% 42%, rgba(109, 40, 217, 0.26) 0%, rgba(4, 6, 15, 0) 66%),
-    radial-gradient(62% 66% at 72% 34%, rgba(76, 29, 149, 0.18) 0%, rgba(4, 6, 15, 0) 70%),
-    radial-gradient(46% 50% at 60% 98%, rgba(30, 41, 110, 0.16) 0%, rgba(4, 6, 15, 0) 72%),
-    linear-gradient(180deg, #04060f 0%, #070a1a 42%, #05070f 74%, #020409 100%);
+  background: var(--hero-ground);
 }
 
 .esh-inner {
@@ -96,10 +92,10 @@
   display: inline-block;
   margin-bottom: 16px;
   padding: var(--pill-padding);
-  border: 1px solid rgba(196, 181, 253, 0.4);
+  border: 1px solid rgba(190, 207, 244, 0.4);
   border-radius: 999px;
-  background: rgba(167, 139, 250, 0.16);
-  color: #c4b5fd;
+  background: rgba(33, 86, 201, 0.16);
+  color: #5b2eff;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -112,19 +108,19 @@
   font-weight: 700;
   letter-spacing: -1.4px;
   line-height: 1.1;
-  color: #ffffff;
+  color: var(--text-primary);
   margin-bottom: 18px;
 }
 
 .esh-accent {
-  color: #a78bfa;
+  color: #2156c9;
 }
 
 .esh-sub {
   font-size: clamp(14px, 1.05vw, 16px);
   font-weight: 500;
   line-height: 1.68;
-  color: rgba(255, 255, 255, 0.94);
+  color: var(--text-secondary);
   margin-bottom: 14px;
 }
 
@@ -154,8 +150,8 @@
   /* Low enough that a hundred hairlines behind body copy never compete with
      it. This is the number to turn down first if the text starts to fight. */
   opacity: 0.4;
-  -webkit-mask-image: linear-gradient(to top, #000 62%, rgba(0, 0, 0, 0.7) 86%, transparent 100%);
-  mask-image: linear-gradient(to top, #000 62%, rgba(0, 0, 0, 0.7) 86%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, #000 62%, rgba(250, 251, 252, 0.7) 86%, transparent 100%);
+  mask-image: linear-gradient(to top, #000 62%, rgba(250, 251, 252, 0.7) 86%, transparent 100%);
 }
 
 /* Hairlines at any width — the band is stretched horizontally to fill the
@@ -169,36 +165,35 @@
 /* Depth by contrast alone: the far layer is barely there, the near one is
    still well under the composition above it. No blur, no size change — a
    network drawn at three strengths reads as three distances. */
-.esh .enstudio-net-layer--far .enstudio-net-edge { stroke: rgba(99, 102, 241, 0.2); }
-.esh .enstudio-net-layer--mid .enstudio-net-edge { stroke: rgba(129, 140, 248, 0.3); }
-.esh .enstudio-net-layer--near .enstudio-net-edge { stroke: rgba(139, 92, 246, 0.42); }
+.esh .enstudio-net-layer--far .enstudio-net-edge { stroke: rgba(19, 79, 210, 0.2); }
+.esh .enstudio-net-layer--mid .enstudio-net-edge { stroke: rgba(18, 73, 193, 0.3); }
+.esh .enstudio-net-layer--near .enstudio-net-edge { stroke: rgba(39, 96, 220, 0.42); }
 
-.esh .enstudio-net-layer--far .enstudio-net-node { fill: rgba(129, 140, 248, 0.34); }
-.esh .enstudio-net-layer--mid .enstudio-net-node { fill: rgba(147, 158, 255, 0.44); }
-.esh .enstudio-net-layer--near .enstudio-net-node { fill: rgba(167, 139, 250, 0.56); }
+.esh .enstudio-net-layer--far .enstudio-net-node { fill: rgba(18, 73, 193, 0.34); }
+.esh .enstudio-net-layer--mid .enstudio-net-node { fill: rgba(17, 68, 182, 0.44); }
+.esh .enstudio-net-layer--near .enstudio-net-node { fill: rgba(33, 86, 201, 0.56); }
 
 /* A few points of emphasis, or the field reads as texture rather than as a
    network with structure. */
 .esh .enstudio-net-node--accent {
-  fill: rgba(196, 181, 253, 0.75);
+  fill: rgba(190, 207, 244, 0.75);
 }
 
 .esh .enstudio-net-layer--near .enstudio-net-node--accent {
-  fill: rgba(125, 211, 252, 0.8);
+  fill: rgba(6, 111, 137, 0.8);
 }
 
 /* The two routes a signal runs. Brighter than the edges around them, so the
    path is legible before the signal arrives on it. */
 .esh .enstudio-net-route {
-  stroke: rgba(56, 189, 248, 0.5);
+  stroke: rgba(7, 126, 155, 0.5);
 }
 
 /* Dimmer and smaller than any packet in the composition above — the band is
    the secondary layer and has to keep reading that way. */
 .esh .enstudio-net-particle {
-  fill: #bfdbfe;
+  fill: #0f3da2;
   opacity: 0;
-  filter: drop-shadow(0 0 2px rgba(56, 189, 248, 0.7));
 }
 
 /* ── The visual area ────────────────────────────────────────────────────
@@ -213,6 +208,9 @@
   bottom: 0;
   z-index: 1;
   pointer-events: none;
+  /* Reclaims the dead wedge between the drawing and the stage's right edge at
+     wide viewports. Zeroed below 1280px, where the hero stacks. */
+  transform: translateX(var(--hero-art-shift));
 }
 
 .enstudio-visual {
@@ -260,32 +258,29 @@
    moves: a tight radius, because a soft halo at this size reads as a smudge
    rather than as light. */
 .esh .enstudio-flow-particle {
-  fill: #ddd6fe;
+  fill: #0e3998;
   opacity: 0;
-  filter: drop-shadow(0 0 3px rgba(167, 139, 250, 0.9));
 }
 
 .esh .enstudio-flow-particle--out {
-  fill: #dbeafe;
-  filter: drop-shadow(0 0 3px rgba(56, 189, 248, 0.9));
+  fill: #0e3895;
 }
 
 .esh .enstudio-connector-dot {
-  fill: #a78bfa;
+  fill: #2156c9;
   opacity: 0.75;
 }
 
 /* Same dot, the colour of the end of the flow it terminates. */
 .esh .enstudio-connector-dot--out {
-  fill: #60a5fa;
+  fill: #134ecf;
 }
 
 /* The two points every line converges on. Brighter and blue, because this is
    where the composition says "one model". */
 .esh .enstudio-connector-dot--hub {
-  fill: #60a5fa;
+  fill: #134ecf;
   opacity: 1;
-  filter: drop-shadow(0 0 4px rgba(96, 165, 250, 0.7));
 }
 
 /* ── Source and output nodes ────────────────────────────────────────────
@@ -293,7 +288,7 @@
    blue. The fill is nearly nothing — enough to lift the tile off the
    background, not enough to read as a filled shape. */
 .esh .enstudio-node-shape {
-  fill: rgba(10, 14, 32, 0.55);
+  fill: rgba(229, 234, 239, 0.55);
   stroke-width: 1.1;
 }
 
@@ -305,51 +300,42 @@
 }
 
 .esh .enstudio-source-node .enstudio-node-shape {
-  stroke: rgba(167, 139, 250, 0.6);
+  stroke: rgba(33, 86, 201, 0.6);
 }
 
 .esh .enstudio-source-node .enstudio-node-icon {
-  stroke: rgba(226, 214, 255, 0.85);
+  stroke: rgba(27, 71, 167, 0.85);
 }
 
 .esh .enstudio-output-node .enstudio-node-shape {
-  stroke: rgba(129, 140, 248, 0.6);
+  stroke: rgba(18, 73, 193, 0.6);
 }
 
 .esh .enstudio-output-node .enstudio-node-icon {
-  stroke: rgba(209, 226, 255, 0.85);
+  stroke: rgba(14, 58, 153, 0.85);
 }
 
 /* ── The core ───────────────────────────────────────────────────────────
-   Two concentric hexagons and nothing else structural. The halo is its own
-   element behind them and the outer ring carries one small drop-shadow — the
-   inner ring and the schematic stay crisp, which is what keeps this looking
-   drawn rather than rendered. */
-.esh .enstudio-glow {
-  fill: url(#eshCoreGlow);
-  /* Low enough to read as the background being slightly warmer around the
-     core rather than as a light. Its own element so a breath can scale and
-     fade it without touching the ring's geometry. */
-  opacity: 0.34;
-}
+   Two concentric hexagons and nothing else structural. The halo that used to
+   sit behind them is gone: on a light ground a radial bloom reads as a smudge
+   rather than as light, so the core is line work only now. */
 
 .esh .enstudio-core-ring {
   fill: none;
   stroke: url(#eshCoreEdge);
   stroke-width: 1.6;
   stroke-linejoin: round;
-  filter: drop-shadow(0 0 6px rgba(129, 140, 248, 0.35));
 }
 
 .esh .enstudio-core-inner {
   fill: none;
-  stroke: rgba(148, 163, 220, 0.32);
+  stroke: rgba(18, 74, 197, 0.32);
   stroke-width: 1;
   stroke-linejoin: round;
 }
 
 .esh .enstudio-core-vertex {
-  fill: #c4b5fd;
+  fill: #becff4;
   opacity: 0.9;
 }
 
@@ -360,7 +346,7 @@
 .esh .enstudio-process-line,
 .esh .enstudio-process-symbol {
   fill: none;
-  stroke: rgba(196, 205, 255, 0.62);
+  stroke: rgba(15, 60, 159, 0.62);
   stroke-width: 1.2;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -371,16 +357,15 @@
    cyan, and with a tighter glow: this is the core working through what it
    holds, not information arriving from outside. */
 .esh .enstudio-process-signal {
-  fill: #a5f3fc;
+  fill: #066f89;
   opacity: 0;
-  filter: drop-shadow(0 0 2.5px rgba(34, 211, 238, 0.85));
 }
 
 /* Instrument leads. Dashed here as a P&ID convention, not as an animation
    hook — a later dash-offset run inherits this pattern rather than inventing
    one. */
 .esh .enstudio-signal {
-  stroke: rgba(196, 181, 253, 0.5);
+  stroke: rgba(190, 207, 244, 0.5);
   stroke-dasharray: 3 4;
 }
 
@@ -413,10 +398,10 @@
      smaller here, and a halo tuned for a 760px stage reads as haze on a
      460px one. These are the CSS shadows only — the core's own glow element
      is animated from JS and is left alone. */
-  .esh .enstudio-core-ring { filter: drop-shadow(0 0 4px rgba(129, 140, 248, 0.28)); }
-  .esh .enstudio-connector-dot--hub { filter: drop-shadow(0 0 3px rgba(96, 165, 250, 0.55)); }
-  .esh .enstudio-flow-particle { filter: drop-shadow(0 0 2px rgba(167, 139, 250, 0.8)); }
-  .esh .enstudio-flow-particle--out { filter: drop-shadow(0 0 2px rgba(56, 189, 248, 0.8)); }
+  .esh .enstudio-core-ring { }
+  .esh .enstudio-connector-dot--hub { }
+  .esh .enstudio-flow-particle { }
+  .esh .enstudio-flow-particle--out { }
 
   /* Capped so the composition stays a companion to the copy rather than the
      tallest thing in the hero — every pixel here is hero height on a device

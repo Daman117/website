@@ -121,7 +121,7 @@ function AnimatedRoutes({
         {/* min-height reserves the page's space while its chunk downloads,
             so Footer (mounted outside this boundary) can't jump up to sit
             right under Nav during the fetch — see App.tsx Footer placement. */}
-        <Suspense fallback={<div className="app-suspense" />}>
+        <Suspense fallback={<div className="app-suspense" role="status" aria-label="Loading"><span /></div>}>
           <Routes location={location}>
             <Route
               path="/"

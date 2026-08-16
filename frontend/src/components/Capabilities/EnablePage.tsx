@@ -14,7 +14,7 @@ interface EnablePageProps {
   onOpenContact: (source?: string) => void;
 }
 
-const ACCENT = '#10B981';
+const ACCENT = '#047857';
 
 const challenges = [
   { title: 'Experience Is Retiring', desc: 'Senior engineers leave with the plant model held only in their heads.' },
@@ -59,7 +59,7 @@ const capabilities = [
       '37 unit-operation builders with real physics — reactors, separations, heat transfer, rotating equipment, vessels and valves',
       'The same matrix drives both analysis and live simulation',
     ],
-    color: '#10B981',
+    color: '#047857',
   },
   {
     Icon: Gauge,
@@ -73,7 +73,7 @@ const capabilities = [
       'Eigenvalue sensitivity — ranked recommended changes and change-impact previews',
       'Fiedler value — naturally weakly-coupled control zones',
     ],
-    color: '#2563EB',
+    color: '#0369A1',
   },
   {
     Icon: MonitorPlay,
@@ -87,7 +87,7 @@ const capabilities = [
       'Inject faults and watch how stability and the controls respond',
       'Operator training and what-ifs against a virtual plant, not a real one',
     ],
-    color: '#A78BFA',
+    color: '#4338CA',
   },
 ];
 
