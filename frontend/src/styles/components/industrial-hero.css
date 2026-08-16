@@ -1,38 +1,28 @@
-/* ── INDUSTRIAL ECOSYSTEM HERO ──────────────────────────────────────────
-   Homepage hero only. Scoped entirely under .ieh so nothing here can reach
-   the shared HeroShell used by the six product-page heroes.
+/* ── HOMEPAGE HERO ───────────────────────────────────────────────────────
+   Homepage only. Scoped entirely under .ieh so nothing here can reach the
+   shared HeroShell used by the six product-page heroes.
 
-   THE UNIT SYSTEM
-   ---------------
-   The whole composition is authored on one fixed 1660x880 design canvas
-   (see heroData.ts). `--u` is exactly one canvas pixel:
+   The composition is ONE <svg> authored on a fixed design canvas (see
+   heroData.ts), so it needs no unit system of its own — the viewBox does all
+   the scaling. --canvas-w / --canvas-h come in inline from the active layout
+   and only exist so the stage's aspect box can never disagree with it.
 
-       --u: calc(100cqw / 1660)
-
-   so `calc(232 * var(--u))` is 232 canvas px whatever the stage measures.
-   The SVG layers use the same numbers as their viewBox, which is why
-   connector paths land on card borders precisely rather than approximately —
-   no measuring, no ResizeObserver, no JS layout at all.
-
-   `container-type: inline-size` sits on .ieh-inner, NOT on .ieh-stage:
-   container query units resolve against the nearest *ancestor* container, so
-   an element cannot size itself from its own container.
-
-   The composition above is the resting state. Everything in the ANIMATION
-   block further down moves around it and returns to it exactly. */
+   ── Loading animation ─────────────────────────────────────────────────────
+   SVG elements are grouped and assigned entrance classes below. On every hard
+   load or reload the composition builds from bottom up: stream lines emerge
+   first, the plant rises from the podium, floating data layers drop in one by
+   one, then connectors and nodes pulse in, and finally labels fade. All via
+   pure CSS — no JS timers, no React state, no per-frame work. The animation
+   runs once and leaves the element in its final painted state (fill-mode: both). */
 
 .ieh {
   position: relative;
   /* clip, not hidden: hidden on a full-bleed section would create a scroll
      container and take scroll ownership away from window/Lenis. */
   overflow-x: clip;
-  /* Clears the fixed nav (66px tall, 12px from the top) and no more. It was
-     up to 148px, which left a band of empty canvas under the bar before the
-     composition began. */
+  /* Clears the fixed nav (66px tall, 12px from the top) and no more. */
   padding: clamp(68px, 7vh, 94px) var(--gutter) 44px;
-  background:
-    radial-gradient(120% 88% at 62% 42%, rgba(19, 46, 100, 0.5) 0%, rgba(6, 10, 26, 0) 62%),
-    linear-gradient(180deg, #05070f 0%, #060a18 46%, #04060e 100%);
+  background: var(--hero-ground);
 }
 
 .ieh-inner {
@@ -41,645 +31,164 @@
   width: 100%;
   max-width: 1520px;
   margin: 0 auto;
-  container-type: inline-size;
 }
 
-/* --canvas-w / --canvas-h are set inline from the active layout, so one rule
-   serves both coordinate systems and the aspect box can never disagree with
-   the SVG viewBox. */
 .ieh-stage {
-  --u: calc(100cqw / var(--canvas-w));
   position: relative;
   width: 100%;
   aspect-ratio: var(--canvas-w) / var(--canvas-h);
 }
 
-/* Every SVG layer shares the stage box and the same viewBox, so they stack
-   in perfect register. */
-.ieh-layer {
-  position: absolute;
-  inset: 0;
+.ieh-svg {
   display: block;
   width: 100%;
   height: 100%;
-  pointer-events: none;
+  transform: translateX(var(--hero-art-shift));
 }
 
-.ieh-layer-backdrop { z-index: 0; }
-.ieh-layer-core     { z-index: 1; }
-.ieh-layer-links    { z-index: 2; }
+/* ── SVG entrance animations ─────────────────────────────────────────────
+   Three base keyframes cover every motion used in the composition:
+     ieh-rise    — fades in while drifting upward (plant, layers)
+     ieh-drop    — fades in while drifting downward (top-layer mark)
+     ieh-fade    — opacity only (stream lines, connectors, labels) */
 
-/* Card layers sit above the artwork; connectors terminate under their
-   borders rather than crossing them. */
-.ieh-cards {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
+@keyframes ieh-rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Source documents (top row) ─────────────────────────────────────── */
-.ieh-source {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(56, 189, 248, 0.28);
-  border-radius: calc(9 * var(--u));
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 44%),
-    linear-gradient(160deg, rgba(24, 47, 88, 0.7) 0%, rgba(8, 14, 30, 0.78) 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+@keyframes ieh-drop {
+  from { opacity: 0; transform: translateY(-14px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.ieh-source-label {
-  position: absolute;
-  bottom: calc(100% + 11 * var(--u));
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  font-size: calc(16 * var(--u));
+@keyframes ieh-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes ieh-stream-slide {
+  from { opacity: 0; stroke-dashoffset: 48; }
+  to   { opacity: 1; stroke-dashoffset: 0; }
+}
+
+/* Convenience: every animated group starts invisible and is revealed by its
+   animation. animation-fill-mode: both ensures they are hidden before the
+   delay fires and stay visible afterwards. */
+.ieh-anim {
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ── Per-element entrance classes ── */
+
+/* Data stream column — subtle fade, appears first */
+.ieh-anim-stream {
+  animation-name: ieh-fade;
+  animation-duration: 900ms;
+  animation-delay: 200ms;
+  animation-fill-mode: both;
+  animation-timing-function: ease-out;
+}
+
+/* Plant & podium — rises from below */
+.ieh-anim-plant {
+  animation-name: ieh-rise;
+  animation-duration: 900ms;
+  animation-delay: 420ms;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Floating data layers — staggered via custom property */
+.ieh-anim-layer {
+  animation-name: ieh-drop;
+  animation-duration: 700ms;
+  animation-delay: var(--ieh-layer-delay, 700ms);
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Connector paths and dots */
+.ieh-anim-connectors {
+  animation-name: ieh-fade;
+  animation-duration: 500ms;
+  animation-delay: 1300ms;
+  animation-fill-mode: both;
+  animation-timing-function: ease-out;
+}
+
+/* Input/output node circles */
+.ieh-anim-nodes {
+  animation-name: ieh-rise;
+  animation-duration: 600ms;
+  animation-delay: 1450ms;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* SVG text labels — last to appear */
+.ieh-anim-labels {
+  animation-name: ieh-fade;
+  animation-duration: 500ms;
+  animation-delay: 1700ms;
+  animation-fill-mode: both;
+  animation-timing-function: ease-out;
+}
+
+/* Reduce motion: skip all animations for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .ieh-anim-stream,
+  .ieh-anim-plant,
+  .ieh-anim-layer,
+  .ieh-anim-connectors,
+  .ieh-anim-nodes,
+  .ieh-anim-labels {
+    animation: none;
+  }
+}
+
+/* Labels are part of the artwork, so they scale with the viewBox; only the
+   face and colour are set here. */
+.ieh-label {
+  fill: rgba(29, 41, 53, 0.82);
   font-weight: 500;
-  letter-spacing: calc(0.2 * var(--u));
-  color: rgba(228, 240, 255, 0.88);
-}
-
-.ieh-source-icon {
-  width: calc(42 * var(--u));
-  height: calc(42 * var(--u));
-  color: #7dd3fc;
-}
-
-/* ── Products (right column) ────────────────────────────────────────── */
-.ieh-product {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  gap: calc(13 * var(--u));
-  padding: 0 calc(16 * var(--u));
-  border: 1px solid rgb(var(--accent-rgb) / 0.3);
-  border-radius: calc(10 * var(--u));
-  /* Three stacked layers rather than one flat tint: an accent wash bleeding
-     in from the connector edge, a soft vertical lift, then the base body.
-     Reads as depth without a blur, which would cost a backdrop-filter. */
-  background:
-    linear-gradient(90deg, rgb(var(--accent-rgb) / 0.12) 0%, rgb(var(--accent-rgb) / 0) 46%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.055) 0%, rgba(255, 255, 255, 0) 46%),
-    linear-gradient(102deg, rgba(14, 20, 40, 0.86) 0%, rgba(7, 11, 24, 0.9) 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
-}
-
-/* A short accent rail on the connector edge ties the card to its endpoint
-   node instead of leaving the line stopping at a plain border. */
-.ieh-product::before {
-  content: "";
-  position: absolute;
-  left: -1px;
-  top: 22%;
-  bottom: 22%;
-  width: calc(2 * var(--u));
-  border-radius: calc(2 * var(--u));
-  background: rgb(var(--accent-rgb) / 0.75);
-}
-
-.ieh-product-icon {
-  flex: none;
-  display: flex;
-  width: calc(34 * var(--u));
-  height: calc(34 * var(--u));
-  color: rgb(var(--accent-rgb));
-}
-
-.ieh-product-icon > svg {
-  width: 100%;
-  height: 100%;
-}
-
-.ieh-product-text {
-  display: flex;
-  flex-direction: column;
-  gap: calc(4 * var(--u));
-  min-width: 0;
-}
-
-.ieh-product-name {
-  font-family: "Space Grotesk", "DM Sans", sans-serif;
-  font-size: calc(18.5 * var(--u));
-  font-weight: 700;
-  letter-spacing: calc(0.2 * var(--u));
-  color: rgb(var(--accent-rgb));
-}
-
-.ieh-product-desc {
-  font-size: calc(12.5 * var(--u));
-  line-height: 1.42;
-  color: rgba(214, 228, 248, 0.68);
-}
-
-/* ── Connected systems (bottom row) ─────────────────────────────────── */
-.ieh-system {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: calc(12 * var(--u));
-  border: 1px solid rgba(148, 178, 220, 0.24);
-  border-radius: calc(9 * var(--u));
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0) 46%),
-    rgba(10, 17, 34, 0.72);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
-}
-
-.ieh-system-icon {
-  width: calc(30 * var(--u));
-  height: calc(30 * var(--u));
-  color: rgba(206, 227, 255, 0.84);
-}
-
-.ieh-system-label {
-  font-size: calc(12.5 * var(--u));
-  font-weight: 500;
-  letter-spacing: calc(0.1 * var(--u));
-  white-space: nowrap;
-  color: rgba(228, 240, 255, 0.88);
+  letter-spacing: 0.01em;
 }
 
 /* ── Hero copy ──────────────────────────────────────────────────────────
    Occupies the region the composition deliberately leaves dark. Sized in
-   normal CSS units, NOT in --u: the artwork should scale with the stage,
-   the reading copy should not. */
+   normal CSS units, NOT relative to the canvas: the artwork should scale with
+   the stage, the reading copy should not.
+
+   Top-anchored, not centred: 129px is the shared 197px content line minus the
+   68px this hero's own padding already contributes, so the homepage headline
+   starts level with a product hero's badge — and, being an anchor rather than
+   a centre, it cannot drift the next time the wording changes.
+
+   The stacked and two-column breakpoints below set `position: static`, which
+   nullifies `top`, so tablet and mobile are untouched. */
 .ieh-copy {
   position: absolute;
   left: 0;
-  /* CONTENT PASS: was `top: 50%` + `translateY(-50%)`. Centring made the
-     copy's position a function of its own height, so cutting the second
-     paragraph and the six pills let the block float to the middle of a tall
-     stage — the headline dropped to ~240px below the nav, against the 120px
-     line the six product heroes hold.
-
-     Top-anchored on the same construction they use: 129px is the shared
-     197px content line minus the 68px this hero's own padding already
-     contributes, so the homepage headline starts level with a product
-     hero's badge. Being an anchor rather than a centre, it also cannot move
-     again the next time the wording changes.
-
-     The stacked and two-column breakpoints below set `position: static`,
-     which nullifies `top`, so tablet and mobile are untouched. */
   top: 129px;
   z-index: 4;
   width: min(38%, 600px);
 }
 
-/* ══ ANIMATION ═══════════════════════════════════════════════════════════
-   All of it. No JS animation library, no rAF, no per-frame React state.
-
-   WHY PURE CSS + SMIL, with framer-motion and GSAP both already installed:
-   the entire brief is "fixed sequence, fixed period, repeat forever". That
-   is `animation-delay` against one shared duration. A JS timeline would add
-   a scheduler, a cleanup path, and a main-thread cost to express the same
-   thing, and would then need its own prefers-reduced-motion branch because
-   inline styles bypass the global CSS rule. framer-motion stays where it is
-   already earning its place (route transitions, state-driven changes); it
-   is not needed to make a line pulse on a timer.
-
-   THE ONE INVARIANT: every looping keyframe's 0% AND 100% is the element's
-   resting style. That buys three things at once —
-     · the loop is seamless, with no hard reset;
-     · the hero settles to the approved static composition exactly;
-     · index.css's global prefers-reduced-motion rule (which collapses every
-       animation to 0.001ms / 1 iteration) lands on that same resting style,
-       so reduced motion needs no separate stylesheet.
-
-   Entrance animations use `translate`; loop animations use `transform`.
-   They are separate CSS properties, so both can run on one element at the
-   same time without the later declaration winning. */
-
-.ieh {
-  --loop: 20s;
-  --enter-end: 4.2s;
-  --core-phase: 4.4s;
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* NOTE on delays: the `animation` shorthand RESETS animation-delay to 0s.
-   Elements with a single looping animation therefore carry their delay
-   inside the shorthand; elements running an entrance AND a loop declare a
-   two-value `animation-delay` longhand *after* the shorthand, so `--enter`
-   never leaks onto the loop clock. Declaring a delay before a shorthand
-   silently does nothing. */
-
-/* ── Off-screen: stop everything ──────────────────────────────────────
-   One class toggle from a single IntersectionObserver. SMIL ignores
-   animation-play-state, so HeroConnections pauses that separately via
-   pauseAnimations() on the same signal. */
-.ieh-idle *,
-.ieh-idle {
-  animation-play-state: paused !important;
-}
-
-/* ── Entrance keyframes (one-shot) ──────────────────────────────────── */
-@keyframes iehFade {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-@keyframes iehInDown {
-  from { opacity: 0; translate: 0 -9px; }
-  to   { opacity: 1; translate: 0 0; }
-}
-@keyframes iehInUp {
-  from { opacity: 0; translate: 0 11px; }
-  to   { opacity: 1; translate: 0 0; }
-}
-@keyframes iehInRight {
-  from { opacity: 0; translate: 16px 0; }
-  to   { opacity: 1; translate: 0 0; }
-}
-@keyframes iehDraw {
-  from { stroke-dashoffset: 1; }
-  to   { stroke-dashoffset: 0; }
-}
-
-/* Backdrop and central system resolve first — the system exists, then the
-   things that feed it arrive. */
-.ieh-layer-backdrop { animation: iehFade 1500ms var(--ease-out) 100ms both; }
-.ieh-layer-core     { animation: iehFade 1200ms var(--ease-out) 250ms both; }
-
-/* ── Loop keyframes ─────────────────────────────────────────────────────
-   Windows are percentages of --loop (20s): 3% = 600ms, 8% = 1.6s. */
-
-@keyframes iehSourceActive {
-  0%, 100% { border-color: rgba(56, 189, 248, 0.24); transform: translateY(0); }
-  3%       { border-color: rgba(125, 211, 252, 0.72); transform: translateY(-2px); }
-  8%       { border-color: rgba(56, 189, 248, 0.24); transform: translateY(0); }
-}
-@keyframes iehIconActive {
-  0%, 100% { color: #7dd3fc; }
-  3%       { color: #e0f2fe; }
-  8%       { color: #7dd3fc; }
-}
-@keyframes iehProductActive {
-  0%, 100% {
-    border-color: rgb(var(--accent-rgb) / 0.42);
-    box-shadow: 0 0 0 1px rgb(var(--accent-rgb) / 0);
-    transform: translateX(0);
-  }
-  3.5% {
-    border-color: rgb(var(--accent-rgb) / 0.95);
-    box-shadow: 0 0 0 1px rgb(var(--accent-rgb) / 0.35);
-    transform: translateX(-3px);
-  }
-  9% {
-    border-color: rgb(var(--accent-rgb) / 0.42);
-    box-shadow: 0 0 0 1px rgb(var(--accent-rgb) / 0);
-    transform: translateX(0);
-  }
-}
-@keyframes iehSystemActive {
-  0%, 100% { border-color: rgba(148, 178, 220, 0.2); transform: translateY(0); }
-  3%       { border-color: rgba(125, 211, 252, 0.6); transform: translateY(-2px); }
-  8%       { border-color: rgba(148, 178, 220, 0.2); transform: translateY(0); }
-}
-/* Source links carry a gradient stroke, so a width swell reads better than
-   an opacity change there. */
-@keyframes iehLinkPulseSource {
-  0%, 100% { stroke-width: 1.3; }
-  3%       { stroke-width: 2.3; }
-  8%       { stroke-width: 1.3; }
-}
-@keyframes iehLinkPulseProduct {
-  0%, 100% { stroke-opacity: 0.72; stroke-width: 1.4; }
-  3.5%     { stroke-opacity: 1;    stroke-width: 2.2; }
-  9%       { stroke-opacity: 0.72; stroke-width: 1.4; }
-}
-@keyframes iehLinkPulseSystem {
-  0%, 100% { stroke-opacity: 0.62; }
-  3%       { stroke-opacity: 1; }
-  8%       { stroke-opacity: 0.62; }
-}
-@keyframes iehNodeActive {
-  0%, 100% { transform: scale(1); }
-  3%       { transform: scale(1.5); }
-  8%       { transform: scale(1); }
-}
-/* Resting state is invisible, so this adds nothing to the static design. */
-@keyframes iehHalo {
-  0%       { opacity: 0;    transform: scale(1); }
-  0.6%     { opacity: 0.65; transform: scale(1); }
-  7%       { opacity: 0;    transform: scale(3.2); }
-  100%     { opacity: 0;    transform: scale(1); }
-}
-
-/* ── Source cards ───────────────────────────────────────────────────── */
-.ieh-source {
-  animation:
-    iehInDown 900ms var(--ease-out) var(--enter) backwards,
-    iehSourceActive var(--loop) ease-in-out infinite;
-  animation-delay: var(--enter), calc(var(--enter-end) + var(--phase));
-}
-.ieh-source-icon {
-  animation: iehIconActive var(--loop) ease-in-out calc(var(--enter-end) + var(--phase)) infinite;
-}
-
-/* ── Product cards ──────────────────────────────────────────────────── */
-.ieh-product {
-  animation:
-    iehInRight 950ms var(--ease-out) var(--enter) backwards,
-    iehProductActive var(--loop) ease-in-out infinite;
-  animation-delay: var(--enter), calc(var(--enter-end) + var(--phase));
-}
-
-/* ── System cards ───────────────────────────────────────────────────── */
-.ieh-system {
-  animation:
-    iehInUp 900ms var(--ease-out) var(--enter) backwards,
-    iehSystemActive var(--loop) ease-in-out infinite;
-  animation-delay: var(--enter), calc(var(--enter-end) + var(--phase));
-}
-
-/* ── Connection paths ───────────────────────────────────────────────── */
-.ieh-link {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 0;
-}
-.ieh-link-source {
-  animation:
-    iehDraw 950ms var(--ease-out) var(--enter) backwards,
-    iehLinkPulseSource var(--loop) ease-in-out infinite;
-  animation-delay: var(--enter), calc(var(--enter-end) + var(--phase));
-}
-.ieh-link-product {
-  animation:
-    iehDraw 1000ms var(--ease-out) var(--enter) backwards,
-    iehLinkPulseProduct var(--loop) ease-in-out infinite;
-  animation-delay: var(--enter), calc(var(--enter-end) + var(--phase));
-}
-/* Real-unit dashes (see HeroConnections). 85 = 10 × the 8.5-unit dash
-   period, so the slide loops seamlessly, and because the units are real the
-   dots travel at the same physical speed on every line regardless of its
-   length. */
-@keyframes iehDotFlow {
-  from { stroke-dashoffset: 85; }
-  to   { stroke-dashoffset: 0; }
-}
-.ieh-link-system {
-  stroke-dashoffset: 0;
-  animation:
-    iehFade 700ms var(--ease-out) var(--enter) backwards,
-    iehDotFlow 9s linear var(--enter-end) infinite,
-    iehLinkPulseSystem var(--loop) ease-in-out infinite;
-  animation-delay: var(--enter), var(--enter-end), calc(var(--enter-end) + var(--phase));
-}
-
-/* ── Endpoint nodes ─────────────────────────────────────────────────── */
-.ieh-link-node,
-.ieh-node-halo {
-  transform-box: fill-box;
-  transform-origin: center;
-}
-.ieh-link-node {
-  animation:
-    iehFade 600ms var(--ease-out) var(--enter) backwards,
-    iehNodeActive var(--loop) ease-in-out infinite;
-  animation-delay: var(--enter), calc(var(--enter-end) + var(--phase));
-}
-.ieh-node-halo {
-  opacity: 0;
-  animation: iehHalo var(--loop) ease-out calc(var(--enter-end) + var(--phase)) infinite;
-}
-
-/* ── Central system ─────────────────────────────────────────────────────
-   The core is the one thing with continuous idle motion. Everything here
-   returns to its authored stroke values, which differ per element — hence
-   four small keyframes rather than one shared one. */
-@keyframes iehCoreRing {
-  0%, 100% { stroke-opacity: 0.85; stroke-width: 2; }
-  5%       { stroke-opacity: 1;    stroke-width: 2.9; }
-  13%      { stroke-opacity: 0.85; stroke-width: 2; }
-}
-@keyframes iehCoreRingHalo {
-  0%, 100% { stroke-opacity: 0.22; stroke-width: 6; }
-  5%       { stroke-opacity: 0.5;  stroke-width: 9; }
-  13%      { stroke-opacity: 0.22; stroke-width: 6; }
-}
-@keyframes iehHubRing {
-  0%, 100% { stroke-opacity: 0.6; stroke-width: 1.3; }
-  5%       { stroke-opacity: 1;   stroke-width: 2; }
-  13%      { stroke-opacity: 0.6; stroke-width: 1.3; }
-}
-@keyframes iehCoreRim {
-  0%, 100% { stroke-opacity: 0.7; stroke-width: 1.6; }
-  5%       { stroke-opacity: 1;   stroke-width: 2.3; }
-  13%      { stroke-opacity: 0.7; stroke-width: 1.6; }
-}
-/* Slow idle breath under the hub — the only motion that runs on its own
-   clock, so the core never looks switched off between cycles. */
-@keyframes iehHubBreath {
-  0%, 100% { opacity: 1; }
-  50%      { opacity: 0.72; }
-}
-
-.ieh-core-ring      { animation: iehCoreRing     var(--loop) ease-in-out calc(var(--enter-end) + var(--core-phase)) infinite; }
-.ieh-core-ring-halo { animation: iehCoreRingHalo var(--loop) ease-in-out calc(var(--enter-end) + var(--core-phase)) infinite; }
-.ieh-hub-ring       { animation: iehHubRing      var(--loop) ease-in-out calc(var(--enter-end) + var(--core-phase)) infinite; }
-.ieh-core-rim       { animation: iehCoreRim      var(--loop) ease-in-out calc(var(--enter-end) + var(--core-phase)) infinite; }
-.ieh-hub-halo       { animation: iehHubBreath 7s ease-in-out 1s infinite; }
-
-/* ══ INTERACTION ═════════════════════════════════════════════════════════
-   Hovering or focusing a card reveals its relationship to the ecosystem.
-   Nothing here creates new geometry — it restyles the paths that are already
-   drawn.
-
-   TWO RULES DECIDED THE PROPERTY CHOICES BELOW:
-
-   1. A running CSS animation outranks any normal declaration. The loop
-      already animates border-color / transform / stroke-width /
-      stroke-opacity, so highlighting through those would simply lose. The
-      highlight therefore works in properties the loop does NOT touch —
-      `opacity`, `background`, `box-shadow`, `stroke` (colour) — and reaches
-      for !important only where the brief specifically asks for a heavier
-      line, which is the one case that cannot be expressed another way.
-
-   2. Quietening the rest works because the entrance animations use
-      fill-mode `backwards`, not `forwards`. `forwards` would pin opacity:1
-      from the keyframe and outrank these rules permanently.
-
-   Inactive elements are dimmed, never hidden — the ecosystem has to stay
-   readable while one strand of it is emphasised. */
-
-.ieh-source,
-.ieh-product,
-.ieh-system,
-.ieh-core-hit {
-  /* .ieh-cards is pointer-events:none so the artwork never eats a click;
-     the cards themselves opt back in. */
-  pointer-events: auto;
-}
-
-.ieh-core-hit {
-  position: absolute;
-  z-index: 2;
-}
-
-.ieh-product {
-  text-decoration: none;
-  color: inherit;
-}
-
-/* Transitions are on the highlight properties only, so they can never
-   interfere with the loop's own animated properties. */
-.ieh-source,
-.ieh-system,
-.ieh-product {
-  transition: background 220ms ease, box-shadow 220ms ease, outline-color 220ms ease;
-}
-
-/* Nothing is dimmed on hover. The active strand brightens and everything
-   else is left exactly as it was — the ecosystem stays fully readable, and
-   a hover never restyles 17 cards at once. */
-
-/* ── Emphasise the active strand ────────────────────────────────────── */
-.ieh-source.is-active {
-  background: linear-gradient(160deg, rgba(38, 76, 134, 0.85) 0%, rgba(12, 22, 44, 0.85) 100%);
-  box-shadow: 0 0 0 1px rgba(125, 211, 252, 0.55);
-}
-
-.ieh-system.is-active {
-  background: rgba(18, 30, 56, 0.85);
-  box-shadow: 0 0 0 1px rgba(125, 211, 252, 0.45);
-}
-
-/* NOT box-shadow: the loop's iehProductActive keyframe animates box-shadow,
-   and a running animation beats a normal declaration, so a shadow ring here
-   is silently discarded. outline is untouched by the loop and, unlike a
-   border, costs no layout. */
-.ieh-product.is-active {
-  background: linear-gradient(102deg, rgb(var(--accent-rgb) / 0.24) 0%, rgba(10, 15, 32, 0.82) 62%);
-  outline: 1px solid rgb(var(--accent-rgb) / 0.8);
-  outline-offset: -1px;
-}
-
-/* The one place !important is warranted: the brief asks the active line to
-   read heavier, and stroke-width is owned by the running loop keyframe. */
-.ieh-link.is-active,
-.ieh-link-system.is-active {
-  stroke-width: 2.6 !important;
-}
-
-.ieh-link-node.is-active {
-  r: 5;
-}
-
-/* Core hover: strengthen the centre without scaling or spinning it. */
-.ieh-stage[data-active="core"] .ieh-core-ring,
-.ieh-stage[data-active="core"] .ieh-hub-ring {
-  stroke: #f0abfc;
-}
-
-.ieh-stage[data-active="core"] .ieh-core-rim {
-  stroke: #67e8f9;
-}
-
-/* ── Focus ──────────────────────────────────────────────────────────────
-   Matches the site convention (2px solid + --focus-ring-offset), but in a
-   light blue: var(--primary) is #1f5fe0, which has poor contrast against
-   this near-black hero. */
-.ieh-product:focus-visible {
-  outline: 2px solid #7dd3fc;
-  outline-offset: var(--focus-ring-offset);
-}
-
-/* ── Touch ──────────────────────────────────────────────────────────────
-   Card handlers already ignore pointerType 'touch' so no highlight can get
-   stranded. This removes the tap flash on top. */
-@media (hover: none) {
-  .ieh-source,
-  .ieh-product,
-  .ieh-system {
-    -webkit-tap-highlight-color: transparent;
-  }
-}
-
-/* The network terrain's motion is the SMIL flow field in HeroBackdrop —
-   real particles on their own trajectories. Two earlier CSS attempts here
-   (a node opacity twinkle and a stroke-dashoffset dash train) were removed:
-   both animated marks that sat on top of already-drawn lines, so they read
-   as texture rather than travel. Nothing terrain-related is styled here now. */
-
-/* ── Terrain wave ───────────────────────────────────────────────────────
-   Slides the wave surface left by exactly one spatial period. The height
-   field repeats over that distance (see HeroBackdrop), so the last frame is
-   identical to the first and the loop has no seam — while the crests visibly
-   travel right-to-left throughout. One animation for the whole surface. */
-@keyframes iehTerrainDrift {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-780px); }
-}
-
-.ieh-terrain-drift {
-  will-change: transform;
-  animation: iehTerrainDrift 62s linear infinite;
-}
-
-/* ── Plant turntable ─────────────────────────────────────────────────────
-   The plant revolves by having each unit ORBIT the platform, not by spinning
-   the group. A flat rotate() would tip the whole skyline over on its side and
-   read as a spinning icon; this keeps every tower upright while its footprint
-   travels the floor ellipse, so units sweep out to the sides, pass across the
-   back, and return — the plant seen from all around.
-
-   Each unit carries its own --rx/--ry (its orbit radius, already squashed by
-   the cylinder's own rx:ry ratio) and a negative animation-delay for its angle
-   on the pad. So one keyframe drives all of them, and phase alone places each
-   unit — no per-element keyframes and no JS.
-
-   Only `translate` is animated, never `scale`: translate is unaffected by
-   transform-origin, which on nested SVG groups is easy to resolve to the wrong
-   point. Depth is carried by opacity plus the ellipse's own foreshortening,
-   which suits the drawing's flat, orthographic-ish projection anyway.
-
-   0% and 100% are the same point on the circle, so the loop is seamless and
-   reduced motion settles the plant at its starting orientation. */
-@keyframes iehTurntable {
-  0% { translate: calc(var(--rx) * 0.0000) calc(var(--ry) * 1.0000); opacity: 1.000; }
-  6.25% { translate: calc(var(--rx) * 0.3827) calc(var(--ry) * 0.9239); opacity: 0.979; }
-  12.5% { translate: calc(var(--rx) * 0.7071) calc(var(--ry) * 0.7071); opacity: 0.919; }
-  18.75% { translate: calc(var(--rx) * 0.9239) calc(var(--ry) * 0.3827); opacity: 0.830; }
-  25% { translate: calc(var(--rx) * 1.0000) calc(var(--ry) * 0.0000); opacity: 0.725; }
-  31.25% { translate: calc(var(--rx) * 0.9239) calc(var(--ry) * -0.3827); opacity: 0.620; }
-  37.5% { translate: calc(var(--rx) * 0.7071) calc(var(--ry) * -0.7071); opacity: 0.531; }
-  43.75% { translate: calc(var(--rx) * 0.3827) calc(var(--ry) * -0.9239); opacity: 0.471; }
-  50% { translate: calc(var(--rx) * 0.0000) calc(var(--ry) * -1.0000); opacity: 0.450; }
-  56.25% { translate: calc(var(--rx) * -0.3827) calc(var(--ry) * -0.9239); opacity: 0.471; }
-  62.5% { translate: calc(var(--rx) * -0.7071) calc(var(--ry) * -0.7071); opacity: 0.531; }
-  68.75% { translate: calc(var(--rx) * -0.9239) calc(var(--ry) * -0.3827); opacity: 0.620; }
-  75% { translate: calc(var(--rx) * -1.0000) calc(var(--ry) * -0.0000); opacity: 0.725; }
-  81.25% { translate: calc(var(--rx) * -0.9239) calc(var(--ry) * 0.3827); opacity: 0.830; }
-  87.5% { translate: calc(var(--rx) * -0.7071) calc(var(--ry) * 0.7071); opacity: 0.919; }
-  93.75% { translate: calc(var(--rx) * -0.3827) calc(var(--ry) * 0.9239); opacity: 0.979; }
-  100% { translate: calc(var(--rx) * -0.0000) calc(var(--ry) * 1.0000); opacity: 1.000; }
-}
-
-.ieh-plant-unit {
-  animation: iehTurntable var(--rev, 80s) linear infinite;
-  animation-delay: var(--pd, 0s);
-}
-
 /* ══ RESPONSIVE ══════════════════════════════════════════════════════════
-   Below 1280px the component mounts the COMPACT layout (a 340x916 tall
-   column with its own card placements and its own connection topology) and
-   the copy moves above it. This is not the desktop hero shrunk: at phone
-   width the desktop canvas would put `--u` near 0.2, rendering 16px labels
-   at 3px.
+   Below 1280px the component mounts the COMPACT layout (a 360x540 portrait
+   canvas with the inputs reflowed into a row across the top) and the copy
+   moves above it. This is not the desktop hero shrunk: at phone width the
+   desktop canvas would render its 17px labels at about 4px.
 
    1280px is also where the side-by-side arrangement stops working
    mechanically: the desktop stage is aspect-locked, so its height falls with
    viewport width while the copy's height does not. Below that the absolutely
-   centred copy overflows the stage, pushing the headline under the fixed nav.
+   positioned copy overflows the stage.
 
-   The compact stage is width-capped and centred. Uncapped, a 0.37 aspect
-   column stretched to tablet width would be over 2000px tall. */
+   The compact stage is width-capped and centred — uncapped, a 0.67 aspect
+   canvas stretched to tablet width would be over 1000px tall. */
 @media (max-width: 1279px) {
   .ieh {
     padding: clamp(80px, 8vh, 112px) var(--gutter) 28px;
@@ -697,16 +206,18 @@
     order: 1;
     width: 100%;
     max-width: 640px;
-    transform: none;
   }
 
   .ieh-stage {
     order: 2;
     width: 100%;
     max-width: 420px;
-    /* cqw resolves against .ieh-inner, which is still full width here, so
-       --u has to be re-derived from the capped stage instead. */
-    --u: calc(min(100cqw, 420px) / var(--canvas-w));
+  }
+
+  /* Stacked and centred below 1280px — there is no right-hand wedge to
+     reclaim, and a nudge would just push the composition off centre. */
+  .ieh-svg {
+    transform: none;
   }
 }
 
@@ -732,70 +243,6 @@
   .ieh-stage {
     order: 2;
     flex: 0 0 auto;
-    width: clamp(360px, 42vw, 470px);
-    --u: calc(clamp(360px, 42vw, 470px) / var(--canvas-w));
+    width: clamp(340px, 40vw, 440px);
   }
-}
-
-/* ── Compact card styling ────────────────────────────────────────────────
-   Same components, different proportions. The source label moves inside the
-   card (stacked under its icon) because a 3x2 grid has no room for labels
-   floating above each cell. */
-.ieh--compact .ieh-source {
-  flex-direction: column;
-  gap: calc(6 * var(--u));
-  border-radius: calc(8 * var(--u));
-}
-
-.ieh--compact .ieh-source-label {
-  position: static;
-  transform: none;
-  bottom: auto;
-  left: auto;
-  font-size: calc(12 * var(--u));
-}
-
-.ieh--compact .ieh-source-icon {
-  width: calc(26 * var(--u));
-  height: calc(26 * var(--u));
-}
-
-.ieh--compact .ieh-product {
-  gap: calc(11 * var(--u));
-  padding: 0 calc(13 * var(--u));
-  border-radius: calc(9 * var(--u));
-}
-
-.ieh--compact .ieh-product-icon {
-  width: calc(26 * var(--u));
-  height: calc(26 * var(--u));
-}
-
-.ieh--compact .ieh-product-name {
-  font-size: calc(15 * var(--u));
-}
-
-.ieh--compact .ieh-product-desc {
-  font-size: calc(10.5 * var(--u));
-  line-height: 1.36;
-}
-
-.ieh--compact .ieh-system {
-  gap: calc(7 * var(--u));
-  border-radius: calc(7 * var(--u));
-}
-
-.ieh--compact .ieh-system-icon {
-  width: calc(20 * var(--u));
-  height: calc(20 * var(--u));
-}
-
-/* "Other Systems" is far wider than a 62-unit card at any legible size, so
-   compact labels wrap instead of nowrapping past the card edge. */
-.ieh--compact .ieh-system-label {
-  font-size: calc(9.5 * var(--u));
-  white-space: normal;
-  text-align: center;
-  line-height: 1.15;
-  padding: 0 calc(3 * var(--u));
 }
